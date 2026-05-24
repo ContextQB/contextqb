@@ -43,4 +43,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*AI can write code. Someone still has to think.*
+_AI can write code. Someone still has to think._
