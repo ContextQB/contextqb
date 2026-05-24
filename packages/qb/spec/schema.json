@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contextqb.com/qb/1.0/schema.json",
+  "title": "context.qb",
+  "description": "Schema for the context.qb file format (v1.0). See ./SPEC.md.",
+  "type": "object",
+  "required": ["qb", "project", "tree"],
+  "properties": {
+    "qb": {
+      "description": "Format version, e.g. '1.0'.",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "project": {
+      "description": "Repo identity + plain-language summary.",
+      "type": "object",
+      "required": ["name", "summary"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "v": {
+          "type": "string",
+          "description": "The project's own version (free-form)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "stack": {
+      "description": "Plain-language stack descriptors. Keys are conventional, not enumerated.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "tree": {
+      "description": "Map of paths (workspace packages or directories) to a short purpose string or a structured object.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "One-line purpose, optionally including kind and deploy cues."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": { "type": "string" },
+              "purpose": { "type": "string" },
+              "deploy": { "type": "string" },
+              "deps": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "routes": {
+      "description": "Hostname (or route pattern) → backend mapping.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "decisions": {
+      "description": "Index of architectural decisions. Map form (id -> summary) preferred; array form supported.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "summary": { "type": "string" },
+                  "status": { "type": "string" }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "status": {
+      "description": "In-flight work items. Updated frequently.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "entry_points": {
+      "description": "Named concerns -> file paths where the agent should start.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "flows": {
+      "description": "Reserved for v1.x: multi-step user journeys.",
+      "type": ["array", "object"]
+    },
+    "boundaries": {
+      "description": "Reserved for v1.x: hard 'must not do' rules.",
+      "type": ["array", "object"]
+    },
+    "tribal_knowledge": {
+      "description": "Reserved for v1.x: undocumented conventions humans need to know.",
+      "type": ["array", "object", "string"]
+    },
+    "surfaces": {
+      "description": "Reserved for v1.x: non-HTTP surfaces (CLI, jobs, MCP tools).",
+      "type": ["array", "object"]
+    },
+    "glossary": {
+      "description": "Reserved for v1.x: project-specific vocabulary.",
+      "type": ["array", "object"]
+    },
+    "excluded_paths": {
+      "description": "Reserved for v1.x: globs the agent should ignore.",
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

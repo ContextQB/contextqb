@@ -1,0 +1,57 @@
+# context.qb 1.0 — postgres-mcp
+#
+# The agent's boot manifest (play-sheet, for the brand metaphor). Read this
+# first; drill into the referenced URIs only when the play calls for it.
+#
+# Sections: project, stack, tree, decisions, status, entry_points
+# Spec: https://contextqb.com/spec
+
+qb: "1.0"
+
+project:
+  name: postgres-mcp
+  v: 0.6.0
+  summary: |
+    A Model Context Protocol (MCP) server that gives an AI agent safe,
+    audited access to a PostgreSQL database. Read-only by default, with
+    opt-in write tools that require an explicit allowlist. Speaks stdio and
+    HTTP/SSE; ships as both an npm package and a single static binary.
+
+stack:
+  lang: TypeScript 5.7 (strict)
+  build: tsc + esbuild (single-file binary via @yao-pkg/pkg)
+  protocol: MCP via @modelcontextprotocol/sdk
+  data: PostgreSQL 14+ (any compatible connection string)
+  test: vitest + testcontainers
+  release: changesets + GitHub Actions
+
+tree:
+  src/server: MCP server entry point (stdio + HTTP transports)
+  src/tools: one file per tool (list_tables, describe_table, query, ...)
+  src/safety: query parsing, allowlist enforcement, redaction rules
+  src/resources: MCP resource handlers (postgres://schema/<name>)
+  test: vitest specs against an ephemeral Postgres container
+
+decisions:
+  "0001": readonly-by-default-write-opt-in (accepted)
+  "0002": parameterised-queries-only-no-string-concat (accepted)
+  "0003": stdio-as-primary-http-as-secondary (accepted)
+  "0004": no-orm-raw-pg-only (accepted; ORM types would lie about schemas)
+  "0005": single-binary-distribution (accepted)
+  index: docs/decisions/README.md
+
+status:
+  v0.6: "shipping (last release: 8 days ago, npm + brew tap + binary)"
+  v0.7: in-progress (read-only views over write tools for "preview before commit")
+  windows-binary: blocked-on pkg-windows-tooling-issue
+  homebrew-formula: complete
+
+entry_points:
+  rules: AGENTS.md
+  map: context.qb (this file)
+  install-cursor: README.md#cursor
+  install-claude-desktop: README.md#claude-desktop
+  install-from-source: README.md#build-from-source
+  tool-reference: docs/tools.md
+  safety-model: docs/safety.md
+  decisions: docs/decisions/README.md

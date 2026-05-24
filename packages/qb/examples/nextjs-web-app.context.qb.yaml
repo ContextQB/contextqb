@@ -1,0 +1,61 @@
+# context.qb 1.0 — recipe-box
+#
+# The agent's boot manifest (play-sheet, for the brand metaphor). Read this
+# first; drill into the referenced URIs only when the play calls for it.
+#
+# Sections: project, stack, tree, routes, decisions, status, entry_points
+# Spec: https://contextqb.com/spec
+
+qb: "1.0"
+
+project:
+  name: recipe-box
+  v: 1.2.0
+  summary: |
+    A personal recipe library and meal planner. Users save recipes from URLs
+    or paste, tag them, and assemble a weekly plan that produces a shopping
+    list. Single-tenant per account; no social features.
+
+stack:
+  lang: TypeScript 5.7
+  framework: Next.js 15 + React 19 (App Router)
+  ui: Tailwind v4 + shadcn/ui
+  data: PostgreSQL 16 + Drizzle ORM
+  auth: Clerk
+  deploy: Vercel
+  jobs: Trigger.dev (recipe URL ingestion)
+
+tree:
+  src/app: next-app-router → pages and route handlers
+  src/components: shared UI components (kebab-case, single-responsibility)
+  src/db: drizzle schema and query helpers
+  src/lib/recipes: pure recipe-parsing logic (URL → structured recipe)
+  src/lib/planner: pure meal-plan + shopping-list generation
+  src/jobs: trigger.dev job definitions
+  drizzle: migration history
+
+routes:
+  recipebox.app: production (Vercel)
+  staging.recipebox.app: preview environment
+  api.recipebox.app: not used — all endpoints live under /api in the same app
+
+decisions:
+  "0001": app-router-not-pages (accepted)
+  "0002": drizzle-over-prisma (accepted)
+  "0003": clerk-not-supabase-auth (accepted)
+  "0004": trigger-dev-for-async-jobs (accepted)
+  "0005": single-app-no-microservices (accepted)
+  index: docs/decisions/README.md
+
+status:
+  v1.2: shipping (released last week — meal plan PDF export)
+  v1.3: in-progress (recipe import from photos via vision API)
+  ios-app: not-started (post v2.0; native, not React Native)
+
+entry_points:
+  rules: AGENTS.md
+  map: context.qb (this file)
+  decisions: docs/decisions/README.md
+  schema: src/db/schema.ts
+  setup: README.md#local-development
+  agent-onboarding: docs/agent-onboarding.md

@@ -1,0 +1,48 @@
+# context.qb 1.0 — taskbar-cli
+#
+# The agent's boot manifest (play-sheet, for the brand metaphor). Read this
+# first; drill into the referenced URIs only when the play calls for it.
+#
+# Sections: project, stack, tree, decisions, status, entry_points
+# Spec: https://contextqb.com/spec
+
+qb: "1.0"
+
+project:
+  name: taskbar-cli
+  v: 0.4.2
+  summary: |
+    A small command-line tool for tracking work-in-progress across multiple
+    projects from the terminal. Stores state in a single SQLite database
+    under ~/.taskbar/. No daemon, no server, no telemetry.
+
+stack:
+  lang: Rust 1.78
+  build: cargo
+  data: SQLite (rusqlite)
+  test: cargo test + insta snapshots
+
+tree:
+  src/cli: command parser and entry point
+  src/db: SQLite schema, migrations, queries
+  src/domain: pure types and business logic (no I/O)
+  src/render: terminal output (tables, colours, prompts)
+  tests: integration tests against a temp database
+
+decisions:
+  "0001": single-file-sqlite-store (accepted)
+  "0002": no-config-file-by-design (accepted)
+  "0003": colour-output-opt-in-not-default (accepted)
+  index: docs/decisions/README.md
+
+status:
+  v0.5: in-progress (adding `taskbar archive` command)
+  cross-platform-windows-support: planned (post v0.5)
+  homebrew-tap: complete (brew install symbolscape/tap/taskbar)
+
+entry_points:
+  rules: AGENTS.md
+  map: context.qb (this file)
+  decisions: docs/decisions/README.md
+  install: README.md#install
+  contributing: CONTRIBUTING.md
