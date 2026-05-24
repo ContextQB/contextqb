@@ -179,7 +179,7 @@ entry_points:
   map: this file (context.qb)
   decisions: docs/architecture/decisions/README.md
   api: packages/mcp-server/src/tools.ts
-  product: docs/product/canonical-text-course-catalog.md
+  operations: docs/operations/deployment-workflow.md
 ```
 
 ## 7. Authoring discipline

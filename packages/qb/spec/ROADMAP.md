@@ -51,7 +51,7 @@ Status legend: ✅ shipped | 🟡 designed | ⏳ committed | 📋 considered | �
 
 ## Security pillar integration
 
-Planned additions that surface ContextQB's security pillar (see [`docs/product/security-pillar-spec.md`](../../../docs/product/security-pillar-spec.md)) inside the format and tooling. Tracked here because the spine of the pillar is mechanical drift detection, which is qb tooling.
+Planned additions that surface ContextQB's security pillar (see [ADR-0016](../../../docs/architecture/decisions/0016-security-as-methodology-pillar.md)) inside the format and tooling. Tracked here because the spine of the pillar is mechanical drift detection, which is qb tooling.
 
 | Feature                                       | Status | What it does                                                                                                                                                                                                                                                                                                                                                                                    | Priority |
 | --------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
