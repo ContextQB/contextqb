@@ -13,3 +13,7 @@ Each file in `principles/` is a single principle, written as Markdown with struc
 ## Why no logic lives here
 
 Logic in a content package creates an unclear dependency direction: the website and the MCP server would have to know how this package decides to format things. By keeping it strictly Markdown + metadata, every consumer reads the same source of truth and renders it themselves.
+
+## License
+
+The content in this package is licensed under **CC BY-SA 4.0** (Creative Commons Attribution-ShareAlike 4.0 International). You are free to share and adapt this content, but you must give appropriate credit and distribute any derivatives under the same license. See [`LICENSE`](./LICENSE) for full terms.
