@@ -1,0 +1,88 @@
+# context.qb 1.0 — feldspar
+#
+# The agent's boot manifest (play-sheet, for the brand metaphor). Read this
+# first; drill into the referenced URIs only when the play calls for it.
+#
+# Sections: project, stack, tree, routes, decisions, status, entry_points
+# Spec: https://contextqb.com/spec
+
+qb: "1.0"
+
+project:
+  name: feldspar
+  v: 4.1.0
+  summary: |
+    Compliance automation SaaS for mid-market B2B. Customers connect their
+    HRIS, code, and cloud accounts; we run continuous controls and produce
+    audit-ready evidence for SOC 2, ISO 27001, and HIPAA. Multi-tenant,
+    workspace-isolated, deployed in three regions (us-east, eu-west, ap-southeast).
+
+stack:
+  lang: TypeScript 5.7 (strict)
+  mono: pnpm 10 workspace + Turborepo
+  web: Next.js 15 + React 19 + Tailwind v4
+  api: Hono on Cloudflare Workers
+  data: PostgreSQL 16 (Neon) + Drizzle; Redis (Upstash) for queues
+  auth: WorkOS (SSO + SCIM)
+  pay: Stripe Billing
+  search: Typesense (self-hosted)
+  observability: Sentry + Datadog
+
+tree:
+  apps/dashboard:
+    kind: next-ssr
+    deploy: app.feldspar.io
+    purpose: customer-facing compliance dashboard
+  apps/marketing:
+    kind: next-static
+    deploy: feldspar.io
+    purpose: marketing site + docs
+  apps/admin:
+    kind: next-ssr
+    deploy: admin.feldspar.io (employees only)
+    purpose: internal control panel — tenant inspection, billing overrides
+  services/api:
+    kind: hono-workers
+    deploy: api.feldspar.io
+    purpose: public API + webhook receivers
+  services/scanner:
+    kind: workers-cron
+    purpose: continuous control evaluation across customer integrations
+  packages/db: drizzle schema + migrations (single source of truth)
+  packages/controls: control library (one file per control, pure functions)
+  packages/integrations: third-party connectors (AWS, GCP, Okta, GitHub)
+  packages/ui: shared React component library (HeroUI Pro under the hood)
+  packages/agents-md: shared AGENTS.md fragments per package type
+  infra: Pulumi stacks for Cloudflare + Neon + Upstash
+
+routes:
+  feldspar.io: apps/marketing
+  app.feldspar.io: apps/dashboard
+  admin.feldspar.io: apps/admin (employees only)
+  api.feldspar.io: services/api
+
+decisions:
+  "0001": pnpm-turborepo-monorepo (accepted)
+  "0002": cloudflare-workers-not-aws-lambda (accepted)
+  "0003": neon-postgres-with-branching (accepted)
+  "0004": workos-not-clerk (accepted; SCIM was the deciding factor)
+  "0005": pulumi-typescript-not-terraform (accepted)
+  "0011": multi-region-active-active (accepted; replaced 0008 single-region)
+  "0012": control-library-as-pure-functions (accepted)
+  index: docs/decisions/README.md
+
+status:
+  soc2-type-2: "certified (renewal: November)"
+  iso-27001: "in-progress (audit scheduled for August)"
+  v4.2: in-progress (HRIS-driven access reviews)
+  ap-southeast-region: ramping (live for 30% of APAC tenants)
+  customer-zero-migration: complete (all internal use is on production tenants)
+
+entry_points:
+  rules: AGENTS.md
+  map: context.qb (this file)
+  decisions: docs/decisions/README.md
+  control-library: packages/controls/README.md
+  api-reference: docs/api/README.md
+  on-incident: docs/runbooks/incident.md
+  oncall-schedule: https://feldspar.pagerduty.com

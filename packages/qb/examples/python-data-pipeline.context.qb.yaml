@@ -1,0 +1,58 @@
+# context.qb 1.0 — billing-etl
+#
+# The agent's boot manifest (play-sheet, for the brand metaphor). Read this
+# first; drill into the referenced URIs only when the play calls for it.
+#
+# Sections: project, stack, tree, decisions, status, entry_points
+# Spec: https://contextqb.com/spec
+
+qb: "1.0"
+
+project:
+  name: billing-etl
+  v: 2.3.0
+  summary: |
+    Nightly ETL that reconciles Stripe charges, internal subscription state,
+    and customer-facing invoicing. Reads from Stripe API + internal Postgres,
+    writes to a Snowflake warehouse, and emits a daily reconciliation report.
+    Owns no state itself — every run is fully reproducible from inputs.
+
+stack:
+  lang: Python 3.12
+  typing: Pyright (strict) — every module typed end-to-end
+  orchestration: Prefect 3
+  data: pandas + pyarrow; Snowflake via snowflake-connector-python
+  test: pytest + hypothesis
+  deploy: Prefect Cloud (workers on Fly.io)
+  package: uv (formerly pip-tools)
+
+tree:
+  src/extract: source-by-source extractors (stripe, postgres, ledger)
+  src/transform: pure pandas transforms; no I/O
+  src/load: snowflake writers, idempotent and audit-stamped
+  src/flows: prefect flow definitions that compose extract→transform→load
+  src/reports: daily reconciliation report generation (HTML + Slack)
+  tests/unit: pure-function transform tests
+  tests/integration: end-to-end against a Snowflake test schema
+
+decisions:
+  "0001": prefect-not-airflow (accepted)
+  "0002": pyright-strict-required (accepted)
+  "0003": idempotent-loads-on-natural-key (accepted)
+  "0004": no-streaming-batch-only (accepted; revisit at 10x volume)
+  index: docs/decisions/README.md
+
+status:
+  daily-reconciliation: green (last 30 days, no missed runs)
+  v2.4: in-progress (adding multi-currency support)
+  warehouse-migration: planned (Snowflake → BigQuery, Q3)
+  oncall: rotates weekly; runbook at docs/runbook.md
+
+entry_points:
+  rules: AGENTS.md
+  map: context.qb (this file)
+  decisions: docs/decisions/README.md
+  flows: src/flows/__init__.py
+  runbook: docs/runbook.md
+  on-prefect-failure: docs/runbook.md#prefect-failures
+  schema: docs/data-model.md
