@@ -1,0 +1,48 @@
+# Licenses
+
+This repository contains content under two licenses:
+
+## Methodology Content (CC BY-SA 4.0)
+
+The following directories contain content licensed under the Creative Commons
+Attribution-ShareAlike 4.0 International License:
+
+- `content/principles/`
+- `content/playbooks/`
+- `content/audits/`
+- `content/prompts/`
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose,
+  even commercially
+
+Under the following terms:
+- Attribution — You must give appropriate credit to ContextQB, provide a
+  link to the license, and indicate if changes were made.
+- ShareAlike — If you remix, transform, or build upon the material, you
+  must distribute your contributions under the same license.
+
+Full license: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+## Format Specification (CC BY 4.0)
+
+The following directory contains content licensed under the Creative Commons
+Attribution 4.0 International License:
+
+- `format/`
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose,
+  even commercially
+
+Under the following terms:
+- Attribution — You must give appropriate credit to ContextQB, provide a
+  link to the license, and indicate if changes were made.
+
+Full license: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+Copyright (c) 2026 ContextQB contributors
