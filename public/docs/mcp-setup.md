@@ -61,16 +61,16 @@ https://mcp.contextqb.com/sse
 
 Once connected, your agent has access to:
 
-| Tool | Description |
-|------|-------------|
+| Tool              | Description                      |
+| ----------------- | -------------------------------- |
 | `list_principles` | List all architecture principles |
-| `get_principle` | Get a specific principle by ID |
-| `list_playbooks` | List all playbooks |
-| `get_playbook` | Get a specific playbook by ID |
-| `list_audits` | List all audit templates |
-| `get_audit` | Get a specific audit by ID |
-| `list_prompts` | List all prompts |
-| `get_prompt` | Get a specific prompt by ID |
+| `get_principle`   | Get a specific principle by ID   |
+| `list_playbooks`  | List all playbooks               |
+| `get_playbook`    | Get a specific playbook by ID    |
+| `list_audits`     | List all audit templates         |
+| `get_audit`       | Get a specific audit by ID       |
+| `list_prompts`    | List all prompts                 |
+| `get_prompt`      | Get a specific prompt by ID      |
 
 ## Example usage
 
