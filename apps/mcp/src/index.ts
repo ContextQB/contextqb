@@ -13,6 +13,7 @@ import { createMcpHandler } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import contentBundle from "./generated/content-bundle.json";
+import { validateToken, register, revoke, status } from "./membership";
 
 const SERVER_NAME = "contextqb";
 const SERVER_VERSION = "0.1.0";
@@ -546,6 +547,50 @@ export default {
     if (url.pathname === "/mcp" || url.pathname === "/sse" || url.pathname === "/sse/message") {
       const server = createServer();
       return createMcpHandler(server)(request, env, ctx);
+    }
+
+    // Membership endpoints
+    if (url.pathname === "/membership/register") {
+      if (request.method !== "POST") {
+        return new Response(
+          JSON.stringify({ error: "method_not_allowed", message: "POST required" }),
+          {
+            status: 405,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      return register(request, env);
+    }
+
+    if (url.pathname === "/membership/revoke") {
+      if (request.method !== "POST") {
+        return new Response(
+          JSON.stringify({ error: "method_not_allowed", message: "POST required" }),
+          {
+            status: 405,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      const member = await validateToken(request, env);
+      if (member instanceof Response) return member;
+      return revoke(request, env, member);
+    }
+
+    if (url.pathname === "/membership/status") {
+      if (request.method !== "GET") {
+        return new Response(
+          JSON.stringify({ error: "method_not_allowed", message: "GET required" }),
+          {
+            status: 405,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      const member = await validateToken(request, env);
+      if (member instanceof Response) return member;
+      return status(request, env, member);
     }
 
     return new Response("Not found", { status: 404 });
