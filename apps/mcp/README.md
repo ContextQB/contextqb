@@ -152,6 +152,91 @@ Both `cli_events` and `mcp_events` carry an integer `payload_schema_version` col
 
 See the [Tranche A section of punchlist 0018](../../docs/punchlists/0018-data-cooperative.md) for the schema rationale.
 
+## Membership Endpoints
+
+Three HTTP endpoints for the data cooperative membership system (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md), Tranche B).
+
+### POST /membership/register
+
+Register a new member. Idempotent — re-registering the same `anonymous_id` returns the existing token.
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"anonymous_id":"a1b2c3d4e5f6...64-char-hex..."}' \
+  https://mcp.contextqb.com/membership/register
+```
+
+Success (200):
+
+```json
+{ "token": "mt_550e8400-e29b-41d4-a716-446655440000" }
+```
+
+Error (400 — invalid input):
+
+```json
+{
+  "error": "invalid_anonymous_id",
+  "message": "anonymous_id must be a 64-character lowercase hex string"
+}
+```
+
+### POST /membership/revoke
+
+Revoke membership and delete all associated events. Requires valid token.
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer mt_550e8400-e29b-41d4-a716-446655440000" \
+  https://mcp.contextqb.com/membership/revoke
+```
+
+Success (200):
+
+```json
+{ "ok": true, "deleted": { "cli_events": 5, "mcp_events": 12 } }
+```
+
+Error (401 — invalid/missing token):
+
+```json
+{ "error": "invalid_token", "message": "Token not found or revoked" }
+```
+
+### GET /membership/status
+
+Get membership status and event counts. Requires valid token.
+
+```bash
+curl -H "Authorization: Bearer mt_550e8400-e29b-41d4-a716-446655440000" \
+  https://mcp.contextqb.com/membership/status
+```
+
+Success (200):
+
+```json
+{
+  "anonymous_id": "a1b2c3d4e5f6...64-char-hex...",
+  "opted_in_at": 1716681600,
+  "revoked_at": null,
+  "event_counts": { "cli": 5, "mcp": 12 }
+}
+```
+
+Error (401 — missing token):
+
+```json
+{ "error": "missing_token", "message": "Authorization header or ?token= query param required" }
+```
+
+### Token authentication
+
+All token-gated endpoints accept the token via:
+
+1. **Authorization header** (preferred): `Authorization: Bearer mt_...`
+2. **Query parameter** (fallback): `?token=mt_...`
+
 ## Related
 
 - [`packages/methodology/mcp-server`](../../packages/methodology/mcp-server) — Local stdio-based MCP server (same functionality, local execution)
