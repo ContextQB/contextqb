@@ -7,6 +7,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 0
 intro: |
   An AI agent will delete your work at some point. Not maliciously — agents are confident and helpful, which is exactly the combination that overwrites your good code with their new code. Git is the safety net that lets you undo that. This guide shows you how to set it up, what services to use, and how to make committing a reflex.
 tags:

@@ -41,7 +41,7 @@ const contentDirs = {
   playbooks: path.join(repoRoot, "packages", "methodology", "playbooks", "playbooks"),
   audits: path.join(repoRoot, "packages", "methodology", "playbooks", "audits"),
   prompts: path.join(repoRoot, "packages", "methodology", "prompts", "prompts"),
-  guides: path.join(repoRoot, "apps", "web", "content", "guides"),
+  guides: path.join(repoRoot, "packages", "methodology", "guides", "guides"),
   briefings: path.join(repoRoot, "apps", "web", "content", "briefings"),
 };
 

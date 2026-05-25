@@ -16,6 +16,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 3
 related_principles:
   - anti-spaghetti
   - state-ownership

@@ -9,6 +9,7 @@ audience:
   - operator
   - developer
   - agent
+journey_stage: 5
 use_case: |
   When reviewing code (yours or agent-generated) and you want a security-focused perspective that goes beyond "does it work?" to "how could this be abused?"
 variables:

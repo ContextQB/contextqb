@@ -9,6 +9,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 1
 tags:
   - context
   - onboarding

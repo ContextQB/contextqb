@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
   - agent
+journey_stage: 5
 objective: |
   For each AI integration, enumerate the trust surface and identify realistic abuse paths. Produce findings the builder can act on without deep ML expertise.
 scope: |

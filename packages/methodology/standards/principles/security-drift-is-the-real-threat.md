@@ -10,6 +10,7 @@ audience:
   - operator
   - developer
   - agent
+journey_stage: 7
 tags:
   - security
   - drift

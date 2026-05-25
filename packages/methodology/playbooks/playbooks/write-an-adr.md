@@ -16,6 +16,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 2
 related_principles:
   - documentation-as-architecture
   - maintainability

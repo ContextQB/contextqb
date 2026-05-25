@@ -7,6 +7,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 4
 objective: |
   Produce a complete state map for the system, with clear owners and a list of state problems to fix.
 scope: |

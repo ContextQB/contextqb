@@ -16,6 +16,7 @@ audience:
   - novice-builder
   - founder
   - agent
+journey_stage: 3
 related_principles:
   - separation-of-concerns
   - state-ownership

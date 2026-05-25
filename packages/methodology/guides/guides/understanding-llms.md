@@ -7,6 +7,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 0
 intro: |
   LLMs are not interchangeable. They behave differently, cost differently, and feel different in your hands. This is the rough map. The deeper one — model-by-model strengths, prompt techniques specific to each, when to escalate from a cheap model to an expensive one — comes later as the methodology matures.
 tags:

@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
   - agent
+journey_stage: 7
 objective: |
   Verify minimum security posture before public launch. This is not a comprehensive audit — it's a launch gate that ensures critical bases are covered.
 scope: |

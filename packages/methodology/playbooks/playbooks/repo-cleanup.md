@@ -17,6 +17,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 6
 related_principles:
   - anti-spaghetti
   - modularity

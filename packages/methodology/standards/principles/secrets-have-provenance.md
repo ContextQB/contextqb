@@ -10,6 +10,7 @@ audience:
   - operator
   - developer
   - agent
+journey_stage: 5
 tags:
   - security
   - secrets

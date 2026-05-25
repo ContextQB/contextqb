@@ -16,6 +16,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 1
 related_principles:
   - documentation-as-architecture
   - separation-of-concerns

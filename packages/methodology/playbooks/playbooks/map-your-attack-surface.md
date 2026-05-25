@@ -15,6 +15,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 5
 related_principles:
   - untrusted-by-default
   - failure-modes

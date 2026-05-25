@@ -7,6 +7,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 6
 use_case: |
   When you want a focused diagnosis of structural decay — hidden coupling, ambiguous state ownership, ad hoc orchestration, brittle lifecycles — without a full architecture review.
 variables:

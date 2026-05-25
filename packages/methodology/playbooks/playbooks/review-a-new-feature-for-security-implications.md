@@ -16,6 +16,7 @@ audience:
   - founder
   - operator
   - developer
+journey_stage: 5
 related_principles:
   - untrusted-by-default
   - trust-boundaries-are-architecture

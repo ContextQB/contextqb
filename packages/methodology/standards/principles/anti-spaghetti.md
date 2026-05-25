@@ -8,6 +8,7 @@ audience:
   - novice-builder
   - agent
   - developer
+journey_stage: 6
 tags:
   - diagnosis
   - debt

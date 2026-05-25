@@ -7,6 +7,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 4
 objective: |
   Produce a system-level assessment of the backend, focused on data integrity, separation of concerns, and operational readiness.
 scope: |

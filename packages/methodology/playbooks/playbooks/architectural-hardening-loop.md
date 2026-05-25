@@ -18,6 +18,7 @@ audience:
   - operator
   - developer
   - agent
+journey_stage: 4
 related_principles:
   - anti-spaghetti
   - documentation-as-architecture
