@@ -8,6 +8,7 @@ audience:
   - novice-builder
   - agent
   - developer
+journey_stage: 1
 tags:
   - naming
   - clarity
@@ -23,6 +24,8 @@ agent_instructions:
 related:
   - modularity
   - separation-of-concerns
+  - documentation-file-naming
+  - documentation-as-architecture
 ---
 
 # Naming Conventions
@@ -65,3 +68,7 @@ If a module is named `XManager`, ask: what does it manage that an `X` couldn't m
 ## How to ask an agent to enforce this
 
 > Review every file and exported function name in this feature. For each, ask: does the name describe a clear domain responsibility? If not, propose a better name and the reasoning behind it.
+
+## See also
+
+The same rule applies to documentation filenames, with one small list of conventional exceptions. See [`documentation-file-naming`](contextqb://principles/documentation-file-naming) for the documentation-specific corollary.

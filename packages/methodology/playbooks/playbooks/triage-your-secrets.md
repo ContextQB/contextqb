@@ -16,6 +16,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 5
 related_principles:
   - secrets-have-provenance
   - untrusted-by-default

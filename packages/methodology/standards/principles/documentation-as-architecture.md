@@ -9,6 +9,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 1
 tags:
   - documentation
   - adrs
@@ -30,6 +31,8 @@ related:
   - separation-of-concerns
   - maintainability
   - naming-conventions
+  - documentation-for-agent-alignment
+  - documentation-file-naming
 ---
 
 # Documentation as Architecture
@@ -112,3 +115,10 @@ The cure is not more prompts. The cure is documentation that the prompts can poi
 > 3. Per-area architecture overviews.
 >
 > For each, evaluate whether the content is specific to this project or generic. Flag generic content. Flag any place where current code contradicts documentation. Propose a prioritised list of documentation work, smallest viable items first.
+
+## Companion principles
+
+This principle establishes that documentation is load-bearing. Two companion principles handle the related questions:
+
+- [`documentation-for-agent-alignment`](contextqb://principles/documentation-for-agent-alignment) answers _who the documentation is for_ — your current agent and current self, not a future team.
+- [`documentation-file-naming`](contextqb://principles/documentation-file-naming) answers _what to call the files_ — describing responsibility rather than category, with a small list of conventional exceptions.

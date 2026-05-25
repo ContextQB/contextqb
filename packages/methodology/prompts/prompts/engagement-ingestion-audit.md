@@ -7,6 +7,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 5
 use_case: |
   When a product ingests engagement data (likes, replies, views, follows) from an external source, stores it for analytics, and also shows it live to the user — and the relationship between those layers is unclear.
 variables:

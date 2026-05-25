@@ -9,6 +9,7 @@ audience:
   - operator
   - developer
   - agent
+journey_stage: 5
 use_case: |
   When reviewing code that touches authentication, authorization, secrets, user input handling, data access, or any security-relevant area. Use before merging PRs that modify these critical paths.
 variables:

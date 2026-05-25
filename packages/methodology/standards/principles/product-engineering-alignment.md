@@ -9,6 +9,7 @@ audience:
   - agent
   - developer
   - founder
+journey_stage: 2
 tags:
   - domain-modeling
   - naming

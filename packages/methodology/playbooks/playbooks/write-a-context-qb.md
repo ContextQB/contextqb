@@ -17,6 +17,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 1
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture

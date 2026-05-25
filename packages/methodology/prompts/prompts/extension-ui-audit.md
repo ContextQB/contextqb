@@ -7,6 +7,7 @@ audience:
   - founder
   - developer
   - agent
+journey_stage: 4
 use_case: |
   When a browser extension has grown organically across menus, sidebars, content scripts, and settings — and you need a structural assessment, not a bug list.
 variables:

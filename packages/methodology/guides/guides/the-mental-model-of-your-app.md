@@ -7,6 +7,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 0
 intro: |
   Every app begins as a feeling: "I wish there was a thing that did this." This guide is for that moment — before the code, before the screens, before you know whether it's a website or an app or a script. You start with a mental model, and ContextQB helps you turn that model into a durable piece of software.
 tags:

@@ -15,6 +15,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 5
 related_principles:
   - ai-output-is-untrusted-code
   - least-privilege-for-agents

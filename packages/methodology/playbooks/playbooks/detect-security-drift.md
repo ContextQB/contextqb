@@ -15,6 +15,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 7
 related_principles:
   - security-drift-is-the-real-threat
   - documentation-as-architecture

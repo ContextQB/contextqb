@@ -16,6 +16,7 @@ audience:
   - developer
   - founder
   - agent
+journey_stage: 4
 related_principles:
   - separation-of-concerns
   - modularity

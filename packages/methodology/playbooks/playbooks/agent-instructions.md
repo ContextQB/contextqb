@@ -17,6 +17,7 @@ audience:
   - founder
   - operator
   - agent
+journey_stage: 2
 related_principles:
   - orchestration
   - maintainability

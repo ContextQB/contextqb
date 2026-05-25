@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
   - agent
+journey_stage: 5
 objective: |
   Assess the application's authentication and authorization posture. Identify gaps in brute-force protection, session management, role enforcement, and access control.
 scope: |

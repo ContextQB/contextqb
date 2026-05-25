@@ -16,6 +16,7 @@ audience:
   - novice-builder
   - founder
   - operator
+journey_stage: 9
 related_principles:
   - secrets-have-provenance
   - security-drift-is-the-real-threat
