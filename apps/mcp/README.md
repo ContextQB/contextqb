@@ -98,11 +98,12 @@ Returns:
   "version": "0.1.0",
   "status": "ok",
   "mcp": "/mcp",
+  "d1": "ok",
   "content": {
-    "principles": 14,
-    "playbooks": 13,
-    "audits": 7,
-    "prompts": 5
+    "principles": 21,
+    "playbooks": 21,
+    "audits": 14,
+    "prompts": 8
   }
 }
 ```
@@ -122,6 +123,34 @@ pnpm deploy
 This is a stateless MCP server using Cloudflare's `createMcpHandler` with the streamable HTTP transport. Content is bundled at build time from the methodology packages (`packages/methodology/standards`, `packages/methodology/playbooks`, `packages/methodology/prompts`) into a JSON file that gets embedded in the Worker.
 
 The server requires no authentication (public read-only access to methodology content).
+
+## D1 Database
+
+The Worker has a D1 database binding `DB` for telemetry storage (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md)).
+
+### Binding
+
+- **Binding name**: `DB`
+- **Database name**: `contextqb-telemetry`
+- **Tables**: `members`, `cli_events`, `mcp_events`
+
+### Migrations
+
+We use `wrangler d1 migrations`. Migrations live at `apps/mcp/migrations/NNNN_<slug>.sql`.
+
+```bash
+# Apply migrations to remote D1
+pnpm exec wrangler d1 migrations apply contextqb-telemetry --remote
+
+# Apply migrations to local dev D1
+pnpm exec wrangler d1 migrations apply contextqb-telemetry --local
+```
+
+### Schema versioning
+
+Both `cli_events` and `mcp_events` carry an integer `payload_schema_version` column. Bump only on backwards-incompatible payload-shape changes; the aggregation pipeline filters or coerces per version.
+
+See the [Tranche A section of punchlist 0018](../../docs/punchlists/0018-data-cooperative.md) for the schema rationale.
 
 ## Related
 

@@ -18,6 +18,10 @@ const SERVER_NAME = "contextqb";
 const SERVER_VERSION = "0.1.0";
 const URI_SCHEME = "contextqb";
 
+interface Env {
+  DB: D1Database;
+}
+
 type ContentKind = "principles" | "playbooks" | "audits" | "prompts" | "guides" | "briefings";
 
 interface BundledDocument {
@@ -503,17 +507,26 @@ function createServer(): McpServer {
 }
 
 export default {
-  async fetch(request: Request, env: unknown, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     // Health check
     if (url.pathname === "/" || url.pathname === "/health") {
+      let d1Status: "ok" | "missing" = "missing";
+      try {
+        const probe = await env.DB.prepare("SELECT 1 AS ok").first<{ ok: number }>();
+        d1Status = probe?.ok === 1 ? "ok" : "missing";
+      } catch {
+        d1Status = "missing";
+      }
+
       return new Response(
         JSON.stringify({
           name: SERVER_NAME,
           version: SERVER_VERSION,
           status: "ok",
           mcp: "/mcp",
+          d1: d1Status,
           content: {
             principles: contentBundle.principles.length,
             playbooks: contentBundle.playbooks.length,
@@ -537,4 +550,4 @@ export default {
 
     return new Response("Not found", { status: 404 });
   },
-} satisfies ExportedHandler;
+} satisfies ExportedHandler<Env>;

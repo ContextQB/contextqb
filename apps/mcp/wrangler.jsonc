@@ -9,4 +9,13 @@
   // Custom domain: mcp.contextqb.com
   // Requires DNS record pointing to Workers (done via Cloudflare dashboard or API)
   "routes": [{ "pattern": "mcp.contextqb.com", "custom_domain": true }],
+
+  // D1 database for telemetry (ADR-0018, Tranche A)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "contextqb-telemetry",
+      "database_id": "94d23d6e-e6bb-4a3b-8a63-10f12caab945",
+    },
+  ],
 }
