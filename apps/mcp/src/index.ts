@@ -14,6 +14,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import contentBundle from "./generated/content-bundle.json";
 import { validateToken, register, revoke, status } from "./membership";
+import { handleCliTelemetry, recordMcpEvent } from "./telemetry";
 
 const SERVER_NAME = "contextqb";
 const SERVER_VERSION = "0.1.0";
@@ -543,10 +544,54 @@ export default {
       );
     }
 
-    // MCP endpoint
+    // MCP endpoint with telemetry middleware
     if (url.pathname === "/mcp" || url.pathname === "/sse" || url.pathname === "/sse/message") {
+      const startTime = Date.now();
       const server = createServer();
-      return createMcpHandler(server)(request, env, ctx);
+      const mcpHandler = createMcpHandler(server);
+
+      // Clone request to read body for telemetry (original is consumed by handler)
+      let toolName: string | null = null;
+      if (request.method === "POST") {
+        try {
+          const clonedRequest = request.clone();
+          const body = (await clonedRequest.json()) as {
+            method?: string;
+            params?: { name?: string };
+          };
+          if (body.method === "tools/call" && body.params?.name) {
+            toolName = body.params.name;
+          }
+        } catch {
+          // Body parsing failed; skip telemetry for this request
+        }
+      }
+
+      // Call the actual MCP handler
+      const response = await mcpHandler(request, env, ctx);
+
+      // If this was a tools/call with a valid token, log telemetry asynchronously
+      if (toolName) {
+        const member = await validateToken(request, env);
+        if (!(member instanceof Response)) {
+          const responseTimeMs = Date.now() - startTime;
+          const countryCode = (request.cf?.country as string) ?? null;
+          const clientHint = request.headers.get("X-MCP-Client");
+          // Fire and forget - don't block the response
+          ctx.waitUntil(
+            recordMcpEvent(
+              env.DB,
+              member.anonymous_id,
+              toolName,
+              responseTimeMs,
+              countryCode,
+              clientHint,
+            ),
+          );
+        }
+      }
+
+      return response;
     }
 
     // Membership endpoints
@@ -591,6 +636,22 @@ export default {
       const member = await validateToken(request, env);
       if (member instanceof Response) return member;
       return status(request, env, member);
+    }
+
+    // Telemetry endpoint
+    if (url.pathname === "/telemetry/cli") {
+      if (request.method !== "POST") {
+        return new Response(
+          JSON.stringify({ error: "method_not_allowed", message: "POST required" }),
+          {
+            status: 405,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      const member = await validateToken(request, env);
+      if (member instanceof Response) return member;
+      return handleCliTelemetry(request, env, member);
     }
 
     return new Response("Not found", { status: 404 });
