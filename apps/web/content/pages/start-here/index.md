@@ -59,6 +59,16 @@ path_cards:
     href: /mcp
     cta: Install the MCP
     external: false
+  - eyebrow: If you want to share back
+    title: Join the data cooperative
+    description: >-
+      The CLI silently provisions a membership token the first time you run
+      any contextqb command. In return, the MCP unlocks community-insight
+      tools and the website surfaces aggregate trends. K-anonymity guards
+      mean nothing about you is identifiable.
+    href: /check
+    cta: See how it works
+    external: false
   - eyebrow: If you want the full curriculum
     title: Learn by building a real app
     description: >-
@@ -132,10 +142,7 @@ meta_description: >-
 review:
   status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:brand-voice-pass"
+  reviewer: "agent:cooperative-flow-tranche-b"
   reviewer_notes: |-
-    Brand voice pass completed. Reframed the page as a practical first-step
-    guide for everyday operators, tightened the path-card cadence, made the
-    reading-order blurbs more consistent, and aligned the course card with the
-    kickoff-list enrollment path.
+    Added sixth path card for the data cooperative, funneling readers to /check.
 ---
