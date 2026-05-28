@@ -802,7 +802,7 @@ export default {
       if (request.method === "OPTIONS") {
         return new Response(null, {
           status: 204,
-          headers: corsHeaders(),
+          headers: corsHeaders(request),
         });
       }
       if (request.method !== "GET") {
@@ -810,18 +810,18 @@ export default {
           JSON.stringify({ error: "method_not_allowed", message: "GET or OPTIONS required" }),
           {
             status: 405,
-            headers: { "Content-Type": "application/json", ...corsHeaders() },
+            headers: { "Content-Type": "application/json", ...corsHeaders(request) },
           },
         );
       }
-      const limited = await enforceRateLimit(env.INSIGHTS_LIMIT, request, corsHeaders());
+      const limited = await enforceRateLimit(env.INSIGHTS_LIMIT, request, corsHeaders(request));
       if (limited) return limited;
       const member = await validateToken(request, env);
       if (member instanceof Response) {
         // Add CORS headers to 401 response so browser can read the error
         return new Response(member.body, {
           status: member.status,
-          headers: { ...Object.fromEntries(member.headers.entries()), ...corsHeaders() },
+          headers: { ...Object.fromEntries(member.headers.entries()), ...corsHeaders(request) },
         });
       }
       return handleInsights(request, env, member);
