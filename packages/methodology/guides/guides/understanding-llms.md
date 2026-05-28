@@ -1,7 +1,10 @@
 ---
 id: understanding-llms
 title: Understanding LLMs
-summary: A short field guide to the models you'll work with. Each LLM has a personality you get a feel for over time, like a coworker. This stub covers the families, the pricing shape, and the heuristics — fuller treatment to come.
+summary: >-
+  A field guide to the models you'll work with. Each LLM has a working style you
+  learn over time: strengths, costs, recurring quirks, and failure modes you can
+  plan around.
 version: 0.1.0
 audience:
   - novice-builder
@@ -9,12 +12,11 @@ audience:
   - operator
 journey_stage: 0
 intro: |
-  LLMs are not interchangeable. They behave differently, cost differently, and feel different in your hands. This is the rough map. The deeper one — model-by-model strengths, prompt techniques specific to each, when to escalate from a cheap model to an expensive one — comes later as the methodology matures.
+  LLMs are not interchangeable. They behave differently, cost differently, and feel different in your hands. This guide gives you the map you need to choose a starting model, notice when it is the wrong fit, and switch with purpose instead of guesswork.
 tags:
   - llm
   - ai-models
   - getting-started
-  - stub
 related:
   - choosing-your-ide-and-llm
   - ai-output-is-untrusted-code
@@ -26,9 +28,7 @@ next_steps:
 
 # Understanding LLMs
 
-> This guide is a **stub**. It captures the working mental model and enough to get you started. It will grow into a fuller treatment as the methodology matures.
-
-**Plain language:** You'll work with multiple AI models over the course of building anything serious. They're not the same. Each one has a personality you start to recognise — strengths, weaknesses, recurring quirks — the way you'd recognise a coworker after a few weeks. This guide is the rough map: who makes which models, what they cost, and what to listen for as you get a feel for each.
+**Plain language:** You'll work with multiple AI models over the course of building anything serious. They're not the same. Each one has a working style you start to recognise — strengths, weaknesses, recurring quirks — the way you'd recognise a collaborator after a few weeks. This guide gives you enough map to choose one, budget for it, and learn when to switch.
 
 ## Why this matters
 
@@ -102,17 +102,22 @@ These are starting points, not rules. You'll override them based on your own fee
 | Generating boilerplate, scaffolding, type stubs          | A mid-tier or small model. This is what they're cheap for.                                                                                                                                    |
 | You don't know which to use                              | Whichever your IDE has set as default. Try the task. Switch if it feels wrong.                                                                                                                |
 
-## A note on what's coming
+## How to use this guide
 
-This guide will expand into:
+Do not try to become a model expert before you build. Pick one good default,
+use it on real work, and keep a short note about what you learn. The useful
+question is not "which model is best?" The useful question is "which model is
+good enough for this task, at this cost, with this failure mode?"
 
-- Per-family deep-dives with concrete examples of each model's strengths and known failure modes.
-- The prompt-engineering differences between families (Claude responds to one shape of instruction; GPT to another; the differences are real but often overstated).
-- How to think about combining models in a single workflow — cheap model for a first pass, expensive model for verification, etc.
-- A treatment of local LLMs and when they're actually viable.
-- Notes on privacy posture per provider and the data-handling commitments each one makes.
+Start simple:
 
-For now, the goal of this stub is to take you from "I don't know what to pick" to "I have a working starting point and I know what to pay attention to."
+1. Use your IDE's default model for a week of normal work.
+2. When a task feels stuck, switch once to a stronger reasoning model and compare the result.
+3. Use a cheaper model for formatting, renames, and routine edits.
+4. Use a stronger model for architecture, security, data models, and reviews.
+5. Write down the pattern you observe so future-you does not have to relearn it.
+
+That is enough. Your model strategy should grow from real feedback, not from reading every benchmark.
 
 ## See also
 

@@ -6,15 +6,17 @@ subhead: >-
   tool. Your agent gets access to every guide, briefing, principle, playbook,
   audit, and prompt on this site, addressable by URI.
 meta_title: MCP
-meta_description: ""
+meta_description: >-
+  Install the ContextQB MCP so your agent can pull guides, principles,
+  playbooks, audits, and prompts into the work by URI.
 review:
   status: final
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Reframed the page around what the MCP lets an
-    agent do, tightened install headings, and removed roadmap material that was
-    not needed for a public setup page.
+    Primetime pass completed. Reframed the page around what the MCP lets an
+    agent do, tightened install headings, removed roadmap material, and added
+    social/search metadata.
 ---
 
 ## What it exposes

@@ -6,13 +6,14 @@ subhead: >-
   should expect from an agent. Use them as benchmarks. If your agent produces
   something much thinner than this, push back.
 meta_title: Examples
-meta_description: ""
+meta_description: >-
+  Worked examples that show what specific, useful agent output looks like for
+  audits, plans, and reviews.
 review:
   status: final
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed for page framing. The remaining opportunity is
-    in generated example-card summaries, which are handled in the hardcoded-copy
-    pass rather than this Markdown file.
+    Primetime pass completed. Page framing and generated example-card summaries
+    now support the benchmark message, with social/search metadata added.
 ---

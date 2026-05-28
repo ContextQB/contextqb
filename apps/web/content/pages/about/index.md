@@ -9,8 +9,7 @@ review:
   reviewer_notes: >-
     Brand voice pass completed. Reframed ContextQB as a practical field guide
     and school for capable operators, reduced architecture-layer jargon in the
-    opening, and removed the deferred repo-analysis bullet from the public
-    ecosystem list.
+    opening, and kept the ecosystem list focused on current product surfaces.
 ---
 
 ## What ContextQB is
@@ -36,7 +35,7 @@ ContextQB teaches the missing layer.
 
 - **contextqb.com** — this site. Principles, playbooks, audits, and prompts you can read, share, and copy.
 - **The ContextQB MCP** — the same resources, served over the Model Context Protocol so any agent can pull them in. See [MCP](/mcp).
-- **The standards library** — the source-of-truth Markdown for both surfaces, structured so it can be reused inside agents, courses, and future tools.
+- **The standards library** — the source-of-truth Markdown for the site, the MCP, and the course material.
 
 ## The north star
 

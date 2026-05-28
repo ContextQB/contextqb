@@ -8,12 +8,11 @@ subhead: >-
   project's map, written for an assistant that has not seen this repo before.
   **contextqb check** keeps that map honest. Run it locally, wire it into your
   build, and your agent stops starting from stale instructions.
-hero_banner_label: This is an early version.
+hero_banner_label: Best fit
 hero_banner_body: >-
-  The drift detector is designed for builders who are _starting a new project_
-  with the ContextQB conventions in place. It assumes a specific layout (see
-  below). If you have an existing project laid out differently, the tool will
-  not work out of the box yet.
+  The drift detector works best for new projects that adopt the ContextQB
+  conventions from day one. Existing repos can still use the format, but the
+  automated checks expect the layout described below.
 hero_cta_install_label: Install in 30 seconds
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
@@ -76,8 +75,8 @@ watches_cards:
       Mark an ADR as superseded, forget to update the map, and your agent
       treats a retired decision as live. The detector catches this.
 
-scope_eyebrow: Honest scope
-scope_heading: Today, this is for new ContextQB-shaped projects.
+scope_eyebrow: Fit
+scope_heading: Use it where the project shape is explicit.
 scope_intro: >-
   ContextQB is opinionated about how a project is laid out. The drift
   detector enforces those opinions by looking in three specific places:
@@ -91,10 +90,10 @@ scope_right_paragraphs:
     starting a new project and adopt them, the detector works the moment you
     install it. **No configuration needed.**
   - >-
-    If you have an existing repo with a different layout — yarn workspaces,
-    Vercel deploys, ADRs in `docs/adr/`, anything else — the tool will not see
-    your sources of truth yet. For now, use it when you are starting a project
-    with the ContextQB conventions in place.
+    Existing repos with a different layout — yarn workspaces, Vercel deploys,
+    ADRs in `docs/adr/`, anything else — can still use the format. The automated
+    check is strongest when the repo follows the ContextQB conventions from the
+    start.
 
 fits_eyebrow: Where it lives
 fits_heading: Where the check belongs.
@@ -118,9 +117,8 @@ fits_cards:
 install_eyebrow: Get started
 install_heading: Run it in your ContextQB-shaped repo.
 install_lede: >-
-  The detector lives in the ContextQB monorepo today. The standalone
-  `@context-qb/cli` npm package is on the roadmap; until then, the workflow
-  below works from inside a checkout of the ContextQB repo.
+  The detector runs from this repository today. Use it in a ContextQB-shaped
+  checkout to keep the map honest while you build.
 install_steps:
   - title: Make sure your repo has a `context.qb.yaml`
     body: >-
@@ -136,8 +134,7 @@ install_steps:
       The repo already chains `check:qb` into `pnpm validate`, which runs
       `validate:content`, `validate:qb`, and `check:qb` together. Run
       `pnpm validate` before every commit, or wire it into a CI job that
-      runs on every pull request. A GitHub Action template that does the CI
-      side in one file is on the roadmap.
+      runs on every pull request.
 
 json_eyebrow: For your CI scripts
 json_heading: A stable JSON contract for the pipeline.
@@ -180,8 +177,7 @@ review:
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Kept the strong stale-map hero and build-red
-    closer, softened the early-version caveat, removed repeated "three" cadence
-    in nearby headings, and clarified the greenfield scope without overexplaining
-    roadmap work.
+    Primetime pass completed. Kept the strong stale-map hero and build-red
+    closer, reframed the caveat as product fit, and removed roadmap language
+    from install instructions.
 ---

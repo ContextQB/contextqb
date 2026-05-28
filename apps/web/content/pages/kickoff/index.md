@@ -1,21 +1,22 @@
 ---
-eyebrow: Training camp
-headline: ContextQB is in training camp.
-subhead: ""
+eyebrow: Kickoff list
+headline: Get the kickoff email.
+subhead: >-
+  One note when the first ContextQB course seats open. No drip campaign, no
+  upsells, no spam.
 meta_title: Kickoff
-meta_description: Sign up to get one email when ContextQB kicks off. No drip campaigns, no upsells, no spam.
+meta_description: Sign up for one email when the first ContextQB course seats open. No drip campaigns, no upsells, no spam.
 review:
   status: final
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Copy remains short, on-brand, and clear; the
-    football metaphor is intentionally preserved as part of the field-coach
-    voice.
+    Primetime pass completed. Replaced training-camp language with a direct
+    kickoff-list frame and added a finished subhead.
 
     Note: the page renders an interactive KickoffForm component below the prose, which is unchanged. Only the framing copy was extracted.
 ---
 
-The playbook is real, but we're still drilling the routes. The principles are written, the audits are tested, the MCP is shipping — and we're refining the system in public before the season starts.
+The principles are written, the audits are tested, and the MCP is shipping. The next step is the first course.
 
-Sign up to get **one email** when we kick off. No drip campaigns, no upsells, no spam. Just a single signal that the season has started.
+Sign up to get **one email** when course seats open. No drip campaigns, no upsells, no spam. Just a single signal when it is time to start.

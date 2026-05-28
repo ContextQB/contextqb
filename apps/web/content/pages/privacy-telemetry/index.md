@@ -1,7 +1,9 @@
 ---
 eyebrow: Privacy
 headline: Telemetry & Privacy
-subhead: ""
+subhead: >-
+  We collect limited aggregate data to improve the methodology. We do not read
+  your code, store your project files, or sell personal data.
 meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 review:
@@ -9,9 +11,9 @@ review:
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Replaced internal phase labels with
-    reader-facing usage contexts, made "what we never record" language
-    consistent, and kept the opt-out and retention details intact.
+    Primetime pass completed. Replaced internal phase labels with reader-facing
+    usage contexts, added a reassuring subhead, made "what we never record"
+    language consistent, and kept opt-out and retention details intact.
 ---
 
 ContextQB collects limited, privacy-preserving telemetry so we can understand which parts of the methodology are useful and where builders get stuck. This page explains what we collect, what we never collect, and how you can opt out.

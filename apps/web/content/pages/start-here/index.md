@@ -63,8 +63,8 @@ path_cards:
     title: Learn by building a real app
     description: >-
       Self-paced courses that teach the methodology by building a real
-      application end to end with an AI coding agent. The first course is in
-      production now.
+      application end to end with an AI coding agent. Join the kickoff list for
+      first access to the opening course.
     href: /courses
     cta: See the courses
     external: false
@@ -135,6 +135,7 @@ review:
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
     Brand voice pass completed. Reframed the page as a practical first-step
-    guide for everyday operators, tightened the path-card cadence, and made the
-    reading-order blurbs more consistent and less inside-baseball.
+    guide for everyday operators, tightened the path-card cadence, made the
+    reading-order blurbs more consistent, and aligned the course card with the
+    kickoff-list enrollment path.
 ---

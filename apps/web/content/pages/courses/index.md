@@ -8,8 +8,8 @@ subhead: >-
   software builders who want to ship — not just watch tutorials.
 
 status_label: "Status:"
-status_body: Course platform is in build. First course seats open at launch.
-status_link_label: Sign up for kickoff →
+status_body: First seats open through the kickoff list.
+status_link_label: Join the kickoff list →
 status_link_href: /kickoff
 
 pitch_heading: Tutorials show you moves. Courses build your judgment.
@@ -39,14 +39,14 @@ course_stats:
     body: Free core curriculum with paid advanced modules when you want more depth.
   - label: Outcome
     body: A deployed app and a repeatable way to guide your next agent build.
-course_postscript_before: "Course content is in production. Read the"
+course_postscript_before: "Start with the"
 course_postscript_link_label: mental-model guide
 course_postscript_link_href: /guides/the-mental-model-of-your-app
 course_postscript_after: >-
-  and the rest of the methodology while you wait — the course assumes you've
-  learned the basics.
+  and the rest of the methodology before you enroll — the course builds on those
+  basics.
 
-wait_heading: While the platform is in build
+wait_heading: Get ready before the first cohort
 wait_cards:
   - eyebrow: Read the methodology
     title: Start with the guides
@@ -74,11 +74,11 @@ wait_cards:
     external: true
 
 kickoff_eyebrow: Kickoff
-kickoff_heading: One email. The moment seats open.
+kickoff_heading: Join the list for the first seats.
 kickoff_body: >-
-  Sign up to hear when the first course is live. No drip campaign, no upsells.
-  Just one signal when the first seats open.
-kickoff_cta_label: Sign up for kickoff →
+  Sign up to hear when enrollment opens. No drip campaign, no upsells. Just one
+  signal when the first seats are ready.
+kickoff_cta_label: Join the kickoff list →
 kickoff_cta_href: /kickoff
 
 meta_title: Courses
@@ -91,8 +91,7 @@ review:
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Tightened the courses promise around judgment
-    built through real work, simplified the first-course title, removed
-    insider phrasing like "web track first" and "upsell", and made the wait-list
-    copy more direct.
+    Primetime pass completed. Reframed enrollment status around the kickoff list
+    and made the interim cards read as preparation steps rather than
+    holding-pattern copy.
 ---

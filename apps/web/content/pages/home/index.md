@@ -78,16 +78,18 @@ mcp_cta_body: >-
 mcp_cta_label: MCP setup →
 mcp_cta_href: /mcp
 
-meta_title: ""
-meta_description: ""
+meta_title: ContextQB
+meta_description: >-
+  Learn to build with AI agents by giving them better context, clearer briefs,
+  and practical checks that keep your project coherent.
 
 review:
   status: final
   last_reviewed: "2026-05-27"
   reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Brand voice pass completed. Kept the core hero line and reframed the page
+    Primetime pass completed. Kept the core hero line and reframed the page
     around everyday builders learning to brief, steer, inspect, and ship with AI
-    agents. Reduced architecture-first jargon in the hero/problem sections and
-    made the audience cards less repetitive.
+    agents. Added social/search metadata and kept architecture-first jargon out
+    of the entry path.
 ---
