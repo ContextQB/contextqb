@@ -6,7 +6,9 @@ subhead: >-
   tool. Your agent gets access to every guide, briefing, principle, playbook,
   audit, and prompt on this site, addressable by URI.
 meta_title: MCP
-meta_description: ""
+meta_description: >-
+  Install the ContextQB MCP so your agent can pull guides, principles,
+  playbooks, audits, and prompts into the work by URI.
 
 ---
 

@@ -63,8 +63,8 @@ path_cards:
     title: Learn by building a real app
     description: >-
       Self-paced courses that teach the methodology by building a real
-      application end to end with an AI coding agent. The first course is in
-      production now.
+      application end to end with an AI coding agent. Join the kickoff list for
+      first access to the opening course.
     href: /courses
     cta: See the courses
     external: false

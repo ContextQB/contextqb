@@ -73,7 +73,7 @@ A few criteria worth applying when you choose:
 
 ## The LLM landscape, briefly
 
-The deeper version of this section is in the [Understanding LLMs](contextqb://guides/understanding-llms) stub guide. The short version:
+The deeper version of this section is in [Understanding LLMs](contextqb://guides/understanding-llms). The short version:
 
 | Family                                           | Who makes it        | Where it shines                                                                                                      |
 | ------------------------------------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------- |

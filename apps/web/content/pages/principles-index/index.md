@@ -5,6 +5,8 @@ subhead: >-
   Each principle is a single idea you can hold in your head, with an explicit
   checklist you can apply — and that you can hand to an agent.
 meta_title: Principles
-meta_description: ""
+meta_description: >-
+  ContextQB principles give you practical architecture checks you can apply
+  yourself or hand to an AI agent.
 
 ---

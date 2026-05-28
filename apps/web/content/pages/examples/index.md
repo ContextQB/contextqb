@@ -6,6 +6,8 @@ subhead: >-
   should expect from an agent. Use them as benchmarks. If your agent produces
   something much thinner than this, push back.
 meta_title: Examples
-meta_description: ""
+meta_description: >-
+  Worked examples that show what specific, useful agent output looks like for
+  audits, plans, and reviews.
 
 ---

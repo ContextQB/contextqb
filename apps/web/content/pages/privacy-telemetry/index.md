@@ -1,7 +1,9 @@
 ---
 eyebrow: Privacy
 headline: Telemetry & Privacy
-subhead: ""
+subhead: >-
+  We collect limited aggregate data to improve the methodology. We do not read
+  your code, store your project files, or sell personal data.
 meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 

@@ -6,6 +6,8 @@ subhead: >-
   playbooks. They give you a way to think about a problem before you start
   solving it. Start with the guide that matches the decision in front of you.
 meta_title: Guides
-meta_description: ""
+meta_description: >-
+  ContextQB guides teach the mental models and setup habits that help you brief,
+  steer, and review AI agents.
 
 ---

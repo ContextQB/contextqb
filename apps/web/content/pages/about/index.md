@@ -28,7 +28,7 @@ ContextQB teaches the missing layer.
 
 - **contextqb.com** — this site. Principles, playbooks, audits, and prompts you can read, share, and copy.
 - **The ContextQB MCP** — the same resources, served over the Model Context Protocol so any agent can pull them in. See [MCP](/mcp).
-- **The standards library** — the source-of-truth Markdown for both surfaces, structured so it can be reused inside agents, courses, and future tools.
+- **The standards library** — the source-of-truth Markdown for the site, the MCP, and the course material.
 
 ## The north star
 

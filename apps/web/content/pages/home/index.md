@@ -78,8 +78,10 @@ mcp_cta_body: >-
 mcp_cta_label: MCP setup →
 mcp_cta_href: /mcp
 
-meta_title: ""
-meta_description: ""
+meta_title: ContextQB
+meta_description: >-
+  Learn to build with AI agents by giving them better context, clearer briefs,
+  and practical checks that keep your project coherent.
 
 
 ---
