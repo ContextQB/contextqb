@@ -16,6 +16,8 @@ import contentBundle from "./generated/content-bundle.json";
 import { validateToken, register, revoke, status } from "./membership";
 import { handleCliTelemetry, recordMcpEvent } from "./telemetry";
 import { runAggregation } from "./aggregation";
+import { handleInsights, corsHeaders, callInsightsApi, formatInsightsAsMarkdown } from "./insights";
+import type { Member } from "./membership";
 
 const SERVER_NAME = "contextqb";
 const SERVER_VERSION = "0.1.0";
@@ -246,7 +248,12 @@ function buildSecretsAuditChecklist(): string {
 
 const idSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u);
 
-function createServer(): McpServer {
+interface ServerContext {
+  env: Env;
+  member: Member | null;
+}
+
+function createServer(ctx: ServerContext): McpServer {
   const server = new McpServer({
     name: SERVER_NAME,
     version: SERVER_VERSION,
@@ -483,6 +490,79 @@ function createServer(): McpServer {
     }),
   );
 
+  // Community insight tools (token-gated per D10)
+  const tokenRequiredMessage =
+    "Community insights require a membership token. Run `contextqb membership register` to get one, then configure your MCP client with the token.";
+
+  server.tool(
+    "community_stack_trends",
+    "Get community-wide stack trends (language distribution, monorepo usage). Requires membership token.",
+    {
+      dim1: z
+        .enum(["lang", "mono"])
+        .optional()
+        .describe(
+          "Optional dimension: 'lang' for language distribution, 'mono' for monorepo usage.",
+        ),
+    },
+    async ({ dim1 }) => {
+      if (!ctx.member) {
+        return { content: [{ type: "text", text: tokenRequiredMessage }] };
+      }
+      const result = await callInsightsApi(ctx.env, "stack", dim1 ?? null);
+      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+    },
+  );
+
+  server.tool(
+    "community_structure_patterns",
+    "Get community-wide project structure patterns (tree entries, routes, decisions). Requires membership token.",
+    {
+      dim1: z
+        .enum(["tree_entries", "routes", "decisions"])
+        .optional()
+        .describe("Optional dimension: 'tree_entries', 'routes', or 'decisions'."),
+    },
+    async ({ dim1 }) => {
+      if (!ctx.member) {
+        return { content: [{ type: "text", text: tokenRequiredMessage }] };
+      }
+      const result = await callInsightsApi(ctx.env, "structure", dim1 ?? null);
+      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+    },
+  );
+
+  server.tool(
+    "community_common_mistakes",
+    "Get community-wide common mistakes (validation status distribution). Requires membership token.",
+    {
+      dim1: z
+        .enum(["validation_status"])
+        .optional()
+        .describe("Optional dimension: 'validation_status' for passed/failed distribution."),
+    },
+    async ({ dim1 }) => {
+      if (!ctx.member) {
+        return { content: [{ type: "text", text: tokenRequiredMessage }] };
+      }
+      const result = await callInsightsApi(ctx.env, "mistakes", dim1 ?? null);
+      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+    },
+  );
+
+  server.tool(
+    "community_deploy_distribution",
+    "Get community-wide deployment platform distribution. Requires membership token.",
+    {},
+    async () => {
+      if (!ctx.member) {
+        return { content: [{ type: "text", text: tokenRequiredMessage }] };
+      }
+      const result = await callInsightsApi(ctx.env, "deploy", null);
+      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+    },
+  );
+
   // Register resources
   for (const kind of [
     "principles",
@@ -548,7 +628,13 @@ export default {
     // MCP endpoint with telemetry middleware
     if (url.pathname === "/mcp" || url.pathname === "/sse" || url.pathname === "/sse/message") {
       const startTime = Date.now();
-      const server = createServer();
+
+      // Validate token upfront (for community_* tools and telemetry)
+      // Don't return 401 — tools are available without token, community_* just returns a message
+      const memberResult = await validateToken(request, env);
+      const member = memberResult instanceof Response ? null : memberResult;
+
+      const server = createServer({ env, member });
       const mcpHandler = createMcpHandler(server);
 
       // Clone request to read body for telemetry (original is consumed by handler)
@@ -572,24 +658,21 @@ export default {
       const response = await mcpHandler(request, env, ctx);
 
       // If this was a tools/call with a valid token, log telemetry asynchronously
-      if (toolName) {
-        const member = await validateToken(request, env);
-        if (!(member instanceof Response)) {
-          const responseTimeMs = Date.now() - startTime;
-          const countryCode = (request.cf?.country as string) ?? null;
-          const clientHint = request.headers.get("X-MCP-Client");
-          // Fire and forget - don't block the response
-          ctx.waitUntil(
-            recordMcpEvent(
-              env.DB,
-              member.anonymous_id,
-              toolName,
-              responseTimeMs,
-              countryCode,
-              clientHint,
-            ),
-          );
-        }
+      if (toolName && member) {
+        const responseTimeMs = Date.now() - startTime;
+        const countryCode = (request.cf?.country as string) ?? null;
+        const clientHint = request.headers.get("X-MCP-Client");
+        // Fire and forget - don't block the response
+        ctx.waitUntil(
+          recordMcpEvent(
+            env.DB,
+            member.anonymous_id,
+            toolName,
+            responseTimeMs,
+            countryCode,
+            clientHint,
+          ),
+        );
       }
 
       return response;
@@ -653,6 +736,35 @@ export default {
       const member = await validateToken(request, env);
       if (member instanceof Response) return member;
       return handleCliTelemetry(request, env, member);
+    }
+
+    // Insights endpoint (token-gated, CORS-enabled)
+    if (url.pathname === "/insights") {
+      // Handle CORS preflight
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          status: 204,
+          headers: corsHeaders(),
+        });
+      }
+      if (request.method !== "GET") {
+        return new Response(
+          JSON.stringify({ error: "method_not_allowed", message: "GET or OPTIONS required" }),
+          {
+            status: 405,
+            headers: { "Content-Type": "application/json", ...corsHeaders() },
+          },
+        );
+      }
+      const member = await validateToken(request, env);
+      if (member instanceof Response) {
+        // Add CORS headers to 401 response so browser can read the error
+        return new Response(member.body, {
+          status: member.status,
+          headers: { ...Object.fromEntries(member.headers.entries()), ...corsHeaders() },
+        });
+      }
+      return handleInsights(request, env, member);
     }
 
     return new Response("Not found", { status: 404 });
