@@ -132,7 +132,7 @@ The Worker has a D1 database binding `DB` for telemetry storage (per [ADR-0018](
 
 - **Binding name**: `DB`
 - **Database name**: `contextqb-telemetry`
-- **Tables**: `members`, `cli_events`, `mcp_events`
+- **Tables**: `members`, `cli_events`, `mcp_events`, `insights`
 
 ### Migrations
 
@@ -236,6 +236,57 @@ All token-gated endpoints accept the token via:
 
 1. **Authorization header** (preferred): `Authorization: Bearer mt_...`
 2. **Query parameter** (fallback): `?token=mt_...`
+
+## Aggregation Pipeline
+
+A daily Cron job aggregates raw CLI telemetry events into privacy-preserving insight cells (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md), Tranche E).
+
+### Cron Schedule
+
+| Schedule    | Description        |
+| ----------- | ------------------ |
+| `0 6 * * *` | Daily at 06:00 UTC |
+
+The Cron trigger is configured in `wrangler.jsonc` under `triggers.crons`.
+
+### Insights Table Schema
+
+```sql
+CREATE TABLE insights (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  topic TEXT NOT NULL,         -- 'stack' | 'structure' | 'mistakes' | 'deploy'
+  dim1_key TEXT NOT NULL,      -- e.g. 'lang', 'mono', 'tree_entries'
+  dim1_value TEXT NOT NULL,    -- e.g. 'typescript', 'true', '1-10'
+  dim2_key TEXT,               -- nullable; max 2 dimensions
+  dim2_value TEXT,             -- nullable
+  n_users INTEGER NOT NULL CHECK(n_users >= 30),  -- k-anonymity enforced
+  percentage REAL NOT NULL,    -- pre-computed for fast read
+  computed_at INTEGER NOT NULL DEFAULT (unixepoch()),
+  UNIQUE(topic, dim1_key, dim1_value, dim2_key, dim2_value)
+);
+```
+
+### Topics
+
+| Topic       | Dimensions                            | Description                                             |
+| ----------- | ------------------------------------- | ------------------------------------------------------- |
+| `stack`     | `lang`, `mono`                        | Distribution of programming language and monorepo usage |
+| `structure` | `tree_entries`, `routes`, `decisions` | Bucketed counts (0, 1-10, 11-50, 51-100, 100+)          |
+| `mistakes`  | `validation_status`                   | Distribution of passed/failed validation                |
+| `deploy`    | `platform`                            | Distribution of deployment platforms                    |
+
+### k-anonymity
+
+All insight cells have `n_users >= 30`. Cells with fewer distinct users are not written (enforced by `HAVING` clause in aggregation queries). The `CHECK(n_users >= 30)` constraint provides database-level enforcement.
+
+### Idempotent Re-runs
+
+Each aggregation run deletes existing rows for a topic before inserting new ones. Re-running the Cron produces identical results (modulo `computed_at` timestamp).
+
+```bash
+# Manual trigger via Cloudflare dashboard:
+# Workers > contextqb-mcp > Triggers > Cron > "Trigger now"
+```
 
 ## Related
 
