@@ -74,9 +74,12 @@ mcp_cta_body: >-
   The ContextQB MCP server exposes every guide, principle, playbook, audit, and
   prompt through the Model Context Protocol. Add it to Cursor, Claude Desktop,
   or any MCP-aware tool, and your agent can pull the right standard into the
-  conversation when you need it.
+  conversation when you need it. Members also get four community-insight tools
+  that summarize what the rest of the cooperative is building.
 mcp_cta_label: MCP setup →
 mcp_cta_href: /mcp
+mcp_cta_secondary_label: See community insights →
+mcp_cta_secondary_href: /insights
 
 meta_title: ContextQB
 meta_description: >-
@@ -86,10 +89,8 @@ meta_description: >-
 review:
   status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:brand-voice-pass"
+  reviewer: "agent:cooperative-flow-tranche-d"
   reviewer_notes: |-
-    Primetime pass completed. Kept the core hero line and reframed the page
-    around everyday builders learning to brief, steer, inspect, and ship with AI
-    agents. Added social/search metadata and kept architecture-first jargon out
-    of the entry path.
+    Added cooperative mention to MCP CTA body and a secondary link to
+    /insights per §5.4 of the cooperative flow punchlist.
 ---
