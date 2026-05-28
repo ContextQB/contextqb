@@ -12,11 +12,10 @@ meta_description: >-
 review:
   status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:brand-voice-pass"
+  reviewer: "agent:cooperative-flow-tranche-c"
   reviewer_notes: |-
-    Primetime pass completed. Reframed the page around what the MCP lets an
-    agent do, tightened install headings, removed roadmap material, and added
-    social/search metadata.
+    Added "Pair with the data cooperative" section and documented the four
+    community_* tools per §5.2 of the cooperative flow punchlist.
 ---
 
 ## What it exposes
@@ -49,6 +48,18 @@ It also exposes tools that return structured Markdown:
 - `get_anti_spaghetti_checklist`
 - `get_naming_convention_checklist`
 - `get_state_management_checklist`
+
+### Community insight tools (token-gated)
+
+These four tools surface anonymized aggregates from the data cooperative.
+They require a membership token (see [Pair with the data cooperative](#pair-with-the-data-cooperative) below):
+
+- `community_stack_trends` — language and monorepo distribution
+- `community_structure_patterns` — bucketed counts of tree entries, routes, and ADRs
+- `community_common_mistakes` — drift-detection pass/fail distribution
+- `community_deploy_distribution` — deployment platform mix
+
+Until the cooperative reaches 30 distinct members for a given topic, these tools return an "Insufficient data" Markdown table — see [Privacy & Telemetry](/privacy/telemetry) for the k-anonymity rationale.
 
 ## Fastest setup
 
@@ -98,6 +109,18 @@ Add to your MCP config:
   }
 }
 ```
+
+## Pair with the data cooperative
+
+Methodology tools (`list_principles`, `get_audit_prompt`, etc.) work for everyone with no token. The four `community_*` tools listed above are token-gated and surface aggregate trends from the cooperative.
+
+To enable them, install the CLI (see [/check](/check)) and run:
+
+```bash
+contextqb mcp setup --client cursor   # or --client claude
+```
+
+The output is a ready-to-paste config snippet with your membership token already interpolated, so you can drop it straight into the same config file the snippets above point at. If you have not run `contextqb` yet, the first run silently auto-provisions a token — see [What happens on first run](/check#install) on the `/check` page.
 
 ## Try it on a real review
 
