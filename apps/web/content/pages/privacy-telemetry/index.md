@@ -48,11 +48,12 @@ When you first run the `contextqb` CLI, a membership token is silently provision
 - **Environment variables or secrets** — never accessed
 - **Git history or commit messages** — never accessed
 
-### Three ways to opt out:
+### Four ways to opt out:
 
 1. **Per-run:** `contextqb check --no-telemetry` — skips telemetry for this run only
 2. **Sticky:** `contextqb membership revoke` — permanently opts you out and deletes all your data from our servers
 3. **CI escape hatch:** Set `CONTEXTQB_NO_PROVISION=true` in your environment to skip auto-provisioning entirely
+4. **Trust-but-verify:** `contextqb check --telemetry-preview` — prints the JSON payload that would be sent and exits without sending, so you can inspect it before opting in
 
 After a sticky revocation, subsequent CLI runs will not re-provision a token. To re-provision with a fresh identity (if you change your mind), delete the credentials file:
 
@@ -88,6 +89,8 @@ Even anonymous data can reveal too much when a group is small. We use k-anonymit
 - **Bucketed counts:** Instead of exact numbers, we report "30+", "100+", or "1000+"
 
 These guards mean that even if you are in an unusual combination (for example, "Rust developers deploying to Railway"), your data cannot be singled out.
+
+**For early members:** until the cooperative reaches 30 distinct members for a given topic, queries on `/insights` and through the `community_*` MCP tools will return "Insufficient data". This is the privacy guard working — not a bug.
 
 ## Data retention
 
