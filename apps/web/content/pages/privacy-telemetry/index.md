@@ -5,37 +5,29 @@ subhead: ""
 meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:pre-audit"
+  reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    This is the longest prose page on the site and it reads as a hybrid of legal disclosure and developer documentation. Specific notes for the copywriter:
-
-    (1) The three-phase structure (Phase 1 / Phase 2 / Phase 3) is internal jargon. A reader doesn't know what makes a "phase" or which one they're in. Consider replacing with what-actually-happens framing: "Visiting this site", "Using the CLI", "Using the MCP with a token".
-
-    (2) "Data NOT collected" lists are valuable but the repeated "What X NOT collects" headings get visually noisy. Consider consolidating into one "What we never collect, period" section.
-
-    (3) The "Three ways to opt out" enumeration is good — keep that structure.
-
-    (4) k-anonymity section may be over-explanation for a privacy page. Could move to a sub-page or footnote-link to ADR-0018 (which is already linked).
-
-    (5) Tone is currently technical-reassuring. Worth considering whether the audience here is "concerned user" (wants short, friendly assurances) or "compliance/security buyer" (wants exhaustive detail). The current page tries to serve both.
+    Brand voice pass completed. Replaced internal phase labels with
+    reader-facing usage contexts, made "what we never record" language
+    consistent, and kept the opt-out and retention details intact.
 ---
 
-ContextQB collects anonymous telemetry to understand how developers use the methodology and to provide community insights. This page explains exactly what we collect, how we protect your privacy, and how you can opt out.
+ContextQB collects limited, privacy-preserving telemetry so we can understand which parts of the methodology are useful and where builders get stuck. This page explains what we collect, what we never collect, and how you can opt out.
 
-## Phase 1 — Edge analytics (always-on)
+## Visiting the site or MCP server
 
 Our MCP server (`mcp.contextqb.com`) and website use [Cloudflare Workers Analytics](https://developers.cloudflare.com/workers/observability/analytics-engine/). This is Cloudflare's built-in analytics — we do not run any custom telemetry code for this phase.
 
-### Data collected automatically by Cloudflare:
+### What Cloudflare analytics records
 
 - **Request count** — how many requests hit the server
 - **Response time** — how long each request took to process
 - **Country code** — derived from Cloudflare's edge location, not your IP
 - **Status codes** — whether requests succeeded or failed
 
-### Data NOT collected:
+### What it does not record
 
 - **Your IP address** — Cloudflare processes it at the edge but does not store or expose it to us
 - **Request body contents** — we don't see what you asked for
@@ -43,18 +35,18 @@ Our MCP server (`mcp.contextqb.com`) and website use [Cloudflare Workers Analyti
 
 This phase is aggregate and anonymous at the point of collection. There is no opt-out because there is nothing to opt out of — no individual is tracked.
 
-## Phase 2 — CLI auto-provisioning (opt-out)
+## Using the CLI
 
 When you first run the `contextqb` CLI, a membership token is silently provisioned and stored locally. This enables community insights and helps us understand how developers structure their projects. Telemetry is on by default.
 
-### What the CLI collects:
+### What the CLI records
 
 - **Anonymous ID** — a SHA-256 hash of your machine ID, not reversible to your identity
 - **Stack categories** — programming language, whether it's a monorepo, deployment target
 - **Structure counts** — number of tree entries, routes, ADRs (counts only, not names)
 - **Validation findings** — types of drift detected (e.g., "missing workspace"), not file paths or content
 
-### What the CLI does NOT collect:
+### What the CLI never records
 
 - **File paths** — we don't see your project structure
 - **File contents** — we don't read your code
@@ -73,18 +65,18 @@ After a sticky revocation, subsequent CLI runs will not re-provision a token. To
 - **Linux:** `~/.config/contextqb-nodejs/credentials.json`
 - **Windows:** `%APPDATA%\contextqb-nodejs\Config\credentials.json`
 
-## Phase 3 — MCP token-gated telemetry
+## Using the MCP with a token
 
 When you use the MCP server with a membership token (configured via `contextqb mcp setup`), we record which tools are called and how long they take. This helps us prioritize methodology improvements.
 
-### What MCP telemetry collects:
+### What MCP telemetry records
 
 - **Tool name** — e.g., `get_principle`, `list_playbooks`
 - **Response time** — how long the call took
 - **Country code** — from Cloudflare's edge
 - **Client hint** — which MCP client you're using (Cursor, Claude, etc.)
 
-### What MCP telemetry does NOT collect:
+### What MCP telemetry never records
 
 - **Tool arguments** — we don't see which principle or playbook you requested
 - **Response content** — we don't log what we returned to you
@@ -92,15 +84,15 @@ When you use the MCP server with a membership token (configured via `contextqb m
 
 MCP telemetry requires a token. If you don't configure one, or if you revoke your membership, no MCP telemetry is collected. Methodology tools remain free and accessible without a token.
 
-## k-anonymity guards
+## Community insights stay aggregate
 
-Even with anonymous IDs, aggregate data can sometimes reveal information about small groups. We apply k-anonymity guards to prevent this:
+Even anonymous data can reveal too much when a group is small. We use k-anonymity guards before reporting community insights:
 
 - **Minimum threshold (k=30):** We never report statistics for groups with fewer than 30 distinct members
 - **Maximum 2 dimensions:** Queries can filter by at most 2 attributes simultaneously
 - **Bucketed counts:** Instead of exact numbers, we report "30+", "100+", or "1000+"
 
-These guards ensure that even if you're in a unique combination (e.g., "Rust developers deploying to Railway"), your data cannot be singled out.
+These guards mean that even if you are in an unusual combination (for example, "Rust developers deploying to Railway"), your data cannot be singled out.
 
 ## Data retention
 

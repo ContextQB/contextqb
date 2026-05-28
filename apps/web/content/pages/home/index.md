@@ -4,68 +4,66 @@ headline: |
   AI can write code.
   Someone still has to think.
 subhead: |
-  ContextQB helps non-developers and AI-native builders use agentic IDEs, MCPs, and local LLMs to create software that is coherent, maintainable, and built on common-sense architecture.
+  ContextQB helps everyday builders use AI agents with better context, clearer instructions, and steadier judgment so their projects stay coherent as they grow.
 
 primary_cta_label: Start here
 primary_cta_href: /start-here
 secondary_cta_label: Install the MCP
 secondary_cta_href: /mcp
 
-problem_heading: The hardest part of AI-assisted building is not the code.
+problem_heading: The hard part is steering the work.
 problem_paragraphs:
   - >-
-    Agentic IDEs and generative coding tools have collapsed the cost of writing
-    code. They have not eliminated the need for architectural thinking — they
-    have amplified its absence. Without explicit structure, AI-generated
-    codebases collect spaghetti faster than human-authored ones.
+    AI coding tools can produce working code quickly. They do not decide what
+    belongs where, what should own state, or when a shortcut will make the next
+    change harder. Without structure, generated projects get tangled fast.
   - >-
-    ContextQB exists to teach the missing layer: the architectural discipline
-    that turns "I can make the AI generate code" into "I can direct AI to build
-    a coherent system."
+    ContextQB teaches the missing practice: how to brief an agent, organize the
+    project, inspect the result, and keep turning an idea into a working system
+    without losing the thread.
 
 how_it_works_heading: How it works
 how_it_works_cards:
   - title: Read the principles
     body: >-
-      Learn the foundational concepts — state ownership, separation of concerns,
-      naming conventions — that every coherent codebase needs.
+      Learn the few ideas that keep an AI-built project understandable: who owns
+      state, what each module is responsible for, and how names guide the next
+      change.
   - title: Adopt the patterns
     body: >-
-      Set up an AGENTS.md file and an ADR system in your project so agents have
-      explicit operating boundaries and decisions are recorded.
+      Give your agent a project map, operating rules, and a decision log so each
+      session starts with the right context instead of guessing from scratch.
   - title: Apply the playbooks
     body: >-
-      Use playbooks and audits when you build. Pull them into your agent via the
-      MCP, or copy them directly into your prompts.
+      Use practical checklists when you plan, build, review, and fix. Pull them
+      into your agent through the MCP, or paste them directly into your prompts.
 
 guides_section_heading: Start with a guide
 guides_section_intro: >-
-  Guides are longer-form teaching frames — the kind of thinking you do before
-  code, when the idea is still forming.
+  Guides help you do the thinking before the code: shape the idea, name the
+  moving parts, and give the agent a better first brief.
 
 principles_section_heading: Core principles
 
 audience_heading: Who it is for
 audience_cards:
-  - title: Founders building with AI
+  - title: Founders with a product idea
     body: >-
-      You're using Cursor or similar tools to ship quickly, but your codebase is
-      becoming harder to maintain. ContextQB teaches you the minimum
-      architectural discipline needed to keep AI-generated code coherent.
-  - title: Operators supervising agents
+      You are using Cursor or similar tools to move fast. ContextQB helps you
+      slow down just enough to keep the product understandable as it grows.
+  - title: Operators guiding agent work
     body: >-
-      You review and approve AI-generated code but don't write it yourself.
-      These principles and audits give you a framework for evaluating whether
-      the code is sound.
-  - title: Novice developers
+      You may not write every line yourself, but you need to judge the work.
+      These principles and audits give you a way to inspect what the agent
+      produced.
+  - title: First-time software builders
     body: >-
-      You can prompt an AI to generate code, but you don't know what good
-      structure looks like. ContextQB fills the gap that tutorials skip.
+      You can ask an AI to build, but you are still learning what good structure
+      looks like. ContextQB gives you the working habits tutorials often skip.
   - title: Experienced developers with AI tools
     body: >-
-      You know architecture but want a shared vocabulary to teach agents. Use
-      the MCP to pull principles into your prompts; use the audits as quality
-      gates.
+      You already know the tradeoffs. Use ContextQB as shared language for
+      agents, teammates, and reviews so the same standards show up every time.
 
 playbooks_section_heading: Featured playbooks
 audits_section_heading: Audit templates
@@ -74,9 +72,9 @@ mcp_cta_eyebrow: ContextQB MCP
 mcp_cta_heading: Bring these resources into any agent.
 mcp_cta_body: >-
   The ContextQB MCP server exposes every guide, principle, playbook, audit, and
-  prompt through the Model Context Protocol. Drop it into Cursor, Claude
-  Desktop, or any MCP-aware tool, and your agent can pull architectural
-  standards in by URI.
+  prompt through the Model Context Protocol. Add it to Cursor, Claude Desktop,
+  or any MCP-aware tool, and your agent can pull the right standard into the
+  conversation when you need it.
 mcp_cta_label: MCP setup →
 mcp_cta_href: /mcp
 
@@ -84,15 +82,12 @@ meta_title: ""
 meta_description: ""
 
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:pre-audit"
+  reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Hero copy is sharp and on-brand. Two areas the copywriter should focus on:
-
-    (1) "How it works" cards skim past the value of each step — they describe what you do, not why it pays off. e.g., card 1 ("Read the principles") could go from "Learn the foundational concepts" to something that signals the payoff for the reader's actual goal.
-
-    (2) "Who it is for" cards repeat similar structure ("You X, but Y, so ContextQB Z"). A copywriter might want to vary cadence and lead with stronger differentiation between the four audiences, especially "Novice developers" vs "Founders building with AI" which currently sound adjacent.
-
-    Other notes: problem statement is fine; MCP CTA is fine; section headings under auto-generated grids ("Start with a guide", "Core principles", "Featured playbooks", "Audit templates") are functional but generic. Worth considering punchier alternatives.
+    Brand voice pass completed. Kept the core hero line and reframed the page
+    around everyday builders learning to brief, steer, inspect, and ship with AI
+    agents. Reduced architecture-first jargon in the hero/problem sections and
+    made the audience cards less repetitive.
 ---

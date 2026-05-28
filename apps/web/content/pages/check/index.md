@@ -5,17 +5,15 @@ headline: |
   is worse than an agent with no map.
 subhead: >-
   Your `context.qb.yaml` is the file your AI agent reads first. It is the
-  play-sheet — the project's map, written for an assistant that hasn't seen
-  this repo before. **contextqb check** is the watchdog that keeps it true.
-  Run it locally, wire it into your build, and your agent will never read a
-  file that disagrees with reality.
+  project's map, written for an assistant that has not seen this repo before.
+  **contextqb check** keeps that map honest. Run it locally, wire it into your
+  build, and your agent stops starting from stale instructions.
 hero_banner_label: This is an early version.
 hero_banner_body: >-
   The drift detector is designed for builders who are _starting a new project_
   with the ContextQB conventions in place. It assumes a specific layout (see
-  below). If you have an existing project that's laid out differently, the
-  tool won't work out of the box yet — we plan to make it adaptable in a
-  future release.
+  below). If you have an existing project laid out differently, the tool will
+  not work out of the box yet.
 hero_cta_install_label: Install in 30 seconds
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
@@ -30,7 +28,7 @@ problem_paragraphs:
     of every session is the one you wrote three weeks ago. The map drifts away
     from the territory.
   - >-
-    A confused agent is a manageable problem. A confident agent reading a
+    A confused agent is a manageable problem. A confident agent reading the
     wrong map is the failure mode that wastes hours and lands bad code.
     _contextqb check_ exists so that drift becomes a build-time error instead
     of a runtime surprise.
@@ -78,8 +76,8 @@ watches_cards:
       Mark an ADR as superseded, forget to update the map, and your agent
       treats a retired decision as live. The detector catches this.
 
-scope_eyebrow: Today, this is for new projects
-scope_heading: The current version is for builders starting from scratch.
+scope_eyebrow: Honest scope
+scope_heading: Today, this is for new ContextQB-shaped projects.
 scope_intro: >-
   ContextQB is opinionated about how a project is laid out. The drift
   detector enforces those opinions by looking in three specific places:
@@ -94,13 +92,12 @@ scope_right_paragraphs:
     install it. **No configuration needed.**
   - >-
     If you have an existing repo with a different layout — yarn workspaces,
-    Vercel deploys, ADRs in `docs/adr/`, anything else — the tool won't see
-    your sources of truth yet. Making it adaptable to existing repos is on
-    the roadmap once we've validated the conventions in the field. For now,
-    this is for greenfield work.
+    Vercel deploys, ADRs in `docs/adr/`, anything else — the tool will not see
+    your sources of truth yet. For now, use it when you are starting a project
+    with the ContextQB conventions in place.
 
 fits_eyebrow: Where it lives
-fits_heading: Three places, one truth.
+fits_heading: Where the check belongs.
 fits_cards:
   - title: On your laptop
     body: >-
@@ -114,7 +111,7 @@ fits_cards:
       map don't merge.
   - title: In your agent
     body: >-
-      When your agent reads `context.qb.yaml` at the start of a session, it's
+      When your agent reads `context.qb.yaml` at the start of a session, it is
       reading a file that passed the check. Its mental model is true.
       Sessions stop opening with a stale snapshot.
 
@@ -179,21 +176,12 @@ meta_description: >-
   agent never reads a stale file.
 
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:pre-audit"
+  reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    This is the most densely-written marketing page on the site and the most fully formed. Specific items the copywriter should consider:
-
-    (1) The two-line hero ("An agent with a stale map / is worse than an agent with no map.") is excellent — punchy, asymmetric, memorable. Keep.
-
-    (2) "The detector is what makes the map worth writing." (closer heading) is also strong. The closer overall is the page's best section — the build is red until you fix it framing earns the reader's attention.
-
-    (3) The "Honest scope" / Option B in practice section reads as defensive ("we only handle X, not Y"). The defensiveness is honest but takes a lot of real estate. Consider whether it's better placed as a sidebar/callout rather than a full section, or whether the same information could be a sentence in the install section.
-
-    (4) "Three things, three sources of truth" and "Three places, one truth" both use "three" in their headings, separated by only one section. The rhyme is intentional but reads as a tic on a second pass.
-
-    (5) "Add — json and the detector emits a deterministic { findings, summary } shape" — the JSON-contract section is technical and probably outside the copywriter's wheelhouse. Mark as final-from-copywriter-perspective; ENG owns this section.
-
-    (6) The hero status banner explaining "this is an early version, designed for greenfield work" is structurally important but slightly stops the page's momentum right after the hero. Consider moving it to just above the install section instead — readers who are decided don't need to be told it's early; readers who are evaluating already learned the constraint from the (separate, fuller) "Honest scope" section.
+    Brand voice pass completed. Kept the strong stale-map hero and build-red
+    closer, softened the early-version caveat, removed repeated "three" cadence
+    in nearby headings, and clarified the greenfield scope without overexplaining
+    roadmap work.
 ---

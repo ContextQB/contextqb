@@ -7,9 +7,11 @@ meta_description: Sign up to get one email when ContextQB kicks off. No drip cam
 review:
   status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:pre-audit"
+  reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Short, on-brand, clear ask. Marked final — the only thing to consider is whether the football metaphor ("training camp", "kickoff", "drilling the routes", "season has started") lands for the audience or feels overdone. That's a brand call, not a copy edit.
+    Brand voice pass completed. Copy remains short, on-brand, and clear; the
+    football metaphor is intentionally preserved as part of the field-coach
+    voice.
 
     Note: the page renders an interactive KickoffForm component below the prose, which is unchanged. Only the framing copy was extracted.
 ---

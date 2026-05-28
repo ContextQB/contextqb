@@ -139,7 +139,7 @@ The principle: **a decision in your head exists for one session. A decision in a
 
 When you're partway through a feature and need to end the session, write a **status document** — what's been done, what's in progress, what's blocked, what decisions you made along the way. The next session reads it as one of the first things and resumes with full context, without you having to re-explain.
 
-The Vibe Code Bible calls this the most important commandment in the entire book. It is correct.
+The first ContextQB course treats this as one of the highest-leverage habits in agentic building. It is correct.
 
 ### 4. Hand off cleanly between sessions
 

@@ -19,7 +19,7 @@ related:
   - state-ownership
   - product-engineering-alignment
 next_steps:
-  - Write a one-paragraph vibe brief for your app.
+  - Write a one-paragraph working brief for your app.
   - List the buckets of information your app needs to hold.
   - Open a repo and add an AGENTS.md with the brief.
   - Run the new-project-foundation playbook.
@@ -67,7 +67,7 @@ If you can write a sentence answering each of those, you have a mental model. It
 
 This is the part that stops most people: the assumption that you have to fully understand the app before you can start. You don't. You can't, actually. The app teaches you what it wants to be as you build it.
 
-What you need is a **core concept**: a single sentence that captures the promise of the app. The Vibe Code Bible calls this resisting the urge to add features:
+What you need is a **core concept**: a single sentence that captures the promise of the app. In the first ContextQB course, this means resisting the urge to add features:
 
 > Stay focused on one core promise. "Open the app and quickly find Scripture + my own reflections that speak into my day."
 
@@ -87,11 +87,11 @@ If you're new to building applications, ContextQB is built for exactly the momen
 
 You don't need to know how to code to start. You do need to do these things, in roughly this order:
 
-1. **Write a vibe brief.** A paragraph in your own words: who it's for, what it does, what experience it creates, what it deliberately doesn't do. Write it like you're describing the app to a close friend over coffee.
+1. **Write a working brief.** A paragraph in your own words: who it's for, what it does, what experience it creates, what it deliberately doesn't do. Write it like you're describing the app to a close friend over coffee.
 2. **Have an agent restate your brief back to you.** Ask: "Restate this idea as a clear app concept with: who it's for, what problem it solves, what the core experience should feel like, what the must-have features are for V1." If the agent misunderstands your intent here, it will build the wrong thing later.
 3. **List your entities.** What buckets of information does the app need? Don't worry about how they're stored. Just name them. "Verses. Notes. Tags. Users. Reading plans." That list is the first draft of your schema.
 4. **Open a repo.** Even an empty folder counts. Initialise it with `git`. This is where your mental model becomes a durable artefact.
-5. **Set up the substrate.** Use the [`new-project-foundation`](contextqb://playbooks/new-project-foundation) playbook to give the repo the boundaries, naming, and orchestration story it needs before the first feature ships. Use the [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md) playbook to author the single most leverage-positive file in an agentic codebase.
+5. **Set up the project foundation.** Use the [`new-project-foundation`](contextqb://playbooks/new-project-foundation) playbook to give the repo the boundaries, naming, and orchestration story it needs before the first feature ships. Use the [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md) playbook to author the single most leverage-positive file in an agentic codebase.
 6. **Write a `context.qb.yaml`.** This is the boot manifest agents read first. The [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb) playbook walks you through it. It captures the mental model in machine-readable form.
 7. **Plan the first feature, don't code it yet.** Use the [`feature-planning`](contextqb://playbooks/feature-planning) playbook to produce a feature brief, surface map, state plan, and risk list before any code is written. Now you let the agent build.
 
@@ -115,12 +115,12 @@ Each refinement is a permanent gain. You're not losing context every session —
 
 You don't need a fully formed mental model to start. You need:
 
-- A short vibe brief in your own words.
+- A short working brief in your own words.
 - A list of the buckets of information your app handles.
 - A first guess at where information enters the app and where it leaves.
 - A repo set up to capture what you learn next.
 
-That's the whole bar. The mental model evolves from there, and ContextQB is the substrate that keeps your evolution coherent.
+That's the whole bar. The mental model evolves from there, and ContextQB gives you the structure to keep that evolution coherent.
 
 You are doing the right kind of thinking. Keep going.
 

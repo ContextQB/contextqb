@@ -1,22 +1,18 @@
 ---
 eyebrow: Examples
-headline: Sample outputs that demonstrate quality.
+headline: What good agent work looks like.
 subhead: >-
-  These are fictional but realistic examples of what a good agent response
-  looks like. Use them as benchmarks. If your agent produces something
-  markedly less specific than these, push back.
+  These fictional but realistic examples show the level of specificity you
+  should expect from an agent. Use them as benchmarks. If your agent produces
+  something much thinner than this, push back.
 meta_title: Examples
 meta_description: ""
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-05-27"
-  reviewer: "agent:pre-audit"
+  reviewer: "agent:brand-voice-pass"
   reviewer_notes: |-
-    Short intro page over an auto-generated grid. Two specific notes:
-
-    (1) "Sample outputs that demonstrate quality" is functional but doesn't tell the reader what they're about to see. Consider something more specific: "What a good audit, plan, or review looks like when an agent does it well."
-
-    (2) The "If your agent produces something markedly less specific than these, push back" line is great — punchy, useful framing — but it's buried in the subhead. Worth promoting or expanding into its own paragraph.
-
-    (3) Within the auto-generated grid below, each card uses a generic summary like "A worked example showing what a thorough audit response looks like." These are repetitive; consider extracting per-example summaries into the example frontmatter so each card has unique copy.
+    Brand voice pass completed for page framing. The remaining opportunity is
+    in generated example-card summaries, which are handled in the hardcoded-copy
+    pass rather than this Markdown file.
 ---
