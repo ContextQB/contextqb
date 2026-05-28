@@ -23,6 +23,6 @@ Under the following terms:
 
 Full license text: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 
-This license applies to all Markdown content files in the `guides/`
-subdirectory. It does not apply to code (TypeScript, JavaScript, TSX,
-etc.) which remains under the repository's MIT license.
+This license applies to all Markdown content files in this directory and
+its subdirectories. It does not apply to code (TypeScript, JavaScript, etc.)
+which remains under the repository's MIT license.
