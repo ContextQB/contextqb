@@ -364,6 +364,29 @@ Each aggregation run deletes existing rows for a topic before inserting new ones
 # Workers > contextqb-mcp > Triggers > Cron > "Trigger now"
 ```
 
+## Rate Limits
+
+Cloudflare Rate Limiting Rules protect the membership and telemetry endpoints from abuse.
+
+| Endpoint               | Limit       | Key   | Rule Name                       |
+| ---------------------- | ----------- | ----- | ------------------------------- |
+| `/membership/register` | 60 req/min  | IP    | `contextqb-membership-register` |
+| `/membership/revoke`   | 60 req/min  | IP    | `contextqb-membership-revoke`   |
+| `/telemetry/cli`       | 600 req/min | Token | `contextqb-telemetry-cli`       |
+| `/insights`            | 60 req/min  | Token | `contextqb-insights`            |
+
+Exceeding a limit returns `429 Too Many Requests`. Rules are configured in the Cloudflare dashboard under Security > WAF > Rate limiting rules.
+
+## Token Rotation
+
+v1 does not provide an in-place token rotation endpoint. To rotate a token:
+
+1. Run `contextqb membership revoke` (deletes all server-side data and marks local credentials as `opted_out`)
+2. Delete the local credentials file at `~/.config/contextqb/credentials.json` (or `$CONTEXTQB_HOME/credentials.json` if set)
+3. Run any `contextqb` command — a fresh membership is auto-provisioned
+
+This is intentionally a destructive operation: rotation = revoke + re-register. A non-destructive rotation endpoint may be added in a future version.
+
 ## Related
 
 - [`packages/methodology/mcp-server`](../../packages/methodology/mcp-server) — Local stdio-based MCP server (same functionality, local execution)
