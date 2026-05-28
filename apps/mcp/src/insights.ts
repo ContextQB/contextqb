@@ -96,14 +96,31 @@ export function validateDimensions(
 }
 
 /**
- * CORS headers for contextqb.com.
+ * Origins permitted to call the insights endpoint cross-origin.
+ * Includes the canonical apex, the www alias, the workers.dev mirror, and
+ * the local Next dev server. Anything else falls back to the canonical apex.
  */
-export function corsHeaders(): HeadersInit {
+const ALLOWED_ORIGINS = new Set([
+  "https://contextqb.com",
+  "https://www.contextqb.com",
+  "https://contextqb-web.symbolscape-inc.workers.dev",
+  "http://localhost:3000",
+]);
+
+/**
+ * CORS headers that echo the request's Origin when it is on the allowlist.
+ * Vary: Origin keeps shared caches from serving the wrong allow-origin for a
+ * different requester.
+ */
+export function corsHeaders(request?: Request): HeadersInit {
+  const origin = request?.headers.get("Origin");
+  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : "https://contextqb.com";
   return {
-    "Access-Control-Allow-Origin": "https://contextqb.com",
+    "Access-Control-Allow-Origin": allowed,
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Headers": "Authorization, Content-Type",
     "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
   };
 }
 
@@ -170,14 +187,14 @@ export async function handleInsights(
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
-      headers: corsHeaders(),
+      headers: corsHeaders(request),
     });
   }
 
   if (request.method !== "GET") {
     return Response.json(
       { error: "method_not_allowed", message: "GET or OPTIONS required" },
-      { status: 405, headers: corsHeaders() },
+      { status: 405, headers: corsHeaders(request) },
     );
   }
 
@@ -192,18 +209,18 @@ export async function handleInsights(
   if (validationError) {
     return Response.json(
       { error: validationError, message: `Invalid request: ${validationError}` },
-      { status: 400, headers: corsHeaders() },
+      { status: 400, headers: corsHeaders(request) },
     );
   }
 
   try {
     const result = await callInsightsApi(env, topic!, dim1);
-    return Response.json(result, { headers: corsHeaders() });
+    return Response.json(result, { headers: corsHeaders(request) });
   } catch (err) {
     console.error("[insights] Query failed:", err);
     return Response.json(
       { error: "internal_error", message: "Failed to query insights" },
-      { status: 500, headers: corsHeaders() },
+      { status: 500, headers: corsHeaders(request) },
     );
   }
 }
