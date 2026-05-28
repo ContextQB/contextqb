@@ -136,6 +136,25 @@ install_steps:
       `pnpm validate` before every commit, or wire it into a CI job that
       runs on every pull request.
 
+firstrun_eyebrow: Membership
+firstrun_heading: What happens on first run.
+firstrun_paragraphs:
+  - >-
+    The first time you run any `contextqb` subcommand, a membership token is
+    silently provisioned and stored locally. There is no prompt, no
+    interruption — you see the normal output of whatever you ran.
+  - >-
+    The token unlocks two things: community insights at [/insights](/insights)
+    and the token-gated MCP tools that summarise aggregate trends. Telemetry
+    is on by default and three opt-out paths are documented in
+    [Privacy & Telemetry](/privacy/telemetry).
+firstrun_verify_label: Confirm the token landed
+firstrun_verify_command: contextqb membership status
+firstrun_setup_label: Hand the token to your agent
+firstrun_setup_command: "contextqb mcp setup --client cursor   # or --client claude"
+firstrun_postscript: >-
+  Both commands are documented in detail on [the MCP page](/mcp).
+
 json_eyebrow: For your CI scripts
 json_heading: A stable JSON contract for the pipeline.
 json_paragraphs:

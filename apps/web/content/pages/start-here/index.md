@@ -59,6 +59,16 @@ path_cards:
     href: /mcp
     cta: Install the MCP
     external: false
+  - eyebrow: If you want to share back
+    title: Join the data cooperative
+    description: >-
+      The CLI silently provisions a membership token the first time you run
+      any contextqb command. In return, the MCP unlocks community-insight
+      tools and the website surfaces aggregate trends. K-anonymity guards
+      mean nothing about you is identifiable.
+    href: /check
+    cta: See how it works
+    external: false
   - eyebrow: If you want the full curriculum
     title: Learn by building a real app
     description: >-
