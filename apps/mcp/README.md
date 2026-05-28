@@ -439,10 +439,20 @@ Exceeding a limit returns `429 Too Many Requests` with body `{ "error": "rate_li
 v1 does not provide an in-place token rotation endpoint. To rotate a token:
 
 1. Run `contextqb membership revoke` (deletes all server-side data and marks local credentials as `opted_out`)
-2. Delete the local credentials file at `~/.config/contextqb/credentials.json` (or `$CONTEXTQB_HOME/credentials.json` if set)
+2. Delete the local credentials file (path depends on OS — see below)
 3. Run any `contextqb` command — a fresh membership is auto-provisioned
 
-This is intentionally a destructive operation: rotation = revoke + re-register. A non-destructive rotation endpoint may be added in a future version.
+The CLI uses [`env-paths`](https://www.npmjs.com/package/env-paths) v4 with project name `contextqb`, so the credentials live at:
+
+| OS      | Path                                                      |
+| ------- | --------------------------------------------------------- |
+| macOS   | `~/Library/Preferences/contextqb-nodejs/credentials.json` |
+| Linux   | `~/.config/contextqb-nodejs/credentials.json`             |
+| Windows | `%APPDATA%\contextqb-nodejs\Config\credentials.json`      |
+
+Override the directory by setting `CONTEXTQB_HOME=<path>` (the file inside it is still named `credentials.json`).
+
+Rotation is intentionally destructive: rotation = revoke + re-register. A non-destructive rotation endpoint may be added in a future version.
 
 ## Related
 
