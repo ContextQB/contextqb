@@ -303,7 +303,7 @@ If a request to `/mcp` or `/sse` carries a valid `Authorization: Bearer mt_...` 
 
 ## Insights API
 
-Query community-wide aggregated insights. Requires valid membership token. CORS-enabled for `https://contextqb.com`.
+Query community-wide aggregated insights. Requires valid membership token. CORS-enabled for the website origins listed under [CORS](#cors).
 
 ### GET /insights
 
@@ -360,11 +360,26 @@ Returned when fewer than 30 distinct users have data for the requested topic/dim
 
 ### CORS
 
-The `/insights` endpoint responds to `OPTIONS` preflight with:
+The `/insights` endpoint responds to `OPTIONS` preflight and to authenticated `GET`s by echoing the request's `Origin` when it is on the allowlist, otherwise it falls back to the canonical apex. `Vary: Origin` is always set so shared caches don't serve a mismatched allow-origin to a different requester.
 
-- `Access-Control-Allow-Origin: https://contextqb.com`
+**Allowlist** (defined in [`src/insights.ts`](src/insights.ts) `ALLOWED_ORIGINS`):
+
+| Origin                                              | Purpose                              |
+| --------------------------------------------------- | ------------------------------------ |
+| `https://contextqb.com`                             | Canonical apex (default fallback)    |
+| `https://www.contextqb.com`                         | `www` alias on the apps/web worker   |
+| `https://contextqb-web.symbolscape-inc.workers.dev` | Workers.dev mirror for staging tests |
+| `http://localhost:3000`                             | Local `next dev`                     |
+
+Response headers on a permitted preflight:
+
+- `Access-Control-Allow-Origin: <echoed request origin>`
 - `Access-Control-Allow-Methods: GET, OPTIONS`
 - `Access-Control-Allow-Headers: Authorization, Content-Type`
+- `Access-Control-Max-Age: 86400`
+- `Vary: Origin`
+
+To add a new origin, edit `ALLOWED_ORIGINS` in `src/insights.ts` and redeploy with `pnpm --filter @contextqb/mcp-worker run deploy`. Verify with `curl -sI -X OPTIONS 'https://mcp.contextqb.com/insights?topic=stack' -H 'Origin: <new-origin>'` — the response should echo the origin and include `Vary: Origin`.
 
 ## Aggregation Pipeline
 
