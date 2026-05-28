@@ -24,4 +24,30 @@
   "triggers": {
     "crons": ["0 6 * * *"],
   },
+
+  // Rate Limiting bindings (ADR-0018, Tranche G)
+  // Keys: token if Authorization/?token= is present, else CF-Connecting-IP.
+  // Locality note: limits are per-Cloudflare-location, not global.
+  "ratelimits": [
+    {
+      "name": "MEMBERSHIP_REGISTER_LIMIT",
+      "namespace_id": "1001",
+      "simple": { "limit": 60, "period": 60 },
+    },
+    {
+      "name": "MEMBERSHIP_REVOKE_LIMIT",
+      "namespace_id": "1002",
+      "simple": { "limit": 60, "period": 60 },
+    },
+    {
+      "name": "TELEMETRY_CLI_LIMIT",
+      "namespace_id": "1003",
+      "simple": { "limit": 600, "period": 60 },
+    },
+    {
+      "name": "INSIGHTS_LIMIT",
+      "namespace_id": "1004",
+      "simple": { "limit": 60, "period": 60 },
+    },
+  ],
 }
