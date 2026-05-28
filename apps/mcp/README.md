@@ -55,7 +55,7 @@ Add to `mcp_config.json`:
 
 ## Available Tools
 
-The MCP server exposes 15 tools for accessing ContextQB methodology content:
+The MCP server exposes methodology tools (free) and community insight tools (token-gated):
 
 ### List tools
 
@@ -83,6 +83,17 @@ The MCP server exposes 15 tools for accessing ContextQB methodology content:
 - `generate_audit_instruction` — Generate an audit instruction from a template
 - `generate_feature_planning_prompt` — Generate a feature planning prompt
 - `generate_refactor_plan_prompt` — Generate a refactor planning prompt
+
+### Community insight tools (token-gated)
+
+These tools require a membership token. Without a valid token, they return a message prompting registration.
+
+- `community_stack_trends({ dim1?: "lang" | "mono" })` — Community-wide stack trends
+- `community_structure_patterns({ dim1?: "tree_entries" | "routes" | "decisions" })` — Project structure patterns
+- `community_common_mistakes({ dim1?: "validation_status" })` — Common validation outcomes
+- `community_deploy_distribution({})` — Deployment platform distribution
+
+All return Markdown tables with bucketed community sizes (e.g., `n>30`, `n>100`, `n>1000`) and percentage breakdowns.
 
 ## Health Check
 
@@ -236,6 +247,71 @@ All token-gated endpoints accept the token via:
 
 1. **Authorization header** (preferred): `Authorization: Bearer mt_...`
 2. **Query parameter** (fallback): `?token=mt_...`
+
+## Insights API
+
+Query community-wide aggregated insights. Requires valid membership token. CORS-enabled for `https://contextqb.com`.
+
+### GET /insights
+
+```bash
+curl -H "Authorization: Bearer mt_550e8400-e29b-41d4-a716-446655440000" \
+  "https://mcp.contextqb.com/insights?topic=stack&dim1=lang"
+```
+
+#### Query Parameters
+
+| Parameter | Required | Description                                                                       |
+| --------- | -------- | --------------------------------------------------------------------------------- |
+| `topic`   | Yes      | One of: `stack`, `structure`, `mistakes`, `deploy`                                |
+| `dim1`    | No       | Dimension filter (topic-specific: `lang`, `mono`, `tree_entries`, `routes`, etc.) |
+| `dim2`    | No       | Second dimension filter (max 2 dimensions)                                        |
+
+#### Success Response (200)
+
+```json
+{
+  "topic": "stack",
+  "dim1": "lang",
+  "n_bucket": "n>30",
+  "percentages": [
+    { "value": "typescript", "pct": 45.5 },
+    { "value": "python", "pct": 30.2 },
+    { "value": "go", "pct": 12.1 }
+  ]
+}
+```
+
+#### Insufficient Data Response (200)
+
+Returned when fewer than 30 distinct users have data for the requested topic/dimension:
+
+```json
+{
+  "topic": "mistakes",
+  "insufficient_data": true,
+  "threshold": 30
+}
+```
+
+#### Error Responses
+
+| Status | Error Code            | Description                        |
+| ------ | --------------------- | ---------------------------------- |
+| 400    | `missing_topic`       | No topic parameter provided        |
+| 400    | `unknown_topic`       | Topic not in allow-list            |
+| 400    | `too_many_dimensions` | More than 2 dimension parameters   |
+| 400    | `invalid_dim1`        | Dimension not valid for topic      |
+| 401    | `missing_token`       | No Authorization header or ?token= |
+| 401    | `invalid_token`       | Token not found or revoked         |
+
+### CORS
+
+The `/insights` endpoint responds to `OPTIONS` preflight with:
+
+- `Access-Control-Allow-Origin: https://contextqb.com`
+- `Access-Control-Allow-Methods: GET, OPTIONS`
+- `Access-Control-Allow-Headers: Authorization, Content-Type`
 
 ## Aggregation Pipeline
 
