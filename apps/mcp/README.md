@@ -248,6 +248,59 @@ All token-gated endpoints accept the token via:
 1. **Authorization header** (preferred): `Authorization: Bearer mt_...`
 2. **Query parameter** (fallback): `?token=mt_...`
 
+## Telemetry Endpoint
+
+Record an anonymous CLI telemetry event. Requires a valid membership token. Per [INV-1](../../docs/architecture/invariants.md), this is the sole ingest path for `cli_events`.
+
+### POST /telemetry/cli
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer mt_550e8400-e29b-41d4-a716-446655440000" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "payload_schema_version": 1,
+    "command": "check",
+    "duration_ms": 142,
+    "validation": { "passed": true, "findings": 0 },
+    "stack_categories": { "lang": "typescript", "mono": true, "deploy": "cloudflare-workers" },
+    "counts": { "tree_entries": 18, "routes": 4, "decisions": 21 }
+  }' \
+  https://mcp.contextqb.com/telemetry/cli
+```
+
+The payload schema is enforced by `CliTelemetryPayloadSchema` in [`apps/mcp/src/telemetry-schema.ts`](src/telemetry-schema.ts). Any field outside that schema is rejected with `400 invalid_payload`.
+
+Success (200):
+
+```json
+{ "ok": true }
+```
+
+Error responses:
+
+| Status | Error Code        | Description                                    |
+| ------ | ----------------- | ---------------------------------------------- |
+| 400    | `invalid_payload` | Body is not valid JSON or fails schema check   |
+| 401    | `missing_token`   | No Authorization header or `?token=`           |
+| 401    | `invalid_token`   | Token not found or revoked                     |
+| 429    | `rate_limited`    | Token exceeded 600 requests/minute (this colo) |
+| 500    | `internal_error`  | Failed to record telemetry                     |
+
+## MCP Transport Endpoints
+
+The Worker exposes the Model Context Protocol over HTTP via two paths:
+
+| Endpoint            | Transport                | Used by                                             |
+| ------------------- | ------------------------ | --------------------------------------------------- |
+| `POST /mcp`         | Streamable HTTP          | Cursor, Windsurf, modern clients                    |
+| `GET /sse`          | Server-Sent Events (SSE) | Claude Desktop via `mcp-remote`, legacy SSE clients |
+| `POST /sse/message` | SSE message channel      | Same as `/sse`; used for client → server messages   |
+
+These endpoints are **not intended for direct curl use** — they are protocol surfaces driven by an MCP client. Configure your MCP client per the snippets at the top of this README, or run `contextqb mcp setup` to emit a ready-to-paste config.
+
+If a request to `/mcp` or `/sse` carries a valid `Authorization: Bearer mt_...` token, the Worker records an anonymous `mcp_events` row (tool name, response time, country code) per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md). Methodology tools work without a token; community insight tools require one.
+
 ## Insights API
 
 Query community-wide aggregated insights. Requires valid membership token. CORS-enabled for `https://contextqb.com`.
@@ -366,16 +419,20 @@ Each aggregation run deletes existing rows for a topic before inserting new ones
 
 ## Rate Limits
 
-Cloudflare Rate Limiting Rules protect the membership and telemetry endpoints from abuse.
+The membership, telemetry, and insights endpoints are rate-limited using the [Cloudflare Workers Rate Limiting API](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/). Bindings are declared in `wrangler.jsonc` under `ratelimits` and enforced in `src/index.ts` via `enforceRateLimit()` before route handlers run.
 
-| Endpoint               | Limit       | Key   | Rule Name                       |
-| ---------------------- | ----------- | ----- | ------------------------------- |
-| `/membership/register` | 60 req/min  | IP    | `contextqb-membership-register` |
-| `/membership/revoke`   | 60 req/min  | IP    | `contextqb-membership-revoke`   |
-| `/telemetry/cli`       | 600 req/min | Token | `contextqb-telemetry-cli`       |
-| `/insights`            | 60 req/min  | Token | `contextqb-insights`            |
+| Endpoint               | Limit       | Key strategy                   | Binding                     |
+| ---------------------- | ----------- | ------------------------------ | --------------------------- |
+| `/membership/register` | 60 req/min  | `token:` (if any) else `ip:`   | `MEMBERSHIP_REGISTER_LIMIT` |
+| `/membership/revoke`   | 60 req/min  | `token:` (always present here) | `MEMBERSHIP_REVOKE_LIMIT`   |
+| `/telemetry/cli`       | 600 req/min | `token:` (always present here) | `TELEMETRY_CLI_LIMIT`       |
+| `/insights`            | 60 req/min  | `token:` (always present here) | `INSIGHTS_LIMIT`            |
 
-Exceeding a limit returns `429 Too Many Requests`. Rules are configured in the Cloudflare dashboard under Security > WAF > Rate limiting rules.
+Exceeding a limit returns `429 Too Many Requests` with body `{ "error": "rate_limited", "message": "..." }`. The check fires before token validation, so unauthenticated bursts cannot exhaust the validation path.
+
+**Locality:** Cloudflare's Workers Rate Limiting API is per-colo, not global. A determined attacker spread across multiple Cloudflare locations can effectively multiply this limit. For v1 this is acceptable; if abuse materializes, additional global protections (Durable Object counters or dashboard rules) can be layered on top.
+
+**Verification:** burst 65 parallel `POST /membership/register` calls from a single IP and observe 429s on the 61st+ call.
 
 ## Token Rotation
 

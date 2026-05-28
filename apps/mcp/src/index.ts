@@ -25,9 +25,61 @@ const URI_SCHEME = "contextqb";
 
 interface Env {
   DB: D1Database;
+  // Rate Limiting bindings (ADR-0018, Tranche G).
+  // Configured in wrangler.jsonc under "ratelimits".
+  MEMBERSHIP_REGISTER_LIMIT: RateLimit;
+  MEMBERSHIP_REVOKE_LIMIT: RateLimit;
+  TELEMETRY_CLI_LIMIT: RateLimit;
+  INSIGHTS_LIMIT: RateLimit;
 }
 
 type ContentKind = "principles" | "playbooks" | "audits" | "prompts" | "guides" | "briefings";
+
+/**
+ * Build a stable rate-limit key for a request.
+ * Prefers an authenticated token when present (Authorization: Bearer or ?token=),
+ * falls back to CF-Connecting-IP. The "ip:" / "token:" prefix prevents collisions
+ * between an attacker who knows a victim's IP and the victim's token bucket.
+ *
+ * Note: Workers Rate Limiting locality is per Cloudflare colo, not global —
+ * so a determined attacker spread across regions can multiply this limit by
+ * the number of colos they hit. For v1, this is acceptable (raises cost of
+ * abuse without introducing global coordination overhead).
+ */
+function rateLimitKey(request: Request): string {
+  const auth = request.headers.get("Authorization");
+  if (auth?.startsWith("Bearer ")) {
+    return `token:${auth.slice(7)}`;
+  }
+  const queryToken = new URL(request.url).searchParams.get("token");
+  if (queryToken) {
+    return `token:${queryToken}`;
+  }
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  return `ip:${ip}`;
+}
+
+const RATE_LIMIT_BODY = JSON.stringify({
+  error: "rate_limited",
+  message: "Too many requests. Try again in a minute.",
+});
+
+/**
+ * Apply a rate limit binding to the current request.
+ * Returns null when the request is within budget, or a 429 Response when over.
+ */
+async function enforceRateLimit(
+  limiter: RateLimit,
+  request: Request,
+  extraHeaders: HeadersInit = {},
+): Promise<Response | null> {
+  const { success } = await limiter.limit({ key: rateLimitKey(request) });
+  if (success) return null;
+  return new Response(RATE_LIMIT_BODY, {
+    status: 429,
+    headers: { "Content-Type": "application/json", ...extraHeaders },
+  });
+}
 
 interface BundledDocument {
   id: string;
@@ -689,6 +741,8 @@ export default {
           },
         );
       }
+      const limited = await enforceRateLimit(env.MEMBERSHIP_REGISTER_LIMIT, request);
+      if (limited) return limited;
       return register(request, env);
     }
 
@@ -702,6 +756,8 @@ export default {
           },
         );
       }
+      const limited = await enforceRateLimit(env.MEMBERSHIP_REVOKE_LIMIT, request);
+      if (limited) return limited;
       const member = await validateToken(request, env);
       if (member instanceof Response) return member;
       return revoke(request, env, member);
@@ -733,6 +789,8 @@ export default {
           },
         );
       }
+      const limited = await enforceRateLimit(env.TELEMETRY_CLI_LIMIT, request);
+      if (limited) return limited;
       const member = await validateToken(request, env);
       if (member instanceof Response) return member;
       return handleCliTelemetry(request, env, member);
@@ -756,6 +814,8 @@ export default {
           },
         );
       }
+      const limited = await enforceRateLimit(env.INSIGHTS_LIMIT, request, corsHeaders());
+      if (limited) return limited;
       const member = await validateToken(request, env);
       if (member instanceof Response) {
         // Add CORS headers to 401 response so browser can read the error
