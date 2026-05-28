@@ -1,11 +1,10 @@
 ---
 eyebrow: MCP
-headline: The ContextQB MCP server.
+headline: Give your agent the ContextQB playbook.
 subhead: >-
-  Drop the ContextQB MCP into any compatible agent — Cursor, Claude Desktop,
-  Windsurf, or any other MCP-aware tool — and your agent gains access to every
-  guide, briefing, principle, playbook, audit, and prompt on this site,
-  addressable by URI.
+  Add the ContextQB MCP to Cursor, Claude Desktop, Windsurf, or any MCP-aware
+  tool. Your agent gets access to every guide, briefing, principle, playbook,
+  audit, and prompt on this site, addressable by URI.
 meta_title: MCP
 meta_description: ""
 
@@ -13,7 +12,9 @@ meta_description: ""
 
 ## What it exposes
 
-The MCP server publishes resources under the `contextqb://` scheme:
+The MCP server gives your agent two useful things: readable resources and tools
+that return agent-ready instructions. Resources live under the `contextqb://`
+scheme:
 
 ```
 contextqb://principles/<id>
@@ -24,7 +25,7 @@ contextqb://guides/<id>
 contextqb://briefings/<id>
 ```
 
-And the following tools, each returning a structured Markdown document:
+It also exposes tools that return structured Markdown:
 
 - `list_principles` / `get_principle`
 - `list_playbooks` / `get_playbook`
@@ -40,9 +41,10 @@ And the following tools, each returning a structured Markdown document:
 - `get_naming_convention_checklist`
 - `get_state_management_checklist`
 
-## Quick start (remote — recommended)
+## Fastest setup
 
-The hosted server at `mcp.contextqb.com` requires no installation. Just add the config and restart your tool.
+The hosted server at `mcp.contextqb.com` requires no install. Add the config,
+restart your tool, and the corpus is available in your agent.
 
 ### Cursor
 
@@ -88,15 +90,15 @@ Add to your MCP config:
 }
 ```
 
-## First useful prompt
+## Try it on a real review
 
-Once installed, try this in your agent:
+Once the MCP is installed, ask your agent to use it on the current project:
 
 > Use the ContextQB MCP. Call `get_architecture_principles`. Then perform a UI architecture audit on the current repository using the template returned by `get_audit_prompt` with id `ui-architecture`. Produce the full document.
 
-## Local install (alternative)
+## Local setup
 
-For offline use or development, you can run the MCP server locally. This requires cloning the repository:
+For offline use or development, run the MCP server from a local checkout:
 
 ```bash
 git clone https://github.com/contextqb/contextqb.git
@@ -105,7 +107,3 @@ pnpm install
 ```
 
 Then configure your tool to run the local server. See the [sample configs](https://github.com/contextqb/contextqb/tree/main/examples/sample-mcp-configs) in the repository for details.
-
-## Future tools
-
-The roadmap includes repo-aware analysis (import graph mapping, god-component detection, duplicate-logic detection). Those are intentionally deferred — see [About](/about) for the reasoning.

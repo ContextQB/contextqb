@@ -5,17 +5,15 @@ headline: |
   is worse than an agent with no map.
 subhead: >-
   Your `context.qb.yaml` is the file your AI agent reads first. It is the
-  play-sheet — the project's map, written for an assistant that hasn't seen
-  this repo before. **contextqb check** is the watchdog that keeps it true.
-  Run it locally, wire it into your build, and your agent will never read a
-  file that disagrees with reality.
+  project's map, written for an assistant that has not seen this repo before.
+  **contextqb check** keeps that map honest. Run it locally, wire it into your
+  build, and your agent stops starting from stale instructions.
 hero_banner_label: This is an early version.
 hero_banner_body: >-
   The drift detector is designed for builders who are _starting a new project_
   with the ContextQB conventions in place. It assumes a specific layout (see
-  below). If you have an existing project that's laid out differently, the
-  tool won't work out of the box yet — we plan to make it adaptable in a
-  future release.
+  below). If you have an existing project laid out differently, the tool will
+  not work out of the box yet.
 hero_cta_install_label: Install in 30 seconds
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
@@ -30,7 +28,7 @@ problem_paragraphs:
     of every session is the one you wrote three weeks ago. The map drifts away
     from the territory.
   - >-
-    A confused agent is a manageable problem. A confident agent reading a
+    A confused agent is a manageable problem. A confident agent reading the
     wrong map is the failure mode that wastes hours and lands bad code.
     _contextqb check_ exists so that drift becomes a build-time error instead
     of a runtime surprise.
@@ -78,8 +76,8 @@ watches_cards:
       Mark an ADR as superseded, forget to update the map, and your agent
       treats a retired decision as live. The detector catches this.
 
-scope_eyebrow: Today, this is for new projects
-scope_heading: The current version is for builders starting from scratch.
+scope_eyebrow: Honest scope
+scope_heading: Today, this is for new ContextQB-shaped projects.
 scope_intro: >-
   ContextQB is opinionated about how a project is laid out. The drift
   detector enforces those opinions by looking in three specific places:
@@ -94,13 +92,12 @@ scope_right_paragraphs:
     install it. **No configuration needed.**
   - >-
     If you have an existing repo with a different layout — yarn workspaces,
-    Vercel deploys, ADRs in `docs/adr/`, anything else — the tool won't see
-    your sources of truth yet. Making it adaptable to existing repos is on
-    the roadmap once we've validated the conventions in the field. For now,
-    this is for greenfield work.
+    Vercel deploys, ADRs in `docs/adr/`, anything else — the tool will not see
+    your sources of truth yet. For now, use it when you are starting a project
+    with the ContextQB conventions in place.
 
 fits_eyebrow: Where it lives
-fits_heading: Three places, one truth.
+fits_heading: Where the check belongs.
 fits_cards:
   - title: On your laptop
     body: >-
@@ -114,7 +111,7 @@ fits_cards:
       map don't merge.
   - title: In your agent
     body: >-
-      When your agent reads `context.qb.yaml` at the start of a session, it's
+      When your agent reads `context.qb.yaml` at the start of a session, it is
       reading a file that passed the check. Its mental model is true.
       Sessions stop opening with a stale snapshot.
 

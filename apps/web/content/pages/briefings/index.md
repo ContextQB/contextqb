@@ -1,10 +1,9 @@
 ---
 eyebrow: Briefings
-headline: Short, opinionated pieces. Each one frames a question and answers it.
+headline: Short answers to questions that come up before code.
 subhead: >-
-  Briefings are the pre-game notes — when a comparison or a clarification
-  matters enough to stand alone but isn't big enough to be a guide. Each one
-  starts with the framing, then gets to the answer.
+  Briefings are pre-game notes: quick comparisons and clarifications that help
+  you make a better call before the agent starts building.
 meta_title: Briefings
 meta_description: ""
 

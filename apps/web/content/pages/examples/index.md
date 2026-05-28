@@ -1,10 +1,10 @@
 ---
 eyebrow: Examples
-headline: Sample outputs that demonstrate quality.
+headline: What good agent work looks like.
 subhead: >-
-  These are fictional but realistic examples of what a good agent response
-  looks like. Use them as benchmarks. If your agent produces something
-  markedly less specific than these, push back.
+  These fictional but realistic examples show the level of specificity you
+  should expect from an agent. Use them as benchmarks. If your agent produces
+  something much thinner than this, push back.
 meta_title: Examples
 meta_description: ""
 

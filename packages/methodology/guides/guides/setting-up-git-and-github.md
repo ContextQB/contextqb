@@ -49,7 +49,7 @@ Here is what you have to understand before anything else. An AI agent does not w
 - **Confidently break a feature** while fixing a different feature.
 - **Lose track of where it was** mid-task and overwrite half-finished work with a different half-finished work.
 
-These are not edge cases. They happen to every builder who works with agents, including expert developers. The Vibe Code Bible calls one of the most important commandments _"Refactor With Duplicates, Not Overwrites"_ — for exactly this reason.
+These are not edge cases. They happen to every builder who works with agents, including expert developers. One of the core ContextQB habits is _"Refactor With Duplicates, Not Overwrites"_ — for exactly this reason.
 
 Git turns the inevitable mistake into a non-event. Before letting an agent loose on a file, you commit. The agent makes a mess. You type one command. You're back where you started, with nothing lost. Without git, the same mistake costs you a day of work and your sanity.
 
@@ -264,7 +264,7 @@ A few refinements:
 
 ## Branches: the safety valve for big changes
 
-The Vibe Code Bible calls one of its commandments _"Refactor With Duplicates, Not Overwrites"_ — duplicate the file before refactoring it, so the original is preserved. In git, you don't duplicate files. You duplicate _the whole project_, for free, with a branch.
+ContextQB teaches _"Refactor With Duplicates, Not Overwrites"_ — duplicate the file before refactoring it, so the original is preserved. In git, you don't duplicate files. You duplicate _the whole project_, for free, with a branch.
 
 A branch is a parallel timeline. You make a branch, you mess around on it, the agent rewrites half the app, and your `main` branch is completely untouched the whole time. If the experiment works, you merge the branch back. If it doesn't, you delete the branch and forget it ever existed.
 
