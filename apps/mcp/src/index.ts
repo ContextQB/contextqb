@@ -15,6 +15,7 @@ import { z } from "zod";
 import contentBundle from "./generated/content-bundle.json";
 import { validateToken, register, revoke, status } from "./membership";
 import { handleCliTelemetry, recordMcpEvent } from "./telemetry";
+import { runAggregation } from "./aggregation";
 
 const SERVER_NAME = "contextqb";
 const SERVER_VERSION = "0.1.0";
@@ -655,5 +656,12 @@ export default {
     }
 
     return new Response("Not found", { status: 404 });
+  },
+
+  async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    console.info(
+      `[cron] Aggregation triggered at ${new Date().toISOString()}, cron: ${controller.cron}`,
+    );
+    ctx.waitUntil(runAggregation(env));
   },
 } satisfies ExportedHandler<Env>;

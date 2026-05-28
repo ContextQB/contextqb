@@ -18,4 +18,10 @@
       "database_id": "94d23d6e-e6bb-4a3b-8a63-10f12caab945",
     },
   ],
+
+  // Cron Trigger for daily aggregation (ADR-0018, Tranche E)
+  // Runs at 06:00 UTC daily to aggregate cli_events into insights
+  "triggers": {
+    "crons": ["0 6 * * *"],
+  },
 }
