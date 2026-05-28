@@ -74,9 +74,12 @@ mcp_cta_body: >-
   The ContextQB MCP server exposes every guide, principle, playbook, audit, and
   prompt through the Model Context Protocol. Add it to Cursor, Claude Desktop,
   or any MCP-aware tool, and your agent can pull the right standard into the
-  conversation when you need it.
+  conversation when you need it. Members also get four community-insight tools
+  that summarize what the rest of the cooperative is building.
 mcp_cta_label: MCP setup →
 mcp_cta_href: /mcp
+mcp_cta_secondary_label: See community insights →
+mcp_cta_secondary_href: /insights
 
 meta_title: ContextQB
 meta_description: >-
