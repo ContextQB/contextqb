@@ -122,8 +122,12 @@ install_lede: >-
 install_steps:
   - title: Make sure your repo has a `context.qb.yaml`
     body: >-
-      No file yet? Start from one of the [worked examples](/examples) and
-      adapt it to your project. Most repos need fewer than 100 lines.
+      No file yet? Follow the
+      [write a context.qb playbook](/playbooks/write-a-context-qb) — it walks
+      you through every section. The
+      [repo's own context.qb.yaml](https://github.com/contextqb/contextqb/blob/main/context.qb.yaml)
+      is a real working sample to copy from. Most repos need fewer than 100
+      lines.
   - title: Run the check
     body: >-
       `pnpm check:qb` runs in under three seconds. Exit code 0 means clean;
@@ -180,8 +184,8 @@ closer_paragraphs:
     eventually" into "the build is red until you fix it." That single shift
     is the difference between a map that decays and a map your agent can
     actually trust.
-closer_cta_examples_label: See example context.qb.yaml files →
-closer_cta_examples_href: /examples
+closer_cta_examples_label: Write your context.qb.yaml →
+closer_cta_examples_href: /playbooks/write-a-context-qb
 closer_cta_mcp_label: Pair with the MCP →
 closer_cta_mcp_href: /mcp
 
