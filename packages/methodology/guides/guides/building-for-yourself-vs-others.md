@@ -120,14 +120,14 @@ Public use is an architectural boundary.
 
 Every tier lets you skip some things and forces you to handle others.
 
-| Decision area | Just me | Trusted group | Public |
-| --- | --- | --- | --- |
-| Identity | Often none | Usually simple accounts or membership | Required, with recovery and abuse handling |
-| Data storage | Local files may be fine | Shared storage becomes likely | Managed storage with privacy controls |
-| Interface polish | Whatever you can use | Clear enough for known users | Clear enough for strangers |
-| Documentation | Notes for future-you | Basic instructions for the group | Public onboarding, support, and policies |
-| Failure handling | You can inspect and fix | Users need a recovery path | Failures need predictable, user-safe behavior |
-| Security posture | Keep secrets out of code | Protect shared data | Treat public input as hostile |
+| Decision area    | Just me                  | Trusted group                         | Public                                        |
+| ---------------- | ------------------------ | ------------------------------------- | --------------------------------------------- |
+| Identity         | Often none               | Usually simple accounts or membership | Required, with recovery and abuse handling    |
+| Data storage     | Local files may be fine  | Shared storage becomes likely         | Managed storage with privacy controls         |
+| Interface polish | Whatever you can use     | Clear enough for known users          | Clear enough for strangers                    |
+| Documentation    | Notes for future-you     | Basic instructions for the group      | Public onboarding, support, and policies      |
+| Failure handling | You can inspect and fix  | Users need a recovery path            | Failures need predictable, user-safe behavior |
+| Security posture | Keep secrets out of code | Protect shared data                   | Treat public input as hostile                 |
 
 This table is not meant to scare you. It is meant to stop you from carrying the wrong assumptions forward.
 
