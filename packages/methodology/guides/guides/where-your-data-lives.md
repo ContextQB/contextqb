@@ -264,12 +264,12 @@ Technology choices come after those answers.
 
 Before you choose a database vendor, write a small data map:
 
-| Information | Who needs it? | Where can it live first? | What is the risk? |
-| --- | --- | --- | --- |
-| Transcript export | Just me | File on disk | Losing the file means rerunning the job |
-| Team notes | Trusted group | Managed database | Wrong user could see private notes |
-| Public profile | Public | Managed database | Strangers can view it, so the public/private boundary must be clear |
-| Uploaded video | Trusted group or public | Object storage + database record | Large file plus access control |
+| Information       | Who needs it?           | Where can it live first?         | What is the risk?                                                   |
+| ----------------- | ----------------------- | -------------------------------- | ------------------------------------------------------------------- |
+| Transcript export | Just me                 | File on disk                     | Losing the file means rerunning the job                             |
+| Team notes        | Trusted group           | Managed database                 | Wrong user could see private notes                                  |
+| Public profile    | Public                  | Managed database                 | Strangers can view it, so the public/private boundary must be clear |
+| Uploaded video    | Trusted group or public | Object storage + database record | Large file plus access control                                      |
 
 You do not have to get this perfect. You do have to make it explicit.
 

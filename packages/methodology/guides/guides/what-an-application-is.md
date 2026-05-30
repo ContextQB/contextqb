@@ -111,13 +111,13 @@ Applications reach users through channels.
 
 The channel is not just a technical label. It changes what the app has to be responsible for.
 
-| Channel | What it usually means | Good first question |
-| --- | --- | --- |
-| Command-line tool | A command someone runs in a terminal | Is the user technical enough to run commands? |
-| Desktop app | An app installed on a laptop or desktop | Does the work happen mainly on one machine? |
-| Web app | A site or product used through a browser | Do users need access from anywhere? |
-| Mobile app | An app installed on iOS or Android | Does the phone's camera, location, or push notifications matter? |
-| Progressive web app | A web app with some installed-app behavior | Is browser access enough, but app-like use helpful? |
+| Channel             | What it usually means                      | Good first question                                              |
+| ------------------- | ------------------------------------------ | ---------------------------------------------------------------- |
+| Command-line tool   | A command someone runs in a terminal       | Is the user technical enough to run commands?                    |
+| Desktop app         | An app installed on a laptop or desktop    | Does the work happen mainly on one machine?                      |
+| Web app             | A site or product used through a browser   | Do users need access from anywhere?                              |
+| Mobile app          | An app installed on iOS or Android         | Does the phone's camera, location, or push notifications matter? |
+| Progressive web app | A web app with some installed-app behavior | Is browser access enough, but app-like use helpful?              |
 
 Do not treat this table as a ranking. A command-line tool is not "less real" than a mobile app. It is just a different channel.
 
