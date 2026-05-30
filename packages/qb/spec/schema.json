@@ -114,6 +114,17 @@
         "type": "string"
       }
     },
+    "paths": {
+      "description": "Optional overrides for source-of-truth file/directory locations the drift detector reads. Adapters fall back to documented defaults when a key is absent.",
+      "type": "object",
+      "properties": {
+        "decisions": {
+          "type": "string",
+          "description": "Directory containing ADR files (default: docs/architecture/decisions)."
+        }
+      },
+      "additionalProperties": false
+    },
     "flows": {
       "description": "Reserved for v1.x: multi-step user journeys.",
       "type": ["array", "object"]
