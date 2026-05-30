@@ -1,5 +1,5 @@
 -- Migration 0001 — initial telemetry schema
--- Tranche A of docs/punchlists/0018-data-cooperative.md v0.4
+-- Tranche A of docs/archive/scopes/0018-data-cooperative.md
 -- Owner: apps/mcp Worker (binding env.DB)
 
 CREATE TABLE members (

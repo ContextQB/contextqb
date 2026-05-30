@@ -44,7 +44,9 @@ The cheapest time to give a document a real name is the moment it is created.
 
 **A documentation filename describes a responsibility.** If you can only imagine one instance of the file ever existing, you have named a category, not a file.
 
-A `PUNCHLIST.md` is a category. `qb-cli-v1-punchlist.md` (or, in a punchlists directory, `0014-qb-cli-v1.md` numbered to its ADR) is a name. The first will collide as soon as a second punchlist exists. The second tells the reader what the document is without needing the parent folder.
+A `PUNCHLIST.md` is a category. `qb-cli-v1-scope.md` (or, in a scopes directory, `0014-qb-cli-v1.md` numbered to its ADR) is a name. The first will collide as soon as a second scope exists. The second tells the reader what the document is without needing the parent folder.
+
+Note: `PUNCHLIST.md` is doubly wrong. It fails the singleton test (generic naming), _and_ it misuses the word "punchlist." In construction, a punchlist is a remediation list at the end of a build. A pre-build contract is called a _scope_. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) and [ADR-0025](../../../../docs/architecture/decisions/0025-architectural-vocabulary.md) for the canonical vocabulary.
 
 ## Why this is harder for docs than for code
 
@@ -72,13 +74,13 @@ These earn the all-caps singleton treatment because they are universally one-per
 
 Use these instead of inventing a new generic name:
 
-| Pattern                        | Use for                                           | Example                                           |
-| ------------------------------ | ------------------------------------------------- | ------------------------------------------------- |
-| `NNNN-<slug>.md`               | Sequentially-numbered append-only records         | `0014-drift-detector-v1.md` (an ADR)              |
-| `<NNNN>-<slug>.md` under a dir | Records anchored to another numbered series       | `docs/punchlists/0018-data-cooperative.md`        |
-| `YYYY-MM-<slug>/` (folder)     | Dated experiment, incident, or campaign artefacts | `experiments/2026-05-context-qb-efficiency/`      |
-| `<verb-noun>.md`               | Actionable workflows (playbooks)                  | `write-an-adr.md`, `set-up-agents-md.md`          |
-| descriptive kebab-case         | Everything else                                   | `external-accounts-setup.md`, `repo-structure.md` |
+| Pattern                        | Use for                                           | Example                                            |
+| ------------------------------ | ------------------------------------------------- | -------------------------------------------------- |
+| `NNNN-<slug>.md`               | Sequentially-numbered append-only records         | `0014-drift-detector-v1.md` (an ADR)               |
+| `<NNNN>-<slug>.md` under a dir | Records anchored to another numbered series       | `docs/scopes/0024-context-qb-adapter-expansion.md` |
+| `YYYY-MM-<slug>/` (folder)     | Dated experiment, incident, or campaign artefacts | `experiments/2026-05-context-qb-efficiency/`       |
+| `<verb-noun>.md`               | Actionable workflows (playbooks)                  | `write-an-adr.md`, `set-up-agents-md.md`           |
+| descriptive kebab-case         | Everything else                                   | `external-accounts-setup.md`, `repo-structure.md`  |
 
 The common thread: the filename answers "what specifically is this?" without the reader having to look at the parent folder.
 

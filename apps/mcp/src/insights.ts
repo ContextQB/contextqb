@@ -7,7 +7,7 @@
  * Public responses expose n_bucket only, never n_users (INV-10).
  * The bucketise() function is the boundary — exact counts are internal only.
  *
- * Ref: docs/punchlists/0018-data-cooperative.md (Tranche F)
+ * Ref: docs/archive/scopes/0018-data-cooperative.md (Tranche F)
  * Ref: docs/architecture/invariants.md (INV-9, INV-10)
  */
 

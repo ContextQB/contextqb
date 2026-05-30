@@ -4,7 +4,7 @@
  * INV-3: This is the ONLY file that reads Authorization header or ?token= query param.
  * INV-5: This is the ONLY file that issues DELETE FROM cli_events or mcp_events.
  *
- * Ref: docs/punchlists/0018-data-cooperative.md (Tranche B)
+ * Ref: docs/archive/scopes/0018-data-cooperative.md (Tranche B)
  * Ref: docs/architecture/invariants.md (INV-3, INV-5)
  */
 
