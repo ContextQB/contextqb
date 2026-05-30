@@ -95,15 +95,19 @@ If you can describe the flow of information, you are already thinking architectu
 
 An application does not have to start with a beautiful interface.
 
-The operator story behind this guide started with a practical problem: a family video had sections where relatives were speaking Chinese. Transcription tools could produce text. ChatGPT could translate text. But manually finding every place in Final Cut Pro and inserting translations would be slow.
+It also does not have to start at the scale of a company. People build applications at many sizes:
 
-So the first useful version was not a website. It was not a mobile app. It was a command-line utility: run a command, use Whisper to transcribe and translate, then produce a file that could be imported into Final Cut Pro.
+- A private video transcription utility that turns speech into translated subtitles or an importable editing file.
+- An accounting helper that reads expense line items and uses AI-generated summaries to group them into useful categories.
+- A small CRM custom-made for one shop, with the exact fields and follow-up habits that shop actually uses.
+- A public product for thousands of users.
+- A new kind of enterprise social network nobody has conceived of yet.
 
-That is an application.
+All of those can be applications. The scale changes. The basic shape stays the same: information comes in, the system does work, something useful comes out, and the workflow can be repeated.
 
-It was for one user. It ran on one machine. It did not need signup, payments, a dashboard, or a public landing page. It needed to take information in, process it correctly, and produce the right file.
+A private utility may only need to work for one person on one machine. A shop tool may need a simple interface, a shared customer list, and a way for a few staff members to keep track of follow-up. A public product may need accounts, permissions, support, payments, privacy controls, and careful abuse handling.
 
-That is often the right first version. You prove the work is real before you turn it into a product.
+You do not have to know which scale you will reach before you start. You do have to learn to see the range of possible applications. Some apps are small tools for private work. Some are custom systems for a business. Some become products other people pay for. The point is not to start big. The point is to understand what kind of thing you are trying to make.
 
 ## The channel changes the shape
 
