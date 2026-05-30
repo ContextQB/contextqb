@@ -12,7 +12,7 @@ review:
   reviewer: "agent:cooperative-flow-tranche-a"
   reviewer_notes: |-
     Added --telemetry-preview as fourth opt-out option and cold-start reality
-    sentence for early members per §5.5 of the cooperative flow punchlist.
+    sentence for early members per §5.5 of the cooperative flow scope.
 ---
 
 ContextQB collects limited, privacy-preserving telemetry so we can understand which parts of the methodology are useful and where builders get stuck. This page explains what we collect, what we never collect, and how you can opt out.

@@ -92,5 +92,5 @@ review:
   reviewer: "agent:cooperative-flow-tranche-d"
   reviewer_notes: |-
     Added cooperative mention to MCP CTA body and a secondary link to
-    /insights per §5.4 of the cooperative flow punchlist.
+    /insights per §5.4 of the cooperative flow scope.
 ---

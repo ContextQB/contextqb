@@ -161,7 +161,7 @@ pnpm exec wrangler d1 migrations apply contextqb-telemetry --local
 
 Both `cli_events` and `mcp_events` carry an integer `payload_schema_version` column. Bump only on backwards-incompatible payload-shape changes; the aggregation pipeline filters or coerces per version.
 
-See the [Tranche A section of punchlist 0018](../../docs/punchlists/0018-data-cooperative.md) for the schema rationale.
+See the [Tranche A section of scope 0018](../../docs/archive/scopes/0018-data-cooperative.md) for the schema rationale.
 
 ## Membership Endpoints
 

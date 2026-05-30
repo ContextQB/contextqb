@@ -15,7 +15,7 @@ review:
   reviewer: "agent:cooperative-flow-tranche-c"
   reviewer_notes: |-
     Added "Pair with the data cooperative" section and documented the four
-    community_* tools per §5.2 of the cooperative flow punchlist.
+    community_* tools per §5.2 of the cooperative flow scope.
 ---
 
 ## What it exposes

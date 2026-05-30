@@ -6,10 +6,10 @@ version: 0.1.0
 problem: |
   Without an intentional documentation system, every project drifts into one of two failure modes: a sprawling "docs/" folder no one reads, or no documentation at all. Both leave the agent reinventing the project on every prompt. The cost is paid in every session, not at some far-off handoff.
 when_to_use: |
-  At the very start of a new project, alongside `set-up-agents-md` and `write-a-context-qb`. Also: at the start of a new major feature or subsystem, when a new documentation surface (a punchlist, a runbook, a post-mortem) is about to appear for the first time.
+  At the very start of a new project, alongside `set-up-agents-md` and `write-a-context-qb`. Also: at the start of a new major feature or subsystem, when a new documentation surface (a scope, a runbook, a post-mortem) is about to appear for the first time.
 expected_outputs:
   - A documented set of audience surfaces (AGENTS.md, ADRs, architecture overviews, operator-facing content) with one example file in each.
-  - A documented set of process surfaces (punchlists, handoffs, post-mortems, experiments, runbooks) — or an explicit list of which are not in use yet.
+  - A documented set of process surfaces (scopes, handoffs, post-mortems, experiments, runbooks) — or an explicit list of which are not in use yet.
   - A naming pattern recorded in each directory's README so the second instance of any document already knows what to call itself.
   - References to the three documentation-related principles so future contributors do not re-derive the system.
 audience:
@@ -83,15 +83,19 @@ These are the surfaces that show up the moment work is underway. The trap is to 
 
 The fix is to set up the directories empty, with a `README.md` in each that documents the naming pattern. The first real document then has a name pattern waiting for it.
 
-| Surface      | Path                 | When it shows up                                                                    | Naming pattern                                                                             |
-| ------------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Punchlists   | `docs/punchlists/`   | First feature that takes more than a session.                                       | `NNNN-<slug>.md` where `NNNN` is the related ADR number, OR `<feature-slug>-punchlist.md`. |
-| Handoffs     | `docs/handoffs/`     | First time you stop work mid-feature and need to leave context for a fresh session. | `YYYY-MM-DD-<feature-slug>.md`.                                                            |
-| Post-mortems | `docs/post-mortems/` | First incident or non-trivial bug.                                                  | `YYYY-MM-DD-<incident-slug>.md`.                                                           |
-| Experiments  | `experiments/`       | First time you want to test a claim with data.                                      | `YYYY-MM-<experiment-slug>/` folder with `experiment-protocol.md` and other files inside.  |
-| Runbooks     | `docs/operations/`   | First time you need to record "how to deploy" or "how to rotate this secret."       | `<verb-noun>.md` (e.g. `rotate-supabase-keys.md`).                                         |
+| Surface      | Path                 | When it shows up                                                                    | Naming pattern                                                                        |
+| ------------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Scopes       | `docs/scopes/`       | First feature that takes more than a session.                                       | `NNNN-<slug>.md` (ADR-anchored) or `<feature-slug>.md`.                               |
+| Handoffs     | `docs/handoffs/`     | First time you stop work mid-feature and need to leave context for a fresh session. | `YYYY-MM-DD-<feature-slug>.md`.                                                       |
+| Post-mortems | `docs/post-mortems/` | First incident or non-trivial bug.                                                  | `YYYY-MM-DD-<incident-slug>.md`.                                                      |
+| Experiments  | `experiments/`       | First time you want to test a claim with data.                                      | `YYYY-MM-<experiment-slug>/` folder with `experiment-protocol.md` and other files.    |
+| Runbooks     | `docs/operations/`   | First time you need to record "how to deploy" or "how to rotate this secret."       | `<verb-noun>.md` (e.g. `rotate-supabase-keys.md`).                                    |
+| Archive      | `docs/archive/`      | Day one (empty); populated when the first scope or handoff finishes.                | Subfolders: `scopes/`, `punchlists/`, `handoffs/`, `ad-hoc/`. Files keep their names. |
+| Changelog    | `<package>/`         | First version you want to record (often v1.0.0).                                    | `CHANGELOG.md` (Keep a Changelog format).                                             |
 
-You do not need to create all of these at once. Create the directories you anticipate needing in the next month; defer the others. When the moment for one arrives, set it up before writing the first document inside it — never the other way around.
+**Terminology note:** A _scope_ is the pre-build contract (goal, surfaces, risks, tranches). A _punchlist_ is the end-of-build remediation list. Most governance docs are scopes; true punchlists are rare. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) for the full vocabulary.
+
+You do not need to create all of these at once. Create the directories you anticipate needing in the next month; defer the others. When the moment for one arrives, set it up before writing the first document inside it — never the other way around. `docs/archive/` is the exception: set it up on day one, empty, so the policy is visible from the start.
 
 ## The discipline that makes this work
 
@@ -100,6 +104,7 @@ Three rules. All small, all cheap to enforce:
 1. **Set up the directory before the first instance.** When you realise a new kind of document is about to be written for the first time, pause and create the directory with its `README.md` first. This takes two minutes and prevents the `PUNCHLIST.md` problem.
 2. **Document the naming pattern in the directory's `README.md`.** Even one line is enough: "Files in this directory are named `<pattern>`. See [`documentation-file-naming`](contextqb://principles/documentation-file-naming)." The second contributor (human or agent) does not have to guess.
 3. **Update docs in the same change that triggers the update.** Not a separate sprint, not a "TODO: update docs." If the structural decision changes, the ADR (or AGENTS.md, or context.qb.yaml) changes with it.
+4. **Archive finished governance docs; never delete them.** When a scope ships or a handoff is consumed, move it to `docs/archive/<category>/`. This preserves references and post-mortem trails. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
 
 ## Copy-pasteable scaffold
 
@@ -119,8 +124,18 @@ your-project/
 │   │   │   ├── _template.md           ← Day 1
 │   │   │   └── 0001-<your-decision>.md ← Day 1 (first ADR)
 │   │   └── <other-area>.md            ← Add as the system grows
-│   ├── punchlists/
+│   ├── scopes/
 │   │   └── README.md                  ← Created when the first cross-cutting feature lands
+│   ├── archive/
+│   │   ├── README.md                  ← Day 1 (archive policy)
+│   │   ├── scopes/
+│   │   │   └── README.md
+│   │   ├── punchlists/
+│   │   │   └── README.md
+│   │   ├── handoffs/
+│   │   │   └── README.md
+│   │   └── ad-hoc/
+│   │       └── README.md
 │   ├── handoffs/
 │   │   └── README.md                  ← Created when the first session-handoff happens
 │   ├── operations/
@@ -135,7 +150,7 @@ Each directory's `README.md` is one screen at most. Index, naming pattern, link 
 
 ## How to ask an agent to scaffold this
 
-> Scaffold a ContextQB-style documentation system for this project per the `set-up-a-documentation-system` playbook. Create the day-one audience surfaces (AGENTS.md draft, context.qb.yaml draft, docs/architecture/decisions/ with template and index, docs/architecture/repo-structure.md). Set up the docs/punchlists/ and docs/handoffs/ directories with READMEs documenting the naming pattern from `documentation-file-naming`. Do not create the other process-surface directories yet — note them in docs/architecture/repo-structure.md as "not yet in use." After scaffolding, list every file you created and the one-line purpose of each.
+> Scaffold a ContextQB-style documentation system for this project per the `set-up-a-documentation-system` playbook. Create the day-one audience surfaces (AGENTS.md draft, context.qb.yaml draft, docs/architecture/decisions/ with template and index, docs/architecture/repo-structure.md). Set up docs/scopes/, docs/archive/ (with subfolders per the archive policy), and docs/handoffs/ with READMEs documenting the naming patterns from `documentation-file-naming` and `append-dont-overwrite`. Do not create the other process-surface directories yet — note them in docs/architecture/repo-structure.md as "not yet in use." After scaffolding, list every file you created and the one-line purpose of each.
 
 Then read the agent's output. Each generated file is a draft, not a finished document. The structure is what the playbook produces; the specifics are your call.
 
@@ -146,6 +161,7 @@ Then read the agent's output. Each generated file is a draft, not a finished doc
 - **Creating empty process directories with no `README.md`.** The directory's purpose has to be readable from inside it, or the next contributor will create a different directory for the same purpose.
 - **A README at the repo root that tries to be both human introduction and agent boot manifest.** Those are two different jobs. See [`context-quarterback-the-onboarding-map`](contextqb://principles/context-quarterback-the-onboarding-map).
 - **Generic process docs at the repo root (`PUNCHLIST.md`, `HANDOFF.md`, `NOTES.md`).** These violate [`documentation-file-naming`](contextqb://principles/documentation-file-naming) on day one and cost a rename the moment a second instance appears.
+- **Deleting finished scopes or handoffs instead of archiving them.** The archive exists so references continue to resolve and post-mortems have a trail. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
 
 ## Pairing this with ContextQB
 

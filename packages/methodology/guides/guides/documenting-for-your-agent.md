@@ -103,11 +103,12 @@ You do not need to set everything up at once. You do need to set each thing up _
 
 A reasonable growth curve looks like this:
 
-- **Day 1.** `AGENTS.md`, `context.qb.yaml`, the first ADR, the first overview.
-- **First feature that takes more than a session.** Add `docs/punchlists/` with a `README.md` describing the naming pattern. Then create the punchlist for the feature.
+- **Day 1.** `AGENTS.md`, `context.qb.yaml`, the first ADR, the first overview, and `docs/archive/` (empty but with a README explaining the archive policy).
+- **First feature that takes more than a session.** Add `docs/scopes/` with a `README.md` describing the naming pattern. Then create the scope for the feature.
 - **First time you stop work mid-feature.** Add `docs/handoffs/` with a `README.md` describing the naming pattern. Then write the handoff.
 - **First incident.** Add `docs/post-mortems/` with a `README.md`. Then write the post-mortem.
 - **First time you want to test a claim with data.** Add `experiments/` with a `README.md`. Then write the protocol.
+- **First scope or handoff that finishes.** Move it to `docs/archive/<category>/` with an archive header. Never delete a governance doc. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
 
 Each step is small. Each one prevents the next bad-naming cycle. The discipline is not "have every directory ready on day one" — it is "create the directory before the first file goes in it, and put the naming pattern in a README inside it."
 

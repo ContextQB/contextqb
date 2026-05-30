@@ -154,7 +154,7 @@ This is the one step the build loop has that the hardening loop does not. The fe
 When this happens:
 
 1. **Stop.** Do not silently roll forward. Silent roll-forward turns the plan into a fiction — and a fiction is worse than no plan, because future agents will read it as truth.
-2. **Return to feature-planning.** Revise the affected sections of the brief. Mark the change in the tranche history log with the rationale.
+2. **Return to feature-planning.** Revise the affected sections of the brief. Strike through revised lines (`~~old~~ new`) for substantive changes; promote noisy lines to the revision history table. Mark the change in the tranche history log with the rationale.
 3. **Re-approve.** "Implement revised plan as written" — the contract is amendable, but only deliberately.
 4. **Resume the loop** with the revised brief as the new input.
 
