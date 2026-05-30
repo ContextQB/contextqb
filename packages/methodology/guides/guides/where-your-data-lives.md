@@ -90,7 +90,7 @@ Examples:
 - A folder of images or transcripts.
 - A generated XML file for another application to import.
 
-Files are excellent for just-me tools. The FCP translation utility can produce a file because the user is also the operator. The output goes where the operator needs it: into Final Cut Pro.
+Files are excellent for just-me tools. A video transcription utility can produce a subtitle file, an accounting helper can produce a categorized CSV, and a cleanup script can produce a renamed folder of files. The output goes where the user needs it, often into another tool they already use.
 
 Files are easy to inspect. You can open them. You can copy them. You can attach them to an email. You can put them in a folder.
 
