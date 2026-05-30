@@ -33,13 +33,12 @@ path_lede: >-
   Pick the entry point that matches what you are trying to do right now.
 path_cards:
   - eyebrow: If you have an idea
-    title: Turn the idea into a buildable brief
+    title: Learn what kind of app you are building
     description: >-
-      Before code, you need a simple model of what the app is, who it serves,
-      and what has to happen first. Start there before you ask the agent to
-      build.
-    href: /guides/the-mental-model-of-your-app
-    cta: Read the mental-model guide
+      Before code, you need a simple model of what an app is, who it serves,
+      where its data lives, and which channel fits the first version.
+    href: /guides/what-an-application-is
+    cta: Start with Apps 101
     external: false
   - eyebrow: If you're new to all of this
     title: Put the safety rails in place
@@ -93,6 +92,18 @@ reads_lede: >-
   If you are not sure where to start, read these in the order we would give to
   a capable friend learning the practice.
 reads_items:
+  - href: /guides/what-an-application-is
+    title: What an Application Is
+    blurb: Files, runtimes, channels, and information flow in plain language.
+  - href: /guides/building-for-yourself-vs-others
+    title: Building for Yourself vs. Building for Others
+    blurb: "The three-tier model: just-me, trusted-group, and public."
+  - href: /guides/where-your-data-lives
+    title: Where Your Data Lives
+    blurb: How storage choices follow from who needs the data and from where.
+  - href: /guides/choosing-your-application-channel
+    title: Choosing Your Application Channel
+    blurb: Choose CLI, desktop, web, mobile, PWA, or integration from the user's situation.
   - href: /guides/the-mental-model-of-your-app
     title: The Mental Model of Your App
     blurb: How to turn an idea into something an agent can build from.
@@ -141,8 +152,9 @@ meta_description: >-
 
 review:
   status: final
-  last_reviewed: "2026-05-27"
-  reviewer: "agent:cooperative-flow-tranche-b"
+  last_reviewed: "2026-05-30"
+  reviewer: "agent:apps-101-t5"
   reviewer_notes: |-
-    Added sixth path card for the data cooperative, funneling readers to /check.
+    Updated the first path card and recommended reading order to include the
+    four Apps 101 foundation guides before the mental-model guide.
 ---

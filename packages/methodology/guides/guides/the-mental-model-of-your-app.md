@@ -14,9 +14,9 @@ tags:
   - mental-model
   - getting-started
 related:
+  - what-an-application-is
+  - building-for-yourself-vs-others
   - context-quarterback-the-onboarding-map
-  - documentation-as-architecture
-  - state-ownership
   - product-engineering-alignment
 next_steps:
   - Write a one-paragraph working brief for your app.
@@ -126,6 +126,8 @@ You are doing the right kind of thinking. Keep going.
 
 ## See also
 
+- [Guide: What an Application Is](contextqb://guides/what-an-application-is) - the substrate: files, runtimes, channels, and information flow.
+- [Guide: Building for Yourself vs. Building for Others](contextqb://guides/building-for-yourself-vs-others) - decide who the first real user is before the plan hardens.
 - [Playbook: Prepare a New Repo for AI-Assisted Development](contextqb://playbooks/new-project-foundation) — the practical sequence after this guide.
 - [Playbook: Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) — author the single most leverage-positive file.
 - [Playbook: Write a context.qb for Your Repository](contextqb://playbooks/write-a-context-qb) — encode the mental model machine-readably.
