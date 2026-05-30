@@ -182,6 +182,23 @@ entry_points:
   operations: docs/operations/deployment-workflow.md
 ```
 
+### 6.8 `paths`
+
+Optional overrides for source-of-truth file/directory locations that drift-detection tooling reads. When a key is absent, the detector falls back to its documented default.
+
+```yaml
+paths:
+  decisions: docs/adr # default: docs/architecture/decisions
+```
+
+v1.0 supports one key:
+
+| Key         | Default                       | Description                    |
+| ----------- | ----------------------------- | ------------------------------ |
+| `decisions` | `docs/architecture/decisions` | Directory containing ADR files |
+
+Future versions may add keys for other source-of-truth paths (e.g. workspace config, route config). The schema enumerates only implemented keys. Unrecognised keys are rejected by the validator.
+
 ## 7. Authoring discipline
 
 Sections fall into two maintenance categories:
