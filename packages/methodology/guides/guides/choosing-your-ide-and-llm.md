@@ -16,6 +16,7 @@ tags:
   - tooling
   - getting-started
 related:
+  - choosing-your-application-channel
   - the-mental-model-of-your-app
   - setting-up-git-and-github
   - understanding-llms
