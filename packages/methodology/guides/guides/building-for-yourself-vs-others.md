@@ -50,7 +50,9 @@ A just-me application has one user: you.
 
 It might be a command-line tool, a local script, a private dashboard, or a small app that runs on your laptop. It may never need a login screen because no one else can use it. It may never need a polished interface because you know the workflow. It may never need a cloud database because the data lives on your machine.
 
-The operator's translation utility is a good example. The problem was concrete: a family video had Chinese speech in parts, and manually placing translated subtitles into Final Cut Pro would take too long. The useful first app did not need accounts, payments, or a mobile interface. It needed to transcribe, translate, and produce an importable file.
+Examples at this tier can be very practical: a video transcription utility that produces subtitles, an expense categorizer that summarizes line items for your own records, a script that renames and organizes files, or a small dashboard only you open. These are real applications if they turn a repeated workflow into a runnable system.
+
+The useful first version may not need accounts, payments, or a mobile interface. It may only need to accept an input, process it correctly, and produce the output you need.
 
 For a just-me tool, rough edges can be acceptable when they save time.
 

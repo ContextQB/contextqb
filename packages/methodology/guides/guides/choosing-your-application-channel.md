@@ -43,28 +43,28 @@ Ask:
 
 Those answers point toward the channel.
 
-## The translation utility started as a command
+## A utility can start as a command
 
-The operator story behind this guide is useful because it is concrete.
+Some applications begin as private utilities.
 
-There was a family video with Chinese speech in parts. Transcription tools could produce text. ChatGPT could translate text. But manually finding every place in Final Cut Pro and inserting translations would take too long.
+Imagine a video transcription tool. The user has media, needs a transcript, wants translations, and needs an output file that another editing tool can use.
 
 The first useful application did not need a home page. It did not need an app store listing. It did not need user accounts. It needed to run a workflow:
 
 1. Take media or transcript input.
-2. Use Whisper to transcribe.
+2. Transcribe the speech.
 3. Translate the relevant text.
-4. Produce a file that Final Cut Pro could import.
+4. Produce an importable file.
 
 The right first channel was the command line.
 
-That worked because the user and the operator were the same person. The person who needed the result was comfortable enough running the command. The value was not in a polished interface. The value was in removing manual editing work.
+That can work when the user and the builder are the same person, or when the user is technical enough to run a command. The value is not in a polished interface. The value is in removing manual work.
 
 That is the key lesson:
 
 > The right channel is the one that fits the first real user and the work they are trying to get done.
 
-If that same utility became a paid product for video editors, the channel might change. A command-line tool might still work for technical editors. A desktop app might work better for solo creators. A web app might work better for teams. A plugin might work best if the work belongs inside Final Cut Pro itself.
+If that same utility became a paid product for video editors, the channel might change. A command-line tool might still work for technical editors. A desktop app might work better for solo creators. A web app might work better for teams. A plugin might work best if the work belongs inside the editing environment itself.
 
 The job did not change completely. The user situation did.
 
@@ -202,7 +202,7 @@ PWA is a practical bridge, not a magic compromise. It still inherits many web-ap
 
 Sometimes the right channel is not a standalone app at all.
 
-The translation utility points toward this possibility. If video editors already live in Final Cut Pro, maybe the best product is not a separate dashboard. Maybe it is a workflow that fits into the editing environment.
+The video transcription example points toward this possibility. If video editors already live inside an editing tool, maybe the best product is not a separate dashboard. Maybe it is a workflow that fits into the editing environment.
 
 The same logic applies elsewhere:
 
@@ -256,7 +256,7 @@ Are they paying for a file output? Faster processing? Shared access? A mobile ha
 
 The result points to the channel.
 
-In the translation utility example, the first valuable result was an importable file for Final Cut Pro. That made a command-line workflow reasonable. If the product becomes something nontechnical creators pay for, the valuable result may be "drop in a video and get subtitles back without touching a terminal." That points somewhere else.
+In the video transcription example, the first valuable result might be an importable subtitle file. That can make a command-line workflow reasonable for a private utility. If the product becomes something nontechnical creators pay for, the valuable result may be "drop in a video and get subtitles back without touching a terminal." That points somewhere else.
 
 ## Tell the agent the channel boundary
 
