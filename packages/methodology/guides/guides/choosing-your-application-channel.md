@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 1
+journey_rank: 10
 intro: |
   A channel is not just a technology choice. It is a decision about where the user is, what device they have, how often they need the app, and what they expect from it. Start with the user's situation, then choose the channel that fits the job.
 tags:

@@ -11,6 +11,7 @@ audience:
   - developer
   - agent
 journey_stage: 1
+journey_rank: 50
 tags:
   - documentation
   - governance

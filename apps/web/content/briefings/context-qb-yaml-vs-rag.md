@@ -9,6 +9,7 @@ audience:
   - operator
   - developer
 journey_stage: 1
+journey_rank: 0
 framing: "How is context.qb.yaml different from RAG (codebase indexing)?"
 tags:
   - context-window

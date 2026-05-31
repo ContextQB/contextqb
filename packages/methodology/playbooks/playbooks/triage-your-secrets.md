@@ -17,6 +17,7 @@ audience:
   - founder
   - operator
 journey_stage: 5
+journey_rank: 20
 related_principles:
   - secrets-have-provenance
   - untrusted-by-default

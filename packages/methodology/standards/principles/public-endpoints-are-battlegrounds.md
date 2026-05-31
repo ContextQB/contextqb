@@ -11,6 +11,7 @@ audience:
   - developer
   - agent
 journey_stage: 7
+journey_rank: 0
 tags:
   - security
   - endpoints

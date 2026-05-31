@@ -9,6 +9,7 @@ audience:
   - agent
   - developer
 journey_stage: 4
+journey_rank: 20
 tags:
   - longevity
   - clarity

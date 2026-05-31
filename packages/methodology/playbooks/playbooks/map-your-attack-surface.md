@@ -16,6 +16,7 @@ audience:
   - founder
   - operator
 journey_stage: 5
+journey_rank: 0
 related_principles:
   - untrusted-by-default
   - failure-modes

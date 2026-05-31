@@ -18,6 +18,7 @@ audience:
   - operator
   - agent
 journey_stage: 1
+journey_rank: 40
 related_principles:
   - documentation-as-architecture
   - documentation-for-agent-alignment

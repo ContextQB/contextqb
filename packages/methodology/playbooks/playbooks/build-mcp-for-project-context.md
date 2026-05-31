@@ -17,6 +17,7 @@ audience:
   - founder
   - agent
 journey_stage: 6
+journey_rank: 20
 related_principles:
   - separation-of-concerns
   - modularity

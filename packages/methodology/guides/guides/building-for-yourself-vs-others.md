@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
+journey_rank: 10
 intro: |
   Before you pick a stack or a channel, decide who the first real user is. A tool for yourself can be rough and private. A tool for a trusted group needs shared access and clearer guardrails. A public product needs security, privacy, support, and trust from day one.
 tags:

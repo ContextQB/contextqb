@@ -19,6 +19,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 10
 related_principles:
   - anti-spaghetti
   - documentation-as-architecture

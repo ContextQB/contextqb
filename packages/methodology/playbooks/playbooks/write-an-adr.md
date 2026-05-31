@@ -17,6 +17,7 @@ audience:
   - developer
   - agent
 journey_stage: 2
+journey_rank: 0
 related_principles:
   - documentation-as-architecture
   - maintainability

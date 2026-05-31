@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
+journey_rank: 40
 intro: |
   The context window is the room the agent works in. Everything it's currently aware of — your prompts, the files it's read, the responses it's already given, the system instructions it received at the start — has to fit inside that room. Outside the room, nothing exists. This guide is about what lives in the room, why the room is smaller than it seems, and how to make sure the right things are in it at the right time.
 tags:

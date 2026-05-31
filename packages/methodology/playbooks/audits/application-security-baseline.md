@@ -9,6 +9,7 @@ audience:
   - operator
   - agent
 journey_stage: 5
+journey_rank: 0
 objective: |
   Identify realistic security risks in an application built with agentic systems and deployed to managed services. Produce an actionable report the builder can act on without deep security expertise.
 scope: |

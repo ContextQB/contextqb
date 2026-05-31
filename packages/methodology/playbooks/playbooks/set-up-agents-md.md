@@ -17,6 +17,7 @@ audience:
   - developer
   - agent
 journey_stage: 1
+journey_rank: 20
 related_principles:
   - documentation-as-architecture
   - separation-of-concerns

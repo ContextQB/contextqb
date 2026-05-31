@@ -9,6 +9,7 @@ audience:
   - agent
   - developer
 journey_stage: 6
+journey_rank: 0
 tags:
   - diagnosis
   - debt

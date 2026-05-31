@@ -9,6 +9,7 @@ audience:
   - developer
   - agent
 journey_stage: 2
+journey_rank: 0
 objective: |
   Assess whether the repository's language choices and verifier configuration provide sufficient mechanical verification for sustainable AI-assisted development.
 scope: |

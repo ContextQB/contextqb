@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
+journey_rank: 50
 intro: |
   Agentic coding requires two pieces of software that don't come from the same vendor: an IDE (the editor where you and the agent work together) and an LLM (the model that actually does the reasoning). They're often bundled in marketing, but they're separable tools — and getting comfortable with that separation is the difference between feeling locked in and feeling in control.
 tags:

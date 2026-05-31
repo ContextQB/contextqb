@@ -16,6 +16,7 @@ audience:
   - founder
   - operator
 journey_stage: 5
+journey_rank: 10
 related_principles:
   - public-endpoints-are-battlegrounds
   - untrusted-by-default
