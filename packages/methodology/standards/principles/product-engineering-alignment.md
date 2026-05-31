@@ -10,6 +10,7 @@ audience:
   - developer
   - founder
 journey_stage: 2
+journey_rank: 40
 tags:
   - domain-modeling
   - naming

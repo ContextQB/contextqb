@@ -10,6 +10,7 @@ audience:
   - developer
   - agent
 journey_stage: 9
+journey_rank: 0
 use_case: |
   When you notice something unusual — unexpected errors, strange access patterns, unfamiliar activity — and need to determine if it's a bug, a misconfiguration, or a security incident.
 variables:

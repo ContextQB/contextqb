@@ -17,6 +17,7 @@ audience:
   - founder
   - operator
 journey_stage: 9
+journey_rank: 0
 related_principles:
   - secrets-have-provenance
   - security-drift-is-the-real-threat

@@ -9,6 +9,7 @@ audience:
   - developer
   - agent
 journey_stage: 1
+journey_rank: 0
 objective: |
   Verify that a fresh or recently-cleaned repository has the structural prerequisites for sustainable AI-assisted development.
 scope: |

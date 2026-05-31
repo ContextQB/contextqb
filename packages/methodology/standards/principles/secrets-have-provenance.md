@@ -11,6 +11,7 @@ audience:
   - developer
   - agent
 journey_stage: 5
+journey_rank: 30
 tags:
   - security
   - secrets

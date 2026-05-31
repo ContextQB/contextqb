@@ -18,6 +18,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 0
 related_principles:
   - separation-of-concerns
   - modularity

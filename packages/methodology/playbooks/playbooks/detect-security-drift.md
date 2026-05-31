@@ -16,6 +16,7 @@ audience:
   - founder
   - operator
 journey_stage: 7
+journey_rank: 0
 related_principles:
   - security-drift-is-the-real-threat
   - documentation-as-architecture

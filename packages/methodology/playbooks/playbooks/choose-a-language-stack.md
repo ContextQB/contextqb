@@ -16,6 +16,7 @@ audience:
   - founder
   - agent
 journey_stage: 1
+journey_rank: 0
 related_principles:
   - machine-verifiable-substrate
   - programming-language-selection

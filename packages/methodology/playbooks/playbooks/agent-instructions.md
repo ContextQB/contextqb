@@ -18,6 +18,7 @@ audience:
   - operator
   - agent
 journey_stage: 2
+journey_rank: 10
 related_principles:
   - orchestration
   - maintainability

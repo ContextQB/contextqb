@@ -8,6 +8,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 0
 use_case: |
   When you need a single, broad technical assessment of an application before making investment decisions, hiring, or starting a major refactor.
 variables:

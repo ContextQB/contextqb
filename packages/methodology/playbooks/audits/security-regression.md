@@ -9,6 +9,7 @@ audience:
   - operator
   - agent
 journey_stage: 7
+journey_rank: 20
 objective: |
   Compare current security posture against a documented baseline to identify regressions, new attack surfaces, and configuration drift. Produce a focused report on what changed and what needs attention.
 scope: |

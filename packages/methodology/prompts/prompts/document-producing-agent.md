@@ -9,6 +9,7 @@ audience:
   - operator
   - agent
 journey_stage: 2
+journey_rank: 0
 use_case: |
   Whenever you need an agent to produce a deliverable you will save, share, or act on.
 variables:

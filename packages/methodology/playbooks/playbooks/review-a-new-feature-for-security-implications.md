@@ -17,6 +17,7 @@ audience:
   - operator
   - developer
 journey_stage: 5
+journey_rank: 40
 related_principles:
   - untrusted-by-default
   - trust-boundaries-are-architecture

@@ -8,6 +8,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 20
 objective: |
   Produce a system-level assessment of a UI codebase, focused on whether the structure can absorb future change without spaghetti.
 scope: |

@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 1
+journey_rank: 20
 intro: |
   If you've been told that "writing documentation" is what you do after the code is finished — for some hypothetical future engineer — you've been told the wrong story for agentic development. In agentic dev, documentation is what you write so the agent you're talking to right now does not reinvent your project on every prompt. This guide reframes the whole exercise and gives you the day-one minimum.
 tags:

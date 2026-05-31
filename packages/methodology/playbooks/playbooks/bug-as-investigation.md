@@ -17,6 +17,7 @@ audience:
   - developer
   - agent
 journey_stage: 3
+journey_rank: 20
 related_principles:
   - anti-spaghetti
   - state-ownership

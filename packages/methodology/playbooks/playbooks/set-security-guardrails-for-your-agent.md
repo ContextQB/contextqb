@@ -15,6 +15,7 @@ audience:
   - founder
   - operator
 journey_stage: 1
+journey_rank: 50
 related_principles:
   - least-privilege-for-agents
   - ai-output-is-untrusted-code

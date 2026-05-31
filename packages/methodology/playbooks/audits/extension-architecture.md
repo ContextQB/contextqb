@@ -8,6 +8,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 30
 objective: |
   Evaluate a browser extension's UI architecture for coherence across menus, sidebars, multi-tab behaviour, settings, and the interaction state that ties them together.
 scope: |

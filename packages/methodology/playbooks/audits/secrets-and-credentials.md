@@ -9,6 +9,7 @@ audience:
   - operator
   - agent
 journey_stage: 5
+journey_rank: 20
 objective: |
   Produce a complete inventory of all secrets in the application, assess each for exposure risk, verify rotation status, and identify immediate remediation priorities.
 scope: |

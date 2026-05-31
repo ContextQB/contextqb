@@ -9,6 +9,7 @@ audience:
   - operator
   - agent
 journey_stage: 7
+journey_rank: 0
 objective: |
   Produce a complete inventory of every public endpoint in the application. For each, verify it is intentionally public and has appropriate protection (rate limiting, input validation, etc.).
 scope: |

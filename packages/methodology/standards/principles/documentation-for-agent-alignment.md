@@ -10,6 +10,7 @@ audience:
   - operator
   - agent
 journey_stage: 1
+journey_rank: 10
 tags:
   - documentation
   - agents

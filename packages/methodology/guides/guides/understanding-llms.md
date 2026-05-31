@@ -11,6 +11,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
+journey_rank: 30
 intro: |
   LLMs are not interchangeable. They behave differently, cost differently, and feel different in your hands. This guide gives you the map you need to choose a starting model, notice when it is the wrong fit, and switch with purpose instead of guesswork.
 tags:

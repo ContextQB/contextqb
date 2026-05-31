@@ -7,6 +7,7 @@ audience:
   - developer
   - agent
 journey_stage: 4
+journey_rank: 40
 objective: |
   Evaluate an MCP server's architectural quality: clean resource model, clear tool surface, well-defined content boundary, and usable integration with agentic IDEs.
 scope: |

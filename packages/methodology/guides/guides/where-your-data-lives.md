@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 1
+journey_rank: 0
 intro: |
   Before you choose a database, ask a simpler question: who needs this information, from which device, and how bad is it if the wrong person sees it or it disappears? This guide gives novice builders a practical map of where application data can live.
 tags:

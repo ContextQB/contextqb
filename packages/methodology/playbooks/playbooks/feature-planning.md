@@ -17,6 +17,7 @@ audience:
   - founder
   - agent
 journey_stage: 3
+journey_rank: 0
 related:
   - feature-build-loop
 related_principles:

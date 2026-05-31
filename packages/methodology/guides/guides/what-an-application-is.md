@@ -8,6 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
+journey_rank: 0
 intro: |
   Before you can plan your app, you need a plain model of what an app physically is. This guide explains the pieces without asking you to learn a programming language first: files in a folder, instructions for a runtime, and a way for information to come in and go back out.
 tags:
