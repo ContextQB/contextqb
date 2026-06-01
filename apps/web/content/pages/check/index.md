@@ -94,9 +94,9 @@ scope_right_paragraphs:
     `context.qb.yaml` and the detector will look there instead.
   - >-
     See the
-    [CLI README](https://github.com/contextqb/contextqb/tree/main/packages/qb/cli#adapter-matrix)
+    [@context-qb/cli on npm](https://www.npmjs.com/package/@context-qb/cli)
     for the full adapter matrix and the
-    [ROADMAP](https://github.com/contextqb/contextqb/tree/main/packages/qb/spec/ROADMAP.md)
+    [ROADMAP](https://github.com/ContextQB/contextqb/blob/main/format/ROADMAP.md)
     for what's coming next.
 
 fits_eyebrow: Where it lives
@@ -129,9 +129,9 @@ install_steps:
       No file yet? Follow the
       [write a context.qb playbook](/playbooks/write-a-context-qb) — it walks
       you through every section. The
-      [repo's own context.qb.yaml](https://github.com/contextqb/contextqb/blob/main/context.qb.yaml)
-      is a real working sample to copy from. Most repos need fewer than 100
-      lines.
+      [worked examples](https://github.com/ContextQB/contextqb/tree/main/format/examples)
+      cover monorepos, Next.js apps, MCP servers, CLIs, and Python pipelines —
+      copy the closest one. Most repos need fewer than 100 lines.
   - title: Run the check
     body: >-
       `pnpm check:qb` runs in under three seconds. Exit code 0 means clean;
@@ -202,11 +202,13 @@ meta_description: >-
 review:
   status: final
   last_reviewed: "2026-05-31"
-  reviewer: "agent:tranche-5-publish-dogfood-copy"
+  reviewer: "agent:tranche-6-public-mirror-link-fix"
   reviewer_notes: |-
-    v2 supported-adapter copy refresh: replaced "Best fit" hero with "Supported
-    stacks"; updated watches_cards to mention all workspace managers and deploy
-    platforms; rewrote scope section to list pnpm/npm/yarn + all four route
-    adapters + configurable ADR path; added links to CLI README adapter matrix
-    and ROADMAP.
+    v2 supported-adapter copy refresh (T5) + public-mirror link fix (T6 follow-up):
+    replaced "Best fit" hero with "Supported stacks"; updated watches_cards to
+    mention all workspace managers and deploy platforms; rewrote scope section
+    to list pnpm/npm/yarn + all four route adapters + configurable ADR path.
+    Repointed three external links from the (private) Industrial-Semiotics paths
+    to public destinations: CLI README → npm, ROADMAP → format/ROADMAP.md on
+    the ContextQB public mirror, repo qb sample → format/examples/.
 ---
