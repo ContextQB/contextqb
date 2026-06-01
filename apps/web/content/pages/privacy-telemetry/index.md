@@ -43,9 +43,13 @@ When you first run the `contextqb` CLI, a membership token is silently provision
 ### What the CLI records
 
 - **Anonymous ID** — a SHA-256 hash of your machine ID, not reversible to your identity
+- **CLI version** — which version of the CLI you're running, so we can correlate behavior with releases
 - **Stack categories** — programming language, whether it's a monorepo, deployment target
 - **Structure counts** — number of tree entries, routes, ADRs (counts only, not names)
 - **Validation findings** — types of drift detected (e.g., "missing workspace"), not file paths or content
+- **Subcommand and event kind** — which top-level command you invoked (`check`, `membership`, `mcp`, `insights`) and whether it was a first-time run on this machine
+- **Adapter coverage** — boolean flags indicating which source-of-truth files were present (e.g., `wrangler.jsonc`, `pnpm-workspace.yaml`); never the file contents
+- **Exit code** — whether the CLI run succeeded, reported drift, or crashed
 
 ### What the CLI never records
 

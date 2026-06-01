@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-05-31
+
+### Added
+
+- New telemetry fields: `event_kind`, `subcommand`, `is_first_run_locally`, `exit_code`, `findings_total`, `info_count`, `adapter_coverage`
+- Server accepts both `payload_schema_version: 1` and `payload_schema_version: 2` during a 90-day deprecation window (INV-TEL-1)
+- Aggregation queries for adapter coverage and usage patterns (v2 events only)
+
+### Fixed
+
+- `cli_version` field now reports the actual package version (was hardcoded to `0.1.0` for every event since first publish)
+
+### Privacy
+
+- Privacy page updated to disclose all new fields. No new sensitive data category. No file contents, paths, or PII added.
+
+**Scope:** Internal scope document 0027-telemetry-completeness
+
 ## [2.0.3] - 2026-05-31
 
 ### Security
