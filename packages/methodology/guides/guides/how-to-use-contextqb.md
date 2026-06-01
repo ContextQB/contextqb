@@ -15,6 +15,7 @@ related:
   - what-an-application-is
   - choosing-your-ide-and-llm
   - understanding-llms
+  - understanding-the-context-window
 tags:
   - orientation
   - getting-started
@@ -62,7 +63,7 @@ The name ContextQB is the point. On a team, the quarterback reads the field, cal
 
 When you build with an AI agent, you are in that role. The agent runs the routes — it writes the code, scans the files, drafts the language. You read the field, call the play, and decide whether the result fits the goal. You are not the agent's tool. The agent is on your team.
 
-Our job is to help you become a good context quarterback: someone who briefs cleanly, reviews honestly, keeps the play clear, and steers the project so it stays understandable as it grows. The principle behind the name is written up at [The Context Quarterback](contextqb://principles/context-quarterback-the-onboarding-map).
+Our job is to help you become a good context quarterback: someone who briefs cleanly, reviews honestly, keeps the play clear, and steers the project so it stays understandable as it grows. The single most important thing you call plays around is the agent's [context window](contextqb://guides/understanding-the-context-window) — what it can see and reason over in any given moment. The brand is named for that variable; the methodology is what lets you manage it on purpose.
 
 ## Some words you will see
 
@@ -167,7 +168,8 @@ And if you feel overwhelmed, return to the simple rule: give the agent better co
 
 ## See also
 
+- [Guide: Understanding the Context Window](contextqb://guides/understanding-the-context-window) — the variable the brand is named for, and what you are calling plays around.
 - [Guide: What an Application Is](contextqb://guides/what-an-application-is) — the substrate every app sits on, in plain language.
 - [Guide: Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) — set up the workshop where you and the agent will build.
 - [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — how the models behave and why they are not interchangeable.
-- [Principle: The Context Quarterback — Every Repo Has a Boot Manifest](contextqb://principles/context-quarterback-the-onboarding-map) — the principle behind the brand name.
+- [Principle: The Context Quarterback — Every Repo Needs a Boot Manifest](contextqb://principles/context-quarterback-the-onboarding-map) — the boot manifest you carry into every session.

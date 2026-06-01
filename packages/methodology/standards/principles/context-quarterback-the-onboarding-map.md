@@ -1,7 +1,7 @@
 ---
 id: context-quarterback-the-onboarding-map
-title: The Context Quarterback — Every Repo Has a Boot Manifest
-summary: Every repository should ship a small, structured boot manifest that maps it for AI agents in as few tokens as possible. The file is the play-sheet; the agent is the player.
+title: The Context Quarterback — Every Repo Needs a Boot Manifest
+summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
 version: 0.1.0
 category: documentation
 audience:
@@ -36,11 +36,13 @@ related:
   - naming-conventions
 ---
 
-# The Context Quarterback — Every Repo Has a Boot Manifest
+# The Context Quarterback — Every Repo Needs a Boot Manifest
 
-A football quarterback reads the field, calls the play, and directs the offense. They do not run every route themselves; they have a play-sheet and a mental map of where every receiver is.
+A football quarterback reads the field, calls the play, and directs the offense. They do not run every route themselves; they have a play-sheet that captures what the team practiced and what it expects to see on this drive.
 
-That is exactly the relationship between an AI agent and the repository it works in. The agent is a fast, capable player. It is not the coach. It needs a play-sheet.
+When you build with an AI agent, you are the quarterback. The agent runs the routes — it writes the code, scans the files, drafts the language. The methodology is what you study before the snap. The play-sheet is the file you carry onto the field: `context.qb.yaml`.
+
+`context.qb.yaml` is not the quarterback. It is the quarterback's main tool. It is the backbone of the ContextQB method — a small, structured, hand-curated file that gives you and the agent a stable, shared picture of the project at the start of every play.
 
 ## The principle
 
@@ -53,7 +55,7 @@ That is exactly the relationship between an AI agent and the repository it works
 - What's happening right now (in-flight work)
 - Where to go for more (entry-point links)
 
-The file is the agent's play-sheet — brand metaphor — and the agent's boot manifest — technical role. The agent reads it first, every session, then drills into the deeper docs only when the play calls for it.
+The file is the play-sheet — brand metaphor — and the boot manifest — technical role. The agent reads it first, every session, then drills into the deeper docs only when the play calls for it. Your job, as the quarterback, is to make sure the play-sheet matches reality before you snap the ball.
 
 ## Why this matters
 
@@ -79,6 +81,7 @@ Controlled evaluations of the equivalent `AGENTS.md` standard (124-PR benchmark)
 
 ## What the file is not
 
+- **Not the quarterback.** You are. The file is what the quarterback uses to keep the team aligned. Confusing the play-sheet with the play-caller is what produces stale maps and confidently wrong agents.
 - **Not the documentation itself.** It is the index. Real prose lives in `docs/`, ADRs, READMEs.
 - **Not a code map.** Code-relationship questions ("what calls this function?") belong to AST-based tools like Aider's repo-map. `context.qb.yaml` works at the workspace-and-decisions level.
 - **Not for humans first.** It is for agents. Humans will read it too — that's fine — but the optimisation is for token-efficient agent consumption, not pretty prose.
