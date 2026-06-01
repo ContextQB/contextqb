@@ -19,6 +19,8 @@ audience:
   - agent
 journey_stage: 6
 journey_rank: 10
+related:
+  - retrofit-drift-detection
 related_principles:
   - anti-spaghetti
   - modularity
@@ -81,3 +83,7 @@ For each pass, work in small batches:
 > Apply pass \[N] of the cleanup plan to this directory only: **\[path]**. Make the smallest set of changes that completes the pass. After your changes, summarise what moved, what was renamed, and what you intentionally left for a later pass.
 
 Do not skip the summary. The summary is how you keep the agent honest.
+
+## After cleanup
+
+Once the cleanup passes are done, retrofit drift detection on the repo so it cannot quietly slide back into an unmapped shape. Use [`retrofit-drift-detection`](./retrofit-drift-detection.md) to reconcile `context.qb.yaml`, then wire the check into commits and CI.
