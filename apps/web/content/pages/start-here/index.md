@@ -6,27 +6,35 @@ subhead: >-
   working habits for that job: better briefs, cleaner project context, practical
   checks, and a way to steer the work as it grows.
 
-problem_heading: The shape of the problem
+problem_heading: Why this feels confusing at first
 problem_cards:
-  - label: 1. The bottleneck moved.
+  - label: 1. The hard part moved.
     body: >-
-      You can now get real software on the screen quickly. The harder job is
-      keeping the system understandable while the agent keeps changing it.
-  - label: 2. Agents need structure.
+      AI can put software on the screen quickly. The harder job is steering the
+      work so the project stays understandable as it changes.
+  - label: 2. Your agent needs a map.
     body: >-
-      Without clear boundaries, each generation can make the project a little
-      more tangled. You often do not notice until a small change breaks three
-      unrelated things.
-  - label: 3. Coherence comes from small decisions.
+      Without clear context, each generation can make the project a little more
+      tangled. You often do not notice until a small change breaks three
+      unrelated parts.
+  - label: 3. Small decisions become architecture.
     body: >-
       Where state lives. What coordinates what. What each module is responsible
       for. How things are named. The pattern of those small decisions _is_ your
       architecture.
-  - label: 4. Prompts are not enough.
+  - label: 4. Prompts are only the start.
     body: >-
       A clever prompt can solve the next task. A clear project map and review
       habit help you solve the next ten. ContextQB teaches that operating
       practice.
+problem_callout_eyebrow: New here?
+problem_callout_title: Start with the plain-English tour.
+problem_callout_body: >-
+  If words like MCP, IDE, agent, or context window are still new, begin with the
+  basic orientation. It explains what ContextQB is, why it exists, and how to
+  take the first step without pretending this should all feel obvious yet.
+problem_callout_cta: Read How To Use ContextQB
+problem_callout_href: /guides/how-to-use-contextqb
 
 path_heading: Choose your path
 path_lede: >-
