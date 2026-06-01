@@ -1,10 +1,10 @@
 ---
 id: how-to-use-contextqb
-title: How To Use ContextQB
+title: How to Use ContextQB
 summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it is, why we built it, how we pay for it, and how to start using it without feeling lost.
 version: 0.1.0
 intro: |
-  If you just landed on contextqb.com and you are not sure what most of it means, this guide is for you. We will walk through what ContextQB actually is, why we built it, how we keep the lights on, and how to start using it — without assuming you are already a developer.
+  A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
   - novice-builder
   - founder
@@ -26,112 +26,278 @@ next_steps:
   - "When you have a real project, install @context-qb/cli and run it once."
 ---
 
-# How To Use ContextQB
+# How to Use ContextQB
 
-## "Wait, what the heck is going on here?"
+## What this guide is about
 
-You found ContextQB. There is a website with principles and playbooks, a thing called an MCP server, a tool called `contextqb`, and references to "agents" and "context.qb files" and other words that probably look like jargon.
+ContextQB is for people who want to build software with AI agents.
 
-That is a lot of new vocabulary. Take a breath. None of this is required reading on day one.
+You may be a founder, marketer, operator, small business owner, designer, writer, hobbyist, or just someone with an idea you want to turn into a working thing. You do not need to be a traditional developer to begin.
 
-If this is the first time you are running into most of these ideas, you are going to want to spend a little while just reading and clicking around. That is normal. Most of what we publish is meant to be read once, mulled over, and re-read later when you actually need it. The goal is not to memorise the methodology. The goal is to start building things.
+But you do need a way to work.
 
-If your first reaction is "this is too much, I do not feel ready to do this yet" — that is also normal. The pool is deeper than it looks. Give yourself a couple of weeks to read around, watch a few videos, and try one or two small things before you feel brave enough to dive in. Most people do.
+AI agents can write code, edit files, explain errors, generate interfaces, connect tools, and help you move much faster than you could on your own. The confusing part is that they can also lose the thread, make strange assumptions, break things that were already working, or turn a simple idea into a messy project you no longer understand.
 
-## Some words you will see a lot
+ContextQB exists to help with that.
 
-If a few of these are new, here are the short versions. Each one has its own rabbit hole. We have linked the friendliest entrances we know.
+We teach the basic operating habits of AI-assisted building: how to explain what you want, give the agent useful context, break work into manageable steps, check the output, and keep the project moving in the right direction.
 
-**LLM** — a Large Language Model. The engine inside tools like ChatGPT, Claude, and Gemini. We have our own short [Understanding LLMs](/guides/understanding-llms) guide. Simon Willison's [blog](https://simonwillison.net/) is the best plain-English source on the open internet for keeping up.
+This guide explains what ContextQB is, why it exists, and how to take your first steps.
 
-**Agent** — an LLM that can take actions, not just answer questions. When the model reads files in your project, runs commands, or edits code, it is acting as an agent.
+## First: you are not behind
 
-**IDE** — Integrated Development Environment. The thing where you write code. Most builders we know are using [Cursor](https://cursor.com), an editor with an AI agent built in. VS Code with extensions also works. If you have never opened one, [Choosing Your IDE and LLM](/guides/choosing-your-ide-and-llm) is the place to start.
+If you landed here and words like agent, IDE, repo, MCP, context window, or CLI still feel unfamiliar, that is normal.
 
-**MCP** — Model Context Protocol. A small spec that lets agents talk to outside tools and data sources in a standard way. Our MCP server (`mcp.contextqb.com`) hands the methodology — principles, playbooks, prompts — to any MCP-compatible agent. The official docs live at [modelcontextprotocol.io](https://modelcontextprotocol.io).
+This is a new way of working. The tools are moving quickly. The vocabulary is still settling. Even experienced developers are learning new habits.
 
-**Vibe coding** — a phrase coined by Andrej Karpathy [in early 2025](https://x.com/karpathy/status/1886192184808149383). It describes the experience of telling an LLM what you want and accepting most of what it produces. It is a real shift in how software gets made. ContextQB is, in part, a methodology for vibe coding well enough that the result actually works.
+You do not need to understand everything before you start.
 
-**`context.qb.yaml`** — a small file you put at the root of a project to give an agent the shape of the codebase. It is the agent's map. You can read [the spec](https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md) when you are ready, or browse [worked examples](https://github.com/ContextQB/contextqb/tree/main/format/examples).
+You need a basic orientation, a small project, and a willingness to work step by step. ContextQB is designed to help you build that confidence gradually.
 
-If a lot of this is fully new, [Ethan Mollick's One Useful Thing](https://www.oneusefulthing.org/) is one of the more grounded places to read about AI as a normal person, not as an engineer.
+Do not try to memorize the whole system. Read enough to get moving. Come back when you get stuck. Use the guides and playbooks when they become relevant.
 
-## What ContextQB actually is
+The goal is not to become an expert in ContextQB.
 
-ContextQB is a small bundle of things that work together:
+The goal is to build.
 
-- **A methodology** — principles, playbooks, audits, and prompts for building software with AI agents. Free. Public. Browse it on [contextqb.com](https://contextqb.com).
-- **A small file format** — `context.qb.yaml`, the map you put in your repo so an agent always reads a consistent picture of the project.
-- **A drift detector** — a CLI called `@context-qb/cli` that checks whether your map still matches the territory. It catches the moment your project changes shape and your agent starts working from a stale picture.
-- **An MCP server** — `mcp.contextqb.com`, which serves the methodology to any agent that speaks MCP. Pair it with Cursor or Claude Desktop and your agent can quote principles and run audits without you copy-pasting anything.
-- **A course platform** — early; not yet open. When it launches, the courses will be the deeper, paid path through the methodology.
+## The basic idea
 
-The name is the point. A quarterback gives the play in the huddle. The team needs the play before the snap. ContextQB is the play-sheet for the agent on your team.
+When you build with an AI agent, you are not just asking a chatbot for answers.
+
+You are directing a system that can take action.
+
+It can read your project.
+It can change files.
+It can write code.
+It can explain problems.
+It can propose fixes.
+It can help you build something real.
+
+But the agent only works well when it has the right context and clear instructions.
+
+That is the core idea behind ContextQB:
+
+**Better context leads to better work.**
+
+If the agent understands the project, the goal, the constraints, and the next step, it can help you move forward. If it does not, it will guess. Sometimes the guesses are useful. Sometimes they create a mess.
+
+ContextQB gives you a method for reducing the guessing.
+
+## Some words you will see
+
+You do not need to master these on day one. These are just the basic terms that will show up across the site.
+
+**AI agent**
+An AI system that can do more than answer questions. It can take actions, such as reading files, editing code, running commands, or helping manage a project.
+
+**LLM**
+A large language model, such as ChatGPT, Claude, or Gemini. This is the engine behind many AI tools.
+
+**IDE**
+The app where software gets built. Many people now use tools like Cursor or VS Code because they let an AI agent work directly inside a coding project.
+
+**Repo**
+Short for repository. This is the folder where your project lives: code, files, notes, configuration, documentation, and everything else the app needs.
+
+**Context**
+The information the agent is using to understand the task. This can include your prompt, your files, your project notes, your previous decisions, and the instructions you give it.
+
+**Context window**
+The amount of information the AI can pay attention to at one time. It is not infinite. If the wrong things are in context, or the right things fall out of context, the agent can lose track.
+
+**MCP**
+Model Context Protocol. A way for AI agents to connect to outside tools and resources. In ContextQB, MCP lets an agent access our principles, playbooks, and audits directly.
+
+**context.qb.yaml**
+A small project map for your repo. It helps the agent understand what the project is, how it is organized, and what it needs to pay attention to.
+
+You do not need all of these tools immediately. Start with the concepts. Add the machinery when you need it.
+
+## What ContextQB actually gives you
+
+ContextQB is a practical system for learning how to build with AI agents.
+
+It includes:
+
+**Guides**
+Plain-English explanations of the big ideas: context, agents, project structure, prompts, review habits, and the new skills involved in AI-assisted building.
+
+**Principles**
+Short lessons that explain how to think while working with agents. These help you understand why projects drift, why context matters, and why your job is still judgment.
+
+**Playbooks**
+Step-by-step operating patterns for common tasks. Use these when you want to brief an agent, review work, inspect a repo, set up a project, or recover from confusion.
+
+**Prompts and audits**
+Reusable instructions that help you ask an agent to do specific kinds of work more carefully.
+
+**Project mapping**
+A way to describe your project so the agent has a stable picture of what it is working on.
+
+**Tools**
+Command-line and MCP tools for people who want to connect ContextQB directly to their coding workflow.
+
+You can use ContextQB lightly or deeply. You can simply read the guides, or you can wire the tools into your agentic development setup.
+
+The important thing is to start at the right level.
 
 ## Why we built it
 
-Two answers, depending on how deep you want to go.
+AI has changed who can build software.
 
-**The short answer.** We want to help more people build real things with AI. The tools are good enough now that ordinary people — founders, hobbyists, small-team builders — can put working software into the world. What is missing is the discipline to do it well: how to brief an agent, how to organise context, how to catch the moment a model starts hallucinating, how to keep a project from sprawling into something nobody understands. That discipline is what ContextQB is.
+That does not mean software is suddenly easy. It means more people can now participate if they learn the right working habits.
 
-**The longer answer.** A lot of what is broken about the current world comes from a small number of very large companies controlling how things — software, media, commerce, work itself — get made. The path back from that is more people making more things on their own terms: small applications, small businesses, small communities, small infrastructure. AI does not fix that on its own, but it does shift the floor. People who would never have shipped a working app five years ago can ship one this month, if they have a clear way to work. Building that clear way is the project.
+A person with a clear idea can now sit down with an AI agent and make progress that would have required a technical team only a few years ago. They can prototype, test, revise, and sometimes ship real products.
 
-This is a values stance, not a manifesto. We are not promising to fix anything by ourselves. We are trying to be useful to the people who are doing the building.
+But the new bottleneck is not just code.
+
+The bottleneck is clarity.
+
+Can you explain what you want?
+Can you break it into parts?
+Can you tell when the agent misunderstood?
+Can you review the work?
+Can you keep track of decisions?
+Can you stop the project from becoming a pile of unrelated fixes?
+
+ContextQB was built to teach those skills.
+
+We want more people to become capable builders. Not by pretending everyone is now a software engineer, and not by selling the fantasy that agents can do everything for you.
+
+The point is more grounded:
+
+**AI agents make building more accessible. ContextQB teaches the discipline that makes that access useful.**
 
 ## How we make money
 
-We don't, yet.
+ContextQB is being built as an open, practical learning system.
 
-The methodology is free and intentionally permissive (CC BY-SA 4.0). The drift detector is MIT-licensed. The MCP server is free to use.
+The public methodology is free to read. The goal is to make the basic ideas available to anyone who wants to learn how to build with agents.
 
-Three plans for keeping the lights on, roughly in the order we expect them to land:
+Over time, ContextQB may be supported by paid courses, workshops, tools, templates, products, and consulting. The free material will remain the foundation. Paid offerings will provide deeper structure, guided paths, and more direct support for people who want help applying the method.
 
-1. **Courses** — when the course platform opens, paid tracks will fund the work. The methodology stays free; the deeper, structured paths cost money.
-2. **Dogfooding** — we use ContextQB to build our own products. [Football Country](https://footballcountry.com), the [Industrial Semiotics Studio](https://industrialsemiotics.com), and [Skysquare](https://skysquare.app) are real projects we ship using these tools. If those make money, ContextQB stays funded.
-3. **Sponsorship or partnership** — eventually, but not how we want to start.
+The best way to support the project right now is simple:
 
-If you want to support the project today, the most useful thing is to actually use it and tell us what is broken.
+Use it.
+Build with it.
+Tell us what is confusing.
+Show us where the method helped.
+Tell us where it broke down.
 
-## How to actually start using it
+ContextQB should improve by being used in the field.
+
+## How to start
 
 Pick the lane that matches where you are.
 
-### "I just want to read and learn"
+### If you are completely new
 
-Browse [the principles](https://contextqb.com/principles), [the playbooks](https://contextqb.com/playbooks), and [the guides](https://contextqb.com/guides). They are written to be read top-down. The [Start Here](https://contextqb.com/start-here) page has a recommended reading order. Coming back later when you need a specific play is the normal pattern.
+Start by reading a few guides. Do not try to understand the entire system at once.
 
-### "I have a project I am working on"
+Your goal is basic orientation:
 
-If you already have a project (any size, any language), the next step is to write a `context.qb.yaml` for it and install the drift detector. Two playbooks walk you through it:
+What is an agent?
+What is context?
+Why do agents lose track?
+How do you give better instructions?
+How do you check the work?
 
-- [Write a context.qb for Your Repository](https://contextqb.com/playbooks/write-a-context-qb)
-- [Set Up Drift Detection on Day One](https://contextqb.com/playbooks/set-up-drift-detection)
+Once those ideas start to make sense, pick a small project and try to build something.
 
-If your project has been around for a while and accumulated some chaos, this one is for you instead:
+Small is good. A personal website. A simple calculator. A tiny directory. A basic dashboard. A landing page. A tool that solves one annoying problem.
 
-- [Retrofit Drift Detection on an Existing Repo](https://contextqb.com/playbooks/retrofit-drift-detection)
+The goal of the first project is not perfection. The goal is to learn how the agent behaves.
 
-### "I want my agent to read this stuff directly"
+### If you already have an idea
 
-Connect the ContextQB MCP server to your IDE. Run:
+Write down the simplest version of what you want to build.
 
-```bash
-npx @context-qb/cli@latest mcp setup --client cursor
-```
+Do not start with every feature. Start with the core:
 
-(or `--client claude` for Claude Desktop). Paste the printed snippet into your client's MCP config. After a restart, your agent can call tools like `list_principles`, `get_playbook`, and `generate_audit_instruction` directly. Full setup details live on the [MCP page](https://contextqb.com/mcp).
+Who is it for?
+What does it help them do?
+What is the first useful version?
+What should happen on the first screen?
+What information does the app need?
+What would count as "working"?
 
-### "I have not done any of this before"
+Then use ContextQB to turn that idea into a clearer brief for your agent.
 
-That is fine. A reasonable first day:
+### If you already have a project
 
-1. Pick an IDE. [Cursor](https://cursor.com) is the easiest entry point most builders we know are using.
-2. Pick an LLM you trust. Most readers use Claude or GPT — either works.
-3. Read one principle or one playbook. Do not try to read all of them. [Documentation as Architecture](https://contextqb.com/principles/documentation-as-architecture) is a good first stop.
-4. When you have a project to work on, come back here.
+Start by helping the agent understand the project.
 
-## What to do next
+Before asking for new features, make sure the agent knows what already exists. Give it a map. Ask it to inspect the structure. Ask it to explain how the project works. Ask it where the risks are.
 
-The methodology will still be here next week. So will we. Take your time.
+Then move in smaller steps.
 
-If you want to be told when the courses open, drop your email on [the kickoff page](https://contextqb.com/kickoff). If you build something with ContextQB and want to share it, the [members area](https://members.contextqb.com) is where field notes go up.
+Do not ask the agent to rebuild everything unless you actually want everything rebuilt. Ask for specific changes, review the result, and keep track of what changed.
+
+### If you are using Cursor or another agentic IDE
+
+Use ContextQB as a working method inside your IDE.
+
+Before each task, brief the agent clearly.
+Before accepting changes, inspect the output.
+After meaningful changes, update the project map.
+When the project starts to feel confusing, stop and re-orient.
+
+The agent can move quickly. Your job is to keep the work legible.
+
+## A reasonable first day
+
+Here is a simple first path:
+
+1. Read the Start Here page.
+2. Read one guide about context.
+3. Pick a small project or existing idea.
+4. Write a plain-English description of what you want to build.
+5. Ask your AI agent to help you turn that description into a simple project plan.
+6. Build one small piece.
+7. Review what the agent made.
+8. Write down what you learned.
+
+That is enough for day one.
+
+You do not need to install every tool, read every playbook, or understand every acronym before you begin.
+
+Start with one small build.
+
+Then come back for the next play.
+
+## The main habit
+
+ContextQB is built around one simple habit:
+
+**Before you ask the agent to act, make sure it understands the job.**
+
+That means giving it the right context, the right instructions, and the right standard for success.
+
+When the work comes back, do not just accept it because it looks impressive. Read it. Test it. Ask what changed. Ask what might have broken. Ask whether the result matches the original goal.
+
+This is the new skill.
+
+Not coding from scratch.
+Not blindly trusting the machine.
+Not collecting clever prompts.
+
+The skill is learning how to direct agentic work.
+
+That is what ContextQB teaches.
+
+## Where to go next
+
+If you are new, start with the basic orientation guides.
+
+If you have a project, move into the playbooks.
+
+If you are ready to connect tools, explore the MCP and CLI setup.
+
+And if you feel overwhelmed, return to the simple rule:
+
+Give the agent better context.
+Ask for smaller steps.
+Inspect the work.
+Keep the project understandable.
+
+That is the path.
