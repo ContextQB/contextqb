@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 - Removed private documentation path references from JSDoc comments in 13 source files
-- Compiled `dist/` files no longer contain paths to internal `docs/archive/` or `docs/architecture/invariants.md`
+- Compiled `dist/` files no longer contain paths to internal documentation
 - Invariant references (INV-2, INV-6) retained as plain text without file paths
 
 No functional changes from 2.0.2.
@@ -21,7 +21,7 @@ No functional changes from 2.0.2.
 
 ### Security
 
-- Audited and fixed 7 broken/private-path links in README.md — replaced internal `../../../docs/` and `../spec/` relative paths with absolute URLs to public destinations (`github.com/ContextQB/contextqb`, `contextqb.com`, `npmjs.com`)
+- Audited and fixed 7 broken/private-path links in README.md — replaced monorepo-relative paths with absolute URLs to public destinations (`github.com/ContextQB/contextqb`, `contextqb.com`, `npmjs.com`)
 - Tightened `files` array to explicitly exclude `tsconfig.tsbuildinfo` from the npm tarball
 - Added `CHANGELOG.md` to the `files` array so the README's `./CHANGELOG.md` link resolves on npm
 
