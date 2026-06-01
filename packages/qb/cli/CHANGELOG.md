@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-05-31
+
 ### Added
 
 - Vercel adapter: reads `redirects[].destination` and `rewrites[].destination` host bindings
@@ -24,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Edge case #2: repos with no config file (dashboard-only routes) no longer emit false `routes-stale-entry`
+
+**Decision:** [ADR-0024](../../../docs/architecture/decisions/0024-context-qb-adapter-expansion.md)
+**Scope:** [docs/scopes/0024-context-qb-adapter-expansion.md](../../../docs/scopes/0024-context-qb-adapter-expansion.md)
 
 ## [1.0.1] - 2026-05-29
 
