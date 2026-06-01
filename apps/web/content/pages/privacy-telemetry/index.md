@@ -117,8 +117,8 @@ We do not use this data to identify individuals, build profiles, or sell to thir
 
 ## Technical details
 
-For the full technical specification, see [ADR-0018: Data Cooperative Telemetry](https://github.com/Industrial-Semiotics/contextqb/blob/main/docs/architecture/decisions/0018-data-cooperative-telemetry.md).
+For the technical specification, see the privacy section of our public methodology and tooling at [contextqb.com](https://contextqb.com).
 
 ## Questions?
 
-If you have questions about our privacy practices, open an issue on [GitHub](https://github.com/Industrial-Semiotics/contextqb/issues) or reach out through the channels listed on the [About](/about) page.
+If you have questions about our privacy practices, open an issue on [GitHub](https://github.com/ContextQB/contextqb/issues) or reach out through the channels listed on the [About](/about) page.

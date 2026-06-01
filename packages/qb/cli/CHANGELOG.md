@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-05-31
+
+### Security
+
+- Audited and fixed 7 broken/private-path links in README.md — replaced internal `../../../docs/` and `../spec/` relative paths with absolute URLs to public destinations (`github.com/ContextQB/contextqb`, `contextqb.com`, `npmjs.com`)
+- Tightened `files` array to explicitly exclude `tsconfig.tsbuildinfo` from the npm tarball
+- Added `CHANGELOG.md` to the `files` array so the README's `./CHANGELOG.md` link resolves on npm
+
+### Changed
+
+- README cross-references now use absolute URLs instead of monorepo-relative paths
+- Removed private ADR links (ADR-0024, ADR-0018) from public-facing documentation
+
+No code changes from 2.0.1.
+
 ## [2.0.1] - 2026-05-31
 
 ### Changed
@@ -37,8 +52,8 @@ No code changes from 2.0.0.
 
 - Edge case #2: repos with no config file (dashboard-only routes) no longer emit false `routes-stale-entry`
 
-**Decision:** [ADR-0024](../../../docs/architecture/decisions/0024-context-qb-adapter-expansion.md)
-**Scope:** [docs/scopes/0024-context-qb-adapter-expansion.md](../../../docs/scopes/0024-context-qb-adapter-expansion.md)
+**Decision:** ADR-0024
+**Scope:** Internal scope document 0024-context-qb-adapter-expansion
 
 ## [1.0.1] - 2026-05-29
 
@@ -57,7 +72,7 @@ No code changes from 2.0.0.
 
 - Gap VII: package-by-name resolution now works via symlinked binary
 
-**Decision:** [ADR-0023](../../../docs/architecture/decisions/0023-publish-and-dogfood-context-qb-cli.md)
+**Decision:** ADR-0023
 
 ## [1.0.0] - 2026-05-22
 
@@ -78,14 +93,10 @@ No code changes from 2.0.0.
 
 - Local-only operation; no network access
 
-**Decision:** [ADR-0014](../../../docs/architecture/decisions/0014-drift-detector-v1.md)
+**Decision:** ADR-0014
 
 ---
 
 ## Development Trail
 
-The v1 development history is preserved at:
-[`docs/archive/scopes/qb-cli-v1-development-trail.md`](../../../docs/archive/scopes/qb-cli-v1-development-trail.md)
-
-The v2 (adapter expansion) scope is at:
-[`docs/scopes/0024-context-qb-adapter-expansion.md`](../../../docs/scopes/0024-context-qb-adapter-expansion.md)
+Development history is preserved in internal scope documents.
