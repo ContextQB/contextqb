@@ -6,33 +6,51 @@ subhead: >-
   working habits for that job: better briefs, cleaner project context, practical
   checks, and a way to steer the work as it grows.
 
+problem_intro_heading: You do not need to become a developer before you start building.
+problem_intro_paragraphs:
+  - >-
+    AI agents can now help you make real software: websites, apps, tools,
+    dashboards, automations, and internal systems. But the agent still needs
+    direction.
+  - That is where ContextQB begins.
+  - >-
+    We teach you how to work with AI coding agents in plain English: how to
+    explain what you want, organize the information the agent needs, review what
+    it gives you, and keep the project from turning into a pile of random fixes.
+  - >-
+    This is not about becoming a prompt wizard. It is not about pretending
+    software is suddenly effortless. It is about learning the basic operating
+    habits that make AI-assisted building work.
 problem_heading: Why this feels confusing at first
 problem_cards:
-  - label: 1. The hard part moved.
+  - label: 1. The agent can build faster than you can understand.
     body: >-
-      AI can put software on the screen quickly. The harder job is steering the
-      work so the project stays understandable as it changes.
-  - label: 2. Your agent needs a map.
+      That sounds like a gift, until the project starts changing faster than you
+      can follow. ContextQB helps you slow the process down just enough to stay
+      in control.
+  - label: 2. Your idea needs structure before it becomes software.
     body: >-
-      Without clear context, each generation can make the project a little more
-      tangled. You often do not notice until a small change breaks three
-      unrelated parts.
-  - label: 3. Small decisions become architecture.
+      Most people start by saying what they want the app to do. That is useful,
+      but it is not enough. The agent also needs to understand who the app is
+      for, what the main parts are, how the pieces connect, and what should
+      happen when something changes.
+  - label: 3. The small choices matter.
     body: >-
-      Where state lives. What coordinates what. What each module is responsible
-      for. How things are named. The pattern of those small decisions _is_ your
-      architecture.
-  - label: 4. Prompts are only the start.
+      Names, pages, buttons, data, settings, user flows, and error messages may
+      seem minor. But together, those choices become the shape of the product.
+      ContextQB helps you notice those decisions before they become a mess.
+  - label: 4. Prompts are only one piece of the job.
     body: >-
-      A clever prompt can solve the next task. A clear project map and review
-      habit help you solve the next ten. ContextQB teaches that operating
-      practice.
+      A good prompt can help with one task. A good working process helps with
+      the whole project. You need a way to brief the agent, check the work, keep
+      track of decisions, and move forward without losing the thread.
 problem_callout_eyebrow: New here?
 problem_callout_title: Start with the plain-English tour.
 problem_callout_body: >-
-  If words like MCP, IDE, agent, or context window are still new, begin with the
-  basic orientation. It explains what ContextQB is, why it exists, and how to
-  take the first step without pretending this should all feel obvious yet.
+  If words like agent, IDE, MCP, repo, or context window are still new, begin
+  with the basic orientation. It explains what ContextQB is, why it exists, and
+  how to take your first steps without pretending this should all feel obvious
+  yet.
 problem_callout_cta: Read How To Use ContextQB
 problem_callout_href: /guides/how-to-use-contextqb
 
