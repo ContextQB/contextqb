@@ -42,6 +42,19 @@ export async function runAggregation(env: Env): Promise<void> {
   await aggregateMistakes(db, totalUsers);
   await aggregateDeploy(db, totalUsers);
 
+  // v2-only aggregations (filter WHERE payload_schema_version = 2)
+  const totalV2Result = await db
+    .prepare(
+      "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version = 2",
+    )
+    .first<{ total: number }>();
+  const totalV2Users = totalV2Result?.total ?? 0;
+
+  if (totalV2Users > 0) {
+    await aggregateAdapters(db, totalV2Users);
+    await aggregateUsage(db, totalV2Users);
+  }
+
   const elapsed = Date.now() - startTime;
   console.info(`[aggregation] Completed in ${elapsed}ms`);
 }
@@ -216,4 +229,76 @@ async function aggregateDeploy(db: D1Database, totalUsers: number): Promise<void
   await db.prepare(deployQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] deploy topic completed");
+}
+
+async function aggregateAdapters(db: D1Database, totalUsers: number): Promise<void> {
+  await db.prepare("DELETE FROM insights WHERE topic = 'adapters'").run();
+
+  const adapterFields = [
+    "workspaces_pnpm",
+    "workspaces_npm",
+    "routes_wrangler",
+    "routes_vercel",
+    "routes_netlify",
+    "routes_fly",
+    "decisions_md",
+  ];
+
+  for (const adapter of adapterFields) {
+    const query = `
+      INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
+      SELECT
+        'adapters',
+        ?,
+        CASE WHEN json_extract(payload_json, '$.adapter_coverage.${adapter}') = 1 THEN 'true' ELSE 'false' END,
+        COUNT(DISTINCT anonymous_id),
+        CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      FROM cli_events
+      WHERE payload_schema_version = 2
+        AND json_extract(payload_json, '$.adapter_coverage.${adapter}') IS NOT NULL
+      GROUP BY json_extract(payload_json, '$.adapter_coverage.${adapter}')
+      HAVING COUNT(DISTINCT anonymous_id) >= ?
+    `;
+    await db.prepare(query).bind(adapter, totalUsers, K_ANONYMITY_THRESHOLD).run();
+  }
+
+  console.info("[aggregation] adapters topic completed");
+}
+
+async function aggregateUsage(db: D1Database, totalUsers: number): Promise<void> {
+  await db.prepare("DELETE FROM insights WHERE topic = 'usage'").run();
+
+  const kindQuery = `
+    INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
+    SELECT
+      'usage',
+      'event_kind',
+      json_extract(payload_json, '$.event_kind'),
+      COUNT(DISTINCT anonymous_id),
+      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+    FROM cli_events
+    WHERE payload_schema_version = 2
+      AND json_extract(payload_json, '$.event_kind') IS NOT NULL
+    GROUP BY json_extract(payload_json, '$.event_kind')
+    HAVING COUNT(DISTINCT anonymous_id) >= ?
+  `;
+  await db.prepare(kindQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+
+  const subQuery = `
+    INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
+    SELECT
+      'usage',
+      'subcommand',
+      json_extract(payload_json, '$.subcommand'),
+      COUNT(DISTINCT anonymous_id),
+      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+    FROM cli_events
+    WHERE payload_schema_version = 2
+      AND json_extract(payload_json, '$.subcommand') IS NOT NULL
+    GROUP BY json_extract(payload_json, '$.subcommand')
+    HAVING COUNT(DISTINCT anonymous_id) >= ?
+  `;
+  await db.prepare(subQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+
+  console.info("[aggregation] usage topic completed");
 }
