@@ -131,7 +131,9 @@ install_steps:
       you through every section. The
       [worked examples](https://github.com/ContextQB/contextqb/tree/main/format/examples)
       cover monorepos, Next.js apps, MCP servers, CLIs, and Python pipelines —
-      copy the closest one. Most repos need fewer than 100 lines.
+      copy the closest one. Most repos need fewer than 100 lines. Already have
+      a repo with a stale qb? Follow
+      [retrofit drift detection](/playbooks/retrofit-drift-detection) instead.
   - title: Run the check
     body: >-
       `pnpm check:qb` runs in under three seconds. Exit code 0 means clean;
@@ -142,7 +144,8 @@ install_steps:
       The repo already chains `check:qb` into `pnpm validate`, which runs
       `validate:content`, `validate:qb`, and `check:qb` together. Run
       `pnpm validate` before every commit, or wire it into a CI job that
-      runs on every pull request.
+      runs on every pull request. For the full greenfield walkthrough, follow
+      [set up drift detection on day one](/playbooks/set-up-drift-detection).
 
 firstrun_eyebrow: Membership
 firstrun_heading: What happens on first run.

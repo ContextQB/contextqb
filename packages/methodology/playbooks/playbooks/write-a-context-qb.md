@@ -19,6 +19,8 @@ audience:
   - agent
 journey_stage: 1
 journey_rank: 30
+related:
+  - set-up-drift-detection
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
@@ -228,6 +230,10 @@ If you're starting from scratch, this prompt works well:
 - **Two `context.qb.yaml` files saying different things.** Pick one canonical file at the repo root. Use nested files only if a subtree truly has its own scope and the root is already too dense to grow.
 - **Treating `context.qb.yaml` as the only doc.** It's the index. Real documentation still belongs in `docs/`, READMEs, and ADRs. `context.qb.yaml` points at them.
 - **Putting secrets, credentials, or internal-only endpoints in the file.** Treat `context.qb.yaml` as a public artifact even when the repo is private. Anything you write ends up in every agent's context window every session, and on most provider terms of service can be used for training. Secrets belong in `.env.local`, secret managers, or environment variables — never here. See [SPEC.md §14](../../../qb/spec/SPEC.md#14-privacy-and-security).
+
+## What's next
+
+Once your file passes validation, set up the detector that keeps it honest. Use [`set-up-drift-detection`](./set-up-drift-detection.md) to install `@context-qb/cli`, add `check:qb`, and wire the check into your commit and CI loop.
 
 ## Technical reference
 
