@@ -59,11 +59,15 @@ If the agent understands the project, the goal, the constraints, and the next st
 
 ## You are the quarterback
 
-The name ContextQB is the point. On a team, the quarterback reads the field, calls the play, adjusts in real time, and decides which receiver to throw to. The quarterback does not run every route — the team does that. The quarterback's job is judgment.
+The name ContextQB is the point. On a team, the quarterback reads the field, calls the offense, and manages the game. They do not run every route themselves — the team does that. Their job is judgment: knowing the play that fits this situation, recognizing when something has changed, and keeping the team out of bad positions.
 
-When you build with an AI agent, you are in that role. The agent runs the routes — it writes the code, scans the files, drafts the language. You read the field, call the play, and decide whether the result fits the goal. You are not the agent's tool. The agent is on your team.
+When you build with an AI agent, you are in that role. The agent runs the routes — it writes the code, scans the files, drafts the language. You read the field, manage the game, and decide whether the result fits the goal. You are not the agent's tool. The agent is on your team.
 
-Our job is to help you become a good context quarterback: someone who briefs cleanly, reviews honestly, keeps the play clear, and steers the project so it stays understandable as it grows. The single most important thing you call plays around is the agent's [context window](contextqb://guides/understanding-the-context-window) — what it can see and reason over in any given moment. The brand is named for that variable; the methodology is what lets you manage it on purpose.
+Our job is to help you become a good **context quarterback**: a game manager for your project. In football, a game-managing quarterback is not the one who throws the spectacular pass. They read the field clearly, keep the offense out of bad situations, and put the team in position to score. The flashy plays come from the team. The good outcomes come from the manager.
+
+In agentic development, the version of game management you have to learn is **managing the agent's contexts** — across files, across sessions, across tasks. Every time you sit down to build, the agent starts from whatever you put in front of it. What it sees first, what it sees next, what you asked it to ignore, what it learned last session, what it forgot — those are the variables that decide how the work goes. The single most important of them is the agent's [context window](contextqb://guides/understanding-the-context-window): the finite working memory it can reason over right now. The brand is named for that variable. The methodology is what lets you manage it on purpose.
+
+A good context quarterback briefs the agent cleanly, reviews the work honestly, keeps the project legible to anyone who picks it up next, and steers the build so it stays understandable as it grows. None of that requires being a great coder. It requires being a good operator.
 
 ## Some words you will see
 
@@ -168,7 +172,7 @@ And if you feel overwhelmed, return to the simple rule: give the agent better co
 
 ## See also
 
-- [Guide: Understanding the Context Window](contextqb://guides/understanding-the-context-window) — the variable the brand is named for, and what you are calling plays around.
+- [Guide: Understanding the Context Window](contextqb://guides/understanding-the-context-window) — the variable the brand is named for, and the thing you are managing as the quarterback.
 - [Guide: What an Application Is](contextqb://guides/what-an-application-is) — the substrate every app sits on, in plain language.
 - [Guide: Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) — set up the workshop where you and the agent will build.
 - [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — how the models behave and why they are not interchangeable.
