@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-05-31
+
+### Changed
+
+- Filled in npm package metadata: `author` (Industrial Semiotics), `license` (MIT), `homepage` (https://contextqb.com/check), `repository` (public mirror), `bugs`, and `keywords` for npm search
+- Added "About" section to the README pointing at contextqb.com and Industrial Semiotics
+- Description now includes "An Industrial Semiotics project" attribution
+
+No code changes from 2.0.0.
+
 ## [2.0.0] - 2026-05-31
 
 ### Added
