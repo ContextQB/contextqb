@@ -8,11 +8,11 @@ subhead: >-
   project's map, written for an assistant that has not seen this repo before.
   **contextqb check** keeps that map honest. Run it locally, wire it into your
   build, and your agent stops starting from stale instructions.
-hero_banner_label: Best fit
+hero_banner_label: Supported stacks
 hero_banner_body: >-
-  The drift detector works best for new projects that adopt the ContextQB
-  conventions from day one. Existing repos can still use the format, but the
-  automated checks expect the layout described below.
+  Works with pnpm, npm, or yarn workspaces. Reads routes from Cloudflare
+  Workers, Vercel, Netlify, or Fly. Finds your ADRs wherever they live — the
+  default path or a custom one you specify.
 hero_cta_install_label: Install in 30 seconds
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
@@ -51,7 +51,8 @@ watches_cards:
     title: Your project structure
     body: >-
       The `tree:` section names every workspace in your project. The source of
-      truth is your `pnpm-workspace.yaml` (or equivalent).
+      truth is `pnpm-workspace.yaml`, or `package.json#workspaces` for npm and
+      yarn.
     postscript: >-
       Add a package, forget to declare it, and your agent thinks the package
       doesn't exist. The detector catches this.
@@ -59,8 +60,8 @@ watches_cards:
     title: Your domains and apps
     body: >-
       The `routes:` section maps each public domain to the app that owns it.
-      The source of truth is your `wrangler.jsonc` (or equivalent deploy
-      config).
+      The source of truth is your deploy config — `wrangler.jsonc` for
+      Cloudflare, `vercel.json`, `netlify.toml`, or `fly.toml`.
     postscript: >-
       Move a route from one app to another, forget to update the map, and
       your agent proposes changes to the wrong codebase. The detector catches
@@ -69,31 +70,34 @@ watches_cards:
     title: Your architectural decisions
     body: >-
       The `decisions:` section indexes your ADRs by id and status. The source
-      of truth is the ADR files themselves in
-      `docs/architecture/decisions/`.
+      of truth is the ADR files themselves — at `docs/architecture/decisions/`
+      by default, or the path you set via `paths.decisions:` in your
+      `context.qb.yaml`.
     postscript: >-
       Mark an ADR as superseded, forget to update the map, and your agent
       treats a retired decision as live. The detector catches this.
 
 scope_eyebrow: Fit
-scope_heading: Use it where the project shape is explicit.
+scope_heading: Adapters for the ecosystems you actually use.
 scope_intro: >-
-  ContextQB is opinionated about how a project is laid out. The drift
-  detector enforces those opinions by looking in three specific places:
+  The drift detector reads from the files that already define your project.
+  No extra config — it looks in the right places automatically:
 scope_bullets:
-  - "`pnpm-workspace.yaml` at the repo root"
-  - "`apps/*/wrangler.jsonc` for Cloudflare Workers deployments"
-  - "`docs/architecture/decisions/0NNN-*.md` for ADRs"
+  - "`pnpm-workspace.yaml` **or** `package.json#workspaces` (npm / yarn classic / yarn berry)"
+  - "`wrangler.jsonc` (Cloudflare) **or** `vercel.json` **or** `netlify.toml` **or** `fly.toml`"
+  - "`docs/architecture/decisions/0NNN-*.md` by default **or** the path you set via `paths.decisions:`"
 scope_right_paragraphs:
   - >-
-    These conventions are part of the ContextQB methodology. If you're
-    starting a new project and adopt them, the detector works the moment you
-    install it. **No configuration needed.**
+    Any of these configurations work out of the box. If your ADRs live
+    somewhere other than `docs/architecture/decisions/`, add
+    `paths.decisions: docs/adr/` (or whatever your path is) to your
+    `context.qb.yaml` and the detector will look there instead.
   - >-
-    Existing repos with a different layout — yarn workspaces, Vercel deploys,
-    ADRs in `docs/adr/`, anything else — can still use the format. The automated
-    check is strongest when the repo follows the ContextQB conventions from the
-    start.
+    See the
+    [CLI README](https://github.com/contextqb/contextqb/tree/main/packages/qb/cli#adapter-matrix)
+    for the full adapter matrix and the
+    [ROADMAP](https://github.com/contextqb/contextqb/tree/main/packages/qb/spec/ROADMAP.md)
+    for what's coming next.
 
 fits_eyebrow: Where it lives
 fits_heading: Where the check belongs.
@@ -197,9 +201,12 @@ meta_description: >-
 
 review:
   status: final
-  last_reviewed: "2026-05-27"
-  reviewer: "agent:cooperative-flow-tranche-b"
+  last_reviewed: "2026-05-31"
+  reviewer: "agent:tranche-5-publish-dogfood-copy"
   reviewer_notes: |-
-    Added "What happens on first run" section explaining auto-provisioned
-    membership, with commands for status check and MCP setup.
+    v2 supported-adapter copy refresh: replaced "Best fit" hero with "Supported
+    stacks"; updated watches_cards to mention all workspace managers and deploy
+    platforms; rewrote scope section to list pnpm/npm/yarn + all four route
+    adapters + configurable ADR path; added links to CLI README adapter matrix
+    and ROADMAP.
 ---
