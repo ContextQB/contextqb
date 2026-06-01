@@ -47,7 +47,7 @@ The cheapest time to give a document a real name is the moment it is created.
 
 A `PUNCHLIST.md` is a category. `qb-cli-v1-scope.md` (or, in a scopes directory, `0014-qb-cli-v1.md` numbered to its ADR) is a name. The first will collide as soon as a second scope exists. The second tells the reader what the document is without needing the parent folder.
 
-Note: `PUNCHLIST.md` is doubly wrong. It fails the singleton test (generic naming), _and_ it misuses the word "punchlist." In construction, a punchlist is a remediation list at the end of a build. A pre-build contract is called a _scope_. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) and [ADR-0025](../../../../docs/architecture/decisions/0025-architectural-vocabulary.md) for the canonical vocabulary.
+Note: `PUNCHLIST.md` is doubly wrong. It fails the singleton test (generic naming), _and_ it misuses the word "punchlist." In construction, a punchlist is a remediation list at the end of a build. A pre-build contract is called a _scope_. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) and ADR-0025 for the canonical vocabulary.
 
 ## Why this is harder for docs than for code
 
@@ -95,7 +95,7 @@ Three quick checks. If any of them flag the filename, it is probably a category 
 
 ## What to do when you find an offender
 
-In a tier-1 / greenfield context, you almost never will — because you authored the name with this principle in front of you. The remediation lane (renaming generically-named files in an existing repository) is tier-2 work under [ADR-0019](../../../../docs/architecture/decisions/0019-greenfield-first-product-orientation.md); a future audit template and remediation playbook will cover it.
+In a tier-1 / greenfield context, you almost never will — because you authored the name with this principle in front of you. The remediation lane (renaming generically-named files in an existing repository) is tier-2 work under ADR-0019; a future audit template and remediation playbook will cover it.
 
 For greenfield work, the discipline is purely preventive:
 
