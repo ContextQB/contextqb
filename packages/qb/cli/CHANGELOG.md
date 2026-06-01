@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-05-31
+
+### Security
+
+- Removed private documentation path references from JSDoc comments in 13 source files
+- Compiled `dist/` files no longer contain paths to internal `docs/archive/` or `docs/architecture/invariants.md`
+- Invariant references (INV-2, INV-6) retained as plain text without file paths
+
+No functional changes from 2.0.2.
+
 ## [2.0.2] - 2026-05-31
 
 ### Security
