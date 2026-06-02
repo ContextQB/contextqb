@@ -17,6 +17,11 @@ import { validateToken, register, revoke, status } from "./membership";
 import { handleCliTelemetry, recordMcpEvent } from "./telemetry";
 import { runAggregation } from "./aggregation";
 import { handleInsights, corsHeaders, callInsightsApi, formatInsightsAsMarkdown } from "./insights";
+import {
+  buildSubmitFeedbackResponse,
+  submitFeedbackInputShape,
+  type SubmitFeedbackInput,
+} from "./feedback";
 import type { Member } from "./membership";
 
 const SERVER_NAME = "contextqb";
@@ -31,6 +36,9 @@ interface Env {
   MEMBERSHIP_REVOKE_LIMIT: RateLimit;
   TELEMETRY_CLI_LIMIT: RateLimit;
   INSIGHTS_LIMIT: RateLimit;
+  // submit_feedback tool throttle (ADR-0029); low ceiling — abuse here would
+  // mean spam of the issue tracker or a soft DoS on the MCP endpoint.
+  FEEDBACK_LIMIT: RateLimit;
 }
 
 type ContentKind = "principles" | "playbooks" | "audits" | "prompts" | "guides" | "briefings";
@@ -612,6 +620,21 @@ function createServer(ctx: ServerContext): McpServer {
       }
       const result = await callInsightsApi(ctx.env, "deploy", null);
       return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+    },
+  );
+
+  // Adopter feedback channel (ADR-0029). Open tool — no membership token
+  // required. Returns three submission paths; does not file the issue itself
+  // until ADR-0030 (server-side auth strategy) is Accepted.
+  server.tool(
+    "submit_feedback",
+    "Share field feedback from setting up or using any ContextQB surface (CLI, MCP, methodology, spec, docs). Open to humans and to AI agents acting on behalf of operators. Returns three submission paths (prefilled GitHub issue URL, `gh issue create` command, structured payload for copy-paste) — the agent picks whichever the user can act on. See ADR-0029 for the receiving lifecycle. Use this proactively after a meaningful adoption moment (first successful check, a friction point, a confusing error, or something that worked unusually well).",
+    submitFeedbackInputShape,
+    async (rawInput) => {
+      const input = rawInput as SubmitFeedbackInput;
+      return {
+        content: [{ type: "text", text: buildSubmitFeedbackResponse(input) }],
+      };
     },
   );
 

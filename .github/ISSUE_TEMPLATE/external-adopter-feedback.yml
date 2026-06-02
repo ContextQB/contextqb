@@ -1,0 +1,149 @@
+name: External adopter feedback
+description: Field report from setting up ContextQB (methodology, MCP, context.qb spec, or @context-qb/cli) in your own repository. Open to humans and to AI agents acting on behalf of operators.
+title: "[feedback] <one-line summary>"
+labels: ["feedback", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file this — adopter feedback is how the methodology and tooling improve.
+
+        **A maintainer will triage this issue and file it under `feedback/reports/` in the private upstream.** The structured report stays internal by default; insights that drive a change will surface in public ADRs, scopes, or content updates with your consent honoured. See [`feedback/README.md`](https://github.com/ContextQB/contextqb/blob/main/feedback/README.md) for the full lifecycle.
+
+        If you're an AI agent filing this on behalf of an operator, set "Submitted by an AI agent?" to **Yes** and name yourself in the agent field. We treat agent-authored reports as first-class data.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which ContextQB surface is this about?
+      options:
+        - install — first-run friction across multiple surfaces
+        - cli — @context-qb/cli (drift detector)
+        - spec — the context.qb file format
+        - mcp — the methodology MCP server (mcp.contextqb.com or stdio)
+        - methodology — a principle / playbook / audit / prompt / guide
+        - docs — contextqb.com or the website's content
+        - website — UI / navigation / discoverability on contextqb.com
+    validations:
+      required: true
+
+  - type: dropdown
+    id: adoption_stage
+    attributes:
+      label: Where in your adoption journey did this happen?
+      options:
+        - discovery — finding ContextQB / deciding to try it
+        - install — first setup, before anything ran
+        - first-use — first time running a tool / loading a playbook
+        - daily-use — repeated workflow
+        - drift-fix — using the drift detector to repair a real divergence
+        - renewal — coming back after a period away
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: How would you weight this?
+      description: Triage may adjust this — your initial read is useful.
+      options:
+        - blocker — could not proceed
+        - major — significant friction, found a workaround
+        - minor — noticeable friction
+        - nit — minor nit, easy fix
+        - praise — something worked unusually well; capture it so we don't undo it
+    validations:
+      required: true
+
+  - type: dropdown
+    id: submitted_by_agent
+    attributes:
+      label: Submitted by an AI agent?
+      options:
+        - "No — I am the human operator"
+        - "Yes — I am an AI agent filing on behalf of an operator"
+    validations:
+      required: true
+
+  - type: input
+    id: agent
+    attributes:
+      label: If yes, which agent?
+      description: e.g. cursor-claude-opus-4, claude-code-cli, codex-gpt-5, gemini-3.1-pro
+      placeholder: leave blank if a human filed this
+
+  - type: input
+    id: adopter_name
+    attributes:
+      label: Adopter name
+      description: How you'd like to be credited (or a pseudonym).
+    validations:
+      required: true
+
+  - type: dropdown
+    id: consent
+    attributes:
+      label: Consent for republication
+      description: We keep raw reports internal. This controls what we may quote when synthesising insights publicly.
+      options:
+        - "synthesised-only — cite the pattern but no verbatim quotes (default)"
+        - "public — direct quotes are fine in ADRs, themes, and posts"
+        - "private — keep this entirely internal, even paraphrased"
+    validations:
+      required: true
+
+  - type: input
+    id: language
+    attributes:
+      label: Primary language of the repo
+      placeholder: TypeScript / Python / Go / Rust / mixed / N/A
+
+  - type: input
+    id: framework
+    attributes:
+      label: Primary framework / stack
+      placeholder: Next.js 15 / Django 5 / bare Node / FastAPI / N/A
+
+  - type: dropdown
+    id: repo_type
+    attributes:
+      label: Repo type
+      options:
+        - greenfield — new project
+        - brownfield — existing project
+
+  - type: textarea
+    id: trying_to_do
+    attributes:
+      label: What were you trying to do?
+      description: The actual goal, not the surface you touched.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: The observation. Verbatim output, command, doc URL, step number. Paste blocks generously.
+    validations:
+      required: true
+
+  - type: textarea
+    id: confusing_or_wrong
+    attributes:
+      label: What was confusing or wrong?
+      description: Distinguish "I expected X, got Y" from "X seems wrong in general."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_fix
+    attributes:
+      label: Suggested fix (optional)
+      description: If you have one, in your words. We won't be bound by it — triage decides.
+
+  - type: textarea
+    id: agent_trail
+    attributes:
+      label: Agent reasoning trail (only if an agent filed this)
+      description: Tool calls, transcript excerpts, the chain of reasoning that produced this report. Redact anything sensitive from the host repo.

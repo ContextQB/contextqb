@@ -240,3 +240,17 @@ Once your file passes validation, set up the detector that keeps it honest. Use 
 For a compressed technical checklist (less methodology context, more step-by-step), see the [Authoring Guide](../../../qb/docs/authoring-guide.md).
 
 For format implementors and tool authors, see the [Format Explainer](../../../qb/docs/format-explainer.md).
+
+## How did this go? Share your experience
+
+ContextQB improves on the back of adopter feedback. If anything about this playbook — or the `context.qb` format itself — surprised you, frustrated you, worked unusually well, or could have been clearer, **tell us**. We treat field reports as first-class evidence (see ADR-0029 in the public repository).
+
+Three ways to submit, in order of friction:
+
+1. **Call the MCP tool.** If you have `mcp.contextqb.com` loaded in your AI client, the agent can call `submit_feedback` directly without leaving the conversation. The tool prepares a submission and the agent surfaces it to you to confirm.
+2. **Open the GitHub issue template.** Visit [github.com/ContextQB/contextqb/issues/new/choose](https://github.com/ContextQB/contextqb/issues/new/choose) and pick **"External adopter feedback."** The structured form takes 3–5 minutes.
+3. **File via `gh`.** If you've already drafted a markdown report, `gh issue create --repo ContextQB/contextqb --title "[feedback] <summary>" --body-file ./report.md --label feedback,triage`.
+
+What we want most: the verbatim friction. If a step took longer than expected, say so. If an error message misled you, paste it. If your agent ran into something a human wouldn't have, that's especially useful — we treat agent-authored reports as first-class data, not noise.
+
+What we'll do with it: a maintainer files your submission verbatim into the project's `feedback/captures/` directory and triages it into structured reports over the following days. Synthesised insights drive ADRs and content changes; your words are republished only with your explicit consent (`consent: public` in the form).
