@@ -8,7 +8,8 @@
     "build": "pnpm prebuild && wrangler deploy --dry-run --outdir dist",
     "dev": "pnpm prebuild && wrangler dev",
     "deploy": "pnpm prebuild && wrangler deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "backfill:token-hashes": "tsx scripts/backfill-token-hashes.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",

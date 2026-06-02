@@ -49,6 +49,8 @@ interface InsufficientDataResponse {
   topic: string;
   insufficient_data: true;
   threshold: 30;
+  explanation: string;
+  privacy_policy_url: string;
 }
 
 type ApiResponse = InsightResponse | InsufficientDataResponse;
@@ -153,6 +155,9 @@ export async function callInsightsApi(
       topic,
       insufficient_data: true,
       threshold: 30,
+      explanation:
+        "This topic needs at least 30 unique contributors before aggregate insights are shown. This k-anonymity threshold protects individual privacy.",
+      privacy_policy_url: "https://contextqb.com/privacy/telemetry",
     };
   }
 
@@ -230,7 +235,19 @@ export async function handleInsights(
  */
 export function formatInsightsAsMarkdown(result: ApiResponse): string {
   if ("insufficient_data" in result) {
-    return `## ${result.topic} insights\n\nInsufficient data — community needs at least ${result.threshold} participants to generate anonymized insights for this topic.`;
+    return [
+      `## ${result.topic} insights`,
+      "",
+      "**Insufficient data**",
+      "",
+      `This topic doesn't have enough community participation yet. To protect individual privacy, ContextQB only shows aggregate insights when at least **${result.threshold} unique users** have contributed data for a given category.`,
+      "",
+      "This threshold (called k-anonymity) ensures that no individual's usage patterns can be inferred from the aggregate statistics.",
+      "",
+      "As more people use ContextQB and opt in to the data cooperative, more insights will become available. You can help by running `contextqb check` on your projects!",
+      "",
+      "Learn more: [Privacy Policy — Telemetry](https://contextqb.com/privacy/telemetry)",
+    ].join("\n");
   }
 
   const lines = [

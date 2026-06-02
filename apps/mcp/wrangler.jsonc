@@ -6,6 +6,13 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
 
+  // Environment variables
+  "vars": {
+    // Raw event retention in days (C.1). Events older than this are deleted
+    // after successful aggregation. Default 90 days per privacy policy.
+    "TELEMETRY_RETENTION_DAYS": "90",
+  },
+
   // Custom domain: mcp.contextqb.com
   // Requires DNS record pointing to Workers (done via Cloudflare dashboard or API)
   "routes": [{ "pattern": "mcp.contextqb.com", "custom_domain": true }],
@@ -26,7 +33,7 @@
   },
 
   // Rate Limiting bindings (ADR-0018, Tranche G)
-  // Keys: token if Authorization/?token= is present, else CF-Connecting-IP.
+  // Keys: token if Authorization: Bearer is present, else CF-Connecting-IP.
   // Locality note: limits are per-Cloudflare-location, not global.
   "ratelimits": [
     {

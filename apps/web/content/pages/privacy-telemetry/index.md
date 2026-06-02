@@ -58,6 +58,15 @@ When you first run the `contextqb` CLI, a membership token is silently provision
 - **Environment variables or secrets** — never accessed
 - **Git history or commit messages** — never accessed
 
+### Integrity headers
+
+The CLI sends two headers with each telemetry submission:
+
+- **User-Agent:** `contextqb-cli/<version>` — identifies the CLI version making the request
+- **X-ContextQB-Signature:** A cryptographic signature (HMAC-SHA256) that proves the payload came from a published CLI build
+
+These headers allow the server to reject forged requests that could pollute community data. No new user data is collected — the signature is computed from the request body using a key baked into the CLI at publish time. The key is not personally identifiable; it is the same for all CLI installations of a given version.
+
 ### Four ways to opt out:
 
 1. **Per-run:** `contextqb check --no-telemetry` — skips telemetry for this run only

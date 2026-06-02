@@ -15,48 +15,111 @@
 
 interface Env {
   DB: D1Database;
+  TELEMETRY_RETENTION_DAYS?: string;
 }
 
 const K_ANONYMITY_THRESHOLD = 30;
 
-export async function runAggregation(env: Env): Promise<void> {
+function truncateError(err: unknown): string {
+  const message = err instanceof Error ? err.message : String(err);
+  return message.slice(0, 2048);
+}
+
+export async function runAggregation(env: Env, cronSchedule = "0 6 * * *"): Promise<void> {
   const db = env.DB;
-  const startTime = Date.now();
+  const startedAt = Math.floor(Date.now() / 1000);
+  let status: "ok" | "error" = "ok";
+  let errorMessage: string | null = null;
+  let cliRowsDeleted = 0;
+  let mcpRowsDeleted = 0;
 
-  const totalResult = await db
-    .prepare(
-      "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version = 1",
-    )
-    .first<{ total: number }>();
-  const totalUsers = totalResult?.total ?? 0;
+  try {
+    const totalResult = await db
+      .prepare(
+        "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version IN (1, 2)",
+      )
+      .first<{ total: number }>();
+    const totalUsers = totalResult?.total ?? 0;
 
-  console.info(`[aggregation] Starting aggregation for ${totalUsers} distinct users`);
+    console.info(`[aggregation] Starting aggregation for ${totalUsers} distinct users`);
 
-  if (totalUsers === 0) {
-    console.info("[aggregation] No events to aggregate");
-    return;
+    if (totalUsers > 0) {
+      await aggregateStack(db, totalUsers);
+      await aggregateStructure(db, totalUsers);
+      await aggregateMistakes(db, totalUsers);
+      await aggregateDeploy(db, totalUsers);
+    } else {
+      console.info("[aggregation] No events to aggregate");
+    }
+
+    // v2-only aggregations (filter WHERE payload_schema_version = 2)
+    const totalV2Result = await db
+      .prepare(
+        "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version = 2",
+      )
+      .first<{ total: number }>();
+    const totalV2Users = totalV2Result?.total ?? 0;
+
+    if (totalV2Users > 0) {
+      await aggregateAdapters(db, totalV2Users);
+      await aggregateUsage(db, totalV2Users);
+    }
+
+    // C.1: Retention cleanup — delete events older than TELEMETRY_RETENTION_DAYS
+    // Only runs after successful aggregation to ensure data is captured first.
+    const retentionDays = parseInt(env.TELEMETRY_RETENTION_DAYS ?? "90", 10);
+    const retentionThreshold = startedAt - retentionDays * 86400;
+
+    const cliDeleteResult = await db
+      .prepare("DELETE FROM cli_events WHERE ts < ?")
+      .bind(retentionThreshold)
+      .run();
+    cliRowsDeleted = cliDeleteResult.meta?.changes ?? 0;
+
+    const mcpDeleteResult = await db
+      .prepare("DELETE FROM mcp_events WHERE ts < ?")
+      .bind(retentionThreshold)
+      .run();
+    mcpRowsDeleted = mcpDeleteResult.meta?.changes ?? 0;
+
+    if (cliRowsDeleted > 0 || mcpRowsDeleted > 0) {
+      console.info(
+        `[aggregation] Retention cleanup: deleted ${cliRowsDeleted} cli_events, ${mcpRowsDeleted} mcp_events older than ${retentionDays} days`,
+      );
+    }
+
+    const elapsed = Math.floor(Date.now() / 1000) - startedAt;
+    console.info(`[aggregation] Completed in ${elapsed}s`);
+  } catch (err) {
+    status = "error";
+    errorMessage = truncateError(err);
+    console.error("[aggregation] Failed:", err);
+  } finally {
+    const finishedAt = Math.floor(Date.now() / 1000);
+    let rowsWritten = 0;
+    try {
+      rowsWritten =
+        (await db.prepare("SELECT COUNT(*) as c FROM insights").first<{ c: number }>())?.c ?? 0;
+      await db
+        .prepare(
+          `INSERT INTO cron_runs (started_at, finished_at, status, rows_written, error_message, cron_schedule, cli_rows_deleted, mcp_rows_deleted)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          startedAt,
+          finishedAt,
+          status,
+          rowsWritten,
+          errorMessage,
+          cronSchedule,
+          cliRowsDeleted,
+          mcpRowsDeleted,
+        )
+        .run();
+    } catch (logErr) {
+      console.error("[aggregation] Failed to write cron_runs:", logErr);
+    }
   }
-
-  await aggregateStack(db, totalUsers);
-  await aggregateStructure(db, totalUsers);
-  await aggregateMistakes(db, totalUsers);
-  await aggregateDeploy(db, totalUsers);
-
-  // v2-only aggregations (filter WHERE payload_schema_version = 2)
-  const totalV2Result = await db
-    .prepare(
-      "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version = 2",
-    )
-    .first<{ total: number }>();
-  const totalV2Users = totalV2Result?.total ?? 0;
-
-  if (totalV2Users > 0) {
-    await aggregateAdapters(db, totalV2Users);
-    await aggregateUsage(db, totalV2Users);
-  }
-
-  const elapsed = Date.now() - startTime;
-  console.info(`[aggregation] Completed in ${elapsed}ms`);
 }
 
 async function aggregateStack(db: D1Database, totalUsers: number): Promise<void> {
@@ -71,7 +134,7 @@ async function aggregateStack(db: D1Database, totalUsers: number): Promise<void>
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.stack_categories.lang') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.lang')
     HAVING COUNT(DISTINCT anonymous_id) >= ?
@@ -87,7 +150,7 @@ async function aggregateStack(db: D1Database, totalUsers: number): Promise<void>
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.stack_categories.mono') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.mono')
     HAVING COUNT(DISTINCT anonymous_id) >= ?
@@ -115,7 +178,7 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.counts.tree_entries') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.tree_entries') = 0 THEN '0'
@@ -143,7 +206,7 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.counts.routes') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.routes') = 0 THEN '0'
@@ -171,7 +234,7 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.counts.decisions') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.decisions') = 0 THEN '0'
@@ -199,7 +262,7 @@ async function aggregateMistakes(db: D1Database, totalUsers: number): Promise<vo
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.validation.passed') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.validation.passed')
     HAVING COUNT(DISTINCT anonymous_id) >= ?
@@ -221,7 +284,7 @@ async function aggregateDeploy(db: D1Database, totalUsers: number): Promise<void
       COUNT(DISTINCT anonymous_id),
       CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 1
+    WHERE payload_schema_version IN (1, 2)
       AND json_extract(payload_json, '$.stack_categories.deploy') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.deploy')
     HAVING COUNT(DISTINCT anonymous_id) >= ?

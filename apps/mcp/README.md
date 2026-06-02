@@ -238,15 +238,14 @@ Success (200):
 Error (401 — missing token):
 
 ```json
-{ "error": "missing_token", "message": "Authorization header or ?token= query param required" }
+{ "error": "missing_token", "message": "Authorization: Bearer <token> header required" }
 ```
 
 ### Token authentication
 
-All token-gated endpoints accept the token via:
+Most endpoints require the token via **Authorization header**: `Authorization: Bearer mt_...`
 
-1. **Authorization header** (preferred): `Authorization: Bearer mt_...`
-2. **Query parameter** (fallback): `?token=mt_...`
+**SSE endpoints only** (`/sse`, `/sse/message`) also accept `?token=mt_...` as a fallback for browser EventSource clients that cannot set headers.
 
 ## Telemetry Endpoint
 
@@ -282,7 +281,7 @@ Error responses:
 | Status | Error Code        | Description                                    |
 | ------ | ----------------- | ---------------------------------------------- |
 | 400    | `invalid_payload` | Body is not valid JSON or fails schema check   |
-| 401    | `missing_token`   | No Authorization header or `?token=`           |
+| 401    | `missing_token`   | No Authorization header                        |
 | 401    | `invalid_token`   | Token not found or revoked                     |
 | 429    | `rate_limited`    | Token exceeded 600 requests/minute (this colo) |
 | 500    | `internal_error`  | Failed to record telemetry                     |
@@ -349,14 +348,14 @@ Returned when fewer than 30 distinct users have data for the requested topic/dim
 
 #### Error Responses
 
-| Status | Error Code            | Description                        |
-| ------ | --------------------- | ---------------------------------- |
-| 400    | `missing_topic`       | No topic parameter provided        |
-| 400    | `unknown_topic`       | Topic not in allow-list            |
-| 400    | `too_many_dimensions` | More than 2 dimension parameters   |
-| 400    | `invalid_dim1`        | Dimension not valid for topic      |
-| 401    | `missing_token`       | No Authorization header or ?token= |
-| 401    | `invalid_token`       | Token not found or revoked         |
+| Status | Error Code            | Description                      |
+| ------ | --------------------- | -------------------------------- |
+| 400    | `missing_topic`       | No topic parameter provided      |
+| 400    | `unknown_topic`       | Topic not in allow-list          |
+| 400    | `too_many_dimensions` | More than 2 dimension parameters |
+| 400    | `invalid_dim1`        | Dimension not valid for topic    |
+| 401    | `missing_token`       | No Authorization header          |
+| 401    | `invalid_token`       | Token not found or revoked       |
 
 ### CORS
 
