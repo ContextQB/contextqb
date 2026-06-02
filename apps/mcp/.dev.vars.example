@@ -1,0 +1,17 @@
+# Local development variables for the MCP worker
+#
+# Copy this file to .dev.vars and configure the values.
+# .dev.vars is gitignored — never commit secrets.
+#
+# Usage:
+#   cp .dev.vars.example .dev.vars
+#   # Edit .dev.vars with your values
+#   pnpm exec wrangler dev
+
+# Integrity secrets for telemetry signature validation (INV-INT-1).
+# JSON array of {v: string, s: string, revoked_at: number | null}.
+# For local development, use a dummy secret:
+INTEGRITY_SECRETS='[{"v":"v1","s":"0000000000000000000000000000000000000000000000000000000000000000","revoked_at":null}]'
+
+# If you want to test with the real secret (for local CLI development):
+# INTEGRITY_SECRETS='[{"v":"v1","s":"<real-64-hex-secret>","revoked_at":null}]'
