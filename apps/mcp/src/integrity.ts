@@ -18,9 +18,7 @@ interface Env {
   INTEGRITY_SECRETS?: string;
 }
 
-type IntegrityResult =
-  | { valid: true }
-  | { valid: false; reason: string };
+type IntegrityResult = { valid: true } | { valid: false; reason: string };
 
 let secretsCache: Map<string, IntegritySecret> | null = null;
 let secretsParseError = false;

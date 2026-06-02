@@ -106,11 +106,7 @@ export async function validateToken(request: Request, env: Env): Promise<Member 
  * wins the race, returns 409 with token_lost: true (the loser cannot recover
  * the winner's plaintext token because we only store hashes).
  */
-export async function register(
-  request: Request,
-  env: Env,
-  rawBody?: string,
-): Promise<Response> {
+export async function register(request: Request, env: Env, rawBody?: string): Promise<Response> {
   const contentType = request.headers.get("Content-Type");
   if (!contentType?.includes("application/json")) {
     return errorResponse("invalid_content_type", "Content-Type must be application/json", 415);
