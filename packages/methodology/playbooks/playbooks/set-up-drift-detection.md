@@ -212,3 +212,19 @@ contextqb mcp setup --client cursor
 That prints the client configuration with your membership token filled in. See the [MCP page](https://contextqb.com/mcp) for the full setup path.
 
 If this repo is not actually greenfield and the first run produced a wall of findings, switch to [`retrofit-drift-detection`](./retrofit-drift-detection.md). An accumulated repo needs a reconciliation pass before enforcement.
+
+## How did this go? Share your experience
+
+The drift detector improves on the back of adopter feedback — and the first run is the most likely moment to surface friction worth sharing. **If anything misled you, took longer than expected, or worked unusually well, tell us.** We treat field reports as first-class evidence (see ADR-0029 in the public repository).
+
+The single most valuable thing you can do: **share what your first `pnpm check:qb` (or `npx contextqb`) output looked like before you fixed anything**, plus how you interpreted each finding. Drift-detector error messages are one of the surfaces we most actively iterate on; your raw reading is the data we need.
+
+Three submission paths, in order of friction:
+
+1. **Call the MCP tool.** If you set up MCP above, your agent can call `submit_feedback` directly. The tool prepares a submission and surfaces it to you to confirm.
+2. **Open the GitHub issue template.** [github.com/ContextQB/contextqb/issues/new/choose](https://github.com/ContextQB/contextqb/issues/new/choose) → **"External adopter feedback."** 3–5 minutes.
+3. **File via `gh`.** `gh issue create --repo ContextQB/contextqb --title "[feedback] <summary>" --body-file ./report.md --label feedback,triage`.
+
+What we want most: the verbatim friction. Paste the exact command, the exact output, the exact step you were on when something stopped making sense. Agent-authored reports are first-class — if your AI agent ran into something a human wouldn't have, that's especially useful.
+
+What we'll do with it: a maintainer files your submission verbatim into the project's `feedback/captures/` directory and triages it into structured reports over the following days.

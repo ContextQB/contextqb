@@ -49,5 +49,15 @@
       "namespace_id": "1004",
       "simple": { "limit": 60, "period": 60 },
     },
+    // submit_feedback tool (ADR-0029). Low ceiling — this tool writes
+    // outward to the public issue tracker (via URL/gh-cmd response), so we
+    // throttle harder than read tools to keep spam risk low while still
+    // allowing legitimate burst submission (e.g. an agent filing 3–5 reports
+    // off one capture during triage).
+    {
+      "name": "FEEDBACK_LIMIT",
+      "namespace_id": "1005",
+      "simple": { "limit": 20, "period": 60 },
+    },
   ],
 }
