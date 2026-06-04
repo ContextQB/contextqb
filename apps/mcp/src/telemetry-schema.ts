@@ -2,16 +2,16 @@
  * Zod schema for CLI telemetry payloads.
  *
  * MIRROR OF packages/qb/cli/src/telemetry.ts:CliTelemetryPayload
- * NOTE: The CLI type remains at v2 until Tranche E.2 ships — this one-tranche
- * skew is intentional so the server can accept project_id before the CLI sends it.
  *
  * This is the wire-format enforcement point. Payloads that don't match
  * are rejected with 400. Keep this in sync with the CLI type definition.
  *
- * Per INV-TEL-1, the server accepts v1, v2, and v3 payloads during the
- * 90-day deprecation window. v1/v2 clients continue to work; v3 clients
- * send the extended schema with optional project_id. Aggregation queries
- * filter by version.
+ * Per INV-TEL-1 (rewritten 2026-06-04, ADR-0034), the server accepts every
+ * payload version ever shipped indefinitely. v1, v2, and v3 are all
+ * acceptable. There is no deprecation cliff. The upgrade-notice loop
+ * (INV-CLI-UPD-1) is the forcing function for getting operators to v3+
+ * project_id. Aggregation queries remain version-scoped per INV-PROJ-1
+ * (cooperative tier counts v3 + project_id only).
  */
 
 import { z } from "zod";
