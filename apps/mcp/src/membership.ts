@@ -37,6 +37,7 @@ export interface Member {
 
 interface Env {
   DB: D1Database;
+  CLI_VERSION_LATEST?: string;
 }
 
 function jsonResponse(data: unknown, status = 200): Response {
@@ -143,7 +144,7 @@ export async function register(request: Request, env: Env, rawBody?: string): Pr
     .first<{ membership_token_hash: string }>();
 
   if (inserted) {
-    return jsonResponse({ token });
+    return jsonResponse({ token, cli_version_latest: env.CLI_VERSION_LATEST });
   }
 
   return errorResponse(
@@ -178,6 +179,7 @@ export async function revoke(_request: Request, env: Env, member: Member): Promi
       cli_events: cliDeleted,
       mcp_events: mcpDeleted,
     },
+    cli_version_latest: env.CLI_VERSION_LATEST,
   });
 }
 
@@ -203,5 +205,6 @@ export async function status(_request: Request, env: Env, member: Member): Promi
       cli: cliCount?.count ?? 0,
       mcp: mcpCount?.count ?? 0,
     },
+    cli_version_latest: env.CLI_VERSION_LATEST,
   });
 }

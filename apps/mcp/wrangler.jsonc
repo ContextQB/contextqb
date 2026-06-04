@@ -11,6 +11,9 @@
     // Raw event retention in days (C.1). Events older than this are deleted
     // after successful aggregation. Default 90 days per privacy policy.
     "TELEMETRY_RETENTION_DAYS": "90",
+    // Latest CLI version — piggy-backed on all four authenticated responses
+    // (register, status, revoke, telemetry/cli) per ADR-0034, Tranche U.1.
+    "CLI_VERSION_LATEST": "2.3.0",
   },
 
   // Custom domain: mcp.contextqb.com
