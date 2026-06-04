@@ -8,11 +8,14 @@ meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 review:
   status: final
-  last_reviewed: "2026-05-27"
-  reviewer: "agent:cooperative-flow-tranche-a"
+  last_reviewed: "2026-06-03"
+  reviewer: "agent:tranche-e4-docs-governance"
   reviewer_notes: |-
-    Added --telemetry-preview as fourth opt-out option and cold-start reality
-    sentence for early members per §5.5 of the cooperative flow scope.
+    Tranche E.4: Added project_id disclosure bullet to "What the CLI records".
+    Rewrote "Community insights stay aggregate" for project-only k-anonymity (ADR-0033).
+    Updated "70% of TypeScript projects" framing. Preserved Automatic CI detection subsection.
+    Previous: Added Automatic CI detection subsection (Tranche C, INV-MEM-1). CI environments
+    are now auto-skipped by default. Reworded bullet 3 of opt-out list.
 ---
 
 ContextQB collects limited, privacy-preserving telemetry so we can understand which parts of the methodology are useful and where builders get stuck. This page explains what we collect, what we never collect, and how you can opt out.
@@ -50,6 +53,7 @@ When you first run the `contextqb` CLI, a membership token is silently provision
 - **Subcommand and event kind** — which top-level command you invoked (`check`, `membership`, `mcp`, `insights`) and whether it was a first-time run on this machine
 - **Adapter coverage** — boolean flags indicating which source-of-truth files were present (e.g., `wrangler.jsonc`, `pnpm-workspace.yaml`); never the file contents
 - **Exit code** — whether the CLI run succeeded, reported drift, or crashed
+- **Project ID** (`project_id` in your `context.qb.yaml`, if set) — an opaque v4 UUID you commit to identify your project for cooperative counting. Opt in by adding the field; opt out by deleting it. See `contextqb membership project-id` for inspection.
 
 ### What the CLI never records
 
@@ -67,11 +71,21 @@ The CLI sends two headers with each telemetry submission:
 
 These headers allow the server to reject forged requests that could pollute community data. No new user data is collected — the signature is computed from the request body using a key baked into the CLI at publish time. The key is not personally identifiable; it is the same for all CLI installations of a given version.
 
+### Automatic CI detection
+
+The CLI automatically detects CI environments and skips telemetry auto-provisioning when any of the following environment variables is set to a non-empty, non-`"false"` value: `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, `BUILDKITE`, `JENKINS_URL`, `TF_BUILD`, `BITBUCKET_BUILD_NUMBER`, `CODEBUILD_BUILD_ID`, `VERCEL`, `NETLIFY`, `CF_PAGES`, `CI`. When this skip is triggered, the CLI prints a single stderr line naming the matched variable.
+
+**Why this exists:** Each pristine CI runner has a fresh machine identity, so without this skip every CI run would register as a new "member" and inflate the counts that community insights rely on. CI runs do not represent humans.
+
+**How to override:** Set `CONTEXTQB_FORCE_PROVISION=true` to bypass auto-detection — for example, if you have a long-lived self-hosted CI runner that you want to count as a cooperative member. Sticky opt-out (`contextqb membership revoke`) still wins over this override. Devcontainer and Codespaces environments are intentionally treated as human work; set `CONTEXTQB_NO_PROVISION=true` manually if you disagree.
+
+When `--telemetry-preview` is used in a CI environment, only the auto-detect stderr line prints; no payload preview is shown. Set `CONTEXTQB_FORCE_PROVISION=true` to see the preview.
+
 ### Four ways to opt out:
 
 1. **Per-run:** `contextqb check --no-telemetry` — skips telemetry for this run only
 2. **Sticky:** `contextqb membership revoke` — permanently opts you out and deletes all your data from our servers
-3. **CI escape hatch:** Set `CONTEXTQB_NO_PROVISION=true` in your environment to skip auto-provisioning entirely
+3. **Manual env-var opt-out:** Set `CONTEXTQB_NO_PROVISION=true` to skip auto-provisioning entirely. (CI environments are auto-skipped without this flag — see Automatic CI detection above.)
 4. **Trust-but-verify:** `contextqb check --telemetry-preview` — prints the JSON payload that would be sent and exits without sending, so you can inspect it before opting in
 
 After a sticky revocation, subsequent CLI runs will not re-provision a token. To re-provision with a fresh identity (if you change your mind), delete the credentials file:
@@ -103,13 +117,13 @@ MCP telemetry requires a token. If you don't configure one, or if you revoke you
 
 Even anonymous data can reveal too much when a group is small. We use k-anonymity guards before reporting community insights:
 
-- **Minimum threshold (k=30):** We never report statistics for groups with fewer than 30 distinct members
+- **Minimum threshold (k=30):** We never report statistics for groups with fewer than 30 distinct projects (each project identified by `project_id` in its `context.qb.yaml`)
 - **Maximum 2 dimensions:** Queries can filter by at most 2 attributes simultaneously
 - **Bucketed counts:** Instead of exact numbers, we report "30+", "100+", or "1000+"
 
-These guards mean that even if you are in an unusual combination (for example, "Rust developers deploying to Railway"), your data cannot be singled out.
+These guards mean that even if your project is in an unusual combination (for example, "Rust projects deploying to Railway"), your project's data cannot be singled out.
 
-**For early members:** until the cooperative reaches 30 distinct members for a given topic, queries on `/insights` and through the `community_*` MCP tools will return "Insufficient data". This is the privacy guard working — not a bug.
+**For early adopters:** until the cooperative reaches 30 distinct projects for a given topic, queries on `/insights` and through the `community_*` MCP tools will return "Insufficient data". This is the privacy guard working — not a bug. CLI events without a `project_id` are still accepted and stored, but they do not contribute to cooperative aggregates.
 
 ## Data retention
 
@@ -124,7 +138,7 @@ Aggregate usage data helps us:
 - Understand which resources are most valuable
 - Identify common project structures and pain points
 - Prioritize methodology improvements
-- Provide community insights (e.g., "70% of TypeScript projects use this pattern")
+- Provide community insights based on project-level data (e.g., "70% of TypeScript projects use this pattern")
 
 We do not use this data to identify individuals, build profiles, or sell to third parties.
 

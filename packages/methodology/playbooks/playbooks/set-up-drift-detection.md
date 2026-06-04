@@ -195,11 +195,7 @@ For one run only, use:
 contextqb --no-telemetry
 ```
 
-For CI systems where you do not want provisioning at all, set:
-
-```bash
-CONTEXTQB_NO_PROVISION=true
-```
+CI environments are auto-detected by default — the CLI skips auto-provisioning when it sees `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, and similar signals. To override this on a long-lived self-hosted runner that you want counted as a cooperative member, set `CONTEXTQB_FORCE_PROVISION=true`.
 
 ## What's next
 

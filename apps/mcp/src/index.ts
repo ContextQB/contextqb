@@ -560,7 +560,7 @@ function createServer(ctx: ServerContext): McpServer {
 
   server.tool(
     "community_stack_trends",
-    "Get community-wide stack trends (language distribution, monorepo usage). Requires membership token.",
+    "Get community-wide stack trends (language distribution, monorepo usage). Counts distinct projects (k≥30). Requires membership token.",
     {
       dim1: z
         .enum(["lang", "mono"])
@@ -580,7 +580,7 @@ function createServer(ctx: ServerContext): McpServer {
 
   server.tool(
     "community_structure_patterns",
-    "Get community-wide project structure patterns (tree entries, routes, decisions). Requires membership token.",
+    "Get community-wide project structure patterns (tree entries, routes, decisions). Counts distinct projects (k≥30). Requires membership token.",
     {
       dim1: z
         .enum(["tree_entries", "routes", "decisions"])
@@ -598,7 +598,7 @@ function createServer(ctx: ServerContext): McpServer {
 
   server.tool(
     "community_common_mistakes",
-    "Get community-wide common mistakes (validation status distribution). Requires membership token.",
+    "Get community-wide common mistakes (validation status distribution). Counts distinct projects (k≥30). Requires membership token.",
     {
       dim1: z
         .enum(["validation_status"])
@@ -616,7 +616,7 @@ function createServer(ctx: ServerContext): McpServer {
 
   server.tool(
     "community_deploy_distribution",
-    "Get community-wide deployment platform distribution. Requires membership token.",
+    "Get community-wide deployment platform distribution. Counts distinct projects (k≥30). Requires membership token.",
     {},
     async () => {
       if (!ctx.member) {

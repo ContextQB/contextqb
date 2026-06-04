@@ -7,8 +7,12 @@
  * Public responses expose n_bucket only, never n_users (INV-10).
  * The bucketise() function is the boundary — exact counts are internal only.
  *
+ * Per ADR-0033, n_users represents distinct projects (not members).
+ * The cooperative's sole counting unit is project_id, not anonymous_id.
+ *
  * Ref: docs/archive/scopes/0018-data-cooperative.md (Tranche F)
  * Ref: docs/architecture/invariants.md (INV-9, INV-10)
+ * Ref: docs/architecture/decisions/0033-per-project-sole-counting-unit.md
  */
 
 import type { Member } from "./membership.js";
@@ -56,12 +60,14 @@ interface InsufficientDataResponse {
 type ApiResponse = InsightResponse | InsufficientDataResponse;
 
 /**
- * Convert exact n_users to a coarse bucket string.
+ * Convert exact n_users (count of distinct projects, per ADR-0033) to a coarse bucket string.
  * This is the INV-10 boundary — n_users never leaves this function as a number.
  */
 export function bucketise(n: number): string {
   if (n < 30) {
-    throw new Error("n_users below k-anonymity threshold should not be served");
+    throw new Error(
+      "n_users below k-anonymity threshold (30 distinct projects) should not be served",
+    );
   }
   if (n < 100) return "n>30";
   if (n < 1000) return "n>100";
@@ -156,7 +162,7 @@ export async function callInsightsApi(
       insufficient_data: true,
       threshold: 30,
       explanation:
-        "This topic needs at least 30 unique contributors before aggregate insights are shown. This k-anonymity threshold protects individual privacy.",
+        "This topic needs at least 30 unique projects before aggregate insights are shown. This k-anonymity threshold (per ADR-0033) protects individual privacy.",
       privacy_policy_url: "https://contextqb.com/privacy/telemetry",
     };
   }
@@ -240,9 +246,9 @@ export function formatInsightsAsMarkdown(result: ApiResponse): string {
       "",
       "**Insufficient data**",
       "",
-      `This topic doesn't have enough community participation yet. To protect individual privacy, ContextQB only shows aggregate insights when at least **${result.threshold} unique users** have contributed data for a given category.`,
+      `This topic doesn't have enough community participation yet. To protect individual privacy, ContextQB only shows aggregate insights when at least **${result.threshold} unique projects** have contributed data for a given category.`,
       "",
-      "This threshold (called k-anonymity) ensures that no individual's usage patterns can be inferred from the aggregate statistics.",
+      "This threshold (called k-anonymity) ensures that no individual project's usage patterns can be inferred from the aggregate statistics.",
       "",
       "As more people use ContextQB and opt in to the data cooperative, more insights will become available. You can help by running `contextqb check` on your projects!",
       "",
@@ -254,7 +260,7 @@ export function formatInsightsAsMarkdown(result: ApiResponse): string {
     `## ${result.topic} insights`,
     "",
     `**Dimension:** ${result.dim1}`,
-    `**Community size:** ${result.n_bucket}`,
+    `**Project count:** ${result.n_bucket}`,
     "",
     "| Value | Percentage |",
     "|-------|------------|",

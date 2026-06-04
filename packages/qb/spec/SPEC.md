@@ -199,6 +199,20 @@ v1.0 supports one key:
 
 Future versions may add keys for other source-of-truth paths (e.g. workspace config, route config). The schema enumerates only implemented keys. Unrecognised keys are rejected by the validator.
 
+### 6.9 `project_id`
+
+A per-project cooperative identity used for opt-in telemetry aggregation. When present, the CLI sends this identifier alongside the per-machine `anonymous_id` so the data cooperative can answer per-project questions ("70% of TypeScript projects…") without conflating multiple projects on the same machine.
+
+```yaml
+project_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+```
+
+- **Format:** RFC 4122 version 4 UUID (36 characters, lowercase hex with dashes, nibble `4` in position 13, nibble `[89ab]` in position 17).
+- **Scope:** Operator-committed; the project owner decides whether to include this field.
+- **Deletable:** An operator who previously committed `project_id` may delete it at any time; the server stores `NULL` for subsequent events.
+- **Backfill:** Historical events remain under the per-machine identity; no retroactive correlation.
+- **See:** [ADR-0032](../../../docs/architecture/decisions/0032-identity-granularity-data-cooperative.md) for design rationale.
+
 ## 7. Authoring discipline
 
 Sections fall into two maintenance categories:

@@ -22,7 +22,7 @@ interface Env {
  * recordEvent throws synchronously on any non-allow-listed key.
  */
 const TABLE_COLUMNS = {
-  cli_events: ["anonymous_id", "ts", "payload_json", "payload_schema_version"],
+  cli_events: ["anonymous_id", "ts", "payload_json", "payload_schema_version", "project_id"],
   mcp_events: [
     "anonymous_id",
     "ts",
@@ -68,6 +68,7 @@ export async function recordEvent(
 /**
  * Record a CLI telemetry event.
  * Validates payload, extracts member info, writes to cli_events.
+ * For V3 payloads, conditionally includes project_id if present.
  */
 export async function recordCliEvent(
   db: D1Database,
@@ -79,6 +80,9 @@ export async function recordCliEvent(
     ts: Math.floor(Date.now() / 1000),
     payload_json: JSON.stringify(payload),
     payload_schema_version: payload.payload_schema_version,
+    ...(payload.payload_schema_version === 3 && payload.project_id
+      ? { project_id: payload.project_id }
+      : {}),
   });
 }
 
