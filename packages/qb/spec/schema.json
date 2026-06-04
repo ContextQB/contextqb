@@ -149,6 +149,11 @@
       "description": "Reserved for v1.x: globs the agent should ignore.",
       "type": "array",
       "items": { "type": "string" }
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Optional per-project cooperative identity (RFC 4122 v4 UUID). See ADR-0032.",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     }
   },
   "additionalProperties": false

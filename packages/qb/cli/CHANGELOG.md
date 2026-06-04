@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Privacy
+
+- CI environments are auto-detected and skip telemetry auto-provisioning by default. Probed env vars: `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, `BUILDKITE`, `JENKINS_URL`, `TF_BUILD`, `BITBUCKET_BUILD_NUMBER`, `CODEBUILD_BUILD_ID`, `VERCEL`, `NETLIFY`, `CF_PAGES`, `CI`. Override with `CONTEXTQB_FORCE_PROVISION=true` for long-lived self-hosted runners.
+- Both silent-skip paths now print a one-line stderr disclosure naming the trigger (`CONTEXTQB_NO_PROVISION`, sticky opt-out, or the matched CI env var).
+
+### Changed
+
+- `ensureMembership()` precedence ladder reordered so sticky opt-out (INV-6) wins over `CONTEXTQB_NO_PROVISION` and over the new CI auto-detect. Behavior change is observable only via the stderr line that gets printed; null-return cases unchanged.
+
+**Scope:** Internal punchlist `docs/punchlists/telemetry-identity-hardening.md` Tranche C. Establishes invariant INV-MEM-1.
+
+## [2.3.0] — 2026-06-03
+
+### Added
+
+- **project_id support (ADR-0032):** CLI now reads `project_id` from `context.qb.yaml` and includes it in v3 telemetry payloads.
+- New subcommand `contextqb membership project-id` to show or regenerate project identity.
+- First-run UX: when `project_id` is absent, prints a one-time message with a generated UUID and instructions to commit it.
+- `--telemetry-preview` now shows `project_id` field.
+
+### Changed
+
+- Telemetry payload schema bumped from v2 to v3.
+
+**Scope:** Internal punchlist `docs/punchlists/telemetry-identity-hardening.md` Tranche E.2.
+
 ## [2.1.0] - 2026-05-31
 
 ### Added

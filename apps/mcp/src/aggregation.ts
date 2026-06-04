@@ -1,16 +1,21 @@
 /**
- * Aggregation pipeline for telemetry insights (ADR-0018, Tranche E)
+ * Aggregation pipeline for telemetry insights (ADR-0018, ADR-0032, ADR-0033)
  *
  * Runs daily at 06:00 UTC via Cron Trigger. Aggregates cli_events into
- * the insights table with k-anonymity (n_users >= 30) enforced at write time.
+ * the insights table with k-anonymity (n_users >= 30 distinct projects)
+ * enforced at write time. Per ADR-0033, cooperative insights count projects
+ * only; per-member counts are admin-only via dashboard direct-D1 queries.
  *
  * Topics:
  * - stack: distribution of lang, mono, deploy from stack_categories
  * - structure: bucketed counts of tree_entries, routes, decisions
  * - mistakes: validation_status (passed/failed)
  * - deploy: distribution of deploy platform
+ * - adapters: v3 adapter_coverage fields
+ * - usage: event_kind, subcommand
  *
  * Per INV-7, this is the only file that writes to the insights table.
+ * Per ADR-0033, only v3 events with project_id contribute to insights.
  */
 
 interface Env {
@@ -34,35 +39,25 @@ export async function runAggregation(env: Env, cronSchedule = "0 6 * * *"): Prom
   let mcpRowsDeleted = 0;
 
   try {
+    // Per ADR-0033: count distinct projects only (v3 events with project_id)
     const totalResult = await db
       .prepare(
-        "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version IN (1, 2)",
+        "SELECT COUNT(DISTINCT project_id) as total FROM cli_events WHERE payload_schema_version = 3 AND project_id IS NOT NULL",
       )
       .first<{ total: number }>();
-    const totalUsers = totalResult?.total ?? 0;
+    const totalProjects = totalResult?.total ?? 0;
 
-    console.info(`[aggregation] Starting aggregation for ${totalUsers} distinct users`);
+    console.info(`[aggregation] Starting aggregation for ${totalProjects} distinct projects`);
 
-    if (totalUsers > 0) {
-      await aggregateStack(db, totalUsers);
-      await aggregateStructure(db, totalUsers);
-      await aggregateMistakes(db, totalUsers);
-      await aggregateDeploy(db, totalUsers);
+    if (totalProjects > 0) {
+      await aggregateStack(db, totalProjects);
+      await aggregateStructure(db, totalProjects);
+      await aggregateMistakes(db, totalProjects);
+      await aggregateDeploy(db, totalProjects);
+      await aggregateAdapters(db, totalProjects);
+      await aggregateUsage(db, totalProjects);
     } else {
-      console.info("[aggregation] No events to aggregate");
-    }
-
-    // v2-only aggregations (filter WHERE payload_schema_version = 2)
-    const totalV2Result = await db
-      .prepare(
-        "SELECT COUNT(DISTINCT anonymous_id) as total FROM cli_events WHERE payload_schema_version = 2",
-      )
-      .first<{ total: number }>();
-    const totalV2Users = totalV2Result?.total ?? 0;
-
-    if (totalV2Users > 0) {
-      await aggregateAdapters(db, totalV2Users);
-      await aggregateUsage(db, totalV2Users);
+      console.info("[aggregation] No v3 events with project_id to aggregate");
     }
 
     // C.1: Retention cleanup — delete events older than TELEMETRY_RETENTION_DAYS
@@ -122,7 +117,7 @@ export async function runAggregation(env: Env, cronSchedule = "0 6 * * *"): Prom
   }
 }
 
-async function aggregateStack(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateStack(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'stack'").run();
 
   const langQuery = `
@@ -131,15 +126,15 @@ async function aggregateStack(db: D1Database, totalUsers: number): Promise<void>
       'stack',
       'lang',
       json_extract(payload_json, '$.stack_categories.lang'),
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.stack_categories.lang') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.lang')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(langQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(langQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   const monoQuery = `
     INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
@@ -147,20 +142,20 @@ async function aggregateStack(db: D1Database, totalUsers: number): Promise<void>
       'stack',
       'mono',
       CASE WHEN json_extract(payload_json, '$.stack_categories.mono') = 1 THEN 'true' ELSE 'false' END,
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.stack_categories.mono') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.mono')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(monoQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(monoQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] stack topic completed");
 }
 
-async function aggregateStructure(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateStructure(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'structure'").run();
 
   const treeQuery = `
@@ -175,10 +170,10 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
         WHEN json_extract(payload_json, '$.counts.tree_entries') BETWEEN 51 AND 100 THEN '51-100'
         ELSE '100+'
       END,
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.counts.tree_entries') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.tree_entries') = 0 THEN '0'
@@ -187,9 +182,9 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       WHEN json_extract(payload_json, '$.counts.tree_entries') BETWEEN 51 AND 100 THEN '51-100'
       ELSE '100+'
     END
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(treeQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(treeQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   const routesQuery = `
     INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
@@ -203,10 +198,10 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
         WHEN json_extract(payload_json, '$.counts.routes') BETWEEN 51 AND 100 THEN '51-100'
         ELSE '100+'
       END,
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.counts.routes') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.routes') = 0 THEN '0'
@@ -215,9 +210,9 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       WHEN json_extract(payload_json, '$.counts.routes') BETWEEN 51 AND 100 THEN '51-100'
       ELSE '100+'
     END
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(routesQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(routesQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   const decisionsQuery = `
     INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
@@ -231,10 +226,10 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
         WHEN json_extract(payload_json, '$.counts.decisions') BETWEEN 51 AND 100 THEN '51-100'
         ELSE '100+'
       END,
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.counts.decisions') IS NOT NULL
     GROUP BY CASE
       WHEN json_extract(payload_json, '$.counts.decisions') = 0 THEN '0'
@@ -243,14 +238,14 @@ async function aggregateStructure(db: D1Database, totalUsers: number): Promise<v
       WHEN json_extract(payload_json, '$.counts.decisions') BETWEEN 51 AND 100 THEN '51-100'
       ELSE '100+'
     END
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(decisionsQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(decisionsQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] structure topic completed");
 }
 
-async function aggregateMistakes(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateMistakes(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'mistakes'").run();
 
   const statusQuery = `
@@ -259,20 +254,20 @@ async function aggregateMistakes(db: D1Database, totalUsers: number): Promise<vo
       'mistakes',
       'validation_status',
       CASE WHEN json_extract(payload_json, '$.validation.passed') = 1 THEN 'passed' ELSE 'failed' END,
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.validation.passed') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.validation.passed')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(statusQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(statusQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] mistakes topic completed");
 }
 
-async function aggregateDeploy(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateDeploy(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'deploy'").run();
 
   const deployQuery = `
@@ -281,20 +276,20 @@ async function aggregateDeploy(db: D1Database, totalUsers: number): Promise<void
       'deploy',
       'platform',
       json_extract(payload_json, '$.stack_categories.deploy'),
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version IN (1, 2)
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.stack_categories.deploy') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.stack_categories.deploy')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(deployQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(deployQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] deploy topic completed");
 }
 
-async function aggregateAdapters(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateAdapters(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'adapters'").run();
 
   const adapterFields = [
@@ -314,21 +309,21 @@ async function aggregateAdapters(db: D1Database, totalUsers: number): Promise<vo
         'adapters',
         ?,
         CASE WHEN json_extract(payload_json, '$.adapter_coverage.${adapter}') = 1 THEN 'true' ELSE 'false' END,
-        COUNT(DISTINCT anonymous_id),
-        CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+        COUNT(DISTINCT project_id),
+        CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
       FROM cli_events
-      WHERE payload_schema_version = 2
+      WHERE payload_schema_version = 3 AND project_id IS NOT NULL
         AND json_extract(payload_json, '$.adapter_coverage.${adapter}') IS NOT NULL
       GROUP BY json_extract(payload_json, '$.adapter_coverage.${adapter}')
-      HAVING COUNT(DISTINCT anonymous_id) >= ?
+      HAVING COUNT(DISTINCT project_id) >= ?
     `;
-    await db.prepare(query).bind(adapter, totalUsers, K_ANONYMITY_THRESHOLD).run();
+    await db.prepare(query).bind(adapter, totalProjects, K_ANONYMITY_THRESHOLD).run();
   }
 
   console.info("[aggregation] adapters topic completed");
 }
 
-async function aggregateUsage(db: D1Database, totalUsers: number): Promise<void> {
+async function aggregateUsage(db: D1Database, totalProjects: number): Promise<void> {
   await db.prepare("DELETE FROM insights WHERE topic = 'usage'").run();
 
   const kindQuery = `
@@ -337,15 +332,15 @@ async function aggregateUsage(db: D1Database, totalUsers: number): Promise<void>
       'usage',
       'event_kind',
       json_extract(payload_json, '$.event_kind'),
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 2
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.event_kind') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.event_kind')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(kindQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(kindQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   const subQuery = `
     INSERT INTO insights (topic, dim1_key, dim1_value, n_users, percentage)
@@ -353,15 +348,15 @@ async function aggregateUsage(db: D1Database, totalUsers: number): Promise<void>
       'usage',
       'subcommand',
       json_extract(payload_json, '$.subcommand'),
-      COUNT(DISTINCT anonymous_id),
-      CAST(COUNT(DISTINCT anonymous_id) AS REAL) / ? * 100
+      COUNT(DISTINCT project_id),
+      CAST(COUNT(DISTINCT project_id) AS REAL) / ? * 100
     FROM cli_events
-    WHERE payload_schema_version = 2
+    WHERE payload_schema_version = 3 AND project_id IS NOT NULL
       AND json_extract(payload_json, '$.subcommand') IS NOT NULL
     GROUP BY json_extract(payload_json, '$.subcommand')
-    HAVING COUNT(DISTINCT anonymous_id) >= ?
+    HAVING COUNT(DISTINCT project_id) >= ?
   `;
-  await db.prepare(subQuery).bind(totalUsers, K_ANONYMITY_THRESHOLD).run();
+  await db.prepare(subQuery).bind(totalProjects, K_ANONYMITY_THRESHOLD).run();
 
   console.info("[aggregation] usage topic completed");
 }
