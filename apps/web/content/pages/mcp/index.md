@@ -59,7 +59,7 @@ They require a membership token (see [Pair with the data cooperative](#pair-with
 - `community_common_mistakes` — drift-detection pass/fail distribution
 - `community_deploy_distribution` — deployment platform mix
 
-Until the cooperative reaches 30 distinct members for a given topic, these tools return an "Insufficient data" Markdown table — see [Privacy & Telemetry](/privacy/telemetry) for the k-anonymity rationale.
+Until the cooperative reaches 30 distinct projects for a given topic (per ADR-0033), these tools return an "Insufficient data" Markdown table — see [Privacy & Telemetry](/privacy/telemetry) for the k-anonymity rationale.
 
 ## Fastest setup
 
