@@ -15,6 +15,7 @@ import type { Member } from "./membership.js";
 
 interface Env {
   DB: D1Database;
+  CLI_VERSION_LATEST?: string;
 }
 
 /**
@@ -139,7 +140,7 @@ export async function handleCliTelemetry(
 
   try {
     await recordCliEvent(env.DB, member, result.data);
-    return Response.json({ ok: true });
+    return Response.json({ ok: true, cli_version_latest: env.CLI_VERSION_LATEST });
   } catch (err) {
     console.error("Failed to record CLI telemetry:", err);
     return Response.json(
