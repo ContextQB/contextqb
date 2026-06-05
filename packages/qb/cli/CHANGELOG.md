@@ -7,16 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No unreleased changes._
+
+## [2.4.0] — 2026-06-04
+
+### Added
+
+- **Always-on upgrade notice** — When the installed CLI version is older than the most recent `cli_version_latest` returned by the server (or the locally cached value), the CLI prints a one-line stderr notice on every invocation. The notice fires from `check`, `membership`, `mcp`, and `insights` subcommands. Establishes invariant INV-CLI-UPD-1.
+- **`contextqb upgrade` subcommand (instructional only)** — Detects how the CLI was installed (npx, pnpm dlx, npm-global, pnpm-global, homebrew, local dev dependency) and prints the corresponding upgrade command. Does not run any installer itself. `--json` flag for machine-readable output. Establishes invariant INV-CLI-CONT-1.
+- **`CONTEXTQB_UPDATE_CHECK=npm` opt-in fallback** — Telemetry-opt-out users can re-enable upgrade notices via this env var. Polls `https://registry.npmjs.org/@context-qb/cli/latest` at most once every 24 hours; cache stored locally and never transmitted.
+- **Server-returned `cli_version_latest` field** — All `/membership/{register,status,revoke}` and `/telemetry/cli` responses now include the latest published CLI version. The CLI caches this at `<credentials-dir>/upgrade-check.json`.
+
 ### Privacy
 
 - CI environments are auto-detected and skip telemetry auto-provisioning by default. Probed env vars: `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, `BUILDKITE`, `JENKINS_URL`, `TF_BUILD`, `BITBUCKET_BUILD_NUMBER`, `CODEBUILD_BUILD_ID`, `VERCEL`, `NETLIFY`, `CF_PAGES`, `CI`. Override with `CONTEXTQB_FORCE_PROVISION=true` for long-lived self-hosted runners.
 - Both silent-skip paths now print a one-line stderr disclosure naming the trigger (`CONTEXTQB_NO_PROVISION`, sticky opt-out, or the matched CI env var).
+- Privacy page updated to disclose the upgrade-notice signal, the always-on notice, and the npm-poll opt-in (with explicit network-call disclosure for `registry.npmjs.org`).
 
 ### Changed
 
 - `ensureMembership()` precedence ladder reordered so sticky opt-out (INV-6) wins over `CONTEXTQB_NO_PROVISION` and over the new CI auto-detect. Behavior change is observable only via the stderr line that gets printed; null-return cases unchanged.
+- INV-TEL-1 rewritten — the "90-day deprecation window" wording is removed. The server now accepts every payload version ever shipped indefinitely. The upgrade-notice loop replaces the deprecation window as the forcing function.
 
-**Scope:** Internal punchlist `docs/punchlists/telemetry-identity-hardening.md` Tranche C. Establishes invariant INV-MEM-1.
+**Decision:** ADR-0034
+**Scope:** Internal punchlist `docs/punchlists/cli-upgrade-path.md` (Tranches U.0–U.7); CI auto-detect content carried forward from `docs/punchlists/telemetry-identity-hardening.md` Tranche C (INV-MEM-1).
 
 ## [2.3.0] — 2026-06-03
 
