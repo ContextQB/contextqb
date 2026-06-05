@@ -8,14 +8,18 @@ meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 review:
   status: final
-  last_reviewed: "2026-06-03"
-  reviewer: "agent:tranche-e4-docs-governance"
+  last_reviewed: "2026-06-04"
+  reviewer: "agent:tranche-u6-docs-governance"
   reviewer_notes: |-
-    Tranche E.4: Added project_id disclosure bullet to "What the CLI records".
+    Tranche U.6: Disclosed cli_version_latest server-returned signal in "What the CLI records".
+    Added "Upgrade notice" subsection documenting always-on notice (INV-CLI-UPD-1) and the
+    instructional-only `contextqb upgrade` subcommand (INV-CLI-CONT-1). Added separate
+    "Opt-in npm-registry poll" disclosure for CONTEXTQB_UPDATE_CHECK=npm — explicit network
+    call to registry.npmjs.org for telemetry-opt-out users who want upgrade notices. Cites
+    ADR-0034.
+    Previous: Tranche E.4: Added project_id disclosure bullet to "What the CLI records".
     Rewrote "Community insights stay aggregate" for project-only k-anonymity (ADR-0033).
-    Updated "70% of TypeScript projects" framing. Preserved Automatic CI detection subsection.
-    Previous: Added Automatic CI detection subsection (Tranche C, INV-MEM-1). CI environments
-    are now auto-skipped by default. Reworded bullet 3 of opt-out list.
+    Previous: Added Automatic CI detection subsection (Tranche C, INV-MEM-1).
 ---
 
 ContextQB collects limited, privacy-preserving telemetry so we can understand which parts of the methodology are useful and where builders get stuck. This page explains what we collect, what we never collect, and how you can opt out.
@@ -54,6 +58,7 @@ When you first run the `contextqb` CLI, a membership token is silently provision
 - **Adapter coverage** — boolean flags indicating which source-of-truth files were present (e.g., `wrangler.jsonc`, `pnpm-workspace.yaml`); never the file contents
 - **Exit code** — whether the CLI run succeeded, reported drift, or crashed
 - **Project ID** (`project_id` in your `context.qb.yaml`, if set) — an opaque v4 UUID you commit to identify your project for cooperative counting. Opt in by adding the field; opt out by deleting it. See `contextqb membership project-id` for inspection.
+- **Latest CLI version (server-returned, not collected)** — every membership and telemetry response includes a `cli_version_latest` field naming the most recent published CLI version. The CLI caches this locally at `<credentials-dir>/upgrade-check.json` so it can warn you when your installed version is older. This is a one-way signal from the server to your CLI; it is not telemetry the CLI sends.
 
 ### What the CLI never records
 
@@ -80,6 +85,26 @@ The CLI automatically detects CI environments and skips telemetry auto-provision
 **How to override:** Set `CONTEXTQB_FORCE_PROVISION=true` to bypass auto-detection — for example, if you have a long-lived self-hosted CI runner that you want to count as a cooperative member. Sticky opt-out (`contextqb membership revoke`) still wins over this override. Devcontainer and Codespaces environments are intentionally treated as human work; set `CONTEXTQB_NO_PROVISION=true` manually if you disagree.
 
 When `--telemetry-preview` is used in a CI environment, only the auto-detect stderr line prints; no payload preview is shown. Set `CONTEXTQB_FORCE_PROVISION=true` to see the preview.
+
+### Upgrade notice
+
+When your installed CLI version is older than the most recent `cli_version_latest` returned by the server (or cached from a prior server response), the CLI prints a one-line stderr notice on every invocation:
+
+    [contextqb] You are running v<current>; latest is v<latest>. Run `contextqb upgrade` for install instructions.
+
+The notice fires from `contextqb check`, `contextqb membership`, `contextqb mcp`, and `contextqb insights`. It is not rate-limited and continues to print on every run until you upgrade or until the cached `cli_version_latest` matches your installed version. The `contextqb upgrade` subcommand is **instructional only** — it detects how the CLI was installed (npx, pnpm dlx, npm-global, pnpm-global, homebrew, local dev dependency) and prints the corresponding install command. It does not run any installer itself.
+
+This behavior is governed by [ADR-0034](https://github.com/ContextQB/contextqb/blob/main/docs/architecture/decisions/0034-cli-upgrade-notice-and-always-accept-telemetry.md) and the architectural invariant INV-CLI-UPD-1. The CLI never silently degrades; older versions continue to send telemetry and continue to work, but their data is not counted in cooperative aggregates until the operator upgrades to a version that includes `project_id` (CLI 2.3.0 or newer).
+
+#### Opt-in npm-registry poll
+
+If you have opted out of telemetry, the upgrade notice cannot fire by default — the server-returned `cli_version_latest` signal travels with telemetry responses, so opting out of telemetry also opts you out of the upgrade signal. To re-enable upgrade notices without re-enabling telemetry, set the environment variable:
+
+    CONTEXTQB_UPDATE_CHECK=npm
+
+When this variable is set, the CLI polls `https://registry.npmjs.org/@context-qb/cli/latest` at most once every 24 hours, caches the result locally, and uses that for the upgrade notice. This is the only network call the CLI makes outside of telemetry, and it sends nothing about you, your project, or your machine — only an unauthenticated GET to a public npm endpoint. The cache is stored in your CLI config directory and is never transmitted.
+
+This is **opt-in only**. Without `CONTEXTQB_UPDATE_CHECK=npm`, telemetry-opt-out users will never see an upgrade notice and will never make this network call.
 
 ### Four ways to opt out:
 
