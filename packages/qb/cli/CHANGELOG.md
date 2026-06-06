@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes._
 
+## [2.4.1] — 2026-06-05
+
+### Documentation
+
+- **README updates** — Status table now lists every published 2.x release (2.0.x, 2.1.0, 2.2.0, 2.3.0, 2.4.x); the All Subcommands section documents `contextqb upgrade`; the Environment Variables table documents `CONTEXTQB_UPDATE_CHECK=npm`.
+- **CHANGELOG link fixed** — README now points at an absolute public URL (`https://github.com/ContextQB/contextqb/blob/main/cli/CHANGELOG.md`) instead of a relative path that 404'd on the public mirror. The publish-to-public script keeps a copy of `CHANGELOG.md` at that stable path. (External adopter feedback, 2026-06-05.)
+- **2.2.0 entry backfilled** — The 2026-06-02 integrity-model release was previously omitted from this changelog. (External adopter feedback, 2026-06-05.)
+
+### Changed (CLI behavior)
+
+- **First-run `project_id` prompt is more specific.** The stderr nudge now says "Add `project_id: \"<uuid>\"` **as a top-level key** to context.qb.yaml…" instead of leaving placement ambiguous. Previously some adopters nested it under a `project:` key, which doesn't match the loader contract. (External adopter feedback, 2026-06-05.)
+
+No functional changes from 2.4.0 beyond the prompt-string clarification. The 2.4.0 upgrade-notice loop will not nag 2.4.0 users about 2.4.1; `CLI_VERSION_LATEST` on the worker stays at 2.4.0 by design.
+
 ## [2.4.0] — 2026-06-04
 
 ### Added
@@ -17,6 +31,10 @@ _No unreleased changes._
 - **`contextqb upgrade` subcommand (instructional only)** — Detects how the CLI was installed (npx, pnpm dlx, npm-global, pnpm-global, homebrew, local dev dependency) and prints the corresponding upgrade command. Does not run any installer itself. `--json` flag for machine-readable output. Establishes invariant INV-CLI-CONT-1.
 - **`CONTEXTQB_UPDATE_CHECK=npm` opt-in fallback** — Telemetry-opt-out users can re-enable upgrade notices via this env var. Polls `https://registry.npmjs.org/@context-qb/cli/latest` at most once every 24 hours; cache stored locally and never transmitted.
 - **Server-returned `cli_version_latest` field** — All `/membership/{register,status,revoke}` and `/telemetry/cli` responses now include the latest published CLI version. The CLI caches this at `<credentials-dir>/upgrade-check.json`.
+
+### Migration note
+
+- If you previously set `CONTEXTQB_NO_PROVISION=true` only on CI runners, you can remove it. CI environments are now auto-detected (`GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, `BUILDKITE`, `JENKINS_URL`, `TF_BUILD`, `BITBUCKET_BUILD_NUMBER`, `CODEBUILD_BUILD_ID`, `VERCEL`, `NETLIFY`, `CF_PAGES`, `CI`) and skip auto-provisioning by default. Override with `CONTEXTQB_FORCE_PROVISION=true` for long-lived self-hosted runners you want counted as cooperative members.
 
 ### Privacy
 
@@ -46,6 +64,24 @@ _No unreleased changes._
 - Telemetry payload schema bumped from v2 to v3.
 
 **Scope:** Internal punchlist `docs/punchlists/telemetry-identity-hardening.md` Tranche E.2.
+
+## [2.2.0] — 2026-06-02
+
+### Added
+
+- **Telemetry integrity model (ADR-0028, INV-INT-1).** All `/membership/register` and `/telemetry/cli` requests are now signed with HMAC-SHA256 in a Stripe-style `X-ContextQB-Signature: t=<unix>,v1=<hex>` header. The shared secret is injected into the published CLI at build time via `scripts/inject-integrity-secret.mjs` from the `CONTEXTQB_INTEGRITY_SECRET` env var; the git-tracked `src/integrity-secret.ts` only contains the placeholder. The server validates signature, timestamp window, User-Agent, and Origin before accepting the request body.
+- New helper `signedFetch` in `packages/qb/cli/src/membership.ts` wraps `fetch` with the signature header. Every signed request also carries `User-Agent: contextqb-cli/<version>` for server-side audit.
+
+### Changed
+
+- `tsconfig.build.json` includes `scripts/integrity-secret.ts` so the build can write the runtime constant.
+- CI `qb.yml` workflow now declares a `workflow_dispatch` publish job that injects `CONTEXTQB_INTEGRITY_SECRET` from GitHub Secrets.
+
+### Notes
+
+- Backfilled 2026-06-05 — the 2026-06-02 release shipped without a CHANGELOG entry. Original commit: `9fdaa6c feat(telemetry): implement integrity model per ADR-0028 + INV-INT-1`.
+
+**Scope:** Internal punchlist `docs/punchlists/telemetry-soundness-hardening.md` Tranches A–D.
 
 ## [2.1.0] - 2026-05-31
 
