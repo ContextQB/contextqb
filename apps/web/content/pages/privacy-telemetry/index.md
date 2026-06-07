@@ -8,10 +8,14 @@ meta_title: Telemetry & Privacy
 meta_description: What data ContextQB collects and how we use it.
 review:
   status: final
-  last_reviewed: "2026-06-04"
-  reviewer: "agent:tranche-u6-docs-governance"
+  last_reviewed: "2026-06-07"
+  reviewer: "agent:tranche-ma2-privacy-disclosure"
   reviewer_notes: |-
-    Tranche U.6: Disclosed cli_version_latest server-returned signal in "What the CLI records".
+    Tranche MA.2: Added "Upgrade advisory on community-tool responses" subsection under
+    "Using the MCP with a token" — discloses that community_* tool responses may include
+    a one-line advisory when CLI is outdated. References INV-CLI-UPD-2, notes 24h dedupe,
+    and explains opt-out path (no advisory fires for telemetry-opt-out members).
+    Previous: Tranche U.6: Disclosed cli_version_latest server-returned signal in "What the CLI records".
     Added "Upgrade notice" subsection documenting always-on notice (INV-CLI-UPD-1) and the
     instructional-only `contextqb upgrade` subcommand (INV-CLI-CONT-1). Added separate
     "Opt-in npm-registry poll" disclosure for CONTEXTQB_UPDATE_CHECK=npm — explicit network
@@ -137,6 +141,10 @@ When you use the MCP server with a membership token (configured via `contextqb m
 - **Your project context** — the MCP server has no access to your filesystem
 
 MCP telemetry requires a token. If you don't configure one, or if you revoke your membership, no MCP telemetry is collected. Methodology tools remain free and accessible without a token.
+
+### Upgrade advisory on community-tool responses
+
+When you call community-insight tools (`community_stack_trends`, `community_structure_patterns`, `community_common_mistakes`, `community_deploy_distribution`) through an MCP-connected agent, the response may include a one-line advisory if your CLI is older than the latest published version. The advisory is computed from the same `cli_version` field already disclosed under "What the CLI records" above; no new data is collected. The advisory fires at most once per 24-hour window per member (per INV-CLI-UPD-2). If you have opted out of telemetry, the server has no `cli_version` data to compare, so no advisory fires.
 
 ## Community insights stay aggregate
 
