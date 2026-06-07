@@ -32,7 +32,7 @@ _No unreleased changes._
 
 - New regression test `project-id-comments.test.ts` verifying that YAML comments survive `doc.set()` calls. (qb-roundtrip-comments fixture from FB.2.)
 
-**Scope:** `docs/scopes/cli-upgrade-feedback-followup.md` (Tranche FB.2).
+**Scope:** cli-upgrade-feedback-followup (Tranche FB.2).
 
 ## [2.4.1] — 2026-06-05
 
