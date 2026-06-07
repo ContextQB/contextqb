@@ -209,6 +209,16 @@ That prints the client configuration with your membership token filled in. See t
 
 If this repo is not actually greenfield and the first run produced a wall of findings, switch to [`retrofit-drift-detection`](./retrofit-drift-detection.md). An accumulated repo needs a reconciliation pass before enforcement.
 
+## Keep it current
+
+The drift detector is stable, but its capabilities expand over time. Run this monthly:
+
+```bash
+npm outdated @context-qb/cli
+```
+
+If a newer version exists, upgrade with `npm install -D @context-qb/cli@latest` and re-run `contextqb check`. From 2.4.0 onward the CLI prints an upgrade notice automatically when outdated — so if you see no notice, you're current.
+
 ## How did this go? Share your experience
 
 The drift detector improves on the back of adopter feedback — and the first run is the most likely moment to surface friction worth sharing. **If anything misled you, took longer than expected, or worked unusually well, tell us.** We treat field reports as first-class evidence (see ADR-0029 in the public repository).
