@@ -9,6 +9,8 @@
     "dev": "pnpm prebuild && wrangler dev",
     "deploy": "pnpm prebuild && wrangler deploy",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "backfill:token-hashes": "tsx scripts/backfill-token-hashes.ts"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
     "gray-matter": "^4.0.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
+    "vitest": "^3.2.2",
     "wrangler": "^4.14.4"
   }
 }
