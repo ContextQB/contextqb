@@ -232,3 +232,29 @@ The retrofit is complete when:
 - Future contributors know the check exists.
 
 After that, treat the repo like a greenfield repo going forward. Shape changes and map changes move together.
+
+## Pass 7 — Keep it current
+
+The drift detector is stable, but its capabilities expand as we add adapters and aggregation surfaces. Run this monthly:
+
+```bash
+npm outdated @context-qb/cli
+```
+
+If a newer version is published, upgrade with:
+
+```bash
+npm install -D @context-qb/cli@latest
+contextqb check        # re-verify your map
+contextqb membership status   # confirm the upgrade notice no longer fires
+```
+
+Recent releases:
+
+- **2.5.x — `project-id --accept`** (write the first-run suggested UUID automatically)
+- **2.4.x — upgrade-notice loop** (every run prints stderr if outdated; ADR-0034)
+- **2.3.x — `project_id` for cooperative counting** (ADR-0032/0033)
+- **2.2.x — telemetry integrity** (signed requests; ADR-0028)
+- **2.1.x — telemetry completeness** (event_kind, subcommand, adapter_coverage)
+
+Subscribe to releases on the [public mirror](https://github.com/ContextQB/contextqb/releases) once it ships GitHub Releases.
