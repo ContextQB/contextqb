@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _No unreleased changes._
 
+## [2.5.0] — 2026-06-07
+
+### Added
+
+- **`contextqb membership project-id --accept`** — Writes the most-recently-suggested UUID (from a first-run `contextqb check` nudge) to `context.qb.yaml`. The suggestion is cached locally; `--accept` retrieves and writes it automatically, avoiding the copy-paste step. Suggestions expire after 30 days.
+- **`--force-fresh` flag on `--regenerate`** — When a first-run suggestion is pending, `--regenerate` now warns and requires `--force-fresh` to proceed. This prevents accidental UUID replacement when the operator intended to accept the suggested one.
+- **`--force` flag on `--accept`** — Overwrites an existing `project_id` when used with `--accept`. Without this flag, `--accept` refuses to overwrite to prevent accidental changes.
+- **First-run nudge now mentions `--accept`** — The stderr message now includes `Or run \`contextqb membership project-id --accept\` to write it automatically.`
+
+### Changed
+
+- The first-run suggested UUID is now cached in `<credentials-dir>/last-suggested-project-id.json`. Previously it was ephemeral (printed once, never persisted).
+
+### Documentation
+
+- README: Membership section expanded with `project-id` flags (`--accept`, `--regenerate`, `--force-fresh`, `--force`).
+- README: Comment-preservation note added — both `--accept` and `--regenerate` use `yaml.Document.set`, which preserves all comments and key ordering.
+- README: Status table updated to include 2.5.0.
+
+### Tests
+
+- New regression test `project-id-comments.test.ts` verifying that YAML comments survive `doc.set()` calls. (qb-roundtrip-comments fixture from FB.2.)
+
+**Scope:** `docs/scopes/cli-upgrade-feedback-followup.md` (Tranche FB.2).
+
 ## [2.4.1] — 2026-06-05
 
 ### Documentation
