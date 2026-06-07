@@ -125,6 +125,10 @@ When you use the MCP server with a membership token (configured via `contextqb m
 
 MCP telemetry requires a token. If you don't configure one, or if you revoke your membership, no MCP telemetry is collected. Methodology tools remain free and accessible without a token.
 
+### Upgrade advisory on community-tool responses
+
+When you call community-insight tools (`community_stack_trends`, `community_structure_patterns`, `community_common_mistakes`, `community_deploy_distribution`) through an MCP-connected agent, the response may include a one-line advisory if your CLI is older than the latest published version. The advisory is computed from the same `cli_version` field already disclosed under "What the CLI records" above; no new data is collected. The advisory fires at most once per 24-hour window per member (per INV-CLI-UPD-2). If you have opted out of telemetry, the server has no `cli_version` data to compare, so no advisory fires.
+
 ## Community insights stay aggregate
 
 Even anonymous data can reveal too much when a group is small. We use k-anonymity guards before reporting community insights:

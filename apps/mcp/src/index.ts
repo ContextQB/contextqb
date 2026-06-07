@@ -23,6 +23,7 @@ import {
   type SubmitFeedbackInput,
 } from "./feedback";
 import { validateIntegrity } from "./integrity";
+import { maybeAppendUpgradeAdvisory } from "./upgrade-advisory";
 import type { Member } from "./membership";
 
 const SERVER_NAME = "contextqb";
@@ -574,7 +575,9 @@ function createServer(ctx: ServerContext): McpServer {
         return { content: [{ type: "text", text: tokenRequiredMessage }] };
       }
       const result = await callInsightsApi(ctx.env, "stack", dim1 ?? null);
-      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+      const body = formatInsightsAsMarkdown(result);
+      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
+      return { content: [{ type: "text", text: withAdvisory }] };
     },
   );
 
@@ -592,7 +595,9 @@ function createServer(ctx: ServerContext): McpServer {
         return { content: [{ type: "text", text: tokenRequiredMessage }] };
       }
       const result = await callInsightsApi(ctx.env, "structure", dim1 ?? null);
-      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+      const body = formatInsightsAsMarkdown(result);
+      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
+      return { content: [{ type: "text", text: withAdvisory }] };
     },
   );
 
@@ -610,7 +615,9 @@ function createServer(ctx: ServerContext): McpServer {
         return { content: [{ type: "text", text: tokenRequiredMessage }] };
       }
       const result = await callInsightsApi(ctx.env, "mistakes", dim1 ?? null);
-      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+      const body = formatInsightsAsMarkdown(result);
+      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
+      return { content: [{ type: "text", text: withAdvisory }] };
     },
   );
 
@@ -623,7 +630,9 @@ function createServer(ctx: ServerContext): McpServer {
         return { content: [{ type: "text", text: tokenRequiredMessage }] };
       }
       const result = await callInsightsApi(ctx.env, "deploy", null);
-      return { content: [{ type: "text", text: formatInsightsAsMarkdown(result) }] };
+      const body = formatInsightsAsMarkdown(result);
+      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
+      return { content: [{ type: "text", text: withAdvisory }] };
     },
   );
 
