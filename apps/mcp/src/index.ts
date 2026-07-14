@@ -559,6 +559,30 @@ function createServer(ctx: ServerContext): McpServer {
   const tokenRequiredMessage =
     "Community insights require a membership token. Run `contextqb membership register` to get one, then configure your MCP client with the token.";
 
+  const insightsUnavailableMessage =
+    "Community insights are temporarily unavailable due to a server-side issue on our end — your token and configuration are fine. Please try again later; if this persists, let us know via the submit_feedback tool.";
+
+  // Single guarded pipeline for all community_* tools. Query failures return a
+  // clean unavailable message instead of leaking raw D1 errors to MCP clients
+  // (feedback capture 2026-07-14-autonomiam-community-tools-d1-error).
+  const respondWithCommunityInsights = async (
+    topic: string,
+    dim1: string | null,
+  ): Promise<{ content: Array<{ type: "text"; text: string }> }> => {
+    if (!ctx.member) {
+      return { content: [{ type: "text", text: tokenRequiredMessage }] };
+    }
+    try {
+      const result = await callInsightsApi(ctx.env, topic, dim1);
+      const body = formatInsightsAsMarkdown(result);
+      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
+      return { content: [{ type: "text", text: withAdvisory }] };
+    } catch (err) {
+      console.error(`[insights] community tool query failed (topic=${topic}):`, err);
+      return { content: [{ type: "text", text: insightsUnavailableMessage }] };
+    }
+  };
+
   server.tool(
     "community_stack_trends",
     "Get community-wide stack trends (language distribution, monorepo usage). Counts distinct projects (k≥30). Requires membership token.",
@@ -570,15 +594,7 @@ function createServer(ctx: ServerContext): McpServer {
           "Optional dimension: 'lang' for language distribution, 'mono' for monorepo usage.",
         ),
     },
-    async ({ dim1 }) => {
-      if (!ctx.member) {
-        return { content: [{ type: "text", text: tokenRequiredMessage }] };
-      }
-      const result = await callInsightsApi(ctx.env, "stack", dim1 ?? null);
-      const body = formatInsightsAsMarkdown(result);
-      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
-      return { content: [{ type: "text", text: withAdvisory }] };
-    },
+    async ({ dim1 }) => respondWithCommunityInsights("stack", dim1 ?? null),
   );
 
   server.tool(
@@ -590,15 +606,7 @@ function createServer(ctx: ServerContext): McpServer {
         .optional()
         .describe("Optional dimension: 'tree_entries', 'routes', or 'decisions'."),
     },
-    async ({ dim1 }) => {
-      if (!ctx.member) {
-        return { content: [{ type: "text", text: tokenRequiredMessage }] };
-      }
-      const result = await callInsightsApi(ctx.env, "structure", dim1 ?? null);
-      const body = formatInsightsAsMarkdown(result);
-      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
-      return { content: [{ type: "text", text: withAdvisory }] };
-    },
+    async ({ dim1 }) => respondWithCommunityInsights("structure", dim1 ?? null),
   );
 
   server.tool(
@@ -610,30 +618,14 @@ function createServer(ctx: ServerContext): McpServer {
         .optional()
         .describe("Optional dimension: 'validation_status' for passed/failed distribution."),
     },
-    async ({ dim1 }) => {
-      if (!ctx.member) {
-        return { content: [{ type: "text", text: tokenRequiredMessage }] };
-      }
-      const result = await callInsightsApi(ctx.env, "mistakes", dim1 ?? null);
-      const body = formatInsightsAsMarkdown(result);
-      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
-      return { content: [{ type: "text", text: withAdvisory }] };
-    },
+    async ({ dim1 }) => respondWithCommunityInsights("mistakes", dim1 ?? null),
   );
 
   server.tool(
     "community_deploy_distribution",
     "Get community-wide deployment platform distribution. Counts distinct projects (k≥30). Requires membership token.",
     {},
-    async () => {
-      if (!ctx.member) {
-        return { content: [{ type: "text", text: tokenRequiredMessage }] };
-      }
-      const result = await callInsightsApi(ctx.env, "deploy", null);
-      const body = formatInsightsAsMarkdown(result);
-      const withAdvisory = await maybeAppendUpgradeAdvisory(ctx.member, ctx.env, body);
-      return { content: [{ type: "text", text: withAdvisory }] };
-    },
+    async () => respondWithCommunityInsights("deploy", null),
   );
 
   // Adopter feedback channel (ADR-0029). Open tool — no membership token
