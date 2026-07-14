@@ -36,6 +36,59 @@ interface MockStatement {
   run: () => Promise<MockD1Result<unknown>>;
 }
 
+/**
+ * Real column sets per migrations/. The mock enforces these the way SQLite
+ * would — referencing a nonexistent bare column throws. This is the guard
+ * that would have caught the `SELECT cli_version FROM cli_events` /
+ * `ORDER BY event_ts` bug (feedback capture
+ * 2026-07-14-autonomiam-community-tools-d1-error): cli_version lives inside
+ * payload_json, and the timestamp column is `ts`, not `event_ts`.
+ */
+const CLI_EVENTS_COLUMNS = [
+  "id",
+  "anonymous_id",
+  "ts",
+  "payload_json",
+  "payload_schema_version",
+  "project_id",
+];
+
+function assertCliEventsColumnsExist(sql: string): void {
+  // Strip json_extract(...) expressions, string literals, and AS aliases
+  // (output names, not column references), then check that remaining bare
+  // identifiers in SELECT/WHERE/ORDER BY are real columns.
+  const stripped = sql
+    .replace(/json_extract\([^)]*\)/g, "")
+    .replace(/'[^']*'/g, "")
+    .replace(/\bAS\s+[a-z_][a-z0-9_]*/gi, "");
+  const knownKeywords = new Set([
+    "select",
+    "as",
+    "from",
+    "cli_events",
+    "where",
+    "order",
+    "by",
+    "desc",
+    "asc",
+    "limit",
+    "and",
+    "or",
+    "is",
+    "not",
+    "null",
+  ]);
+  const identifiers = stripped.match(/[a-z_][a-z0-9_]*/gi) ?? [];
+  for (const identifier of identifiers) {
+    const lower = identifier.toLowerCase();
+    if (knownKeywords.has(lower)) continue;
+    if (/^\d+$/.test(lower)) continue;
+    if (!CLI_EVENTS_COLUMNS.includes(lower)) {
+      throw new Error(`D1_ERROR: no such column: ${identifier}: SQLITE_ERROR`);
+    }
+  }
+}
+
 function createMockDb(config: {
   cliVersion?: string | null;
   lastEmittedAt?: number | null;
@@ -48,6 +101,7 @@ function createMockDb(config: {
 
   const prepare = vi.fn().mockImplementation((sql: string) => {
     if (sql.includes("FROM cli_events")) {
+      assertCliEventsColumnsExist(sql);
       return {
         ...mockStatement,
         first: vi
@@ -167,5 +221,38 @@ describe("maybeAppendUpgradeAdvisory", () => {
     const result = await maybeAppendUpgradeAdvisory(TEST_MEMBER, env, TEST_BODY);
 
     expect(result).toBe(TEST_BODY);
+  });
+
+  it("reads cli_version via json_extract and orders by ts (regression: capture 2026-07-14)", async () => {
+    const db = createMockDb({ cliVersion: "2.1.0", lastEmittedAt: undefined });
+    const env = { DB: db, CLI_VERSION_LATEST: "2.4.1" };
+
+    await maybeAppendUpgradeAdvisory(TEST_MEMBER, env, TEST_BODY);
+
+    expect(db.prepare).toHaveBeenCalledWith(
+      expect.stringContaining("json_extract(payload_json, '$.cli_version')"),
+    );
+    expect(db.prepare).toHaveBeenCalledWith(expect.stringContaining("ORDER BY ts DESC"));
+  });
+
+  it("returns body unchanged when the DB query throws (advisory is best-effort)", async () => {
+    const throwingStatement = {
+      bind: vi.fn().mockReturnThis(),
+      first: vi
+        .fn()
+        .mockRejectedValue(new Error("D1_ERROR: no such column: cli_version: SQLITE_ERROR")),
+      run: vi.fn(),
+    };
+    const db = {
+      prepare: vi.fn().mockReturnValue(throwingStatement),
+    } as unknown as D1Database;
+    const env = { DB: db, CLI_VERSION_LATEST: "2.4.1" };
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const result = await maybeAppendUpgradeAdvisory(TEST_MEMBER, env, TEST_BODY);
+
+    expect(result).toBe(TEST_BODY);
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 });

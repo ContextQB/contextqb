@@ -72,6 +72,9 @@ function formatAdvisoryFooter(currentVersion: string, latestVersion: string): st
  * - No cli_events rows exist for the member (telemetry opt-out)
  * - Member's cli_version >= CLI_VERSION_LATEST (already current)
  * - Advisory was emitted to this member within the last 24 hours (dedupe)
+ * - Any step throws (the advisory is best-effort decoration; a failure here
+ *   must never block the insights response — see feedback capture
+ *   2026-07-14-autonomiam-community-tools-d1-error)
  *
  * Otherwise, appends the advisory footer and records the emission timestamp.
  */
@@ -80,17 +83,28 @@ export async function maybeAppendUpgradeAdvisory(
   env: Env,
   body: string,
 ): Promise<string> {
+  try {
+    return await appendUpgradeAdvisory(member, env, body);
+  } catch (err) {
+    console.error("[upgrade-advisory] Advisory check failed; serving body without footer:", err);
+    return body;
+  }
+}
+
+async function appendUpgradeAdvisory(member: Member, env: Env, body: string): Promise<string> {
   // Step 1: Check CLI_VERSION_LATEST env var
   const latestVersion = env.CLI_VERSION_LATEST;
   if (!latestVersion) {
     return body;
   }
 
-  // Step 2: Get most recent cli_version for this member
+  // Step 2: Get most recent cli_version for this member.
+  // cli_version is NOT a column on cli_events — it lives inside payload_json
+  // (see migrations/0001_initial.sql and aggregation.ts for the same pattern).
   const latestEvent = await env.DB.prepare(
-    `SELECT cli_version FROM cli_events
+    `SELECT json_extract(payload_json, '$.cli_version') AS cli_version FROM cli_events
      WHERE anonymous_id = ?
-     ORDER BY event_ts DESC
+     ORDER BY ts DESC
      LIMIT 1`,
   )
     .bind(member.anonymous_id)
