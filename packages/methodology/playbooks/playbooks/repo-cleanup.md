@@ -28,6 +28,11 @@ related_principles:
 tags:
   - debt
   - cleanup
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; pass-structure is clean and the no-rewrite stance matches the hardening loop. Open: F-06 (state-management audit link undeclared). R8 pending P4."
 ---
 
 # Clean Up an Existing Repo

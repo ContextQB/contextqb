@@ -25,6 +25,11 @@ related_principles:
 tags:
   - prompts
   - documents
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; pairs cleanly with the document-producing-agent prompt (pattern vs instance). R8 pending P4."
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies

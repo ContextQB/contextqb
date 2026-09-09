@@ -24,6 +24,11 @@ related_principles:
   - untrusted-by-default
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; phased containment/investigate/remediate/post-mortem structure is production-grade. Open: F-06 (3 links). R8 pending P4."
 ---
 
 # Respond to a Suspected Compromise

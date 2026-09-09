@@ -29,6 +29,11 @@ tags:
   - documentation
   - greenfield
   - setup
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; the audience/process surface split is the corpus's clearest doc-system statement. Open: F-03 (rank collision at 1.4), F-06 (sibling links uncovered). R8 pending P4."
 ---
 
 # Set Up a Documentation System for Your Project

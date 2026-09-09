@@ -23,6 +23,11 @@ related_principles:
   - state-ownership
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; six-surface inventory with worked tables is the security pillar's entry instrument. Open: F-06 (6 links undeclared). R8 pending P4."
 ---
 
 # Map Your Attack Surface

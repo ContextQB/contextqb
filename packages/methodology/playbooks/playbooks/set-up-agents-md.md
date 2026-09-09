@@ -26,6 +26,11 @@ tags:
   - agents
   - documentation
   - prompts
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass. Six-section template matches the corpus's own AGENTS.md. R8 pending P4."
 ---
 
 # Set Up AGENTS.md for Your Project

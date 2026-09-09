@@ -25,6 +25,11 @@ tags:
   - foundation
   - language
   - setup
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass. Open: F-15 (related_principles contains new-project-foundation, which is a playbook — field/type confusion the schema can't catch). R8 pending P4."
 ---
 
 # Choose a Language Stack for Agent-Assisted Development

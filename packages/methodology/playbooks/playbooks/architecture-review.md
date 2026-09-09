@@ -27,6 +27,11 @@ related_principles:
 tags:
   - review
   - audit
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass. Open: F-06 (agent-instructions + refactor-planning links undeclared). R8 pending P4."
 ---
 
 # Ask an Agent for a Comprehensive Architecture Review

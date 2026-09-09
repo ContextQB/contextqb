@@ -32,6 +32,11 @@ tags:
   - refactor
   - governance
   - drift
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass. Brownfield by explicit declaration (Not for greenfield) — acceptable Tier-2 posture under ADR-0019, flagged for the P4 tier-inventory. Open: F-06. R8 pending P4."
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase

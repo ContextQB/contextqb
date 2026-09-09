@@ -30,6 +30,11 @@ tags:
   - context-qb
   - onboarding
   - tokens
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4."
 ---
 
 # Write a context.qb for Your Repository

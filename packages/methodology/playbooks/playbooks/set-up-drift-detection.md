@@ -33,6 +33,11 @@ tags:
   - drift
   - onboarding
   - ci
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
 ---
 
 # Set Up Drift Detection on Day One

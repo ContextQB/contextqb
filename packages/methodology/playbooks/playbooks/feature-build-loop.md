@@ -37,6 +37,11 @@ tags:
   - build
   - governance
   - planning
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4."
 ---
 
 # Run a Feature Build Loop From an Approved Plan

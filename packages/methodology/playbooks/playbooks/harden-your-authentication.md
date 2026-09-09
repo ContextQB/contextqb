@@ -23,6 +23,11 @@ related_principles:
   - trust-boundaries-are-architecture
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-06 (2 links), F-09 (vendor dashboard navigation paths — Clerk/Supabase/Auth0 UI — decay with vendor redesigns). R8 pending P4."
 ---
 
 # Harden Your Authentication

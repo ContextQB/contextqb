@@ -34,6 +34,11 @@ tags:
   - retrofit
   - midstream
   - cleanup
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; impressively current (2.5.x release lineage, telemetry-preview, CI auto-detect). Open: F-04 (rank collision at 6.2). R8 pending P4."
 ---
 
 # Retrofit Drift Detection on an Existing Repo

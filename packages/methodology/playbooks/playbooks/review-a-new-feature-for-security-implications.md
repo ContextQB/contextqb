@@ -24,6 +24,11 @@ related_principles:
   - public-endpoints-are-battlegrounds
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; ship/go-with-caveats/block decision output is exactly the R7 contract. Open: F-06 (3 links). R8 pending P4."
 ---
 
 # Review a New Feature for Security Implications

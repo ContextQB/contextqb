@@ -27,6 +27,11 @@ related_principles:
 tags:
   - planning
   - features
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; bidirectional handoff to feature-build-loop is the corpus's best playbook pairing. Open: F-06 (modularity body link undeclared). R8 pending P4."
 ---
 
 # Plan a Feature Before Letting the Agent Code

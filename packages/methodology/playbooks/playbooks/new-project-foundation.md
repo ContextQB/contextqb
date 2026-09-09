@@ -27,6 +27,11 @@ related_principles:
 tags:
   - foundation
   - setup
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3, R5, R7 pass structurally, but F-13 (major): Step 5 teaches AGENT_INSTRUCTIONS.md — contradicts the corpus-wide AGENTS.md canon and no tool auto-loads it. Also omits context.qb.yaml/ADR from the foundation sequence (the corpus's own day-one minimum). Predates the May restructure. Rework Step 5 and weave in the boot manifest. R8 pending P4."
 ---
 
 # Prepare a New Repo for AI-Assisted Development

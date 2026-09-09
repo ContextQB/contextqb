@@ -25,6 +25,11 @@ related_principles:
 tags:
   - mcp
   - tooling
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-14 (stale pre-restructure paths: packages/mcp-server/, packages/content/ + a broken relative schema link), F-13 (passing AGENT_INSTRUCTIONS.md mention), F-04 (rank collision at 6.2). R8 pending P4."
 ---
 
 # Build an MCP for Reusable Project Context

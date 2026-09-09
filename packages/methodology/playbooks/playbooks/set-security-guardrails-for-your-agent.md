@@ -22,6 +22,11 @@ related_principles:
 tags:
   - security
   - agents
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; template + verification step are excellent. Open: F-06 (sibling links to map-your-attack-surface/review-your-ai-integration uncovered). R8 pending P4."
 ---
 
 # Set Security Guardrails for Your Agent

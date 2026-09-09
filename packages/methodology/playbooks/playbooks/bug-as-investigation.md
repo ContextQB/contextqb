@@ -25,6 +25,11 @@ related_principles:
 tags:
   - debugging
   - investigation
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; short and sharp; symptom/cause + minimum-fix/real-fix split is distinctive. R8 pending P4."
 ---
 
 # Convert a Bug Into an Architectural Investigation

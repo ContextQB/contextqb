@@ -24,6 +24,11 @@ related_principles:
   - least-privilege-for-agents
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.3 (agent)"
+  reviewer_notes: "R3–R7 pass; blast-radius discipline and worked tables land. Open: F-06 (3 links). R8 pending P4."
 ---
 
 # Triage Your Secrets
