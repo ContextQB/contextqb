@@ -2,7 +2,7 @@
 id: build-mcp-for-project-context
 title: Build an MCP for Reusable Project Context
 summary: Turn the prompts, principles, and standards your project relies on into an MCP server so any agent in any tool can pull them in.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Project context — naming conventions, architectural decisions, prompts — lives in scattered Markdown files. Agents can read them only when copy-pasted into a chat. An MCP server makes them addressable from any tool.
 when_to_use: |
@@ -17,7 +17,7 @@ audience:
   - founder
   - agent
 journey_stage: 6
-journey_rank: 20
+journey_rank: 30
 related_principles:
   - separation-of-concerns
   - modularity
@@ -26,17 +26,17 @@ tags:
   - mcp
   - tooling
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
-  reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-14 (stale pre-restructure paths: packages/mcp-server/, packages/content/ + a broken relative schema link), F-13 (passing AGENT_INSTRUCTIONS.md mention), F-04 (rank collision at 6.2). R8 pending P4."
+  reviewer: "epistemology-review P2.3 (agent); R-01/R-05/R-06 remediation 2026-09-09"
+  reviewer_notes: "F-13/F-14/F-04 resolved 2026-09-09: AGENTS.md canon reference, post-restructure paths, working schema link, rank moved 20→30 (retrofit-drift-detection keeps 20)."
 ---
 
 # Build an MCP for Reusable Project Context
 
 The Model Context Protocol turns your project's principles, prompts, and playbooks into resources any compatible agent can fetch by URI. This playbook shows you how to start small and grow.
 
-The ContextQB MCP server (in `packages/mcp-server/` of this repository) is itself an example of this pattern.
+The ContextQB MCP server (in `packages/methodology/mcp-server/` of this repository) is itself an example of this pattern.
 
 ## Step 1 — Inventory your context
 
@@ -48,7 +48,7 @@ Before you write any code, list everything you currently paste into agents:
 - Repeated prompts ("audit this," "plan this feature").
 - Domain glossaries.
 
-If the list has fewer than 5 items, you do not need an MCP yet. Use a single `AGENT_INSTRUCTIONS.md` file.
+If the list has fewer than 5 items, you do not need an MCP yet. Use a single `AGENTS.md` file (see [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md)).
 
 If the list has 10+ items, an MCP starts paying for itself.
 
@@ -61,7 +61,7 @@ Group your inventory into:
 - **Audits** — templates for asking "evaluate X."
 - **Prompts** — parametric prompts for common tasks.
 
-The ContextQB content schemas ([`packages/content/src/schema.ts`](../content/src/schema.ts)) are a reasonable starting point. Copy and adapt them.
+The ContextQB content schemas ([`packages/methodology/content/src/schema.ts`](../../content/src/schema.ts)) are a reasonable starting point. Copy and adapt them.
 
 ## Step 3 — Write the content as plain Markdown with frontmatter
 

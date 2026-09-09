@@ -2,7 +2,7 @@
 id: repo-readiness
 title: Repo Readiness Audit
 summary: A quick audit for a newly-prepared repo — does it have the boundaries, naming, and orchestration story it needs before the first feature ships?
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -26,7 +26,7 @@ required_sections:
 evaluation_criteria:
   - Each package has a clear, single responsibility documented in its README.
   - No dumping-ground files exist at the time of audit.
-  - There is an AGENT_INSTRUCTIONS file or equivalent.
+  - There is an `AGENTS.md` file at the repo root (see the `set-up-agents-md` playbook) or an equivalent agent-read-first document.
   - The orchestration layer is documented.
 deliverables:
   - A single Markdown document with the required sections.
@@ -38,10 +38,10 @@ tags:
   - readiness
   - audit
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
-  reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass except R5: evaluation_criteria requires 'an AGENT_INSTRUCTIONS file or equivalent' — the F-13 fossil, and worse here because agents running the audit will flag correctly-named AGENTS.md repos. Rework the criterion to name AGENTS.md. R8 pending P4."
+  reviewer: "epistemology-review P2.4 (agent); R-01 remediation 2026-09-09"
+  reviewer_notes: "R3–R7 pass. F-13 resolved 2026-09-09: evaluation_criteria now names AGENTS.md (the canon) instead of the AGENT_INSTRUCTIONS fossil. R8 pending P4 (passed P4 2026-09-09)."
 ---
 
 # Repo Readiness Audit

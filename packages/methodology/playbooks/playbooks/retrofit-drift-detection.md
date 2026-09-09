@@ -35,10 +35,10 @@ tags:
   - midstream
   - cleanup
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
-  reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; impressively current (2.5.x release lineage, telemetry-preview, CI auto-detect). Open: F-04 (rank collision at 6.2). R8 pending P4."
+  reviewer: "epistemology-review P2.3 (agent); R-06 remediation 2026-09-09"
+  reviewer_notes: "R3–R7 pass. F-04 resolved 2026-09-09: keeps rank 20; build-mcp-for-project-context moved to 30."
 ---
 
 # Retrofit Drift Detection on an Existing Repo
