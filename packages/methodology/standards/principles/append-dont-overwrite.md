@@ -33,6 +33,8 @@ related:
   - documenting-for-your-agent
   - secrets-have-provenance
   - set-up-a-documentation-system
+  - the-plan-is-the-contract
+  - scope-vs-punchlist
 
 ---
 

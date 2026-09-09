@@ -54,6 +54,9 @@ related:
   - what-an-application-is
   - write-a-context-qb
   - write-an-adr
+  - the-plan-is-the-contract
+  - operations-baseline
+  - agents-md-vs-readme
 
 ---
 

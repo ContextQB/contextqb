@@ -19,6 +19,7 @@ related:
   - understanding-the-context-window
   - context-quarterback-the-onboarding-map
   - write-a-context-qb
+  - mcp-vs-paste
 
 ---
 

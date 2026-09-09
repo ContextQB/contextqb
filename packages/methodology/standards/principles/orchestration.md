@@ -36,6 +36,7 @@ related:
   - separation-of-concerns
   - state-management
   - state-ownership
+  - the-plan-is-the-contract
 
 ---
 

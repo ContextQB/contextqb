@@ -38,6 +38,7 @@ related:
   - refactor-planning
   - separation-of-concerns
   - write-an-adr
+  - refactor-with-duplicates
 
 ---
 

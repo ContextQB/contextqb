@@ -30,6 +30,8 @@ related:
   - security-regression
   - suspicious-behavior-investigation
   - triage-your-secrets
+  - operations-baseline
+  - launch-day-checklist
 ---
 
 # Detect Security Drift
