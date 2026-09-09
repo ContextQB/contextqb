@@ -46,6 +46,11 @@ related:
   - state-ownership
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. Open: F-06 (8 links undeclared — largest gap in the audit set). R8 pending P4."
 ---
 
 # Application Security Baseline Audit

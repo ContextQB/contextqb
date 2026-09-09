@@ -41,6 +41,11 @@ related:
   - untrusted-by-default
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; delta-not-absolute framing operationalises security-drift-is-the-real-threat. Open: F-06 (4 links). R8 pending P4."
 ---
 
 # Security Regression Audit

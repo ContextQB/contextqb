@@ -45,6 +45,11 @@ related:
 tags:
   - security
   - ai-safety
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; scope explicitly defers non-AI surfaces to application-security-baseline — good boundary hygiene. Open: F-06 (5 links). R8 pending P4."
 ---
 
 # AI Integration Security Audit

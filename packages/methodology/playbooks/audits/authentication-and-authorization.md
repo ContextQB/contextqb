@@ -43,6 +43,11 @@ related:
   - untrusted-by-default
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; IDOR phase is the right kind of paranoid. Open: F-06 (3 links). R8 pending P4."
 ---
 
 # Authentication & Authorization Audit

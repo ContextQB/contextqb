@@ -37,6 +37,11 @@ related:
 tags:
   - readiness
   - audit
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass except R5: evaluation_criteria requires 'an AGENT_INSTRUCTIONS file or equivalent' — the F-13 fossil, and worse here because agents running the audit will flag correctly-named AGENTS.md repos. Rework the criterion to name AGENTS.md. R8 pending P4."
 ---
 
 # Repo Readiness Audit

@@ -39,6 +39,11 @@ tags:
   - audit
   - verifiability
   - language
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; A–F scoring rubric is a good instrument. Open: F-06 (choose-a-language-stack sibling link undeclared). R8 pending P4."
 ---
 
 # Agent Substrate Audit

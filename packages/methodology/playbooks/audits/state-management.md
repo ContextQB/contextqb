@@ -34,6 +34,11 @@ related:
 tags:
   - state
   - audit
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass; state inventory columns map exactly to the state-ownership taxonomy. R8 pending P4."
 ---
 
 # State Management Audit

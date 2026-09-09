@@ -41,6 +41,11 @@ related:
 tags:
   - ui
   - audit
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.4 (agent)"
+  reviewer_notes: "R3–R7 pass. Open: F-06 (refactor-planning sibling link undeclared). R8 pending P4."
 ---
 
 # UI Architecture Audit
