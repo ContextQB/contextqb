@@ -44,6 +44,8 @@ Knowing the landscape — even at the level of "Claude is good at long careful r
 
 ## The major families in 2026
 
+_(Version-pinned content — last verified 2026-09. Model names and tiers move fast; re-verify before quoting at anyone.)_
+
 | Family                                                 | Maker               | What it's known for                                                                                                                                                                        | Watch for                                                                                                                     |
 | ------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | **Claude** (Opus, Sonnet, Haiku)                       | Anthropic           | Long chains of careful reasoning. Strong at refactoring, code review, agentic loops that need to follow many steps without losing the plot. The default many ContextQB builders reach for. | Tends to over-explain. Can be verbose in chat; reins itself in nicely in agent mode.                                          |

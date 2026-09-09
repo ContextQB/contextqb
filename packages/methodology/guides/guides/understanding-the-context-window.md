@@ -52,12 +52,12 @@ Imagine a worktable. The agent — the LLM — can only work with what's on the 
 
 The **context window** is the maximum amount of text that fits on the table. It's measured in **tokens** — roughly three-quarters of a word per token. Different models have different table sizes:
 
-| Model family            | Typical context size (mid-2026) |
-| ----------------------- | ------------------------------- |
-| Claude (frontier)       | 200K tokens                     |
-| GPT (frontier)          | 200K–400K tokens                |
-| Gemini                  | 1M+ tokens                      |
-| Most open-source models | 8K–128K tokens                  |
+| Model family            | Typical context size (mid-2026; last verified 2026-09) |
+| ----------------------- | ------------------------------------------------------ |
+| Claude (frontier)       | 200K tokens                                            |
+| GPT (frontier)          | 200K–400K tokens                                       |
+| Gemini                  | 1M+ tokens                                             |
+| Most open-source models | 8K–128K tokens                                         |
 
 For perspective: 200K tokens is roughly 150,000 words, or about three average-length novels. That sounds enormous. In practice, you'll be surprised how fast it fills.
 
@@ -189,7 +189,7 @@ Four patterns recur across the landscape. Recognising them is more useful than m
 
 **4. Explicit context controls** (also called @-mentions, slash commands, or pins). Manual tools you use to say "load _this_ file, _these_ functions, _that_ documentation page" into the current context. Every modern IDE has some version of this. They are the most precise tool but the most labour-intensive.
 
-### How the major IDEs implement them (mid-2026)
+### How the major IDEs implement them (mid-2026; last verified 2026-09 — vendor features move fast)
 
 | IDE                             | Compaction                                                 | Codebase indexing                                       | Persistent memory                                                                     | Explicit controls                                            |
 | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------ |

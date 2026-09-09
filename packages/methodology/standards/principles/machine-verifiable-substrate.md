@@ -9,8 +9,8 @@ audience:
   - founder
   - developer
   - agent
-journey_stage: 4
-journey_rank: 0
+journey_stage: 1
+journey_rank: 55
 tags:
   - verifiability
   - types

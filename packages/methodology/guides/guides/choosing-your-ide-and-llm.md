@@ -58,7 +58,7 @@ The IDE talks to the LLM over the internet. You can swap one without swapping th
 
 ## The IDE landscape
 
-These are the major options as of mid-2026. The list will look different in a year — that's fine. The framing below outlasts the products.
+These are the major options as of mid-2026 (last verified 2026-09). The list will look different in a year — that's fine. The framing below outlasts the products.
 
 | IDE                                                                | What it is                                                                                           | Best for                                                             | Free?                                            |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------ |
@@ -143,7 +143,7 @@ This is the setup most ContextQB writing is tested against. It's not the only ri
 
 ## What it costs
 
-Rough numbers as of mid-2026 (these change; check current pricing before deciding):
+Rough numbers as of mid-2026 (last verified 2026-09; these change — check current pricing before deciding):
 
 - **Bundled IDE plans:** $10–30/month, sometimes with a free tier. Cursor Pro, GitHub Copilot, Windsurf Pro all sit in this range. Heavy use can require higher tiers ($40–100/month) for unlimited fast requests.
 - **Pay-per-token, frontier models:** Roughly $3–15 per million input tokens, $15–75 per million output tokens. A typical day of agentic coding (asking lots of questions, having the agent edit files) might run $1–10 in usage. A single agent loop that re-reads a large codebase several times can easily hit $5–20 by itself if you're not paying attention.

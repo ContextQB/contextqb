@@ -19,7 +19,7 @@ audience:
   - developer
   - agent
 journey_stage: 1
-journey_rank: 40
+journey_rank: 45
 related:
   - new-project-foundation
   - retrofit-drift-detection

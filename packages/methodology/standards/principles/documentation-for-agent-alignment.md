@@ -89,7 +89,7 @@ A document written for both "future engineer" and "current agent" usually serves
 
 The cleanest discipline is to pick the primary audience per document and then ask whether the secondary audience needs anything different. Most of the time, the answer is "no — they will read this fine even though it was not written for them." Occasionally the answer is "they need a different document," and that is the moment to split.
 
-The four documentation surfaces in [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) — `AGENTS.md`, ADRs, architecture overviews, and the standards library — are all agent-primary. Each has a human-secondary value as a bonus, not as a design goal. The operator-facing guides (this content type) are operator-primary, with agent-secondary value at coaching time.
+The four documentation surfaces in [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) — `AGENTS.md`, `context.qb.yaml`, ADRs, and architecture overviews — are all agent-primary. Each has a human-secondary value as a bonus, not as a design goal. The operator-facing guides (this content type) are operator-primary, with agent-secondary value at coaching time.
 
 ## The "I'll document later" tax
 

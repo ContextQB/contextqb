@@ -53,7 +53,7 @@ If you cannot describe the symptom concretely, you do not need a refactor — yo
 
 ## Step 2 — Identify the underlying principle
 
-Use the principles in [`@contextqb/standards`](contextqb://principles/separation-of-concerns) to name the structural cause:
+Use the principles in the ContextQB corpus — for example [`separation-of-concerns`](contextqb://principles/separation-of-concerns) — to name the structural cause:
 
 - "State is owned by three places and they have drifted." → [`state-ownership`](contextqb://principles/state-ownership).
 - "I cannot add a variant without touching ten files." → [`extensibility`](contextqb://principles/extensibility).
