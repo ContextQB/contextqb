@@ -32,6 +32,7 @@ agent_instructions:
   - When data crosses a boundary, transform it; do not just pass it through.
   - Refuse to write code that "is internal" without identifying who the internals are protected from.
   - When asked to add a feature, ask which boundary it sits on before generating the code.
+
 ---
 
 # Trust Boundaries Are Architecture

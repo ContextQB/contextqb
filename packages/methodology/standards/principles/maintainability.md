@@ -26,6 +26,7 @@ related:
   - naming-conventions
   - modularity
   - separation-of-concerns
+
 ---
 
 # Maintainability

@@ -27,6 +27,7 @@ related:
   - separation-of-concerns
   - documentation-file-naming
   - documentation-as-architecture
+
 ---
 
 # Naming Conventions

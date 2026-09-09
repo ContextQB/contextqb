@@ -34,6 +34,7 @@ related:
   - documentation-as-architecture
   - separation-of-concerns
   - naming-conventions
+
 ---
 
 # The Context Quarterback — Every Repo Needs a Boot Manifest

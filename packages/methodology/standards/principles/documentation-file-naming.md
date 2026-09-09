@@ -33,6 +33,7 @@ related:
   - naming-conventions
   - documentation-as-architecture
   - documentation-for-agent-alignment
+
 ---
 
 # Documentation File Naming

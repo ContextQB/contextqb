@@ -25,6 +25,7 @@ related:
   - modularity
   - state-ownership
   - naming-conventions
+
 ---
 
 # Separation of Concerns

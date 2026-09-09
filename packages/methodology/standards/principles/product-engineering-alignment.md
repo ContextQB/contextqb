@@ -31,6 +31,7 @@ related:
   - naming-conventions
   - separation-of-concerns
   - documentation-as-architecture
+
 ---
 
 # Product-to-Engineering Alignment

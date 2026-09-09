@@ -32,6 +32,7 @@ agent_instructions:
   - If a task can be completed in a scratch directory, do not touch the rest of the repo.
   - If you need a new capability, name it explicitly and request it; do not assume it.
   - When unsure whether you have a capability, ask before attempting it.
+
 ---
 
 # Least Privilege for Agents

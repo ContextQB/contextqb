@@ -34,6 +34,7 @@ related:
   - naming-conventions
   - documentation-for-agent-alignment
   - documentation-file-naming
+
 ---
 
 # Documentation as Architecture

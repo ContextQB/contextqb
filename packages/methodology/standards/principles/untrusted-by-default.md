@@ -31,6 +31,7 @@ agent_instructions:
   - For LLM outputs, validate structure and content before acting on them.
   - Never trust client-side validation alone; always re-validate server-side.
   - When in doubt, reject rather than accept.
+
 ---
 
 # Untrusted by Default

@@ -26,6 +26,7 @@ related:
   - separation-of-concerns
   - naming-conventions
   - extensibility
+
 ---
 
 # Modularity

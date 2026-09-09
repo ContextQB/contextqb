@@ -32,6 +32,7 @@ agent_instructions:
   - Refuse to weaken a protection without naming the trade-off explicitly.
   - Surface drift candidates proactively — new public endpoints, removed auth checks, new third-party calls.
   - Treat "we audited this last quarter" as background, not as evidence the change you just made is safe.
+
 ---
 
 # Security Drift Is the Real Threat

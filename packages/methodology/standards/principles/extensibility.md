@@ -26,6 +26,7 @@ related:
   - modularity
   - separation-of-concerns
   - maintainability
+
 ---
 
 # Extensibility

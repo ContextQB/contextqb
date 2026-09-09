@@ -33,6 +33,7 @@ agent_instructions:
   - Never rely on URL obscurity for security.
   - Remove or gate all debug, admin, and test endpoints before production deployment.
   - When adding a new endpoint, document its purpose, authentication requirements, and abuse potential.
+
 ---
 
 # Public Endpoints Are Battlegrounds

@@ -33,6 +33,7 @@ agent_instructions:
   - When creating infrastructure that requires secrets, specify where the secret will come from and who will provision it.
   - Before using a third-party API, confirm the authentication approach and document the key's scope.
   - Treat secret exposure as a security incident, not a minor bug.
+
 ---
 
 # Secrets Have Provenance

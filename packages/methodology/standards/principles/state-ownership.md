@@ -27,6 +27,7 @@ related:
   - separation-of-concerns
   - orchestration
   - anti-spaghetti
+
 ---
 
 # State Ownership
