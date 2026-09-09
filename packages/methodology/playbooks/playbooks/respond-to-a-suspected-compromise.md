@@ -2,7 +2,7 @@
 id: respond-to-a-suspected-compromise
 title: Respond to a Suspected Compromise
 summary: When you discover or suspect a security incident — leaked credentials, unauthorized access, suspicious activity — follow this structured response to contain damage, investigate, and recover.
-version: 0.1.0
+version: 0.1.1
 problem: |
   When something security-related goes wrong, panic leads to mistakes. Without a plan, people either overreact (taking down everything) or underreact (ignoring the problem). A structured response limits damage and preserves evidence.
 when_to_use: |
@@ -24,7 +24,13 @@ related_principles:
   - untrusted-by-default
 tags:
   - security
-
+related:
+  - detect-security-drift
+  - pre-launch-security
+  - secrets-and-credentials
+  - setting-up-git-and-github
+  - suspicious-behavior-investigation
+  - triage-your-secrets
 ---
 
 # Respond to a Suspected Compromise

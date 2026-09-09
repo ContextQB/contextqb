@@ -2,7 +2,7 @@
 id: review-a-new-feature-for-security-implications
 title: Review a New Feature for Security Implications
 summary: Before shipping a feature, walk through a structured checklist to identify security implications — new attack surfaces, data exposure, authentication gaps, and agent risks.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Features ship fast, security review happens slow (or never). By the time you realize a feature created a security gap, it's in production and customers are using it.
 when_to_use: |
@@ -19,12 +19,15 @@ audience:
 journey_stage: 5
 journey_rank: 40
 related_principles:
-  - untrusted-by-default
-  - trust-boundaries-are-architecture
   - public-endpoints-are-battlegrounds
+  - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
-
+related:
+  - application-security-baseline
+  - review-your-ai-integration
+  - security-critical-code-review
 ---
 
 # Review a New Feature for Security Implications

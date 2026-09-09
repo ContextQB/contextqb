@@ -2,7 +2,7 @@
 id: agent-substrate
 title: Agent Substrate Audit
 summary: A retrospective audit that scores an existing repository's language stack on agent-friendliness — are verifiers in place to catch the agent's mistakes before they ship?
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -32,6 +32,7 @@ deliverables:
   - A verifier coverage matrix showing each surface and its verifier status.
   - A prioritised list of gaps to close.
 related:
+  - choose-a-language-stack
   - machine-verifiable-substrate
   - programming-language-selection
   - repo-readiness

@@ -2,7 +2,7 @@
 id: extension-ui-audit
 title: Extension UI Architecture Audit Prompt
 summary: A long-form structural review prompt for a browser extension UI — focused on the system, not on isolated bugs.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -18,11 +18,12 @@ expected_output: |
 quality_standard: |
   The audit must avoid focusing on isolated bugs. It must surface structural patterns that allow bugs to recur. Every finding must reference specific files.
 related:
-  - state-ownership
-  - orchestration
-  - modularity
-  - extensibility
   - anti-spaghetti
+  - extensibility
+  - extension-architecture
+  - modularity
+  - orchestration
+  - state-ownership
 tags:
   - extension
   - ui

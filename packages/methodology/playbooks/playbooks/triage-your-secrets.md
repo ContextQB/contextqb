@@ -2,7 +2,7 @@
 id: triage-your-secrets
 title: Triage Your Secrets
 summary: Walk through your project and produce a complete inventory of every secret — API keys, tokens, passwords, certificates — with owner, scope, rotation status, and risk level.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Secrets drift. Keys get created and forgotten. Tokens never rotate. Production credentials end up in development. When a breach happens, you cannot revoke what you cannot find.
 when_to_use: |
@@ -19,12 +19,17 @@ audience:
 journey_stage: 5
 journey_rank: 20
 related_principles:
+  - least-privilege-for-agents
   - secrets-have-provenance
   - untrusted-by-default
-  - least-privilege-for-agents
 tags:
   - security
-
+related:
+  - detect-security-drift
+  - map-your-attack-surface
+  - pre-launch-security
+  - respond-to-a-suspected-compromise
+  - secrets-and-credentials
 ---
 
 # Triage Your Secrets

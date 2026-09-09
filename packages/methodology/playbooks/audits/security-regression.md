@@ -2,7 +2,7 @@
 id: security-regression
 title: Security Regression Audit
 summary: A change-focused security audit comparing current state against a prior baseline. Identifies what changed, what degraded, and whether new risks were introduced by recent work.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -36,8 +36,13 @@ deliverables:
   - A diff-style comparison of security posture.
   - A prioritised remediation roadmap for regressions.
 related:
-  - security-drift-is-the-real-threat
+  - application-security-baseline
+  - detect-security-drift
   - documentation-as-architecture
+  - map-your-attack-surface
+  - pre-launch-security
+  - security-drift-is-the-real-threat
+  - suspicious-behavior-investigation
   - untrusted-by-default
 tags:
   - security

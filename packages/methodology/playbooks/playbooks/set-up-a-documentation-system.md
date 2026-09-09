@@ -2,7 +2,7 @@
 id: set-up-a-documentation-system
 title: Set Up a Documentation System for Your Project
 summary: Scaffold the small, deliberate set of documentation surfaces your project needs from day one — sized for an operator with one agent today, ready to grow into a team-sized doc system later without restructuring.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Without an intentional documentation system, every project drifts into one of two failure modes: a sprawling "docs/" folder no one reads, or no documentation at all. Both leave the agent reinventing the project on every prompt. The cost is paid in every session, not at some far-off handoff.
 when_to_use: |
@@ -20,16 +20,21 @@ audience:
 journey_stage: 1
 journey_rank: 40
 related_principles:
-  - documentation-as-architecture
-  - documentation-for-agent-alignment
-  - documentation-file-naming
-  - naming-conventions
+  - append-dont-overwrite
   - context-quarterback-the-onboarding-map
+  - documentation-as-architecture
+  - documentation-file-naming
+  - documentation-for-agent-alignment
+  - naming-conventions
 tags:
   - documentation
   - greenfield
   - setup
-
+related:
+  - documenting-for-your-agent
+  - set-up-agents-md
+  - write-a-context-qb
+  - write-an-adr
 ---
 
 # Set Up a Documentation System for Your Project

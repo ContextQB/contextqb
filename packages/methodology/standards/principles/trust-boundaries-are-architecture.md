@@ -2,7 +2,7 @@
 id: trust-boundaries-are-architecture
 title: Trust Boundaries Are Architecture
 summary: Drawing trust boundaries is a design act, not a documentation act. "Public/authenticated", "owner/admin", "user/agent", "self/third-party" — each must be named and located in the code before they can be defended.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,9 +17,21 @@ tags:
   - architecture
   - trust-boundaries
 related:
+  - ai-integration-security
+  - application-security-baseline
+  - authentication-and-authorization
+  - building-for-yourself-vs-others
+  - harden-your-authentication
+  - map-your-attack-surface
   - modularity
+  - public-endpoint-exposure
+  - public-endpoints-are-battlegrounds
+  - review-a-new-feature-for-security-implications
+  - review-your-ai-integration
+  - security-critical-code-review
   - separation-of-concerns
   - untrusted-by-default
+  - where-your-data-lives
 anti_patterns:
   - Authentication checks scattered through business logic instead of at a single boundary.
   - '"Internal" services that anyone with the URL can reach.'

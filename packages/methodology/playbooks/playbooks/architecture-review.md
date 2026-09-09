@@ -2,7 +2,7 @@
 id: architecture-review
 title: Ask an Agent for a Comprehensive Architecture Review
 summary: How to commission a real architectural review from an agent — not a list of nitpicks, but a structured assessment with findings, risks, and a remediation plan.
-version: 0.1.0
+version: 0.1.1
 problem: |
   "Review my code" produces a list of small comments. What you actually want is a structural assessment of the system as a whole.
 when_to_use: |
@@ -20,14 +20,17 @@ audience:
 journey_stage: 4
 journey_rank: 0
 related_principles:
-  - separation-of-concerns
-  - modularity
-  - state-ownership
   - anti-spaghetti
+  - modularity
+  - separation-of-concerns
+  - state-ownership
 tags:
   - review
   - audit
-
+related:
+  - agent-instructions
+  - architectural-hardening-loop
+  - refactor-planning
 ---
 
 # Ask an Agent for a Comprehensive Architecture Review

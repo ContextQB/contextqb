@@ -2,7 +2,7 @@
 id: harden-your-authentication
 title: Harden Your Authentication
 summary: Walk through your login, signup, and session management and apply baseline security hardening — rate limiting, brute-force protection, session hygiene, and secure defaults.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Authentication is the front door to your application. If it's weak, nothing else matters. Most applications ship with default settings that are functional but not secure.
 when_to_use: |
@@ -19,11 +19,14 @@ journey_stage: 5
 journey_rank: 10
 related_principles:
   - public-endpoints-are-battlegrounds
-  - untrusted-by-default
   - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
-
+related:
+  - authentication-and-authorization
+  - map-your-attack-surface
+  - pre-launch-security
 ---
 
 # Harden Your Authentication

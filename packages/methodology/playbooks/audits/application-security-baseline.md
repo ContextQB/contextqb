@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -41,9 +41,22 @@ deliverables:
   - A prioritised list of findings with severity ratings.
   - A remediation roadmap with clear next actions.
 related:
-  - untrusted-by-default
+  - ai-integration-security
+  - authentication-and-authorization
+  - detect-security-drift
   - failure-modes
+  - map-your-attack-surface
+  - pre-launch-security
+  - public-endpoint-exposure
+  - review-a-new-feature-for-security-implications
+  - secrets-and-credentials
+  - security-critical-code-review
+  - security-drift-is-the-real-threat
+  - security-regression
   - state-ownership
+  - think-like-an-attacker
+  - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
 

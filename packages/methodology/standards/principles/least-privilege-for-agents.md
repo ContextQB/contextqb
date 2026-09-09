@@ -2,7 +2,7 @@
 id: least-privilege-for-agents
 title: Least Privilege for Agents
 summary: Give the agent only the tools, scopes, and data it needs for the current task. Default to denying tool access; expand explicitly. Most security failures in agentic systems come from agents that had more capability than the task required.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,9 +17,17 @@ tags:
   - agents
   - capability
 related:
-  - state-ownership
-  - orchestration
+  - ai-integration-security
   - ai-output-is-untrusted-code
+  - choosing-your-ide-and-llm
+  - orchestration
+  - review-your-ai-integration
+  - secrets-and-credentials
+  - secrets-have-provenance
+  - set-security-guardrails-for-your-agent
+  - state-ownership
+  - triage-your-secrets
+  - untrusted-by-default
 anti_patterns:
   - One MCP server exposes a single "do_anything" tool the agent always calls.
   - The agent has filesystem write access to the entire repo, including .env and secrets.

@@ -2,7 +2,7 @@
 id: set-up-drift-detection
 title: Set Up Drift Detection on Day One
 summary: Wire the contextqb drift detector into your repo from the moment you author your first context.qb.yaml, so the map can never drift away from the territory unnoticed.
-version: 0.1.0
+version: 0.1.1
 problem: |
   A context.qb.yaml is only useful if it stays honest as the repo changes. Without a drift detector wired into your loop, every map becomes a stale map within a month, and your agent silently reads the wrong file. Setting it up on day one costs five minutes; setting it up later means triaging accumulated drift first.
 when_to_use: |
@@ -21,9 +21,10 @@ audience:
 journey_stage: 1
 journey_rank: 40
 related:
-  - write-a-context-qb
-  - set-up-agents-md
+  - new-project-foundation
   - retrofit-drift-detection
+  - set-up-agents-md
+  - write-a-context-qb
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture

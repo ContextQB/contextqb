@@ -2,7 +2,7 @@
 id: write-a-context-qb
 title: Write a context.qb for Your Repository
 summary: Step-by-step for authoring a context.qb.yaml — the agent's boot manifest — that gets a coding agent up to speed in under 2,000 tokens.
-version: 0.1.0
+version: 0.1.1
 problem: |
   AI coding agents waste tokens (and time) at the start of every session re-scanning your repo to figure out what it is and where everything lives. Without a single small, structured map, you pay that scan-cost on every prompt.
 when_to_use: |
@@ -20,7 +20,15 @@ audience:
 journey_stage: 1
 journey_rank: 30
 related:
+  - context-qb-yaml-vs-rag
+  - documenting-for-your-agent
+  - new-project-foundation
+  - retrofit-drift-detection
+  - set-up-a-documentation-system
   - set-up-drift-detection
+  - setting-up-git-and-github
+  - the-mental-model-of-your-app
+  - understanding-the-context-window
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture

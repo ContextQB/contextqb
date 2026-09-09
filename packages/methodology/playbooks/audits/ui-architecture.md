@@ -2,7 +2,7 @@
 id: ui-architecture
 title: UI Architecture Audit
 summary: A structured prompt for asking an agent to evaluate a user interface — its component structure, state ownership, orchestration, and extensibility — without biasing the review toward isolated bugs.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -33,11 +33,12 @@ deliverables:
   - A single Markdown document with the required sections.
   - A short summary suitable for a non-developer founder.
 related:
+  - anti-spaghetti
+  - extensibility
+  - modularity
+  - refactor-planning
   - separation-of-concerns
   - state-ownership
-  - modularity
-  - extensibility
-  - anti-spaghetti
 tags:
   - ui
   - audit

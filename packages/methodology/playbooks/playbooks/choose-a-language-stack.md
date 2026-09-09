@@ -2,7 +2,7 @@
 id: choose-a-language-stack
 title: Choose a Language Stack for Agent-Assisted Development
 summary: A structured process for selecting programming languages that maximise mechanical verification — before any feature code is written.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Teams choose languages by familiarity or fashion, then discover months later that the substrate cannot mechanically check what the agent generates. The result is manual review of every line, which does not scale.
 when_to_use: |
@@ -20,12 +20,13 @@ journey_rank: 0
 related_principles:
   - machine-verifiable-substrate
   - programming-language-selection
-  - new-project-foundation
 tags:
   - foundation
   - language
   - setup
-
+related:
+  - agent-substrate
+  - new-project-foundation
 ---
 
 # Choose a Language Stack for Agent-Assisted Development

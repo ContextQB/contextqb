@@ -2,7 +2,7 @@
 id: anti-spaghetti-review
 title: Anti-Spaghetti Review Prompt
 summary: A targeted prompt that runs the ContextQB anti-spaghetti checklist over a feature or codebase and produces a structured diagnostic document.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -19,9 +19,10 @@ quality_standard: |
   Every signal must be evaluated explicitly (present / partly / absent) with quoted evidence or a stated absence. Generic best-practice advice is not acceptable — only project-specific findings.
 related:
   - anti-spaghetti
-  - state-ownership
-  - orchestration
   - modularity
+  - orchestration
+  - refactor-planning
+  - state-ownership
 tags:
   - audit
   - diagnosis

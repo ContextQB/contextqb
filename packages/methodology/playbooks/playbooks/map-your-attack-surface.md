@@ -2,7 +2,7 @@
 id: map-your-attack-surface
 title: Map Your Attack Surface
 summary: Walk through your application and produce a structured inventory of every public surface, every secret, every agent capability, and every third-party trust.
-version: 0.1.0
+version: 0.1.1
 problem: |
   You can't defend what you can't see. Most security failures happen on surfaces the builder didn't know existed — a public endpoint they forgot, a secret they didn't track, a third-party integration that silently gained access.
 when_to_use: |
@@ -18,12 +18,25 @@ audience:
 journey_stage: 5
 journey_rank: 0
 related_principles:
-  - untrusted-by-default
   - failure-modes
+  - public-endpoints-are-battlegrounds
+  - security-drift-is-the-real-threat
   - state-ownership
+  - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
-
+related:
+  - ai-integration-security
+  - application-security-baseline
+  - detect-security-drift
+  - harden-your-authentication
+  - public-endpoint-exposure
+  - review-your-ai-integration
+  - security-regression
+  - set-security-guardrails-for-your-agent
+  - think-like-an-attacker
+  - triage-your-secrets
 ---
 
 # Map Your Attack Surface

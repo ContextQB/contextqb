@@ -2,7 +2,7 @@
 id: think-like-an-attacker
 title: Think Like an Attacker
 summary: A reusable framing prompt for any code review — if you were attacking this, where would you start and what would you target?
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -21,8 +21,13 @@ expected_output: |
 quality_standard: |
   Every finding must be specific to the code under review, with concrete attack paths and realistic severity assessments. "You should use HTTPS" is not acceptable — only project-specific adversarial analysis.
 related:
-  - untrusted-by-default
+  - ai-integration-security
+  - ai-output-is-untrusted-code
+  - application-security-baseline
   - failure-modes
+  - map-your-attack-surface
+  - security-critical-code-review
+  - untrusted-by-default
 tags:
   - security
 

@@ -2,7 +2,7 @@
 id: secrets-have-provenance
 title: Secrets Have Provenance
 summary: Every secret in your system — API key, token, password, certificate — has an origin, an owner, a scope, and an expiry. If you cannot name all four, the secret is unmanaged, and unmanaged secrets leak.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,8 +17,16 @@ tags:
   - secrets
   - credentials
 related:
-  - state-ownership
+  - append-dont-overwrite
+  - choosing-your-ide-and-llm
   - documentation-as-architecture
+  - least-privilege-for-agents
+  - pre-launch-security
+  - respond-to-a-suspected-compromise
+  - secrets-and-credentials
+  - security-drift-is-the-real-threat
+  - state-ownership
+  - triage-your-secrets
   - untrusted-by-default
 anti_patterns:
   - API keys pasted directly into source code.

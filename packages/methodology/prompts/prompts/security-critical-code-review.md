@@ -2,7 +2,7 @@
 id: security-critical-code-review
 title: Security-Critical Code Review
 summary: A code review prompt specifically for security-sensitive changes — authentication, authorization, secrets handling, input validation, and data access.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -21,9 +21,15 @@ expected_output: |
 quality_standard: |
   Every finding must reference specific lines of code. Generic advice is not acceptable. The review must produce a clear merge/block recommendation with justification.
 related:
-  - untrusted-by-default
-  - trust-boundaries-are-architecture
+  - ai-integration-security
   - ai-output-is-untrusted-code
+  - application-security-baseline
+  - review-a-new-feature-for-security-implications
+  - review-your-ai-integration
+  - think-like-an-attacker
+  - trust-boundaries-are-architecture
+  - understanding-llms
+  - untrusted-by-default
 tags:
   - security
 

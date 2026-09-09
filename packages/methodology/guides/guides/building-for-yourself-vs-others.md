@@ -2,7 +2,7 @@
 id: building-for-yourself-vs-others
 title: Building for Yourself vs. Building for Others
 summary: "The first user decision is not technical. It is social: is this just for you, for a trusted group, or for the public?"
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -16,10 +16,12 @@ tags:
   - users
   - getting-started
 related:
-  - what-an-application-is
-  - the-mental-model-of-your-app
+  - choosing-your-application-channel
   - state-ownership
+  - the-mental-model-of-your-app
   - trust-boundaries-are-architecture
+  - what-an-application-is
+  - where-your-data-lives
 next_steps:
   - "Name the first audience tier for your app: just-me, trusted-group, or public."
   - Write down what that tier lets you skip for now.

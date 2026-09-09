@@ -2,7 +2,7 @@
 id: detect-security-drift
 title: Detect Security Drift
 summary: Compare your current application state against your security baselines and prior audits to identify what changed, what degraded, and what new risks emerged.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Security doesn't fail in one big moment — it degrades gradually. A setting gets changed, a new endpoint is added without auth, a secret stops rotating. By the time you notice, the drift has accumulated.
 when_to_use: |
@@ -18,12 +18,18 @@ audience:
 journey_stage: 7
 journey_rank: 0
 related_principles:
-  - security-drift-is-the-real-threat
   - documentation-as-architecture
+  - security-drift-is-the-real-threat
   - untrusted-by-default
 tags:
   - security
-
+related:
+  - application-security-baseline
+  - map-your-attack-surface
+  - respond-to-a-suspected-compromise
+  - security-regression
+  - suspicious-behavior-investigation
+  - triage-your-secrets
 ---
 
 # Detect Security Drift

@@ -2,7 +2,7 @@
 id: authentication-and-authorization
 title: Authentication & Authorization Audit
 summary: A focused security audit of identity and access — verify login hardening, session security, authorization checks, and access control enforcement.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -38,6 +38,9 @@ deliverables:
   - A complete auth surface inventory.
   - A prioritised remediation roadmap.
 related:
+  - application-security-baseline
+  - harden-your-authentication
+  - public-endpoint-exposure
   - public-endpoints-are-battlegrounds
   - trust-boundaries-are-architecture
   - untrusted-by-default

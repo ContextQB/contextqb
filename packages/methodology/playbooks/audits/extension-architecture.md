@@ -2,7 +2,7 @@
 id: extension-architecture
 title: Browser Extension UI Architecture Audit
 summary: A structural audit specifically for browser extension UIs — menus, sidebars, multi-tab state, settings systems, and the orchestration that ties them together.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -34,12 +34,13 @@ evaluation_criteria:
 deliverables:
   - A single Markdown document with the required sections.
 related:
+  - anti-spaghetti
+  - extensibility
+  - extension-ui-audit
+  - modularity
+  - orchestration
   - separation-of-concerns
   - state-ownership
-  - orchestration
-  - modularity
-  - extensibility
-  - anti-spaghetti
 tags:
   - extension
   - browser

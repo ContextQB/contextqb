@@ -2,7 +2,7 @@
 id: feature-planning
 title: Plan a Feature Before Letting the Agent Code
 summary: A structured planning prompt that produces a feature brief, surface map, state plan, and risk list — before any code is written.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Letting an agent jump straight to code on a non-trivial feature almost guarantees that pieces are added in the wrong places, state ownership is unclear, and edge cases are missed.
 when_to_use: |
@@ -19,11 +19,14 @@ audience:
 journey_stage: 3
 journey_rank: 0
 related:
+  - choosing-your-application-channel
   - feature-build-loop
+  - the-mental-model-of-your-app
 related_principles:
+  - modularity
+  - orchestration
   - separation-of-concerns
   - state-ownership
-  - orchestration
 tags:
   - planning
   - features

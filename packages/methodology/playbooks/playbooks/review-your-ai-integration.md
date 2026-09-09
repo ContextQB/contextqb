@@ -2,7 +2,7 @@
 id: review-your-ai-integration
 title: Review Your AI Integration
 summary: For any agent or LLM call in your system, document what it reads, what it writes, what it can execute, what data it sees, and where untrusted input can influence it.
-version: 0.1.0
+version: 0.1.1
 problem: |
   AI integrations frequently expand in capability without anyone tracking the cumulative trust surface. By the time something goes wrong, no one can answer "what can this thing actually do?"
 when_to_use: |
@@ -24,7 +24,12 @@ related_principles:
 tags:
   - security
   - ai-safety
-
+related:
+  - ai-integration-security
+  - map-your-attack-surface
+  - review-a-new-feature-for-security-implications
+  - security-critical-code-review
+  - set-security-guardrails-for-your-agent
 ---
 
 # Review Your AI Integration

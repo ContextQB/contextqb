@@ -2,7 +2,7 @@
 id: general-technical-audit
 title: General Technical Audit Prompt
 summary: A comprehensive application audit covering architecture, data, scalability, reliability, infrastructure, security, code quality, and product alignment.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -19,10 +19,11 @@ expected_output: |
 quality_standard: |
   Each finding must be backed by specific file references or quoted code. Recommendations must be prioritised by impact and risk, not by ease.
 related:
-  - separation-of-concerns
-  - modularity
-  - state-ownership
   - anti-spaghetti
+  - modularity
+  - refactor-planning
+  - separation-of-concerns
+  - state-ownership
 tags:
   - audit
   - comprehensive

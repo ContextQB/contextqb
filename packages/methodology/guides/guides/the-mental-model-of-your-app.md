@@ -2,7 +2,7 @@
 id: the-mental-model-of-your-app
 title: The Mental Model of Your App
 summary: Before you write a line of code or prompt a single agent, you have to know — in plain words — what your app is actually for. This guide helps you turn an idea into a working mental model.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -15,10 +15,20 @@ tags:
   - mental-model
   - getting-started
 related:
-  - what-an-application-is
   - building-for-yourself-vs-others
+  - choosing-your-ide-and-llm
   - context-quarterback-the-onboarding-map
+  - documentation-as-architecture
+  - documenting-for-your-agent
+  - feature-planning
+  - new-project-foundation
   - product-engineering-alignment
+  - set-up-agents-md
+  - setting-up-git-and-github
+  - understanding-the-context-window
+  - what-an-application-is
+  - write-a-context-qb
+  - write-an-adr
 next_steps:
   - Write a one-paragraph working brief for your app.
   - List the buckets of information your app needs to hold.

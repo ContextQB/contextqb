@@ -2,7 +2,7 @@
 id: untrusted-by-default
 title: Untrusted by Default
 summary: Every input, model output, third-party response, and webpage is hostile until proven otherwise. Validate at the boundary, not in the middle.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,8 +17,29 @@ tags:
   - validation
   - trust-boundaries
 related:
+  - ai-output-is-untrusted-code
+  - application-security-baseline
+  - authentication-and-authorization
+  - detect-security-drift
   - failure-modes
+  - harden-your-authentication
+  - least-privilege-for-agents
+  - map-your-attack-surface
+  - pre-launch-security
+  - public-endpoint-exposure
+  - public-endpoints-are-battlegrounds
+  - respond-to-a-suspected-compromise
+  - review-a-new-feature-for-security-implications
+  - secrets-and-credentials
+  - secrets-have-provenance
+  - security-critical-code-review
+  - security-regression
   - state-ownership
+  - suspicious-behavior-investigation
+  - think-like-an-attacker
+  - triage-your-secrets
+  - trust-boundaries-are-architecture
+  - understanding-llms
 anti_patterns:
   - User input is passed directly to database queries without validation.
   - API responses are trusted without checking status codes or schema.
