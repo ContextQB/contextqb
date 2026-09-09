@@ -25,6 +25,7 @@ next_steps:
   - Write one sentence describing what information your application moves.
   - Read the mental-model guide and turn that sentence into a working brief.
   - Do not pick a database or deployment platform until you know who the app is for.
+
 ---
 
 # What an Application Is

@@ -26,6 +26,7 @@ next_steps:
   - Sign up for one LLM provider (we recommend starting with Anthropic or OpenAI).
   - Connect the IDE to the LLM and run your first agentic prompt.
   - Plug the ContextQB MCP in so your agent has the methodology on day one.
+
 ---
 
 # Choosing Your IDE and LLM

@@ -25,6 +25,7 @@ next_steps:
   - Write down what that tier lets you skip for now.
   - Write down what that tier forces you to take seriously now.
   - Use that tier decision before choosing where data lives or which channel to ship.
+
 ---
 
 # Building for Yourself vs. Building for Others

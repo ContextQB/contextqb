@@ -25,6 +25,7 @@ next_steps:
   - "Pick an LLM you trust to work with day to day."
   - "Read one principle or one playbook on contextqb.com — not all of them."
   - "When you have a real project, install @context-qb/cli and run it once."
+
 ---
 
 # How to Use ContextQB

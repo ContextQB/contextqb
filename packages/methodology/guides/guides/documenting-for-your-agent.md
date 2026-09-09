@@ -27,6 +27,7 @@ next_steps:
   - Write or update your `context.qb.yaml` so the agent can boot from one file.
   - Pick one decision you've made this week and write a one-page ADR for it.
   - Before creating your next document, run the three filename smell tests from `documentation-file-naming`.
+
 ---
 
 # Documenting for Your Agent

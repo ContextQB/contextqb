@@ -25,6 +25,7 @@ next_steps:
   - Mark each item as just-me, trusted-group, or public.
   - Decide which information can live locally and which needs shared storage.
   - Do not pick a database vendor until you know who needs access and from where.
+
 ---
 
 # Where Your Data Lives

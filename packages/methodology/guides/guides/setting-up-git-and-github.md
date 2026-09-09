@@ -26,6 +26,7 @@ next_steps:
   - Pick a remote (GitHub, GitLab, Codeberg, or self-hosted Forgejo).
   - Create your first repo and make your first commit.
   - Adopt the commit-before-and-after-the-agent rhythm.
+
 ---
 
 # Setting Up Git and GitHub

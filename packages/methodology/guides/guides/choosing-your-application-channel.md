@@ -25,6 +25,7 @@ next_steps:
   - Choose one primary channel for the first version.
   - Name what that channel lets you skip and what it forces you to handle.
   - Use the feature-planning playbook before asking an agent to build the first version.
+
 ---
 
 # Choosing Your Application Channel

@@ -27,6 +27,7 @@ next_steps:
   - Write or update your AGENTS.md so it primes any new session correctly.
   - Write or update your context.qb.yaml so the agent can boot from one file.
   - When you finish your next coding session, write a one-paragraph handoff note for next time.
+
 ---
 
 # Understanding the Context Window

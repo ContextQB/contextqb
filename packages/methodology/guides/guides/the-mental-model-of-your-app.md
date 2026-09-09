@@ -24,6 +24,7 @@ next_steps:
   - List the buckets of information your app needs to hold.
   - Open a repo and add an AGENTS.md with the brief.
   - Run the new-project-foundation playbook.
+
 ---
 
 # The Mental Model of Your App

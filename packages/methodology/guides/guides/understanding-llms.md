@@ -25,6 +25,7 @@ next_steps:
   - Pick one model and use it for a week before forming opinions.
   - Set a billing alert at your provider's dashboard.
   - Note which kinds of tasks feel easy vs. forced — that's where you'll learn what each model is good at.
+
 ---
 
 # Understanding LLMs
