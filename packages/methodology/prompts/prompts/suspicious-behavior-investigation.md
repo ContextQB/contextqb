@@ -27,6 +27,11 @@ related:
   - failure-modes
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R6 pass on content. Open: F-17 (stray 4-backtick fence at ~line 193 swallows 'When to use this' / 'What to do with the output' / 'Example output' into a code block on render), F-06 (3 links). R8 pending P4."
 ---
 
 # Suspicious Behavior Investigation

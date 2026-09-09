@@ -27,6 +27,11 @@ tags:
   - extension
   - ui
   - audit
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R7 pass; correctly positioned as the paste-able instance of the extension-architecture audit. Open: F-06. R8 pending P4."
 ---
 
 # Extension UI Architecture Audit Prompt

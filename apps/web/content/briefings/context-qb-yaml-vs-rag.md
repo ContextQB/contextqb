@@ -19,6 +19,11 @@ related:
   - understanding-the-context-window
   - context-quarterback-the-onboarding-map
   - write-a-context-qb
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.6 (agent)"
+  reviewer_notes: "R3–R7 pass. The one briefing is good — single framed question, comparative table, complement-not-compete thesis, related: == See also. Evidence for 'grow the type' in G-05. R8 pending P4."
 ---
 
 # context.qb.yaml vs. RAG

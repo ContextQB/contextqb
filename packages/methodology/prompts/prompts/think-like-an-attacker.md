@@ -25,6 +25,11 @@ related:
   - failure-modes
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R7 pass; worked example earns its place. Open: F-06 (4 links). Also mixes link conventions (site-relative vs contextqb://) — logged as P4 input. R8 pending P4."
 ---
 
 # Think Like an Attacker

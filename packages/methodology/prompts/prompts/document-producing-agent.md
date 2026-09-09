@@ -32,6 +32,11 @@ related:
 tags:
   - prompts
   - template
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R7 pass; the meta-template the other prompts instantiate. R8 pending P4."
 ---
 
 # Document-Producing Agent Instruction Template

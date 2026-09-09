@@ -26,6 +26,11 @@ related:
   - ai-output-is-untrusted-code
 tags:
   - security
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R7 pass; merge-decision verdict contract (APPROVE/REQUEST CHANGES/BLOCK) is exemplary R7. Open: F-06 (2 links). R8 pending P4."
 ---
 
 # Security-Critical Code Review

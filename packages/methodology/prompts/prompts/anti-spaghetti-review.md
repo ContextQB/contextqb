@@ -25,6 +25,11 @@ related:
 tags:
   - audit
   - diagnosis
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.5 (agent)"
+  reviewer_notes: "R3–R7 pass; the eight signals restate the principle faithfully as an instrument. Open: F-06 (refactor-planning link). R8 pending P4."
 ---
 
 # Anti-Spaghetti Review Prompt
