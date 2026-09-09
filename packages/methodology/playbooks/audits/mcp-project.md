@@ -36,6 +36,7 @@ related:
 tags:
   - mcp
   - audit
+
 ---
 
 # MCP Project Audit

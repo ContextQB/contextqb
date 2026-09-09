@@ -42,6 +42,7 @@ related:
   - trust-boundaries-are-architecture
 tags:
   - security
+
 ---
 
 # Public Endpoint Exposure Audit

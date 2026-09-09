@@ -44,6 +44,7 @@ tags:
   - extension
   - browser
   - audit
+
 ---
 
 # Browser Extension UI Architecture Audit
