@@ -26,6 +26,11 @@ next_steps:
   - Sign up for one LLM provider (we recommend starting with Anthropic or OpenAI).
   - Connect the IDE to the LLM and run your first agentic prompt.
   - Plug the ContextQB MCP in so your agent has the methodology on day one.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
 ---
 
 # Choosing Your IDE and LLM

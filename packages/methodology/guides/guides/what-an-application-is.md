@@ -25,6 +25,11 @@ next_steps:
   - Write one sentence describing what information your application moves.
   - Read the mental-model guide and turn that sentence into a working brief.
   - Do not pick a database or deployment platform until you know who the app is for.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R5, R7 pass. Open: F-02 (rank collision), F-07 (names building-for-yourself-vs-others as next guide and duplicates the channel table, links neither). R8 pending P4."
 ---
 
 # What an Application Is

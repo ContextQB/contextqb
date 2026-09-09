@@ -25,6 +25,11 @@ next_steps:
   - Write down what that tier lets you skip for now.
   - Write down what that tier forces you to take seriously now.
   - Use that tier decision before choosing where data lives or which channel to ship.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R7 pass; related: matches See also; tier framework distinctive and reused downstream. R8 pending P4."
 ---
 
 # Building for Yourself vs. Building for Others

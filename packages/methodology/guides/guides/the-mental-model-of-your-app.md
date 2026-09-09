@@ -24,6 +24,11 @@ next_steps:
   - List the buckets of information your app needs to hold.
   - Open a repo and add an AGENTS.md with the brief.
   - Run the new-project-foundation playbook.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R7 pass. Open: F-06 (6 body links absent from related: — the five playbooks + documentation-as-architecture). R8 pending P4."
 ---
 
 # The Mental Model of Your App

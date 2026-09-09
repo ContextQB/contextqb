@@ -25,6 +25,11 @@ next_steps:
   - Mark each item as just-me, trusted-group, or public.
   - Decide which information can live locally and which needs shared storage.
   - Do not pick a database vendor until you know who needs access and from where.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R7 pass; related: matches See also; good-fit/poor-fit pattern consistent. R8 pending P4."
 ---
 
 # Where Your Data Lives

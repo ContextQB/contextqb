@@ -25,6 +25,11 @@ next_steps:
   - Choose one primary channel for the first version.
   - Name what that channel lets you skip and what it forces you to handle.
   - Use the feature-planning playbook before asking an agent to build the first version.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R7 pass; related: matches See also; channel taxonomy owns its ground. R8 pending P4."
 ---
 
 # Choosing Your Application Channel

@@ -25,6 +25,11 @@ next_steps:
   - Pick one model and use it for a week before forming opinions.
   - Set a billing alert at your provider's dashboard.
   - Note which kinds of tasks feel easy vs. forced — that's where you'll learn what each model is good at.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
 ---
 
 # Understanding LLMs

@@ -25,6 +25,11 @@ next_steps:
   - "Pick an LLM you trust to work with day to day."
   - "Read one principle or one playbook on contextqb.com — not all of them."
   - "When you have a real project, install @context-qb/cli and run it once."
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R7 pass. Open: F-02 (rank collision at stage 0), F-06 (context-quarterback linked in body, absent from related:). R8 pending P4."
 ---
 
 # How to Use ContextQB

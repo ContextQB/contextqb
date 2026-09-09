@@ -27,6 +27,11 @@ next_steps:
   - Write or update your AGENTS.md so it primes any new session correctly.
   - Write or update your context.qb.yaml so the agent can boot from one file.
   - When you finish your next coding session, write a one-paragraph handoff note for next time.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "Flagship; R3, R4, R6, R7 pass. Open: F-09 (mid-2026 IDE matrix + context-size table decay by design — verify), F-06 (4 links). R8 pending P4."
 ---
 
 # Understanding the Context Window

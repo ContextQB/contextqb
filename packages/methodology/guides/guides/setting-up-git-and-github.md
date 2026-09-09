@@ -26,6 +26,11 @@ next_steps:
   - Pick a remote (GitHub, GitLab, Codeberg, or self-hosted Forgejo).
   - Create your first repo and make your first commit.
   - Adopt the commit-before-and-after-the-agent rhythm.
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.1 (agent)"
+  reviewer_notes: "R3–R5, R7 pass. Open: F-08 (cites 'Refactor With Duplicates, Not Overwrites' as a named ContextQB habit; no such atom — G-11), F-06 (4 links). R8 pending P4."
 ---
 
 # Setting Up Git and GitHub
