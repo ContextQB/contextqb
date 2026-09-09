@@ -2,7 +2,7 @@
 id: machine-verifiable-substrate
 title: Machine-Verifiable Substrate
 summary: Agents are generators; verifiers are what keep them honest. Every architectural choice that gives you a mechanical verifier tightens the feedback loop and reduces silent drift.
-version: 0.1.0
+version: 0.1.1
 category: structure
 audience:
   - novice-builder
@@ -30,11 +30,18 @@ agent_instructions:
   - When generating code, ensure it passes all mechanical verifiers before presenting it as complete.
   - If the project has CI gates (typecheck, lint, test), treat a failing gate as a failing change.
 related:
-  - programming-language-selection
-  - naming-conventions
-  - maintainability
-  - failure-modes
+  - agent-substrate
+  - choose-a-language-stack
   - extensibility
+  - failure-modes
+  - maintainability
+  - naming-conventions
+  - new-project-foundation
+  - programming-language-selection
+  - retrofit-drift-detection
+  - security-drift-is-the-real-threat
+  - set-up-drift-detection
+  - setting-up-git-and-github
 review:
   status: needs-polish
   last_reviewed: "2026-09-09"

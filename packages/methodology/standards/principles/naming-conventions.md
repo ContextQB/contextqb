@@ -2,7 +2,7 @@
 id: naming-conventions
 title: Naming Conventions
 summary: Naming is architecture. Good names describe domain responsibility — not implementation detail or generic role.
-version: 0.1.0
+version: 0.1.1
 category: naming
 audience:
   - novice-builder
@@ -23,10 +23,20 @@ agent_instructions:
   - Reject names like `helpers.ts` or `manager.ts` unless their scope is clearly defined and narrow.
   - Maintain consistent verbs and nouns across the codebase.
 related:
-  - modularity
-  - separation-of-concerns
-  - documentation-file-naming
+  - context-quarterback-the-onboarding-map
   - documentation-as-architecture
+  - documentation-file-naming
+  - documentation-for-agent-alignment
+  - machine-verifiable-substrate
+  - maintainability
+  - modularity
+  - new-project-foundation
+  - product-engineering-alignment
+  - repo-cleanup
+  - repo-readiness
+  - separation-of-concerns
+  - set-up-a-documentation-system
+  - set-up-agents-md
 review:
   status: final
   last_reviewed: "2026-09-09"

@@ -2,7 +2,7 @@
 id: ai-integration-security
 title: AI Integration Security Audit
 summary: A focused audit of every AI/LLM integration in the application — prompt injection surface, tool execution, autonomous loops, data leakage, cross-session contamination.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -40,16 +40,22 @@ deliverables:
   - A remediation roadmap with clear next actions.
 related:
   - ai-output-is-untrusted-code
+  - application-security-baseline
   - least-privilege-for-agents
+  - map-your-attack-surface
+  - review-your-ai-integration
+  - security-critical-code-review
+  - suspicious-behavior-investigation
+  - think-like-an-attacker
   - trust-boundaries-are-architecture
 tags:
   - security
   - ai-safety
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; scope explicitly defers non-AI surfaces to application-security-baseline — good boundary hygiene. Open: F-06 (5 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; scope explicitly defers non-AI surfaces to application-security-baseline — good boundary hygiene. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # AI Integration Security Audit

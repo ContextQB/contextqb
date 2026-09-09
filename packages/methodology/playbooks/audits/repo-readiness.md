@@ -2,7 +2,7 @@
 id: repo-readiness
 title: Repo Readiness Audit
 summary: A quick audit for a newly-prepared repo — does it have the boundaries, naming, and orchestration story it needs before the first feature ships?
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -31,9 +31,11 @@ evaluation_criteria:
 deliverables:
   - A single Markdown document with the required sections.
 related:
-  - separation-of-concerns
+  - agent-substrate
   - modularity
   - naming-conventions
+  - new-project-foundation
+  - separation-of-concerns
 tags:
   - readiness
   - audit

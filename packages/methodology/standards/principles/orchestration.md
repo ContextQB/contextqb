@@ -2,7 +2,7 @@
 id: orchestration
 title: Orchestration
 summary: Every system needs explicit control flow. Decide what coordinates what, and put the coordinator somewhere obvious.
-version: 0.1.0
+version: 0.1.1
 category: orchestration
 audience:
   - novice-builder
@@ -22,9 +22,20 @@ agent_instructions:
   - Centralise sequential or conditional logic in one place rather than chaining effects.
   - If two effects trigger each other, treat that as a bug to be fixed by introducing an explicit coordinator.
 related:
-  - separation-of-concerns
-  - state-ownership
+  - agent-instructions
   - anti-spaghetti
+  - anti-spaghetti-review
+  - architectural-hardening-loop
+  - bug-as-investigation
+  - extension-architecture
+  - extension-ui-audit
+  - failure-modes
+  - feature-build-loop
+  - feature-planning
+  - least-privilege-for-agents
+  - separation-of-concerns
+  - state-management
+  - state-ownership
 review:
   status: final
   last_reviewed: "2026-09-09"

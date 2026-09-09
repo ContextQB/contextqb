@@ -2,7 +2,7 @@
 id: new-project-foundation
 title: Prepare a New Repo for AI-Assisted Development
 summary: A practical sequence for setting up a fresh repository so agents have the structure, naming, and boundaries they need to produce coherent code.
-version: 0.2.0
+version: 0.2.1
 problem: |
   Agents generate code based on the structure they observe. An empty or poorly-structured repo produces sprawling, inconsistent output that compounds quickly.
 when_to_use: |
@@ -24,14 +24,17 @@ related:
   - choose-a-language-stack
   - repo-readiness
   - set-up-agents-md
+  - set-up-drift-detection
+  - setting-up-git-and-github
+  - the-mental-model-of-your-app
   - write-a-context-qb
   - write-an-adr
 related_principles:
-  - separation-of-concerns
+  - machine-verifiable-substrate
   - modularity
   - naming-conventions
-  - machine-verifiable-substrate
   - programming-language-selection
+  - separation-of-concerns
 tags:
   - foundation
   - setup

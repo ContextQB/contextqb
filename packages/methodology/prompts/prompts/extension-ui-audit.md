@@ -2,7 +2,7 @@
 id: extension-ui-audit
 title: Extension UI Architecture Audit Prompt
 summary: A long-form structural review prompt for a browser extension UI — focused on the system, not on isolated bugs.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -18,20 +18,21 @@ expected_output: |
 quality_standard: |
   The audit must avoid focusing on isolated bugs. It must surface structural patterns that allow bugs to recur. Every finding must reference specific files.
 related:
-  - state-ownership
-  - orchestration
-  - modularity
-  - extensibility
   - anti-spaghetti
+  - extensibility
+  - extension-architecture
+  - modularity
+  - orchestration
+  - state-ownership
 tags:
   - extension
   - ui
   - audit
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; correctly positioned as the paste-able instance of the extension-architecture audit. Open: F-06. R8 pending P4."
+  reviewer_notes: "R3–R7 pass; correctly positioned as the paste-able instance of the extension-architecture audit. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Extension UI Architecture Audit Prompt

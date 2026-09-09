@@ -2,7 +2,7 @@
 id: public-endpoints-are-battlegrounds
 title: Public Endpoints Are Battlegrounds
 summary: Every URL, API route, and webhook exposed to the internet is under constant attack. Assume they are being scanned, probed, and abused within hours of going live.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,8 +17,15 @@ tags:
   - endpoints
   - api-security
 related:
-  - failure-modes
   - anti-spaghetti
+  - authentication-and-authorization
+  - failure-modes
+  - harden-your-authentication
+  - map-your-attack-surface
+  - pre-launch-security
+  - public-endpoint-exposure
+  - review-a-new-feature-for-security-implications
+  - trust-boundaries-are-architecture
   - untrusted-by-default
 anti_patterns:
   - Admin endpoints protected only by an obscure URL.

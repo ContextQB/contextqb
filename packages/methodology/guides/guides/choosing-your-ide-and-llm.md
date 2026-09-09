@@ -2,7 +2,7 @@
 id: choosing-your-ide-and-llm
 title: Choosing Your IDE and LLM
 summary: Your IDE is the workshop. The LLM is the collaborator. This guide helps you pick both, wire them together, and understand what each costs — without getting locked into a choice you'll regret.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -17,10 +17,18 @@ tags:
   - tooling
   - getting-started
 related:
+  - ai-output-is-untrusted-code
   - choosing-your-application-channel
-  - the-mental-model-of-your-app
+  - how-to-use-contextqb
+  - least-privilege-for-agents
+  - secrets-have-provenance
+  - set-security-guardrails-for-your-agent
+  - set-up-agents-md
   - setting-up-git-and-github
+  - the-mental-model-of-your-app
   - understanding-llms
+  - understanding-the-context-window
+  - what-an-application-is
 next_steps:
   - Install one IDE (we recommend starting with Cursor or VS Code).
   - Sign up for one LLM provider (we recommend starting with Anthropic or OpenAI).

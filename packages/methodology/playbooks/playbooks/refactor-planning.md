@@ -2,7 +2,7 @@
 id: refactor-planning
 title: Plan a Refactor Without Rewriting the Whole Repo
 summary: A structured approach for scoping, sequencing, and de-risking a refactor — instead of letting an agent rewrite everything at once.
-version: 0.1.0
+version: 0.1.1
 problem: |
   When a codebase becomes painful, the instinct is to ask an agent to "clean it up." That request almost always produces a sweeping rewrite that breaks more than it fixes.
 when_to_use: |
@@ -20,9 +20,11 @@ audience:
 journey_stage: 6
 journey_rank: 0
 related_principles:
+  - extensibility
+  - maintainability
   - modularity
   - separation-of-concerns
-  - maintainability
+  - state-ownership
 tags:
   - refactor
   - debt
@@ -31,6 +33,13 @@ review:
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
   reviewer_notes: "R3–R7 pass. Open: F-06 (state-ownership/extensibility links), F-16 (link text says @contextqb/standards but points at a single principle). R8 pending P4."
+related:
+  - anti-spaghetti-review
+  - architectural-hardening-loop
+  - architecture-review
+  - feature-build-loop
+  - general-technical-audit
+  - ui-architecture
 ---
 
 # Plan a Refactor Without Rewriting the Whole Repo

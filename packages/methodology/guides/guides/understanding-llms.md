@@ -5,7 +5,7 @@ summary: >-
   A field guide to the models you'll work with. Each LLM has a working style you
   learn over time: strengths, costs, recurring quirks, and failure modes you can
   plan around.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -19,8 +19,12 @@ tags:
   - ai-models
   - getting-started
 related:
-  - choosing-your-ide-and-llm
   - ai-output-is-untrusted-code
+  - choosing-your-ide-and-llm
+  - how-to-use-contextqb
+  - security-critical-code-review
+  - understanding-the-context-window
+  - untrusted-by-default
 next_steps:
   - Pick one model and use it for a week before forming opinions.
   - Set a billing alert at your provider's dashboard.

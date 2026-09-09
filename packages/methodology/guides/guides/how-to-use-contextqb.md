@@ -2,7 +2,7 @@
 id: how-to-use-contextqb
 title: How to Use ContextQB
 summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it is, why we built it, how we pay for it, and how to start using it without feeling lost.
-version: 0.1.0
+version: 0.1.1
 intro: |
   A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
@@ -12,10 +12,11 @@ audience:
 journey_stage: 0
 journey_rank: 0
 related:
-  - what-an-application-is
   - choosing-your-ide-and-llm
+  - context-quarterback-the-onboarding-map
   - understanding-llms
   - understanding-the-context-window
+  - what-an-application-is
 tags:
   - orientation
   - getting-started

@@ -2,7 +2,7 @@
 id: append-dont-overwrite
 title: Append, Don't Overwrite
 summary: Documentation is append-only at three scales — archive whole files, strike through revised lines, and supersede rather than edit ADRs. Agents reading a doc see both the current state and the reasoning trail that produced it.
-version: 0.1.0
+version: 0.1.1
 category: documentation
 audience:
   - novice-builder
@@ -30,7 +30,9 @@ agent_instructions:
 related:
   - documentation-as-architecture
   - documentation-file-naming
+  - documenting-for-your-agent
   - secrets-have-provenance
+  - set-up-a-documentation-system
 review:
   status: needs-polish
   last_reviewed: "2026-09-09"

@@ -2,7 +2,7 @@
 id: extensibility
 title: Extensibility
 summary: Features should be added into clear extension points — not bolted on with one-off flags and special cases.
-version: 0.1.0
+version: 0.1.1
 category: extensibility
 audience:
   - novice-builder
@@ -23,9 +23,14 @@ agent_instructions:
   - If no extension point fits, propose creating one — do not add a one-off branch.
   - Prefer composition (small parts that combine) to configuration (one big part with many flags).
 related:
-  - modularity
-  - separation-of-concerns
+  - extension-architecture
+  - extension-ui-audit
+  - machine-verifiable-substrate
   - maintainability
+  - modularity
+  - refactor-planning
+  - separation-of-concerns
+  - ui-architecture
 review:
   status: final
   last_reviewed: "2026-09-09"

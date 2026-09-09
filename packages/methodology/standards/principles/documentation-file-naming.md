@@ -2,7 +2,7 @@
 id: documentation-file-naming
 title: Documentation File Naming
 summary: A documentation filename describes a responsibility. If you can only imagine one instance of the file ever existing, you have named a category, not a file. The same rule that governs code filenames governs doc filenames — with one small list of conventional exceptions.
-version: 0.1.0
+version: 0.1.1
 category: naming
 audience:
   - novice-builder
@@ -30,9 +30,12 @@ agent_instructions:
   - When a filename is disambiguated by an ad-hoc suffix (a date, a version, a task number stapled to a generic name), propose renaming the file so the disambiguation lives in the name itself.
   - When creating a directory of similar documents, propose a naming pattern at the same time and document it in the directory's `README.md`.
 related:
-  - naming-conventions
+  - append-dont-overwrite
   - documentation-as-architecture
   - documentation-for-agent-alignment
+  - documenting-for-your-agent
+  - naming-conventions
+  - set-up-a-documentation-system
 review:
   status: final
   last_reviewed: "2026-09-09"

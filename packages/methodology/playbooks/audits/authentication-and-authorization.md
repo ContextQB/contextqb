@@ -2,7 +2,7 @@
 id: authentication-and-authorization
 title: Authentication & Authorization Audit
 summary: A focused security audit of identity and access — verify login hardening, session security, authorization checks, and access control enforcement.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -38,16 +38,19 @@ deliverables:
   - A complete auth surface inventory.
   - A prioritised remediation roadmap.
 related:
+  - application-security-baseline
+  - harden-your-authentication
+  - public-endpoint-exposure
   - public-endpoints-are-battlegrounds
   - trust-boundaries-are-architecture
   - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; IDOR phase is the right kind of paranoid. Open: F-06 (3 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; IDOR phase is the right kind of paranoid. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Authentication & Authorization Audit

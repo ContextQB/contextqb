@@ -2,7 +2,7 @@
 id: understanding-the-context-window
 title: Understanding the Context Window
 summary: ContextQB is named for this. The context window is the agent's working memory — finite, lossy, and the most important variable in agentic coding. Understanding how it behaves is the difference between an agent that helps you and one that forgets what you told it five minutes ago.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -17,11 +17,17 @@ tags:
   - methodology
   - core
 related:
-  - understanding-llms
+  - build-mcp-for-project-context
   - choosing-your-ide-and-llm
-  - the-mental-model-of-your-app
+  - context-qb-yaml-vs-rag
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
+  - how-to-use-contextqb
+  - set-up-agents-md
+  - the-mental-model-of-your-app
+  - understanding-llms
+  - write-a-context-qb
+  - write-an-adr
 next_steps:
   - Open your IDE and identify which files are currently "in context" for your active agent session.
   - Write or update your AGENTS.md so it primes any new session correctly.

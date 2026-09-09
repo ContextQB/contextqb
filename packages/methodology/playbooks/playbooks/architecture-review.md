@@ -2,7 +2,7 @@
 id: architecture-review
 title: Ask an Agent for a Comprehensive Architecture Review
 summary: How to commission a real architectural review from an agent — not a list of nitpicks, but a structured assessment with findings, risks, and a remediation plan.
-version: 0.1.0
+version: 0.1.1
 problem: |
   "Review my code" produces a list of small comments. What you actually want is a structural assessment of the system as a whole.
 when_to_use: |
@@ -20,18 +20,22 @@ audience:
 journey_stage: 4
 journey_rank: 0
 related_principles:
-  - separation-of-concerns
-  - modularity
-  - state-ownership
   - anti-spaghetti
+  - modularity
+  - separation-of-concerns
+  - state-ownership
 tags:
   - review
   - audit
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass. Open: F-06 (agent-instructions + refactor-planning links undeclared). R8 pending P4."
+  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+related:
+  - agent-instructions
+  - architectural-hardening-loop
+  - refactor-planning
 ---
 
 # Ask an Agent for a Comprehensive Architecture Review

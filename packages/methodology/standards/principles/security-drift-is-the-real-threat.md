@@ -2,7 +2,7 @@
 id: security-drift-is-the-real-threat
 title: Security Drift Is the Real Threat
 summary: Most breaches come from changes that bypassed earlier protections, not from never having protections. A passing audit on Tuesday is not a passing audit on Friday. Continuous drift detection beats one-time hardening.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,9 +17,16 @@ tags:
   - drift
   - continuous-verification
 related:
+  - application-security-baseline
+  - detect-security-drift
   - documentation-as-architecture
-  - machine-verifiable-substrate
   - failure-modes
+  - machine-verifiable-substrate
+  - map-your-attack-surface
+  - respond-to-a-suspected-compromise
+  - secrets-have-provenance
+  - security-regression
+  - suspicious-behavior-investigation
 anti_patterns:
   - A single security audit at launch, never repeated.
   - A new feature ships and inherits no security review because "the audit already passed."

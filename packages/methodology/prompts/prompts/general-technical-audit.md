@@ -2,7 +2,7 @@
 id: general-technical-audit
 title: General Technical Audit Prompt
 summary: A comprehensive application audit covering architecture, data, scalability, reliability, infrastructure, security, code quality, and product alignment.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -19,18 +19,19 @@ expected_output: |
 quality_standard: |
   Each finding must be backed by specific file references or quoted code. Recommendations must be prioritised by impact and risk, not by ease.
 related:
-  - separation-of-concerns
-  - modularity
-  - state-ownership
   - anti-spaghetti
+  - modularity
+  - refactor-planning
+  - separation-of-concerns
+  - state-ownership
 tags:
   - audit
   - comprehensive
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass. Open: F-06 (refactor-planning link undeclared). R8 pending P4."
+  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # General Technical Audit Prompt

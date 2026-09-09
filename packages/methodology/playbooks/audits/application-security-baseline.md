@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -41,16 +41,29 @@ deliverables:
   - A prioritised list of findings with severity ratings.
   - A remediation roadmap with clear next actions.
 related:
-  - untrusted-by-default
+  - ai-integration-security
+  - authentication-and-authorization
+  - detect-security-drift
   - failure-modes
+  - map-your-attack-surface
+  - pre-launch-security
+  - public-endpoint-exposure
+  - review-a-new-feature-for-security-implications
+  - secrets-and-credentials
+  - security-critical-code-review
+  - security-drift-is-the-real-threat
+  - security-regression
   - state-ownership
+  - think-like-an-attacker
+  - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. Open: F-06 (8 links undeclared — largest gap in the audit set). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Application Security Baseline Audit

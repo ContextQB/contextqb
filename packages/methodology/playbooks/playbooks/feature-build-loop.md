@@ -38,10 +38,10 @@ tags:
   - governance
   - planning
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4."
+  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Run a Feature Build Loop From an Approved Plan

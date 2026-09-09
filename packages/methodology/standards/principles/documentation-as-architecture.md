@@ -2,7 +2,7 @@
 id: documentation-as-architecture
 title: Documentation as Architecture
 summary: In the agentic era, documentation is not a byproduct of building — it is load-bearing. Agents re-derive context on every call; without explicit docs, every prompt starts from zero.
-version: 0.1.0
+version: 0.1.1
 category: documentation
 audience:
   - novice-builder
@@ -29,11 +29,31 @@ agent_instructions:
   - When you change behaviour described in documentation, update the documentation in the same change.
   - If a section of documentation is contradicted by the current code, flag it. Do not silently make the code match the docs or vice versa — surface the drift.
 related:
-  - separation-of-concerns
+  - append-dont-overwrite
+  - architectural-hardening-loop
+  - context-quarterback-the-onboarding-map
+  - detect-security-drift
+  - documentation-file-naming
+  - documentation-for-agent-alignment
+  - documenting-for-your-agent
+  - feature-build-loop
   - maintainability
   - naming-conventions
-  - documentation-for-agent-alignment
-  - documentation-file-naming
+  - product-engineering-alignment
+  - retrofit-drift-detection
+  - secrets-have-provenance
+  - security-drift-is-the-real-threat
+  - security-regression
+  - separation-of-concerns
+  - set-up-a-documentation-system
+  - set-up-agents-md
+  - set-up-drift-detection
+  - setting-up-git-and-github
+  - the-mental-model-of-your-app
+  - understanding-the-context-window
+  - what-an-application-is
+  - write-a-context-qb
+  - write-an-adr
 review:
   status: needs-polish
   last_reviewed: "2026-09-09"

@@ -2,7 +2,7 @@
 id: feature-planning
 title: Plan a Feature Before Letting the Agent Code
 summary: A structured planning prompt that produces a feature brief, surface map, state plan, and risk list — before any code is written.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Letting an agent jump straight to code on a non-trivial feature almost guarantees that pieces are added in the wrong places, state ownership is unclear, and edge cases are missed.
 when_to_use: |
@@ -19,19 +19,22 @@ audience:
 journey_stage: 3
 journey_rank: 0
 related:
+  - choosing-your-application-channel
   - feature-build-loop
+  - the-mental-model-of-your-app
 related_principles:
+  - modularity
+  - orchestration
   - separation-of-concerns
   - state-ownership
-  - orchestration
 tags:
   - planning
   - features
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; bidirectional handoff to feature-build-loop is the corpus's best playbook pairing. Open: F-06 (modularity body link undeclared). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; bidirectional handoff to feature-build-loop is the corpus's best playbook pairing. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Plan a Feature Before Letting the Agent Code

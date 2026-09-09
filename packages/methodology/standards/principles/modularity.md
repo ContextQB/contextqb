@@ -2,7 +2,7 @@
 id: modularity
 title: Modularity
 summary: Modules should have clear boundaries and limited responsibilities — small, well-named, and replaceable.
-version: 0.1.0
+version: 0.1.1
 category: modularity
 audience:
   - novice-builder
@@ -23,9 +23,26 @@ agent_instructions:
   - If a module's name does not describe what it does, the module is wrong, not the name.
   - Detect circular imports and flag them; they almost always indicate a missing module.
 related:
-  - separation-of-concerns
-  - naming-conventions
+  - anti-spaghetti
+  - anti-spaghetti-review
+  - architecture-review
+  - backend-architecture
+  - build-mcp-for-project-context
   - extensibility
+  - extension-architecture
+  - extension-ui-audit
+  - feature-planning
+  - general-technical-audit
+  - maintainability
+  - mcp-project
+  - naming-conventions
+  - new-project-foundation
+  - refactor-planning
+  - repo-cleanup
+  - repo-readiness
+  - separation-of-concerns
+  - trust-boundaries-are-architecture
+  - ui-architecture
 review:
   status: final
   last_reviewed: "2026-09-09"

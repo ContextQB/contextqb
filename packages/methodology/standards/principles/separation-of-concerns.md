@@ -2,7 +2,7 @@
 id: separation-of-concerns
 title: Separation of Concerns
 summary: Divide systems by responsibility so each piece does one thing clearly and changes for one reason.
-version: 0.1.0
+version: 0.1.1
 category: structure
 audience:
   - novice-builder
@@ -22,9 +22,33 @@ agent_instructions:
   - If a single file changes for more than one reason, propose splitting it.
   - Never mix transport, domain, and presentation logic in one module.
 related:
+  - anti-spaghetti
+  - architecture-review
+  - backend-architecture
+  - build-mcp-for-project-context
+  - context-quarterback-the-onboarding-map
+  - document-producing-agent
+  - documentation-as-architecture
+  - extensibility
+  - extension-architecture
+  - feature-build-loop
+  - feature-planning
+  - general-technical-audit
+  - maintainability
+  - mcp-project
   - modularity
-  - state-ownership
   - naming-conventions
+  - new-project-foundation
+  - orchestration
+  - product-engineering-alignment
+  - refactor-planning
+  - repo-readiness
+  - set-up-agents-md
+  - state-ownership
+  - trust-boundaries-are-architecture
+  - ui-architecture
+  - write-a-context-qb
+  - write-an-adr
 review:
   status: final
   last_reviewed: "2026-09-09"

@@ -2,7 +2,7 @@
 id: anti-spaghetti
 title: Anti-Spaghetti Development
 summary: Concrete checklist for identifying spaghetti code — the hidden coupling, ad hoc orchestration, and brittle lifecycle assumptions that AI assistants generate by default.
-version: 0.1.0
+version: 0.1.1
 category: diagnosis
 audience:
   - novice-builder
@@ -24,10 +24,24 @@ agent_instructions:
   - Before extending a module, scan it for spaghetti signals and report them.
   - If asked to add a feature to a module that already has spaghetti signals, propose a small refactor first.
 related:
-  - separation-of-concerns
-  - state-ownership
-  - orchestration
+  - anti-spaghetti-review
+  - architectural-hardening-loop
+  - architecture-review
+  - backend-architecture
+  - bug-as-investigation
+  - extension-architecture
+  - extension-ui-audit
+  - feature-build-loop
+  - general-technical-audit
   - modularity
+  - orchestration
+  - public-endpoints-are-battlegrounds
+  - repo-cleanup
+  - retrofit-drift-detection
+  - separation-of-concerns
+  - state-management
+  - state-ownership
+  - ui-architecture
 review:
   status: final
   last_reviewed: "2026-09-09"

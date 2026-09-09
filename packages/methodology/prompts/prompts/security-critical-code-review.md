@@ -2,7 +2,7 @@
 id: security-critical-code-review
 title: Security-Critical Code Review
 summary: A code review prompt specifically for security-sensitive changes — authentication, authorization, secrets handling, input validation, and data access.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -21,16 +21,22 @@ expected_output: |
 quality_standard: |
   Every finding must reference specific lines of code. Generic advice is not acceptable. The review must produce a clear merge/block recommendation with justification.
 related:
-  - untrusted-by-default
-  - trust-boundaries-are-architecture
+  - ai-integration-security
   - ai-output-is-untrusted-code
+  - application-security-baseline
+  - review-a-new-feature-for-security-implications
+  - review-your-ai-integration
+  - think-like-an-attacker
+  - trust-boundaries-are-architecture
+  - understanding-llms
+  - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; merge-decision verdict contract (APPROVE/REQUEST CHANGES/BLOCK) is exemplary R7. Open: F-06 (2 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; merge-decision verdict contract (APPROVE/REQUEST CHANGES/BLOCK) is exemplary R7. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Security-Critical Code Review

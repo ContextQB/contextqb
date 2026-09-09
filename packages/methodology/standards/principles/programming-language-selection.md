@@ -2,7 +2,7 @@
 id: programming-language-selection
 title: Programming Language Selection
 summary: The language is the agent's substrate. A typed, compiled language gives the agent a build-time gate; a permissive language puts every error in production.
-version: 0.1.0
+version: 0.1.1
 category: structure
 audience:
   - novice-builder
@@ -30,9 +30,12 @@ agent_instructions:
   - If the project already uses a permissive language, propose adding type annotations incrementally rather than rewriting.
   - Document language choices in `docs/architecture/stack.md` with explicit reasoning.
 related:
+  - agent-substrate
+  - choose-a-language-stack
+  - failure-modes
   - machine-verifiable-substrate
   - maintainability
-  - failure-modes
+  - new-project-foundation
 review:
   status: final
   last_reviewed: "2026-09-09"

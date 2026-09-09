@@ -2,7 +2,7 @@
 id: review-your-ai-integration
 title: Review Your AI Integration
 summary: For any agent or LLM call in your system, document what it reads, what it writes, what it can execute, what data it sees, and where untrusted input can influence it.
-version: 0.1.0
+version: 0.1.1
 problem: |
   AI integrations frequently expand in capability without anyone tracking the cumulative trust surface. By the time something goes wrong, no one can answer "what can this thing actually do?"
 when_to_use: |
@@ -25,10 +25,16 @@ tags:
   - security
   - ai-safety
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; the untrusted-input-path trace is the heart and it's well-built. Open: F-06 (4 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; the untrusted-input-path trace is the heart and it's well-built. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+related:
+  - ai-integration-security
+  - map-your-attack-surface
+  - review-a-new-feature-for-security-implications
+  - security-critical-code-review
+  - set-security-guardrails-for-your-agent
 ---
 
 # Review Your AI Integration

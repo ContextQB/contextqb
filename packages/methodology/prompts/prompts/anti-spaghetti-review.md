@@ -2,7 +2,7 @@
 id: anti-spaghetti-review
 title: Anti-Spaghetti Review Prompt
 summary: A targeted prompt that runs the ContextQB anti-spaghetti checklist over a feature or codebase and produces a structured diagnostic document.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -19,17 +19,18 @@ quality_standard: |
   Every signal must be evaluated explicitly (present / partly / absent) with quoted evidence or a stated absence. Generic best-practice advice is not acceptable — only project-specific findings.
 related:
   - anti-spaghetti
-  - state-ownership
-  - orchestration
   - modularity
+  - orchestration
+  - refactor-planning
+  - state-ownership
 tags:
   - audit
   - diagnosis
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; the eight signals restate the principle faithfully as an instrument. Open: F-06 (refactor-planning link). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; the eight signals restate the principle faithfully as an instrument. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Anti-Spaghetti Review Prompt

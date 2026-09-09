@@ -2,7 +2,7 @@
 id: state-management
 title: State Management Audit
 summary: A targeted audit that maps every piece of state in a system, identifies owners, surfaces duplicates, and flags derived-but-stored values.
-version: 0.1.0
+version: 0.1.1
 audience:
   - founder
   - developer
@@ -28,9 +28,10 @@ evaluation_criteria:
 deliverables:
   - A single Markdown document with the required sections, including the state inventory table.
 related:
-  - state-ownership
-  - orchestration
   - anti-spaghetti
+  - orchestration
+  - repo-cleanup
+  - state-ownership
 tags:
   - state
   - audit

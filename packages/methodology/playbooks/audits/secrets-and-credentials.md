@@ -2,7 +2,7 @@
 id: secrets-and-credentials
 title: Secrets & Credentials Audit
 summary: A focused security audit of secrets management — inventory all credentials, assess blast radius, check rotation status, and identify exposure risks.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -36,16 +36,19 @@ deliverables:
   - A complete secrets inventory table.
   - A prioritised remediation roadmap.
 related:
-  - secrets-have-provenance
+  - application-security-baseline
   - least-privilege-for-agents
+  - respond-to-a-suspected-compromise
+  - secrets-have-provenance
+  - triage-your-secrets
   - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass. Open: F-06 (3 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Secrets & Credentials Audit

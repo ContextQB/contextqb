@@ -2,7 +2,7 @@
 id: state-ownership
 title: State Ownership
 summary: For every piece of state, name a single owner. Derived state should be derived, not duplicated.
-version: 0.1.0
+version: 0.1.1
 category: state
 audience:
   - novice-builder
@@ -24,9 +24,33 @@ agent_instructions:
   - Distinguish transient interaction state from durable persisted state.
   - Never duplicate state that can be derived.
 related:
-  - separation-of-concerns
-  - orchestration
+  - ai-output-is-untrusted-code
   - anti-spaghetti
+  - anti-spaghetti-review
+  - application-security-baseline
+  - architectural-hardening-loop
+  - architecture-review
+  - backend-architecture
+  - bug-as-investigation
+  - building-for-yourself-vs-others
+  - documentation-for-agent-alignment
+  - extension-architecture
+  - extension-ui-audit
+  - failure-modes
+  - feature-build-loop
+  - feature-planning
+  - general-technical-audit
+  - least-privilege-for-agents
+  - map-your-attack-surface
+  - orchestration
+  - refactor-planning
+  - secrets-have-provenance
+  - separation-of-concerns
+  - setting-up-git-and-github
+  - state-management
+  - ui-architecture
+  - untrusted-by-default
+  - where-your-data-lives
 review:
   status: final
   last_reviewed: "2026-09-09"

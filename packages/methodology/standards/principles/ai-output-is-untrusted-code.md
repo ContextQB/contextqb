@@ -2,7 +2,7 @@
 id: ai-output-is-untrusted-code
 title: AI Output Is Untrusted Code
 summary: When an agent generates code that runs (tool calls, file edits, shell commands, API requests), treat it like input from the public internet. Constrain it, validate it, and never execute it without intent.
-version: 0.1.0
+version: 0.1.1
 category: security
 audience:
   - novice-builder
@@ -17,9 +17,17 @@ tags:
   - ai-safety
   - trust-boundaries
 related:
-  - untrusted-by-default
+  - ai-integration-security
+  - choosing-your-ide-and-llm
   - failure-modes
+  - least-privilege-for-agents
+  - review-your-ai-integration
+  - security-critical-code-review
+  - set-security-guardrails-for-your-agent
   - state-ownership
+  - think-like-an-attacker
+  - understanding-llms
+  - untrusted-by-default
 anti_patterns:
   - Generated code is executed immediately without review or sandboxing.
   - Tool calls are auto-approved because "the agent has been right so far."

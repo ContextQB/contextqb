@@ -2,7 +2,7 @@
 id: suspicious-behavior-investigation
 title: Suspicious Behavior Investigation
 summary: A prompt for investigating anomalies — unexpected errors, unusual access patterns, or anything that makes you think "something is off."
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -22,9 +22,13 @@ expected_output: |
 quality_standard: |
   Investigation must be evidence-based. Conclusions must be supported by specific data points. If evidence is insufficient, explicitly state what additional information is needed.
 related:
-  - untrusted-by-default
-  - security-drift-is-the-real-threat
+  - ai-integration-security
+  - detect-security-drift
   - failure-modes
+  - respond-to-a-suspected-compromise
+  - security-drift-is-the-real-threat
+  - security-regression
+  - untrusted-by-default
 tags:
   - security
 review:

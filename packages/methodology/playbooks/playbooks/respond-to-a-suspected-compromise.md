@@ -2,7 +2,7 @@
 id: respond-to-a-suspected-compromise
 title: Respond to a Suspected Compromise
 summary: When you discover or suspect a security incident — leaked credentials, unauthorized access, suspicious activity — follow this structured response to contain damage, investigate, and recover.
-version: 0.1.0
+version: 0.1.1
 problem: |
   When something security-related goes wrong, panic leads to mistakes. Without a plan, people either overreact (taking down everything) or underreact (ignoring the problem). A structured response limits damage and preserves evidence.
 when_to_use: |
@@ -25,10 +25,17 @@ related_principles:
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; phased containment/investigate/remediate/post-mortem structure is production-grade. Open: F-06 (3 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; phased containment/investigate/remediate/post-mortem structure is production-grade. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+related:
+  - detect-security-drift
+  - pre-launch-security
+  - secrets-and-credentials
+  - setting-up-git-and-github
+  - suspicious-behavior-investigation
+  - triage-your-secrets
 ---
 
 # Respond to a Suspected Compromise

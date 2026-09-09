@@ -2,7 +2,7 @@
 id: think-like-an-attacker
 title: Think Like an Attacker
 summary: A reusable framing prompt for any code review — if you were attacking this, where would you start and what would you target?
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -21,15 +21,20 @@ expected_output: |
 quality_standard: |
   Every finding must be specific to the code under review, with concrete attack paths and realistic severity assessments. "You should use HTTPS" is not acceptable — only project-specific adversarial analysis.
 related:
-  - untrusted-by-default
+  - ai-integration-security
+  - ai-output-is-untrusted-code
+  - application-security-baseline
   - failure-modes
+  - map-your-attack-surface
+  - security-critical-code-review
+  - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; worked example earns its place. Open: F-06 (4 links). Also mixes link conventions (site-relative vs contextqb://) — logged as P4 input. R8 pending P4."
+  reviewer_notes: "R3–R7 pass; worked example earns its place. Also mixes link conventions (site-relative vs contextqb://) — logged as P4 input. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Think Like an Attacker

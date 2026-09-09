@@ -2,7 +2,7 @@
 id: repo-cleanup
 title: Clean Up an Existing Repo
 summary: A staged process for taking a sprawling AI-generated repo and turning it into something a human and an agent can both work with sanely.
-version: 0.1.0
+version: 0.1.1
 problem: |
   AI-assisted projects drift toward sprawl: huge files, unclear boundaries, dumping grounds, and inconsistent naming. At some point the cost of any new feature exceeds the cost of cleaning up first.
 when_to_use: |
@@ -21,6 +21,7 @@ journey_stage: 6
 journey_rank: 10
 related:
   - retrofit-drift-detection
+  - state-management
 related_principles:
   - anti-spaghetti
   - modularity
@@ -29,10 +30,10 @@ tags:
   - debt
   - cleanup
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; pass-structure is clean and the no-rewrite stance matches the hardening loop. Open: F-06 (state-management audit link undeclared). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; pass-structure is clean and the no-rewrite stance matches the hardening loop. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Clean Up an Existing Repo

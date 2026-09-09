@@ -2,7 +2,7 @@
 id: pre-launch-security
 title: Pre-Launch Security Audit
 summary: A condensed security checklist for launch day. Verify the essentials before going live — secrets secured, auth hardened, endpoints protected, and monitoring in place.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -34,16 +34,21 @@ deliverables:
   - A single Markdown document with checklist results.
   - Go/no-go launch decision with blockers listed.
 related:
-  - untrusted-by-default
+  - application-security-baseline
+  - harden-your-authentication
   - public-endpoints-are-battlegrounds
+  - respond-to-a-suspected-compromise
   - secrets-have-provenance
+  - security-regression
+  - triage-your-secrets
+  - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; correctly scoped as launch gate, not audit replacement. Open: F-06 (4 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; correctly scoped as launch gate, not audit replacement. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Pre-Launch Security Audit

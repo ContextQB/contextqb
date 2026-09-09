@@ -2,7 +2,7 @@
 id: build-mcp-for-project-context
 title: Build an MCP for Reusable Project Context
 summary: Turn the prompts, principles, and standards your project relies on into an MCP server so any agent in any tool can pull them in.
-version: 0.1.1
+version: 0.1.2
 problem: |
   Project context — naming conventions, architectural decisions, prompts — lives in scattered Markdown files. Agents can read them only when copy-pasted into a chat. An MCP server makes them addressable from any tool.
 when_to_use: |
@@ -19,9 +19,9 @@ audience:
 journey_stage: 6
 journey_rank: 30
 related_principles:
-  - separation-of-concerns
-  - modularity
   - maintainability
+  - modularity
+  - separation-of-concerns
 tags:
   - mcp
   - tooling
@@ -30,6 +30,9 @@ review:
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent); R-01/R-05/R-06 remediation 2026-09-09"
   reviewer_notes: "F-13/F-14/F-04 resolved 2026-09-09: AGENTS.md canon reference, post-restructure paths, working schema link, rank moved 20→30 (retrofit-drift-detection keeps 20)."
+related:
+  - set-up-agents-md
+  - understanding-the-context-window
 ---
 
 # Build an MCP for Reusable Project Context

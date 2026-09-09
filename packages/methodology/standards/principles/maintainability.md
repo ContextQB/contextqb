@@ -2,7 +2,7 @@
 id: maintainability
 title: Maintainability
 summary: Code is read more than it is written. Optimise for the version of you that comes back in six months.
-version: 0.1.0
+version: 0.1.1
 category: maintainability
 audience:
   - novice-builder
@@ -23,9 +23,21 @@ agent_instructions:
   - When generating new code, ask whether a future reader can understand it in one pass.
   - Document non-obvious decisions inline; do not document what the code already says.
 related:
-  - naming-conventions
+  - agent-instructions
+  - architectural-hardening-loop
+  - build-mcp-for-project-context
+  - document-producing-agent
+  - documentation-as-architecture
+  - extensibility
+  - failure-modes
+  - machine-verifiable-substrate
+  - mcp-project
   - modularity
+  - naming-conventions
+  - programming-language-selection
+  - refactor-planning
   - separation-of-concerns
+  - write-an-adr
 review:
   status: final
   last_reviewed: "2026-09-09"

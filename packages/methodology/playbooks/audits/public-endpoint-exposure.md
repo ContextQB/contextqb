@@ -2,7 +2,7 @@
 id: public-endpoint-exposure
 title: Public Endpoint Exposure Audit
 summary: A focused security audit of every URL reachable from the internet — routes, APIs, webhooks, and static assets. Verify each is intentionally public with appropriate protection.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -37,16 +37,19 @@ deliverables:
   - A complete public endpoint inventory.
   - A prioritised remediation roadmap.
 related:
+  - application-security-baseline
+  - authentication-and-authorization
+  - map-your-attack-surface
   - public-endpoints-are-battlegrounds
-  - untrusted-by-default
   - trust-boundaries-are-architecture
+  - untrusted-by-default
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass. Open: F-06 (3 links). R8 pending P4."
+  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Public Endpoint Exposure Audit

@@ -2,7 +2,7 @@
 id: failure-modes
 title: Failure Modes
 summary: Anticipate where and how systems fail. Design for graceful degradation, not just the happy path.
-version: 0.1.0
+version: 0.1.1
 category: diagnosis
 audience:
   - novice-builder
@@ -27,9 +27,21 @@ agent_instructions:
   - Prefer atomic operations; if you cannot, design explicit rollback or compensation.
   - Test failure paths, not just success paths.
 related:
-  - state-ownership
-  - orchestration
+  - ai-output-is-untrusted-code
+  - application-security-baseline
+  - architectural-hardening-loop
+  - feature-build-loop
+  - machine-verifiable-substrate
   - maintainability
+  - map-your-attack-surface
+  - orchestration
+  - programming-language-selection
+  - public-endpoints-are-battlegrounds
+  - security-drift-is-the-real-threat
+  - state-ownership
+  - suspicious-behavior-investigation
+  - think-like-an-attacker
+  - untrusted-by-default
 review:
   status: final
   last_reviewed: "2026-09-09"

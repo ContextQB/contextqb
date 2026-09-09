@@ -2,7 +2,7 @@
 id: architectural-hardening-loop
 title: Run an Architectural Hardening Loop on a Drifted Codebase
 summary: A repeating planner-executor loop that converges an AI-built codebase back toward governed architectural invariants — without a rewrite, and without trusting an agent's own claim that work is done.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Codebases built across hundreds of agent sessions drift away from their own foundations. A one-shot audit cannot hold — the next 100 turns will undo it. You need a continuous loop that hardens the system faster than entropy returns to it.
 when_to_use: |
@@ -23,8 +23,8 @@ journey_rank: 10
 related_principles:
   - anti-spaghetti
   - documentation-as-architecture
-  - maintainability
   - failure-modes
+  - maintainability
   - orchestration
   - state-ownership
 tags:
@@ -33,10 +33,15 @@ tags:
   - governance
   - drift
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass. Brownfield by explicit declaration (Not for greenfield) — acceptable Tier-2 posture under ADR-0019, flagged for the P4 tier-inventory. Open: F-06. R8 pending P4."
+  reviewer_notes: "R3–R7 pass. Brownfield by explicit declaration (Not for greenfield) — acceptable Tier-2 posture under ADR-0019, flagged for the P4 tier-inventory. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+related:
+  - agent-instructions
+  - architecture-review
+  - feature-build-loop
+  - refactor-planning
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase

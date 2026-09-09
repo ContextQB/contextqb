@@ -2,7 +2,7 @@
 id: agent-instructions
 title: Create Agent Instructions That Produce Documents, Not Chat Replies
 summary: How to write agent prompts that return structured, decision-grade documents rather than meandering conversational answers.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Most agent prompts produce conversational answers — useful for back-and-forth, useless as a permanent artifact. For audits, reviews, and plans, you want a document you can save, share, and act on.
 when_to_use: |
@@ -20,8 +20,8 @@ audience:
 journey_stage: 2
 journey_rank: 10
 related_principles:
-  - orchestration
   - maintainability
+  - orchestration
 tags:
   - prompts
   - documents
@@ -30,6 +30,10 @@ review:
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
   reviewer_notes: "R3–R7 pass; pairs cleanly with the document-producing-agent prompt (pattern vs instance). R8 pending P4."
+related:
+  - architectural-hardening-loop
+  - architecture-review
+  - feature-build-loop
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies

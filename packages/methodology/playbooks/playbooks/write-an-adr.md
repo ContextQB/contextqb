@@ -2,7 +2,7 @@
 id: write-an-adr
 title: Write an Architectural Decision Record
 summary: A lightweight, opinionated process for capturing the structural decisions in a project — so future readers (human or agent) know what was chosen, why, and what it cost.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Architectural decisions made in chat, in meetings, or implicitly in code become invisible within weeks. Future contributors — especially agents — re-litigate or accidentally undo them.
 when_to_use: |
@@ -31,6 +31,12 @@ review:
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
   reviewer_notes: "R3–R7 pass; matches repo practice exactly. R8 pending P4."
+related:
+  - new-project-foundation
+  - set-up-a-documentation-system
+  - setting-up-git-and-github
+  - the-mental-model-of-your-app
+  - understanding-the-context-window
 ---
 
 # Write an Architectural Decision Record

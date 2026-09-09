@@ -2,7 +2,7 @@
 id: set-security-guardrails-for-your-agent
 title: Set Security Guardrails for Your Agent
 summary: Write a security-aware section in your AGENTS.md that explicitly bounds what your agent can do — which files it can edit, which commands it can run, which secrets it can read, which integrations it can call.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Agents inherit whatever privileges the environment hands them. Without an explicit security section in AGENTS.md, you've consented to "anything the host shell allows."
 when_to_use: |
@@ -17,16 +17,21 @@ audience:
 journey_stage: 1
 journey_rank: 50
 related_principles:
-  - least-privilege-for-agents
   - ai-output-is-untrusted-code
+  - least-privilege-for-agents
 tags:
   - security
   - agents
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; template + verification step are excellent. Open: F-06 (sibling links to map-your-attack-surface/review-your-ai-integration uncovered). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; template + verification step are excellent. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+related:
+  - choosing-your-ide-and-llm
+  - map-your-attack-surface
+  - review-your-ai-integration
+  - set-up-agents-md
 ---
 
 # Set Security Guardrails for Your Agent

@@ -2,7 +2,7 @@
 id: product-engineering-alignment
 title: Product-to-Engineering Alignment
 summary: Code abstractions should mirror product abstractions. The product is the source of truth for vocabulary.
-version: 0.1.0
+version: 0.1.1
 category: alignment
 audience:
   - novice-builder
@@ -28,9 +28,11 @@ agent_instructions:
   - Match module boundaries to product feature boundaries where possible.
   - Changes to product vocabulary should trigger code renames.
 related:
+  - documentation-as-architecture
   - naming-conventions
   - separation-of-concerns
-  - documentation-as-architecture
+  - the-mental-model-of-your-app
+  - what-an-application-is
 review:
   status: final
   last_reviewed: "2026-09-09"

@@ -2,7 +2,7 @@
 id: setting-up-git-and-github
 title: Setting Up Git and GitHub
 summary: Git is the time machine that makes agentic coding safe. Without it, every agent session is a roll of the dice. This guide walks first-time builders through installing git, choosing a remote, and using both day-to-day with an AI coding agent.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -17,10 +17,15 @@ tags:
   - version-control
   - getting-started
 related:
-  - the-mental-model-of-your-app
+  - choosing-your-ide-and-llm
   - documentation-as-architecture
   - machine-verifiable-substrate
+  - new-project-foundation
+  - respond-to-a-suspected-compromise
   - state-ownership
+  - the-mental-model-of-your-app
+  - write-a-context-qb
+  - write-an-adr
 next_steps:
   - Install git on your machine.
   - Pick a remote (GitHub, GitLab, Codeberg, or self-hosted Forgejo).

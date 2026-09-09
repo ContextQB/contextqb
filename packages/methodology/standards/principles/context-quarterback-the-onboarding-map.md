@@ -2,7 +2,7 @@
 id: context-quarterback-the-onboarding-map
 title: The Context Quarterback — Every Repo Needs a Boot Manifest
 summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
-version: 0.1.0
+version: 0.1.1
 category: documentation
 audience:
   - novice-builder
@@ -31,9 +31,18 @@ agent_instructions:
   - Reference deeper docs by their URI when the agent needs them; do not inline their content into `context.qb.yaml`.
   - Never write secrets or credentials into `context.qb.yaml`. The file is public-equivalent.
 related:
+  - context-qb-yaml-vs-rag
   - documentation-as-architecture
-  - separation-of-concerns
+  - documentation-for-agent-alignment
+  - documenting-for-your-agent
+  - how-to-use-contextqb
   - naming-conventions
+  - separation-of-concerns
+  - set-up-a-documentation-system
+  - set-up-drift-detection
+  - the-mental-model-of-your-app
+  - understanding-the-context-window
+  - write-a-context-qb
 review:
   status: final
   last_reviewed: "2026-09-09"

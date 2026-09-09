@@ -2,7 +2,7 @@
 id: what-an-application-is
 title: What an Application Is
 summary: An application is not magic and it is not just a screen. It is a set of files that a runtime can execute to move information from one place to another.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -16,10 +16,14 @@ tags:
   - getting-started
   - foundations
 related:
-  - the-mental-model-of-your-app
+  - building-for-yourself-vs-others
+  - choosing-your-application-channel
   - choosing-your-ide-and-llm
-  - product-engineering-alignment
   - documentation-as-architecture
+  - how-to-use-contextqb
+  - product-engineering-alignment
+  - the-mental-model-of-your-app
+  - where-your-data-lives
 next_steps:
   - Decide whether your first version is just for you, a trusted group, or the public.
   - Write one sentence describing what information your application moves.

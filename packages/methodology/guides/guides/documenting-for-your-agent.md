@@ -2,7 +2,7 @@
 id: documenting-for-your-agent
 title: Documenting for Your Agent
 summary: Documentation in agentic dev isn't paperwork for a future hire — it's how you keep your current agent on the architecture you've chosen. This guide is the operator's plain-language introduction to the documentation discipline ContextQB depends on.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -16,11 +16,15 @@ tags:
   - operator
   - alignment
 related:
-  - documentation-for-agent-alignment
-  - documentation-file-naming
-  - documentation-as-architecture
+  - append-dont-overwrite
   - context-quarterback-the-onboarding-map
+  - documentation-as-architecture
+  - documentation-file-naming
+  - documentation-for-agent-alignment
+  - set-up-a-documentation-system
+  - set-up-agents-md
   - the-mental-model-of-your-app
+  - write-a-context-qb
 next_steps:
   - Open the project you're working on and identify which documents your agent actually reads.
   - Write or update your `AGENTS.md` so the next session does not start from zero.
@@ -28,10 +32,10 @@ next_steps:
   - Pick one decision you've made this week and write a one-page ADR for it.
   - Before creating your next document, run the three filename smell tests from `documentation-file-naming`.
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R7 pass; strongest guide voice in the set. Open: F-06 (4 links — three playbooks + append-dont-overwrite absent from related:). R8 pending P4."
+  reviewer_notes: "R3–R7 pass; strongest guide voice in the set. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Documenting for Your Agent
