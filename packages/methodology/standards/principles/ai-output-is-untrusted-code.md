@@ -32,6 +32,11 @@ agent_instructions:
   - When generating code, mark anything that performs I/O, executes shell, or mutates external state as requiring review.
   - Never chain tool calls past a destructive step without re-confirmation.
   - If asked to run a command the user did not explicitly authorise, stop and ask.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. 'Every prompt is a curl | bash' is the corpus's sharpest security line. R8 pending P4."
 ---
 
 # AI Output Is Untrusted Code

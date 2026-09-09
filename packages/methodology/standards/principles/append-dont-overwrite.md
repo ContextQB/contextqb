@@ -31,6 +31,11 @@ related:
   - documentation-as-architecture
   - documentation-file-naming
   - secrets-have-provenance
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4."
 ---
 
 # Append, Don't Overwrite

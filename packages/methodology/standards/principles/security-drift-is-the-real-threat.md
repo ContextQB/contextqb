@@ -32,6 +32,11 @@ agent_instructions:
   - Refuse to weaken a protection without naming the trade-off explicitly.
   - Surface drift candidates proactively — new public endpoints, removed auth checks, new third-party calls.
   - Treat "we audited this last quarter" as background, not as evidence the change you just made is safe.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Forward reference to the planned security: section in context.qb.yaml is honestly labeled; ROADMAP link verified. R8 pending P4."
 ---
 
 # Security Drift Is the Real Threat

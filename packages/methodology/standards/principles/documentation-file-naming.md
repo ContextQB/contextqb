@@ -33,6 +33,11 @@ related:
   - naming-conventions
   - documentation-as-architecture
   - documentation-for-agent-alignment
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Smell tests are memorable and dogfood-consistent with scopes/feedback conventions. R8 pending P4."
 ---
 
 # Documentation File Naming

@@ -31,6 +31,11 @@ agent_instructions:
   - For LLM outputs, validate structure and content before acting on them.
   - Never trust client-side validation alone; always re-validate server-side.
   - When in doubt, reject rather than accept.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Security long-form shape (posture + signals + relations) is the pillar's template. R8 pending P4."
 ---
 
 # Untrusted by Default

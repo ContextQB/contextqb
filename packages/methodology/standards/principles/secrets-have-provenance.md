@@ -33,6 +33,11 @@ agent_instructions:
   - When creating infrastructure that requires secrets, specify where the secret will come from and who will provision it.
   - Before using a third-party API, confirm the authentication approach and document the key's scope.
   - Treat secret exposure as a security incident, not a minor bug.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Origin/owner/scope/expiry quad is complete. R8 pending P4."
 ---
 
 # Secrets Have Provenance

@@ -28,6 +28,11 @@ related:
   - state-ownership
   - orchestration
   - modularity
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Detection checklist is the corpus's diagnostic instrument; matches the MCP-exposed checklist. R8 pending P4."
 ---
 
 # Anti-Spaghetti Development

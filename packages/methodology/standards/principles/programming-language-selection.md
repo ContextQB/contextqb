@@ -33,6 +33,11 @@ related:
   - machine-verifiable-substrate
   - maintainability
   - failure-modes
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Correctly defers to machine-verifiable-substrate as the general principle (see F-12 for the placement question). R8 pending P4."
 ---
 
 # Programming Language Selection

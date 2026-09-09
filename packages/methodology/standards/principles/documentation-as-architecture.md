@@ -34,6 +34,11 @@ related:
   - naming-conventions
   - documentation-for-agent-alignment
   - documentation-file-naming
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R5, R7 pass. Open: F-10 (defines three load-bearing surfaces; documentation-for-agent-alignment cites four, including the standards library — reconcile the enumeration). R8 pending P4."
 ---
 
 # Documentation as Architecture

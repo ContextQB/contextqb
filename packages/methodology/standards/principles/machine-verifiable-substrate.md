@@ -35,6 +35,11 @@ related:
   - maintainability
   - failure-modes
   - extensibility
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass on content. Open: F-12 (stage placement — programming-language-selection at stage 1 declares itself a narrow application of this principle, yet the general principle sits at stage 4; earliest-relevance rule suggests staging down). R8 pending P4."
 ---
 
 # Machine-Verifiable Substrate

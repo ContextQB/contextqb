@@ -31,6 +31,11 @@ related:
   - naming-conventions
   - separation-of-concerns
   - documentation-as-architecture
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Worked-example table earns its place. R8 pending P4."
 ---
 
 # Product-to-Engineering Alignment

@@ -25,6 +25,11 @@ related:
   - separation-of-concerns
   - state-ownership
   - anti-spaghetti
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. R8 pending P4."
 ---
 
 # Orchestration

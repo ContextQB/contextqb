@@ -36,6 +36,11 @@ related:
   - naming-conventions
   - context-quarterback-the-onboarding-map
   - state-ownership
+review:
+  status: needs-polish
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R5, R7 pass; the five-questions test is the strongest instrument in the documentation pillar. Open: F-10 (cites four surfaces; documentation-as-architecture defines three). R8 pending P4."
 ---
 
 # Documentation for Agent Alignment

@@ -32,6 +32,11 @@ agent_instructions:
   - When data crosses a boundary, transform it; do not just pass it through.
   - Refuse to write code that "is internal" without identifying who the internals are protected from.
   - When asked to add a feature, ask which boundary it sits on before generating the code.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Boundary table + 'the check is the boundary' framing is the pillar's load-bearing concept. R8 pending P4."
 ---
 
 # Trust Boundaries Are Architecture

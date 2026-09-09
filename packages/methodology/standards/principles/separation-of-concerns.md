@@ -25,6 +25,11 @@ related:
   - modularity
   - state-ownership
   - naming-conventions
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Rule crisp; agent_instructions actionable. R8 pending P4."
 ---
 
 # Separation of Concerns

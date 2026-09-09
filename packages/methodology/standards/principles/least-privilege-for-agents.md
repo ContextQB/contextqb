@@ -32,6 +32,11 @@ agent_instructions:
   - If a task can be completed in a scratch directory, do not touch the rest of the repo.
   - If you need a new capability, name it explicitly and request it; do not assume it.
   - When unsure whether you have a capability, ask before attempting it.
+review:
+  status: final
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review P2.2 (agent)"
+  reviewer_notes: "R3–R7 pass. Capability × autonomy = risk framing lands. R8 pending P4."
 ---
 
 # Least Privilege for Agents
