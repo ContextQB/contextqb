@@ -32,6 +32,7 @@ related:
 tags:
   - prompts
   - template
+
 ---
 
 # Document-Producing Agent Instruction Template

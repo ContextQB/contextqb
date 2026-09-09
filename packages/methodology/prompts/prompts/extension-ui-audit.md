@@ -27,6 +27,7 @@ tags:
   - extension
   - ui
   - audit
+
 ---
 
 # Extension UI Architecture Audit Prompt

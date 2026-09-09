@@ -26,6 +26,7 @@ related:
   - ai-output-is-untrusted-code
 tags:
   - security
+
 ---
 
 # Security-Critical Code Review
