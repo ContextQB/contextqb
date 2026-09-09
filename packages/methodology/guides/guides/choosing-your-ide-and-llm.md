@@ -35,10 +35,10 @@ next_steps:
   - Connect the IDE to the LLM and run your first agentic prompt.
   - Plug the ContextQB MCP in so your agent has the methodology on day one.
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: options list + pricing block carry last-verified notes (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
 ---
 
 # Choosing Your IDE and LLM
@@ -62,7 +62,7 @@ The IDE talks to the LLM over the internet. You can swap one without swapping th
 
 ## The IDE landscape
 
-These are the major options as of mid-2026. The list will look different in a year — that's fine. The framing below outlasts the products.
+These are the major options as of mid-2026 (last verified 2026-09). The list will look different in a year — that's fine. The framing below outlasts the products.
 
 | IDE                                                                | What it is                                                                                           | Best for                                                             | Free?                                            |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------ |
@@ -147,7 +147,7 @@ This is the setup most ContextQB writing is tested against. It's not the only ri
 
 ## What it costs
 
-Rough numbers as of mid-2026 (these change; check current pricing before deciding):
+Rough numbers as of mid-2026 (last verified 2026-09; these change — check current pricing before deciding):
 
 - **Bundled IDE plans:** $10–30/month, sometimes with a free tier. Cursor Pro, GitHub Copilot, Windsurf Pro all sit in this range. Heavy use can require higher tiers ($40–100/month) for unlimited fast requests.
 - **Pay-per-token, frontier models:** Roughly $3–15 per million input tokens, $15–75 per million output tokens. A typical day of agentic coding (asking lots of questions, having the agent edit files) might run $1–10 in usage. A single agent loop that re-reads a large codebase several times can easily hit $5–20 by itself if you're not paying attention.

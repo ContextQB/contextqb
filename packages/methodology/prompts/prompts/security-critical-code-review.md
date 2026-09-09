@@ -41,7 +41,7 @@ review:
 
 # Security-Critical Code Review
 
-This prompt is for reviewing code that touches security-sensitive areas. It's more focused than [Think Like an Attacker](/prompts/think-like-an-attacker) — instead of broad adversarial thinking, it runs a specific checklist for common security mistakes in critical code paths.
+This prompt is for reviewing code that touches security-sensitive areas. It's more focused than [Think Like an Attacker](contextqb://prompts/think-like-an-attacker) — instead of broad adversarial thinking, it runs a specific checklist for common security mistakes in critical code paths.
 
 Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access.
 

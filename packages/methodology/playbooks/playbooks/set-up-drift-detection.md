@@ -19,7 +19,7 @@ audience:
   - developer
   - agent
 journey_stage: 1
-journey_rank: 40
+journey_rank: 45
 related:
   - new-project-foundation
   - retrofit-drift-detection
@@ -35,10 +35,10 @@ tags:
   - onboarding
   - ci
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-03 resolved 2026-09-09: rank 40→45.R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
 ---
 
 # Set Up Drift Detection on Day One

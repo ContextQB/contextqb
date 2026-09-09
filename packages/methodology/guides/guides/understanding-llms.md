@@ -30,10 +30,10 @@ next_steps:
   - Set a billing alert at your provider's dashboard.
   - Note which kinds of tasks feel easy vs. forced — that's where you'll learn what each model is good at.
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: version-pinned model table carries a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
 ---
 
 # Understanding LLMs
@@ -47,6 +47,8 @@ The first instinct of most new builders is to pick "the best" model and use only
 Knowing the landscape — even at the level of "Claude is good at long careful reasoning, GPT is fast at routine edits, Gemini handles huge context" — is what lets you make small daily decisions that compound. If you're stuck on the wrong model for the task, you'll think the problem is your prompt when really it's the model.
 
 ## The major families in 2026
+
+_(Version-pinned content — last verified 2026-09. Model names and tiers move fast; re-verify before quoting at anyone.)_
 
 | Family                                                 | Maker               | What it's known for                                                                                                                                                                        | Watch for                                                                                                                     |
 | ------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |

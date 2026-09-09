@@ -32,10 +32,10 @@ related:
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
-  reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R6 pass on content. Open: F-17 (stray 4-backtick fence at ~line 193 swallows 'When to use this' / 'What to do with the output' / 'Example output' into a code block on render), F-06 (3 links). R8 pending P4."
+  reviewer: "epistemology-review P2.5 (agent); R-04 remediation 2026-09-09"
+  reviewer_notes: "R3–R6 pass. F-17 resolved 2026-09-09: stray fence removed, 4-backtick prompt close restored, example block closes correctly. F-06 resolved by R-02. R8 passed P4."
 ---
 
 # Suspicious Behavior Investigation
@@ -199,8 +199,6 @@ Provide your findings as:
 3. [Monitoring/documentation action]
 ````
 
-````
-
 ## When to use this
 
 - You see unusual errors in logs and don't know why
@@ -229,7 +227,7 @@ Provide your findings as:
 ### If classification is "Incident"
 
 - **Stop and follow your incident response playbook**
-- See [Respond to a Suspected Compromise](/playbooks/respond-to-a-suspected-compromise)
+- See [Respond to a Suspected Compromise](contextqb://playbooks/respond-to-a-suspected-compromise)
 - Containment is more important than investigation
 - Preserve evidence before taking actions that might destroy it
 
@@ -244,7 +242,7 @@ Provide your findings as:
 ```markdown
 ## Investigation Summary
 
-**Anomaly:** Spike in 401 errors on /api/admin/* endpoints
+**Anomaly:** Spike in 401 errors on /api/admin/\* endpoints
 **Classification:** Suspicious
 **Confidence:** Medium
 **Timeframe:** 2024-03-15 02:00-04:00 UTC
@@ -260,11 +258,13 @@ Provide your findings as:
 ## Evidence Analysis
 
 ### Indicators suggesting benign:
+
 - Error spike coincides with a scheduled batch job that might have stale credentials
 - All 401s are actual authentication failures (not bypasses)
 - No successful admin access during the window
 
 ### Indicators suggesting malicious:
+
 - Source IPs are diverse (not our batch server)
 - User agents include generic HTTP libraries
 - Timing is off-hours for our team
@@ -284,10 +284,10 @@ This looks like automated credential stuffing or endpoint probing against admin 
 
 1. **Immediate:** Verify no successful admin logins in the timeframe
 2. **Immediate:** Confirm batch job credentials are current (rule out false positive)
-3. **Follow-up:** Enable rate limiting on /api/admin/* if not present
+3. **Follow-up:** Enable rate limiting on /api/admin/\* if not present
 4. **Follow-up:** Consider IP blocking for the most active sources
 5. **Monitoring:** Alert on similar patterns going forward
-````
+```
 
 ## See also
 

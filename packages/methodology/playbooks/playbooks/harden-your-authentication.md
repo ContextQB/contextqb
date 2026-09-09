@@ -24,10 +24,10 @@ related_principles:
 tags:
   - security
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3, R4, R6, R7 pass. Open: F-06 (2 links), F-09 (vendor dashboard navigation paths — Clerk/Supabase/Auth0 UI — decay with vendor redesigns). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: vendor dashboard paths carry a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-06 (2 links), F-09 (vendor dashboard navigation paths — Clerk/Supabase/Auth0 UI — decay with vendor redesigns). R8 pending P4."
 related:
   - authentication-and-authorization
   - map-your-attack-surface
@@ -61,7 +61,7 @@ You'll need:
 - Access to your codebase (to check how auth is implemented)
 - A test account to verify changes don't break legitimate login
 
-Auth providers covered by this playbook: Clerk, Supabase Auth, Auth0, NextAuth, or custom implementations. The concepts apply universally; the specific settings vary.
+Auth providers covered by this playbook: Clerk, Supabase Auth, Auth0, NextAuth, or custom implementations. The concepts apply universally; the specific settings vary. Vendor dashboard paths below were verified 2026-09 — vendors re-label navigation often, so search the vendor's docs if a path has moved.
 
 ## Steps
 

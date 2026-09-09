@@ -8,7 +8,7 @@ audience:
   - founder
   - operator
 journey_stage: 0
-journey_rank: 0
+journey_rank: 5
 intro: |
   Before you can plan your app, you need a plain model of what an app physically is. This guide explains the pieces without asking you to learn a programming language first: files in a folder, instructions for a runtime, and a way for information to come in and go back out.
 tags:
@@ -30,10 +30,10 @@ next_steps:
   - Read the mental-model guide and turn that sentence into a working brief.
   - Do not pick a database or deployment platform until you know who the app is for.
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R5, R7 pass. Open: F-02 (rank collision), F-07 (names building-for-yourself-vs-others as next guide and duplicates the channel table, links neither). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-02/F-07 resolved 2026-09-09: rank 0→5; forward references to building-for-yourself-vs-others and choosing-your-application-channel are now real links.R3–R5, R7 pass. Open: F-02 (rank collision), F-07 (names building-for-yourself-vs-others as next guide and duplicates the channel table, links neither). R8 pending P4."
 ---
 
 # What an Application Is
@@ -135,7 +135,7 @@ The channel is not just a technical label. It changes what the app has to be res
 
 Do not treat this table as a ranking. A command-line tool is not "less real" than a mobile app. It is just a different channel.
 
-The right channel depends on who the app is for and where the work happens.
+The right channel depends on who the app is for and where the work happens. The full walk-through of that decision lives in [Choosing Your Application Channel](contextqb://guides/choosing-your-application-channel).
 
 ## What is not an application
 
@@ -184,7 +184,7 @@ Once you can answer that, the next decisions become much easier.
 
 If it is only for you, a rough command-line tool may be enough. If it is for a few trusted people, you need to think about shared access. If it is public, you need to think about privacy, abuse, support, and trust.
 
-That is the next guide in this foundation sequence: building for yourself versus building for other people.
+That is the next guide in this foundation sequence: [building for yourself versus building for other people](contextqb://guides/building-for-yourself-vs-others).
 
 ## What good enough looks like
 

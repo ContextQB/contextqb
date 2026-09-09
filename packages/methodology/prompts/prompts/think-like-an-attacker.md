@@ -116,7 +116,7 @@ Be specific. Reference files and line numbers. Do not give generic security advi
 2. **Medium severity findings** — Fix before next release
 3. **Low severity findings** — Track and fix opportunistically
 
-If the analysis reveals trust assumptions you hadn't considered, update your attack surface inventory (see [Map Your Attack Surface](/playbooks/map-your-attack-surface)).
+If the analysis reveals trust assumptions you hadn't considered, update your attack surface inventory (see [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface)).
 
 ## Example output structure
 

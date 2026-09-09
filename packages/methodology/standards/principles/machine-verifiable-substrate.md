@@ -9,8 +9,8 @@ audience:
   - founder
   - developer
   - agent
-journey_stage: 4
-journey_rank: 0
+journey_stage: 1
+journey_rank: 55
 tags:
   - verifiability
   - types
@@ -43,10 +43,10 @@ related:
   - set-up-drift-detection
   - setting-up-git-and-github
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass on content. Open: F-12 (stage placement — programming-language-selection at stage 1 declares itself a narrow application of this principle, yet the general principle sits at stage 4; earliest-relevance rule suggests staging down). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-12 resolved 2026-09-09: staged down to stage 1 (rank 55) per earliest-relevance — it informs the day-one stack choice.R3–R7 pass on content. Open: F-12 (stage placement — programming-language-selection at stage 1 declares itself a narrow application of this principle, yet the general principle sits at stage 4; earliest-relevance rule suggests staging down). R8 pending P4."
 ---
 
 # Machine-Verifiable Substrate

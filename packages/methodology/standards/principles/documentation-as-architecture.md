@@ -55,10 +55,10 @@ related:
   - write-a-context-qb
   - write-an-adr
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R5, R7 pass. Open: F-10 (defines three load-bearing surfaces; documentation-for-agent-alignment cites four, including the standards library — reconcile the enumeration). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-10 resolved 2026-09-09: canon is four surfaces (AGENTS.md, context.qb.yaml, ADRs, overviews); the qb manifest section added.R3–R5, R7 pass. Open: F-10 (defines three load-bearing surfaces; documentation-for-agent-alignment cites four, including the standards library — reconcile the enumeration). R8 pending P4."
 ---
 
 # Documentation as Architecture
@@ -73,7 +73,7 @@ Explicit documentation closes that gap.
 
 **Treat documentation as part of the system, not as a description of it.**
 
-Three documentation surfaces are load-bearing in an agentic project. Skip any of them and you pay continuously, not once.
+Four documentation surfaces are load-bearing in an agentic project. Skip any of them and you pay continuously, not once.
 
 ### 1. `AGENTS.md` — the project-level operating instructions
 
@@ -92,7 +92,11 @@ Without `AGENTS.md`, every prompt has to either re-explain the project or accept
 
 See the [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md) playbook.
 
-### 2. Architectural Decision Records (ADRs) — the why
+### 2. `context.qb.yaml` — the boot manifest
+
+A small, structured YAML file at the repo root that maps the project for the agent: what it is, what's in it, how it deploys, what decisions are in play, what's in flight. Where `AGENTS.md` carries the rules, the manifest carries the map — the agent reads it first and drills into deeper docs only when the work calls for it. See [`context-quarterback-the-onboarding-map`](contextqb://principles/context-quarterback-the-onboarding-map) and the [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb) playbook.
+
+### 3. Architectural Decision Records (ADRs) — the why
 
 An ADR is a short, dated record of a structural decision: the context, the choice, and the consequences. ADRs are not for everything. They are for the decisions a future reader (human or agent) might reasonably question — and which would otherwise be invisible.
 
@@ -104,7 +108,7 @@ Why ADRs matter for agents specifically:
 
 See the [`write-an-adr`](contextqb://playbooks/write-an-adr) playbook.
 
-### 3. Architecture overviews — the what
+### 4. Architecture overviews — the what
 
 Distinct from ADRs, architecture overviews describe the _current_ shape of the system: package boundaries, data flow, the runtime surface. They answer "what does this look like today?" rather than "why did we decide it this way?"
 
@@ -137,8 +141,9 @@ The cure is not more prompts. The cure is documentation that the prompts can poi
 > Audit this repository's documentation surface. Confirm that the following exist and have meaningful content:
 >
 > 1. `AGENTS.md` at the repo root.
-> 2. An ADR directory with a template and at least one decision recorded.
-> 3. Per-area architecture overviews.
+> 2. `context.qb.yaml` at the repo root.
+> 3. An ADR directory with a template and at least one decision recorded.
+> 4. Per-area architecture overviews.
 >
 > For each, evaluate whether the content is specific to this project or generic. Flag generic content. Flag any place where current code contradicts documentation. Propose a prioritised list of documentation work, smallest viable items first.
 

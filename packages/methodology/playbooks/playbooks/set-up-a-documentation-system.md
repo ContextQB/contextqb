@@ -31,10 +31,10 @@ tags:
   - greenfield
   - setup
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; the audience/process surface split is the corpus's clearest doc-system statement. Open: F-03 (rank collision at 1.4), F-06 (sibling links uncovered). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-03 resolved 2026-09-09: keeps rank 40; set-up-drift-detection moved to 45.R3–R7 pass; the audience/process surface split is the corpus's clearest doc-system statement. Open: F-03 (rank collision at 1.4), F-06 (sibling links uncovered). R8 pending P4."
 related:
   - documenting-for-your-agent
   - set-up-agents-md

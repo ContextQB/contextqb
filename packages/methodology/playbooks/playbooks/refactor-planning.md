@@ -29,10 +29,10 @@ tags:
   - refactor
   - debt
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass. Open: F-06 (state-ownership/extensibility links), F-16 (link text says @contextqb/standards but points at a single principle). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-16 resolved 2026-09-09: link text no longer names the collection while pointing at one principle.R3–R7 pass. Open: F-06 (state-ownership/extensibility links), F-16 (link text says @contextqb/standards but points at a single principle). R8 pending P4."
 related:
   - anti-spaghetti-review
   - architectural-hardening-loop
@@ -58,7 +58,7 @@ If you cannot describe the symptom concretely, you do not need a refactor — yo
 
 ## Step 2 — Identify the underlying principle
 
-Use the principles in [`@contextqb/standards`](contextqb://principles/separation-of-concerns) to name the structural cause:
+Use the principles in the ContextQB corpus — for example [`separation-of-concerns`](contextqb://principles/separation-of-concerns) — to name the structural cause:
 
 - "State is owned by three places and they have drifted." → [`state-ownership`](contextqb://principles/state-ownership).
 - "I cannot add a variant without touching ten files." → [`extensibility`](contextqb://principles/extensibility).

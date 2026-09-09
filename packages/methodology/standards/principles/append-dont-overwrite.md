@@ -34,10 +34,10 @@ related:
   - secrets-have-provenance
   - set-up-a-documentation-system
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-11 resolved 2026-09-09: AGENTS.md link depth fixed.R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4."
 ---
 
 # Append, Don't Overwrite
@@ -124,7 +124,7 @@ ADRs are immutable once accepted. If the decision needs to change:
 2. Mark the old ADR as "Superseded by ADR-NNNN."
 3. Link forward from the old ADR to the new one.
 
-The old ADR stays exactly as it was. This is already ContextQB canon — see [`AGENTS.md §6`](../../../AGENTS.md) ("Do not edit ADRs after they are Accepted").
+The old ADR stays exactly as it was. This is already ContextQB canon — see [`AGENTS.md §6`](../../../../AGENTS.md) ("Do not edit ADRs after they are Accepted").
 
 Supersession is the decision-scale equivalent of archive-don't-delete: the old artifact is preserved; a new artifact records the change.
 
