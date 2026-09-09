@@ -2,7 +2,7 @@
 id: set-up-agents-md
 title: Set Up AGENTS.md for Your Project
 summary: How to author the single most leverage-positive file in an agentic codebase — the project-level operating instructions that every agent should read first.
-version: 0.1.0
+version: 0.1.1
 problem: |
   Without AGENTS.md, every agent prompt starts from zero. The agent invents the architecture, guesses at naming, and produces inconsistent output session to session. The cost is paid continuously.
 when_to_use: |
@@ -80,6 +80,8 @@ This file is the canonical operating instructions for AI agents working in this 
 ```
 
 That is it. Six sections, no ceremony.
+
+Worked examples for three project shapes live at [contextqb.com/examples/](https://contextqb.com/examples/) — a full-stack web app, a browser extension, and an MCP project. Read the one closest to your project before writing your own.
 
 ## Length and voice
 

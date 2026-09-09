@@ -2,7 +2,7 @@
 id: repo-readiness
 title: Repo Readiness Audit
 summary: A quick audit for a newly-prepared repo — does it have the boundaries, naming, and orchestration story it needs before the first feature ships?
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -26,7 +26,7 @@ required_sections:
 evaluation_criteria:
   - Each package has a clear, single responsibility documented in its README.
   - No dumping-ground files exist at the time of audit.
-  - There is an AGENT_INSTRUCTIONS file or equivalent.
+  - There is an `AGENTS.md` file at the repo root (see the `set-up-agents-md` playbook) or an equivalent agent-read-first document.
   - The orchestration layer is documented.
 deliverables:
   - A single Markdown document with the required sections.
