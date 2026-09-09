@@ -51,6 +51,7 @@ related:
   - ui-architecture
   - untrusted-by-default
   - where-your-data-lives
+  - the-plan-is-the-contract
 review:
   status: final
   last_reviewed: "2026-09-09"

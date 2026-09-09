@@ -33,6 +33,7 @@ review:
 related:
   - set-up-agents-md
   - understanding-the-context-window
+  - mcp-vs-paste
 ---
 
 # Build an MCP for Reusable Project Context

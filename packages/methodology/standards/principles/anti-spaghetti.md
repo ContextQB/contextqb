@@ -42,6 +42,7 @@ related:
   - state-management
   - state-ownership
   - ui-architecture
+  - refactor-with-duplicates
 review:
   status: final
   last_reviewed: "2026-09-09"

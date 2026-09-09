@@ -36,6 +36,8 @@ related:
   - setting-up-git-and-github
   - suspicious-behavior-investigation
   - triage-your-secrets
+  - operations-baseline
+  - launch-day-checklist
 ---
 
 # Respond to a Suspected Compromise

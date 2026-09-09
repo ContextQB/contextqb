@@ -43,6 +43,7 @@ related:
   - public-endpoints-are-battlegrounds
   - trust-boundaries-are-architecture
   - untrusted-by-default
+  - launch-day-checklist
 tags:
   - security
 review:

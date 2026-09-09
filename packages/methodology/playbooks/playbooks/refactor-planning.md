@@ -25,6 +25,7 @@ related_principles:
   - modularity
   - separation-of-concerns
   - state-ownership
+  - refactor-with-duplicates
 tags:
   - refactor
   - debt

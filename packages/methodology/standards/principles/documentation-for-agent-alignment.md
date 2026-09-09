@@ -38,6 +38,7 @@ related:
   - naming-conventions
   - set-up-a-documentation-system
   - state-ownership
+  - agents-md-vs-readme
 review:
   status: final
   last_reviewed: "2026-09-09"

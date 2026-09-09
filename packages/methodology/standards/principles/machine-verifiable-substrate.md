@@ -42,6 +42,7 @@ related:
   - security-drift-is-the-real-threat
   - set-up-drift-detection
   - setting-up-git-and-github
+  - refactor-with-duplicates
 review:
   status: final
   last_reviewed: "2026-09-09"

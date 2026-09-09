@@ -43,6 +43,7 @@ related:
   - the-mental-model-of-your-app
   - understanding-the-context-window
   - write-a-context-qb
+  - agents-md-vs-readme
 review:
   status: final
   last_reviewed: "2026-09-09"

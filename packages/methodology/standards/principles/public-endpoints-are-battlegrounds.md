@@ -27,6 +27,7 @@ related:
   - review-a-new-feature-for-security-implications
   - trust-boundaries-are-architecture
   - untrusted-by-default
+  - launch-day-checklist
 anti_patterns:
   - Admin endpoints protected only by an obscure URL.
   - API routes with no rate limiting.

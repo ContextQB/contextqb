@@ -25,6 +25,7 @@ related:
   - architectural-hardening-loop
   - refactor-planning
   - agent-instructions
+  - launch-day-checklist
 related_principles:
   - separation-of-concerns
   - state-ownership
@@ -32,6 +33,8 @@ related_principles:
   - anti-spaghetti
   - failure-modes
   - documentation-as-architecture
+  - refactor-with-duplicates
+  - the-plan-is-the-contract
 tags:
   - features
   - build

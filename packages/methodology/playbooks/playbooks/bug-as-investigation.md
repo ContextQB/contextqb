@@ -22,6 +22,7 @@ related_principles:
   - anti-spaghetti
   - state-ownership
   - orchestration
+  - the-plan-is-the-contract
 tags:
   - debugging
   - investigation

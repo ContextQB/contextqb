@@ -37,6 +37,7 @@ related:
   - setting-up-git-and-github
   - the-mental-model-of-your-app
   - understanding-the-context-window
+  - scope-vs-punchlist
 ---
 
 # Write an Architectural Decision Record

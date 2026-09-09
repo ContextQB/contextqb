@@ -36,6 +36,7 @@ related:
   - separation-of-concerns
   - state-management
   - state-ownership
+  - the-plan-is-the-contract
 review:
   status: final
   last_reviewed: "2026-09-09"

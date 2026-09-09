@@ -42,6 +42,8 @@ related:
   - security-regression
   - triage-your-secrets
   - untrusted-by-default
+  - operations-baseline
+  - launch-day-checklist
 tags:
   - security
 review:

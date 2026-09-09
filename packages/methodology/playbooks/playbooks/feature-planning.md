@@ -22,11 +22,13 @@ related:
   - choosing-your-application-channel
   - feature-build-loop
   - the-mental-model-of-your-app
+  - scope-vs-punchlist
 related_principles:
   - modularity
   - orchestration
   - separation-of-concerns
   - state-ownership
+  - the-plan-is-the-contract
 tags:
   - planning
   - features

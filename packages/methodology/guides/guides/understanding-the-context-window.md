@@ -28,6 +28,7 @@ related:
   - understanding-llms
   - write-a-context-qb
   - write-an-adr
+  - mcp-vs-paste
 next_steps:
   - Open your IDE and identify which files are currently "in context" for your active agent session.
   - Write or update your AGENTS.md so it primes any new session correctly.

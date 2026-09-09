@@ -27,6 +27,7 @@ related_principles:
   - maintainability
   - orchestration
   - state-ownership
+  - refactor-with-duplicates
 tags:
   - audit
   - refactor

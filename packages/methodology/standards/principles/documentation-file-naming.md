@@ -36,6 +36,7 @@ related:
   - documenting-for-your-agent
   - naming-conventions
   - set-up-a-documentation-system
+  - scope-vs-punchlist
 review:
   status: final
   last_reviewed: "2026-09-09"

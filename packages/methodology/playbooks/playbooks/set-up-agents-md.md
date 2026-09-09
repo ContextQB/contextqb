@@ -41,6 +41,7 @@ related:
   - set-up-drift-detection
   - the-mental-model-of-your-app
   - understanding-the-context-window
+  - agents-md-vs-readme
 ---
 
 # Set Up AGENTS.md for Your Project

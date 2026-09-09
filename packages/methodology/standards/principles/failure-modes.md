@@ -2,7 +2,7 @@
 id: failure-modes
 title: Failure Modes
 summary: Anticipate where and how systems fail. Design for graceful degradation, not just the happy path.
-version: 0.1.1
+version: 0.1.2
 category: diagnosis
 audience:
   - novice-builder
@@ -31,15 +31,19 @@ related:
   - application-security-baseline
   - architectural-hardening-loop
   - feature-build-loop
+  - launch-day-checklist
   - machine-verifiable-substrate
   - maintainability
   - map-your-attack-surface
+  - operations-baseline
   - orchestration
   - programming-language-selection
   - public-endpoints-are-battlegrounds
+  - refactor-with-duplicates
   - security-drift-is-the-real-threat
   - state-ownership
   - suspicious-behavior-investigation
+  - the-plan-is-the-contract
   - think-like-an-attacker
   - untrusted-by-default
 review:
