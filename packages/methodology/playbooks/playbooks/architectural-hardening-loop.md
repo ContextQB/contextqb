@@ -32,6 +32,7 @@ tags:
   - refactor
   - governance
   - drift
+
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase

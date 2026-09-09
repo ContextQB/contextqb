@@ -25,6 +25,7 @@ related_principles:
 tags:
   - mcp
   - tooling
+
 ---
 
 # Build an MCP for Reusable Project Context

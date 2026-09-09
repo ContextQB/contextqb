@@ -24,6 +24,7 @@ related_principles:
   - public-endpoints-are-battlegrounds
 tags:
   - security
+
 ---
 
 # Review a New Feature for Security Implications

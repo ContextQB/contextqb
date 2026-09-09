@@ -26,6 +26,7 @@ tags:
   - agents
   - documentation
   - prompts
+
 ---
 
 # Set Up AGENTS.md for Your Project

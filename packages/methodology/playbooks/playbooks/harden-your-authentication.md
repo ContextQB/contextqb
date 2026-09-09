@@ -23,6 +23,7 @@ related_principles:
   - trust-boundaries-are-architecture
 tags:
   - security
+
 ---
 
 # Harden Your Authentication

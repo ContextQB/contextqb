@@ -27,6 +27,7 @@ related_principles:
 tags:
   - foundation
   - setup
+
 ---
 
 # Prepare a New Repo for AI-Assisted Development

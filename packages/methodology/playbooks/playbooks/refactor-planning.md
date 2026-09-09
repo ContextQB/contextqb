@@ -26,6 +26,7 @@ related_principles:
 tags:
   - refactor
   - debt
+
 ---
 
 # Plan a Refactor Without Rewriting the Whole Repo

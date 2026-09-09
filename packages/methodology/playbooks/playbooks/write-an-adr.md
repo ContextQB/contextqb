@@ -26,6 +26,7 @@ tags:
   - adrs
   - documentation
   - decisions
+
 ---
 
 # Write an Architectural Decision Record

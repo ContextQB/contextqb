@@ -25,6 +25,7 @@ related_principles:
 tags:
   - debugging
   - investigation
+
 ---
 
 # Convert a Bug Into an Architectural Investigation

@@ -25,6 +25,7 @@ related_principles:
 tags:
   - prompts
   - documents
+
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies

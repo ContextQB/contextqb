@@ -24,6 +24,7 @@ related_principles:
   - least-privilege-for-agents
 tags:
   - security
+
 ---
 
 # Triage Your Secrets
