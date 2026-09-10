@@ -38,10 +38,10 @@ tags:
   - deploy
   - operations
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q3 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-01 — stage 8 (Launch) was the corpus's only empty non-deferred stage. Deliberately operational (no code), in the corpus's step-by-step playbook voice."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-01 — stage 8 (Launch) was the corpus's only empty non-deferred stage. Deliberately operational (no code), in the corpus's step-by-step playbook voice."
 ---
 
 # Run a Launch Day Checklist

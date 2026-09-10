@@ -36,10 +36,10 @@ related:
   - refactor-planning
   - setting-up-git-and-github
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q1 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-11 / finding F-08 — the corpus cited this habit by name (setting-up-git-and-github) with no atom behind it. Long-form principle shape per the P4 template verdict."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-11 / finding F-08 — the corpus cited this habit by name (setting-up-git-and-github) with no atom behind it. Long-form principle shape per the P4 template verdict."
 ---
 
 # Refactor With Duplicates, Not Overwrites

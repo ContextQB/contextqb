@@ -21,10 +21,10 @@ related:
   - write-an-adr
   - feature-planning
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q5 (authored 2026-09-09)"
-  reviewer_notes: "Authored from G-05 (grow briefings). Canonises the ADR-0025 vocabulary distinction that documentation-file-naming and the scopes README rely on."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Canonises the ADR-0025 vocabulary distinction that documentation-file-naming and the scopes README rely on."
 ---
 
 # Scope vs. Punchlist

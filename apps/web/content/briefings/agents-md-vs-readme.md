@@ -21,10 +21,10 @@ related:
   - documentation-for-agent-alignment
   - context-quarterback-the-onboarding-map
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q5 (authored 2026-09-09)"
-  reviewer_notes: "Authored from G-05 (grow briefings). Resolves the README/AGENTS.md confusion named in set-up-agents-md's anti-patterns."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Resolves the README/AGENTS.md confusion named in set-up-agents-md's anti-patterns."
 ---
 
 # AGENTS.md vs. README.md

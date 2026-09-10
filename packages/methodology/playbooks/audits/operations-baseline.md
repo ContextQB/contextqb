@@ -49,10 +49,10 @@ tags:
   - audit
   - monitoring
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q4 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-03 — stage 9 (Operations) had only incident-mode atoms; this is the routine-ops instrument. Follows the corpus's audit envelope + agent-instruction pattern."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-03 — stage 9 (Operations) had only incident-mode atoms; this is the routine-ops instrument. Follows the corpus's audit envelope + agent-instruction pattern."
 ---
 
 # Operations Baseline Audit

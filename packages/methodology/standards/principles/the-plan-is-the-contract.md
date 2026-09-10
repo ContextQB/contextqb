@@ -38,10 +38,10 @@ related:
   - bug-as-investigation
   - launch-day-checklist
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q2 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict."
 ---
 
 # The Plan Is the Contract

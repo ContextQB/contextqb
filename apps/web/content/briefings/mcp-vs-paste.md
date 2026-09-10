@@ -20,10 +20,10 @@ related:
   - build-mcp-for-project-context
   - context-qb-yaml-vs-rag
 review:
-  status: draft
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q5 (authored 2026-09-09)"
-  reviewer_notes: "Authored from G-05 (grow briefings). Resolves the paste-vs-MCP confusion visible in corpus bodies."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Resolves the paste-vs-MCP confusion visible in corpus bodies."
 ---
 
 # MCP vs. Pasting Context Into Chat
