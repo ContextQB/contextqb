@@ -2,7 +2,7 @@
 eyebrow: MCP
 headline: Give your agent the ContextQB playbook.
 subhead: >-
-  Add the ContextQB MCP to Cursor, Claude Desktop, Windsurf, or any MCP-aware
+  Add the ContextQB MCP to Cursor, Claude Code, Devin Desktop, Antigravity, or any MCP-aware
   tool. Your agent gets access to every guide, briefing, principle, playbook,
   audit, and prompt on this site, addressable by URI.
 meta_title: MCP
