@@ -26,6 +26,7 @@ related:
   - refactor-planning
   - agent-instructions
   - launch-day-checklist
+  - run-a-multi-agent-workflow
 related_principles:
   - separation-of-concerns
   - state-ownership

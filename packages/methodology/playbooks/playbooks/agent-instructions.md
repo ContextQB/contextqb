@@ -34,6 +34,7 @@ related:
   - architectural-hardening-loop
   - architecture-review
   - feature-build-loop
+  - run-a-multi-agent-workflow
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies

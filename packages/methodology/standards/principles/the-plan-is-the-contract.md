@@ -37,6 +37,7 @@ related:
   - feature-build-loop
   - bug-as-investigation
   - launch-day-checklist
+  - run-a-multi-agent-workflow
 review:
   status: final
   last_reviewed: "2026-09-09"

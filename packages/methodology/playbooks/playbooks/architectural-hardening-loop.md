@@ -43,6 +43,7 @@ related:
   - architecture-review
   - feature-build-loop
   - refactor-planning
+  - run-a-multi-agent-workflow
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase

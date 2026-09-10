@@ -2,7 +2,7 @@
 id: set-up-agents-md
 title: Set Up AGENTS.md for Your Project
 summary: How to author the single most leverage-positive file in an agentic codebase — the project-level operating instructions that every agent should read first.
-version: 0.1.2
+version: 0.1.3
 problem: |
   Without AGENTS.md, every agent prompt starts from zero. The agent invents the architecture, guesses at naming, and produces inconsistent output session to session. The cost is paid continuously.
 when_to_use: |
@@ -32,16 +32,17 @@ review:
   reviewer: "epistemology-review P2.3 (agent); R-01 remediation 2026-09-09"
   reviewer_notes: "R3–R7 pass. Now points at the worked AGENTS.md examples on /examples/ (F-18 wire-in). R8 pending P4 (passed P4 2026-09-09)."
 related:
+  - agents-md-vs-readme
   - build-mcp-for-project-context
   - choosing-your-ide-and-llm
   - documenting-for-your-agent
   - new-project-foundation
+  - run-a-multi-agent-workflow
   - set-security-guardrails-for-your-agent
   - set-up-a-documentation-system
   - set-up-drift-detection
   - the-mental-model-of-your-app
   - understanding-the-context-window
-  - agents-md-vs-readme
 ---
 
 # Set Up AGENTS.md for Your Project
