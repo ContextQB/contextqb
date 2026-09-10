@@ -2,7 +2,7 @@
 id: choosing-your-ide-and-llm
 title: Choosing Your IDE and LLM
 summary: Your IDE is the workshop. The LLM is the collaborator. This guide helps you pick both, wire them together, and understand what each costs — without getting locked into a choice you'll regret.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: options list + pricing block carry last-verified notes (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
+  reviewer_notes: "F-19: IDE landscape rebuilt for the current stack (Devin Desktop, Antigravity, multi-surface Claude Code, Codex family); starter setup + pricing verified against vendor sites. REVIEWED. F-09 addressed 2026-09-09: options list + pricing block carry last-verified notes (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
 ---
 
 # Choosing Your IDE and LLM
@@ -47,7 +47,7 @@ review:
 
 ## You're in the right place
 
-If you've never picked an IDE before, or if the difference between "Cursor" and "GPT-5" is fuzzy, you're not behind. You're at the right step. This stuff is genuinely new — most of the tools in this guide didn't exist in their current form three years ago, and the marketing around them mixes the layers on purpose so each product can claim more credit.
+If you've never picked an IDE before, or if the difference between "Cursor" and "GPT-6" is fuzzy, you're not behind. You're at the right step. This stuff is genuinely new — most of the tools in this guide didn't exist in their current form three years ago, and the marketing around them mixes the layers on purpose so each product can claim more credit.
 
 By the end of this guide you'll know what you're choosing, why, and how to change your mind later without losing work. That's all you need.
 
@@ -58,29 +58,30 @@ The mental model that makes everything else easy:
 - The **IDE** is the room. It's where the files live in front of you, where the agent's changes appear, where the terminal opens, where you commit code, where you browse the codebase. It's a piece of software that runs on your computer.
 - The **LLM** is the brain. It's a service that lives on a server somewhere — Anthropic's servers for Claude, OpenAI's for GPT, Google's for Gemini. When the agent in your IDE "thinks," it's sending a request to that service and getting back text.
 
-The IDE talks to the LLM over the internet. You can swap one without swapping the other. Cursor with Claude. Cursor with GPT-5. VS Code with Claude. Zed with Gemini. All valid combinations. The skill is recognising which layer you're configuring at any given moment.
+The IDE talks to the LLM over the internet. You can swap one without swapping the other. Cursor with Claude. Cursor with GPT-6. VS Code with Claude. Zed with Gemini. All valid combinations. The skill is recognising which layer you're configuring at any given moment.
 
 ## The IDE landscape
 
-These are the major options as of mid-2026 (last verified 2026-09). The list will look different in a year — that's fine. The framing below outlasts the products.
+These are the major options as of September 2026 (verified against vendor sites 2026-09). The list will look different in a year — that's fine. The framing below outlasts the products.
 
-| IDE                                                                | What it is                                                                                           | Best for                                                             | Free?                                            |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------ |
-| **[Cursor](https://cursor.com)**                                   | A fork of VS Code rebuilt around agentic coding. Native agent mode, MCP support, multi-model picker. | Most builders most of the time. The default we'd recommend.          | Free tier with limits; paid plans for heavy use. |
-| **[VS Code](https://code.visualstudio.com) + GitHub Copilot**      | Microsoft's editor with GitHub's AI extensions. Huge ecosystem, deep enterprise support.             | Anyone already in the Microsoft / GitHub world.                      | Editor is free; Copilot is paid.                 |
-| **[Windsurf](https://windsurf.com)**                               | Built specifically for AI-assisted development with strong agent mode. Earlier known as Codeium.     | If Cursor's UX doesn't click for you — Windsurf is the closest peer. | Free tier; paid tiers for serious use.           |
-| **[Zed](https://zed.dev)**                                         | A newer, very fast editor with AI integration built in. Mac-first; Linux supported.                  | Performance-sensitive users; people who liked Sublime Text.          | Free; AI features bring-your-own-key.            |
-| **JetBrains IDEs + AI Assistant**                                  | IntelliJ, WebStorm, PyCharm, etc., with the JetBrains AI extension.                                  | Existing JetBrains users; teams already on those tools.              | IDE has free and paid tiers; AI is paid.         |
-| **[Claude Code](https://docs.claude.com/en/docs/claude-code)**     | Anthropic's terminal-based agent. Not technically an IDE, but covers most of the same workflow.      | Terminal-native developers; people who don't want a heavy editor.    | Bundled with Claude subscription.                |
-| **[OpenAI Codex CLI](https://openai.com/index/openai-codex/)**     | OpenAI's coding agent. Similar shape to Claude Code.                                                 | Same as above; comes from the OpenAI side.                           | Bundled with OpenAI subscription.                |
-| **[Aider](https://aider.chat) / [Continue](https://continue.dev)** | Open-source CLI / VS Code extension that talk to whichever LLM you point them at.                    | Hobbyists; privacy-conscious builders running local LLMs.            | Free, MIT-licensed.                              |
+| IDE                                                                | What it is                                                                                                                                                                     | Best for                                                                                        | Free?                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| **[Cursor](https://cursor.com)**                                   | A fork of VS Code rebuilt around agentic coding. Native agent mode, MCP support, multi-model picker, cloud agents, and its own in-house models (Composer, with Grok built in). | Most builders most of the time. The default we'd recommend.                                     | Free tier with limits; paid plans for heavy use. |
+| **[Claude Code](https://docs.claude.com/en/docs/claude-code)**     | Anthropic's agent, now on every surface: terminal, VS Code and JetBrains extensions, a desktop app, and the web. Background agents, subagents, and scheduled routines.         | Terminal-native developers; people who don't want a heavy editor; long-running background work. | Bundled with Claude subscription.                |
+| **[Devin Desktop](https://devin.ai)** (formerly Windsurf)          | The former Windsurf IDE, renamed and rebuilt as a command center for running fleets of local and cloud agents (Spaces, kanban of agent tasks).                                 | Operators running several agents in parallel; teams sharing agent context.                      | Free tier; Pro $20/mo.                           |
+| **[Google Antigravity](https://antigravity.google)**               | Google's AI-first development platform, built around Gemini's agentic models.                                                                                                  | Builders in the Google/Gemini ecosystem.                                                        | Free tier; usage-based beyond.                   |
+| **[VS Code](https://code.visualstudio.com) + GitHub Copilot**      | Microsoft's editor with GitHub's AI extensions. Huge ecosystem, deep enterprise support.                                                                                       | Anyone already in the Microsoft / GitHub world.                                                 | Editor is free; Copilot is paid.                 |
+| **[Zed](https://zed.dev)**                                         | A newer, very fast editor with AI integration built in. Mac-first; Linux supported.                                                                                            | Performance-sensitive users; people who liked Sublime Text.                                     | Free; AI features bring-your-own-key.            |
+| **JetBrains IDEs + AI Assistant / Junie**                          | IntelliJ, WebStorm, PyCharm, etc., with the JetBrains AI extension or the Junie agent.                                                                                         | Existing JetBrains users; teams already on those tools.                                         | IDE has free and paid tiers; AI is paid.         |
+| **[OpenAI Codex](https://openai.com/codex/)**                      | OpenAI's coding agent family: CLI, IDE extension, desktop, web, and cloud. Similar shape to Claude Code.                                                                       | Terminal-native developers; comes from the OpenAI side.                                         | Bundled with OpenAI subscription.                |
+| **[Aider](https://aider.chat) / [Continue](https://continue.dev)** | Open-source CLI / VS Code extension that talk to whichever LLM you point them at.                                                                                              | Hobbyists; privacy-conscious builders running local LLMs.                                       | Free, MIT-licensed.                              |
 
 ## What to look for in an IDE
 
 A few criteria worth applying when you choose:
 
-1. **MCP support.** The Model Context Protocol is how agents pull in external context — like the ContextQB methodology. If you want your agent to read principles and playbooks by URI, you want an IDE that speaks MCP. Cursor, Claude Desktop, VS Code (with extensions), Windsurf, and Zed all support it as of 2026.
-2. **Agent mode quality.** "Chat with the editor" is table stakes. The differentiator is the agent mode — can the AI loop on a task, run shell commands, edit multiple files, and report back? Cursor and Windsurf lead here; Claude Code and Codex CLI are the terminal equivalents.
+1. **MCP support.** The Model Context Protocol is how agents pull in external context — like the ContextQB methodology. As of late 2026 this is table stakes: every major agentic tool (Cursor, Claude Code, Codex, Devin Desktop, Antigravity, VS Code, Zed) speaks it.
+2. **Agent mode quality.** "Chat with the editor" is table stakes. The differentiator is the agent mode — can the AI loop on a task, run shell commands, edit multiple files, and report back? Cursor and Claude Code lead here; the newer command centers (Devin Desktop, Antigravity) add multi-agent fleets on top.
 3. **Model picker.** Are you locked into one LLM, or can you swap (Claude for hard reasoning, GPT for fast edits, Gemini for big context)? Most modern IDEs let you choose.
 4. **Bring-your-own-key.** Can you plug in your own API key to bypass the IDE's subscription? Useful if you already have credits with a provider, or if you want to run a local model.
 5. **Privacy posture.** Does the IDE send your code to its servers? Does it train on your data by default? Most vendors offer enterprise tiers that turn these off — read the privacy page before pasting in secrets. (Spoiler: even with privacy mode on, don't paste secrets. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github) for why.)
@@ -90,13 +91,13 @@ A few criteria worth applying when you choose:
 
 The deeper version of this section is in [Understanding LLMs](contextqb://guides/understanding-llms). The short version:
 
-| Family                                           | Who makes it        | Where it shines                                                                                                      |
-| ------------------------------------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Claude** (Opus, Sonnet, Haiku)                 | Anthropic           | Long reasoning chains, code review, careful refactoring, agentic loops. The default many builders reach for in 2026. |
-| **GPT** (5, 5.1)                                 | OpenAI              | Fast iteration, broad capability, strong "instruction following." Big ecosystem of tools and integrations.           |
-| **Gemini** (3.x)                                 | Google              | Massive context windows, multimodal (handles images well), competitive on reasoning.                                 |
-| **Grok**                                         | xAI                 | Less common for serious coding work; tied to X's data.                                                               |
-| **Open-source** (Llama, Qwen, DeepSeek, Mistral) | Various / community | Free if you run them locally; lower-quality than frontier closed models but usable for many tasks.                   |
+| Family                                                | Who makes it        | Where it shines                                                                                                      |
+| ----------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Claude** (Fable, Opus, Sonnet, Haiku)               | Anthropic           | Long reasoning chains, code review, careful refactoring, agentic loops. The default many builders reach for in 2026. |
+| **GPT** (6 Astra; 5.6 Sol / Terra / Luna)             | OpenAI              | Fast iteration, broad capability, strong "instruction following." Big ecosystem of tools and integrations.           |
+| **Gemini** (3.x — Flash, Flash-Lite, Pro, Deep Think) | Google              | Massive context windows, multimodal (handles images well), competitive on reasoning.                                 |
+| **Grok**                                              | xAI                 | Built into Cursor as its in-house model line; much more common for coding than it used to be.                        |
+| **Open-source** (Llama, Qwen, DeepSeek, Mistral)      | Various / community | Free if you run them locally; lower-quality than frontier closed models but usable for many tasks.                   |
 
 You don't need to understand every model. Pick one provider to start, do real work with it for a couple of weeks, and you'll develop intuition about when to reach for something else. Most builders end up using 2–3 models regularly.
 
@@ -106,7 +107,7 @@ Three patterns. Pick whichever your chosen IDE supports:
 
 ### Pattern A — IDE-bundled subscription (simplest)
 
-You pay the IDE vendor a flat monthly fee. They include access to the LLMs they've negotiated with. Cursor's Pro plan, GitHub Copilot, Windsurf's plans all work this way.
+You pay the IDE vendor a flat monthly fee. They include access to the LLMs they've negotiated with. Cursor's Individual plan, GitHub Copilot, and Devin Desktop's plans all work this way.
 
 - **Pros:** One bill. No API keys to manage. The IDE picks sensible defaults.
 - **Cons:** You're at the IDE vendor's mercy on which models they offer and at what daily limits. Heavy users can hit caps.
@@ -139,7 +140,7 @@ Most builders start with Pattern A, graduate to Pattern B once they have a model
 If you want a single, opinionated answer:
 
 1. **IDE:** [Cursor](https://cursor.com). Free tier is generous; Pro is $20/month if you want more. Excellent agent mode. Strong MCP support.
-2. **LLM:** [Claude](https://claude.com) via Anthropic. Sonnet 4.x for most tasks; Opus for hard reasoning. (Both are available inside Cursor on its subscription.)
+2. **LLM:** [Claude](https://claude.com) via Anthropic. Sonnet 5 for most tasks; Opus 5 for hard reasoning (Fable 5.1 for genuinely long-horizon agentic work). (Both are available inside Cursor on its subscription.)
 3. **Integration:** Stay on Cursor's bundled subscription for the first month. You'll develop a feel for whether you need more control.
 4. **MCP:** Install the [ContextQB MCP](https://contextqb.com/mcp) — five minutes — and your agent has the methodology corpus from session one.
 
@@ -149,8 +150,8 @@ This is the setup most ContextQB writing is tested against. It's not the only ri
 
 Rough numbers as of mid-2026 (last verified 2026-09; these change — check current pricing before deciding):
 
-- **Bundled IDE plans:** $10–30/month, sometimes with a free tier. Cursor Pro, GitHub Copilot, Windsurf Pro all sit in this range. Heavy use can require higher tiers ($40–100/month) for unlimited fast requests.
-- **Pay-per-token, frontier models:** Roughly $3–15 per million input tokens, $15–75 per million output tokens. A typical day of agentic coding (asking lots of questions, having the agent edit files) might run $1–10 in usage. A single agent loop that re-reads a large codebase several times can easily hit $5–20 by itself if you're not paying attention.
+- **Bundled IDE plans:** $10–30/month, sometimes with a free tier. Cursor Individual ($20/mo), Devin Desktop Pro ($20/mo), and GitHub Copilot all sit in this range. Heavy use can require higher tiers ($40–200/month) for unlimited fast requests or fleet features.
+- **Pay-per-token, frontier models:** Roughly $2–10 per million input tokens, $10–50 per million output tokens (e.g. Claude Opus 5 is $5/$25; GPT-6 Astra $10/$50). A typical day of agentic coding (asking lots of questions, having the agent edit files) might run $1–10 in usage. A single agent loop that re-reads a large codebase several times can easily hit $5–20 by itself if you're not paying attention.
 - **Pay-per-token, smaller/faster models:** Often 10x cheaper. Useful for routine tasks where reasoning depth doesn't matter.
 - **Local LLMs:** Free in API cost. You pay in setup time, hardware (a recent Apple Silicon Mac or a machine with a decent GPU helps), and lower quality.
 
@@ -161,7 +162,7 @@ Two practical habits worth adopting:
 
 ## You can change your mind later
 
-The single most important property of this whole space: **nothing you choose here is permanent**. Your code lives in git, not in the IDE. Your prompts and principles live in Markdown, not in any one vendor's system. If Cursor changes its pricing in a way you don't like, you can be on Windsurf in twenty minutes with the same project. If Claude's reasoning ability stops feeling right, you can be on GPT in one settings change.
+The single most important property of this whole space: **nothing you choose here is permanent**. Your code lives in git, not in the IDE. Your prompts and principles live in Markdown, not in any one vendor's system. If Cursor changes its pricing in a way you don't like, you can be on Devin Desktop or Antigravity in twenty minutes with the same project. If Claude's reasoning ability stops feeling right, you can be on GPT in one settings change.
 
 Resist the urge to research every option to perfection before starting. Pick something plausible, work in it for two weeks, then evaluate. You'll learn more by using one tool than by reading reviews of all five.
 

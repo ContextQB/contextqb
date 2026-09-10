@@ -5,7 +5,7 @@ summary: >-
   A field guide to the models you'll work with. Each LLM has a working style you
   learn over time: strengths, costs, recurring quirks, and failure modes you can
   plan around.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -33,7 +33,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: version-pinned model table carries a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
+  reviewer_notes: "F-19: September stack verification executed — family table, tiers, and heuristics updated to current vendor lineups (GPT-6 Astra / 5.6 family; Claude Opus 5 + Fable 5.1; Gemini 3.x tiers; Grok now Cursor-in-house). REVIEWED. F-09 addressed 2026-09-09: version-pinned model table carries a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
 ---
 
 # Understanding LLMs
@@ -48,21 +48,21 @@ Knowing the landscape — even at the level of "Claude is good at long careful r
 
 ## The major families in 2026
 
-_(Version-pinned content — last verified 2026-09. Model names and tiers move fast; re-verify before quoting at anyone.)_
+_(Version-pinned content — verified 2026-09 against vendor docs. Model names and tiers move fast; re-verify before quoting at anyone.)_
 
-| Family                                                 | Maker               | What it's known for                                                                                                                                                                        | Watch for                                                                                                                     |
-| ------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Claude** (Opus, Sonnet, Haiku)                       | Anthropic           | Long chains of careful reasoning. Strong at refactoring, code review, agentic loops that need to follow many steps without losing the plot. The default many ContextQB builders reach for. | Tends to over-explain. Can be verbose in chat; reins itself in nicely in agent mode.                                          |
-| **GPT** (5, 5.1)                                       | OpenAI              | Fast, broad capability. Excellent instruction following. Very good at routine edits, generating boilerplate, mapping between formats. Huge integrations ecosystem.                         | Can sound more confident than it should. The line between "knows" and "guesses" is thinner than with Claude.                  |
-| **Gemini** (3.x)                                       | Google              | Enormous context windows — useful when you need to feed a whole codebase or a long document. Strong multimodal capability (handles images well).                                           | The behavior of long-context retrieval can be uneven; what's in context isn't always reasoned about evenly across the window. |
-| **Grok**                                               | xAI                 | Less common for serious coding work. Tightly tied to X's data and ecosystem.                                                                                                               | Quality has moved fast but isn't yet differentiated for typical builder workflows.                                            |
-| **Open-source** (Llama, Qwen, DeepSeek, Mistral, etc.) | Various / community | Run them locally for free; meaningfully behind the frontier closed models but rapidly closing the gap.                                                                                     | Quality varies wildly by model size. A laptop-runnable model is not a Claude-Opus replacement.                                |
+| Family                                                 | Maker               | What it's known for                                                                                                                                                                                                                           | Watch for                                                                                                                     |
+| ------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Claude** (Fable, Opus, Sonnet, Haiku)                | Anthropic           | Long chains of careful reasoning. Strong at refactoring, code review, agentic loops that need to follow many steps without losing the plot. The default many ContextQB builders reach for. Fable is the long-horizon agentic tier above Opus. | Tends to over-explain. Can be verbose in chat; reins itself in nicely in agent mode.                                          |
+| **GPT** (6 Astra; 5.6 Sol / Terra / Luna)              | OpenAI              | Fast, broad capability. Excellent instruction following. Very good at routine edits, generating boilerplate, mapping between formats. Huge integrations ecosystem (Codex CLI, cloud, desktop).                                                | Can sound more confident than it should. The line between "knows" and "guesses" is thinner than with Claude.                  |
+| **Gemini** (3.x — Flash, Flash-Lite, Pro, Deep Think)  | Google              | Enormous context windows — useful when you need to feed a whole codebase or a long document. Strong multimodal capability (handles images well). Flash is the agentic workhorse tier.                                                         | The behavior of long-context retrieval can be uneven; what's in context isn't always reasoned about evenly across the window. |
+| **Grok**                                               | xAI                 | Now built into Cursor as its in-house model line (alongside Cursor's own Composer). Much more common for coding work than it used to be.                                                                                                      | Heavily integrated with the Cursor/X ecosystem; less portable as a habit elsewhere.                                           |
+| **Open-source** (Llama, Qwen, DeepSeek, Mistral, etc.) | Various / community | Run them locally for free; meaningfully behind the frontier closed models but rapidly closing the gap.                                                                                                                                        | Quality varies wildly by model size. A laptop-runnable model is not a Claude-Opus replacement.                                |
 
 Within each family there's typically a tier:
 
-- **Opus / GPT-5 / Gemini Pro / large open models** — the careful, expensive ones. Use for hard reasoning.
-- **Sonnet / GPT-5-mini / Gemini Flash / mid open models** — the workhorses. Use for most tasks.
-- **Haiku / GPT-5-nano / Gemini Nano / small open models** — the fast cheap ones. Use for routine work, formatting, classification, anything that doesn't need depth.
+- **Opus 5 / Fable 5.1 / GPT-6 Astra / Gemini Pro / large open models** — the careful, expensive ones. Use for hard reasoning.
+- **Sonnet 5 / GPT-5.6 Sol or Terra / Gemini Flash / mid open models** — the workhorses. Use for most tasks.
+- **Haiku 4.5 / GPT-5.6 Luna / Gemini Flash-Lite / small open models** — the fast cheap ones. Use for routine work, formatting, classification, anything that doesn't need depth.
 
 Most builders end up using two to three models regularly — usually a careful one for hard tasks and a fast one for everything else.
 
@@ -106,10 +106,10 @@ These are starting points, not rules. You'll override them based on your own fee
 
 | Situation                                                | Lean toward                                                                                                                                                                                   |
 | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Designing the data model or a new feature from scratch   | A frontier reasoning model (Claude Opus, GPT-5, Gemini Pro). The cost of being wrong is high.                                                                                                 |
-| Long agentic refactor — many files, many steps           | Claude (Sonnet or Opus). Strong on staying on-task through long loops.                                                                                                                        |
+| Designing the data model or a new feature from scratch   | A frontier reasoning model (Claude Opus 5 or Fable 5.1, GPT-6 Astra, Gemini Pro). The cost of being wrong is high.                                                                            |
+| Long agentic refactor — many files, many steps           | Claude (Sonnet 5, or Fable 5.1 for genuinely long-horizon work). Strong on staying on-task through long loops.                                                                                |
 | Routine edits, renames, formatting fixes                 | A mid-tier or small model. Cheap, fast, sufficient.                                                                                                                                           |
-| Reviewing a large document or codebase you've never seen | Gemini Pro for the context size; Claude Opus if the document is gnarly and needs careful reading.                                                                                             |
+| Reviewing a large document or codebase you've never seen | Gemini (1M+ window) for the context size; Claude Opus 5 if the document is gnarly and needs careful reading.                                                                                  |
 | Anything security-critical                               | A frontier reasoning model, and apply the [security-critical code review prompt](contextqb://prompts/security-critical-code-review). Don't skimp on the model when the cost of error is high. |
 | Generating boilerplate, scaffolding, type stubs          | A mid-tier or small model. This is what they're cheap for.                                                                                                                                    |
 | You don't know which to use                              | Whichever your IDE has set as default. Try the task. Switch if it feels wrong.                                                                                                                |

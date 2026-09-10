@@ -2,7 +2,7 @@
 eyebrow: MCP
 headline: Give your agent the ContextQB playbook.
 subhead: >-
-  Add the ContextQB MCP to Cursor, Claude Desktop, Windsurf, or any MCP-aware
+  Add the ContextQB MCP to Cursor, Claude Code, Devin Desktop, Antigravity, or any MCP-aware
   tool. Your agent gets access to every guide, briefing, principle, playbook,
   audit, and prompt on this site, addressable by URI.
 meta_title: MCP
@@ -11,11 +11,13 @@ meta_description: >-
   playbooks, audits, and prompts into the work by URI.
 review:
   status: final
-  last_reviewed: "2026-05-27"
-  reviewer: "agent:cooperative-flow-tranche-c"
+  last_reviewed: "2026-09-09"
+  reviewer: "epistemology-review (stack-verification pass)"
   reviewer_notes: |-
-    Added "Pair with the data cooperative" section and documented the four
-    community_* tools per §5.2 of the cooperative flow scope.
+    Tool list updated for the Sept-2026 stack (Windsurf → Devin Desktop; added
+    Claude Code + Antigravity). Earlier: added "Pair with the data cooperative"
+    section and documented the four community_* tools per §5.2 of the
+    cooperative flow scope.
 ---
 
 ## What it exposes

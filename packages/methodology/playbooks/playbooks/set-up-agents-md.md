@@ -50,7 +50,7 @@ related:
 
 ## Why AGENTS.md specifically
 
-Agentic tools across the ecosystem — Cursor, Claude Desktop, Aider, OpenAI Codex CLI, and others — have converged on `AGENTS.md` as a convention. Many auto-load it. All of them work better when a user can say "read AGENTS.md first."
+Agentic tools across the ecosystem — Cursor, Claude Code, OpenAI Codex, Aider, Zed, and others — have converged on `AGENTS.md` as a convention. It is now stewarded as an open standard (the Agentic AI Foundation, under the Linux Foundation) and auto-loaded by default across the major tools. Even where a tool prefers its own file (Claude Code's `CLAUDE.md`), it recognises `AGENTS.md`.
 
 Even without tool integration, the file pays for itself because it gives you a stable thing to point at: "before working on this, read AGENTS.md."
 

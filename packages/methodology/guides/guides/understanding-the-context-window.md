@@ -2,7 +2,7 @@
 id: understanding-the-context-window
 title: Understanding the Context Window
 summary: ContextQB is named for this. The context window is the agent's working memory — finite, lossy, and the most important variable in agentic coding. Understanding how it behaves is the difference between an agent that helps you and one that forgets what you told it five minutes ago.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: IDE matrix + context-size table carry last-verified notes (I7 convention).Flagship; R3, R4, R6, R7 pass. Open: F-09 (mid-2026 IDE matrix + context-size table decay by design — verify), F-06 (4 links). R8 pending P4."
+  reviewer_notes: "F-19: context sizes updated (frontier now ~1M), IDE matrix rebuilt (Devin Desktop rename, Antigravity added, Claude Code auto memory + background agents noted). REVIEWED. R3, R4, R6, R7 pass; flagship. F-09 resolved 2026-09-09 by the September stack-verification pass: context sizes, IDE matrix (Devin Desktop rename, Antigravity added, auto memory noted), and model handling updated to current vendor docs. R8 passed P4."
 ---
 
 # Understanding the Context Window
@@ -57,14 +57,14 @@ Imagine a worktable. The agent — the LLM — can only work with what's on the 
 
 The **context window** is the maximum amount of text that fits on the table. It's measured in **tokens** — roughly three-quarters of a word per token. Different models have different table sizes:
 
-| Model family            | Typical context size (mid-2026; last verified 2026-09) |
-| ----------------------- | ------------------------------------------------------ |
-| Claude (frontier)       | 200K tokens                                            |
-| GPT (frontier)          | 200K–400K tokens                                       |
-| Gemini                  | 1M+ tokens                                             |
-| Most open-source models | 8K–128K tokens                                         |
+| Model family            | Typical context size (verified 2026-09)                  |
+| ----------------------- | -------------------------------------------------------- |
+| Claude (frontier)       | 1M tokens (Opus 5 / Sonnet 5 / Fable 5.1); 200K on Haiku |
+| GPT (frontier)          | ~1M tokens (GPT-6 Astra and the GPT-5.6 family)          |
+| Gemini                  | 1M+ tokens                                               |
+| Most open-source models | 32K–256K tokens (some newer ones reach 1M)               |
 
-For perspective: 200K tokens is roughly 150,000 words, or about three average-length novels. That sounds enormous. In practice, you'll be surprised how fast it fills.
+For perspective: 200K tokens is roughly 150,000 words, or about three average-length novels — and frontier windows are now five times that. That sounds enormous. In practice, you'll be surprised how fast it fills: a whole-codebase read, a long session's history, and a few tool results can eat a megatoken window faster than you'd think.
 
 ## What lives in the context
 
@@ -140,7 +140,7 @@ Every session should start with the agent reading two things:
 - **[`AGENTS.md`](contextqb://playbooks/set-up-agents-md)** — operating instructions for the repo. What the project is, what conventions matter, what the agent should and shouldn't do.
 - **[`context.qb.yaml`](contextqb://playbooks/write-a-context-qb)** — the boot manifest. The project's map in a structured, machine-readable form.
 
-Together these are typically under 2,000 tokens — about 1% of a typical context window. They prime the agent with what it needs to make good decisions for the rest of the session. Modern IDEs (Cursor, Claude Code, Windsurf, etc.) read these automatically.
+Together these are typically under 2,000 tokens — about 1% of a typical frontier context window. They prime the agent with what it needs to make good decisions for the rest of the session. Modern IDEs (Cursor, Claude Code, Devin Desktop, Antigravity, etc.) read these automatically.
 
 ### 2. Write decisions down so the table can re-load them
 
@@ -194,25 +194,27 @@ Four patterns recur across the landscape. Recognising them is more useful than m
 
 **4. Explicit context controls** (also called @-mentions, slash commands, or pins). Manual tools you use to say "load _this_ file, _these_ functions, _that_ documentation page" into the current context. Every modern IDE has some version of this. They are the most precise tool but the most labour-intensive.
 
-### How the major IDEs implement them (mid-2026; last verified 2026-09 — vendor features move fast)
+### How the major IDEs implement them (verified 2026-09 — vendor features move fast)
 
-| IDE                             | Compaction                                                 | Codebase indexing                                       | Persistent memory                                                                     | Explicit controls                                            |
-| ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **Cursor**                      | Automatic session summarization at long-context thresholds | Built-in codebase indexing (semantic + symbolic)        | Rules files (`AGENTS.md`, `.cursorrules`) plus lightweight memories                   | `@file`, `@folder`, `@codebase`, `@docs`, `@web`, `@git`     |
-| **Claude Code**                 | `/compact` (manual) plus auto-compact at threshold         | Native file / grep / glob tools instead of an index     | Project rules in `CLAUDE.md` (and now `AGENTS.md`); subagents preserve scoped context | Slash commands, `@`-mentions, MCP for everything else        |
-| **Windsurf**                    | Cascade auto-summarization within long sessions            | Live codebase awareness, real-time indexing             | **Memories** — explicit long-term notes the agent maintains across sessions           | `@`-mentions, pins, Cascade flow controls                    |
-| **GitHub Copilot (in VS Code)** | Limited automatic summarization                            | Workspace indexing (`@workspace`)                       | Custom instructions in `.github/copilot-instructions.md`                              | `@workspace`, `@terminal`, `@vscode`, slash commands         |
-| **Aider**                       | Token-budget-aware truncation                              | **Repo-map** — a compact symbolic summary of every file | None native                                                                           | `/add`, `/drop`, `/clear`, `/tokens` for explicit management |
-| **Continue**                    | Customizable per provider                                  | Plugs into your choice of indexer                       | Context providers can be persistent                                                   | Highly customizable `@`-mentions and slash commands          |
-| **Zed**                         | Minimal — relies on user control                           | Project search rather than full RAG                     | None native                                                                           | Slash commands and explicit file mentions                    |
-| **JetBrains AI Assistant**      | Limited                                                    | Project-wide indexing for relevant files                | None native                                                                           | `#`-mentions and project context selectors                   |
-| **Claude Desktop**              | Per-conversation                                           | None (it's a chat client, not a code IDE)               | **Claude Projects** — pinned files plus instructions per project                      | Project files, MCP resources                                 |
+| IDE                                   | Compaction                                                                                                   | Codebase indexing                                       | Persistent memory                                                                                                                             | Explicit controls                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **Cursor**                            | Automatic session summarization at long-context thresholds                                                   | Built-in codebase indexing (semantic + symbolic)        | Rules files (`AGENTS.md`, `.cursorrules`) plus memories; skills and hooks extend them                                                         | `@file`, `@folder`, `@codebase`, `@docs`, `@web`, `@git`     |
+| **Claude Code**                       | `/compact` (manual) plus auto-compact at threshold                                                           | Native file / grep / glob tools instead of an index     | Project rules in `CLAUDE.md` (and `AGENTS.md`); **auto memory** saves learnings across sessions on its own; subagents preserve scoped context | Slash commands, `@`-mentions, MCP for everything else        |
+| **Devin Desktop** (formerly Windsurf) | Automatic compaction; multi-agent command center (Spaces) keeps shared context across local and cloud agents | Live codebase awareness, real-time indexing             | Memories plus Spaces (shared context across a fleet of agents)                                                                                | `@`-mentions, pins, agent-task controls                      |
+| **Google Antigravity**                | Automatic summarization in long sessions                                                                     | Built-in codebase indexing                              | Rules files and agent instructions                                                                                                            | `@`-mentions, agent manager surfaces                         |
+| **GitHub Copilot (in VS Code)**       | Limited automatic summarization                                                                              | Workspace indexing (`@workspace`)                       | Custom instructions in `.github/copilot-instructions.md`; `AGENTS.md` supported                                                               | `@workspace`, `@terminal`, `@vscode`, slash commands         |
+| **Aider**                             | Token-budget-aware truncation                                                                                | **Repo-map** — a compact symbolic summary of every file | None native                                                                                                                                   | `/add`, `/drop`, `/clear`, `/tokens` for explicit management |
+| **Continue**                          | Customizable per provider                                                                                    | Plugs into your choice of indexer                       | Context providers can be persistent                                                                                                           | Highly customizable `@`-mentions and slash commands          |
+| **Zed**                               | Minimal — relies on user control                                                                             | Project search rather than full RAG                     | None native                                                                                                                                   | Slash commands and explicit file mentions                    |
+| **JetBrains (AI Assistant / Junie)**  | Limited                                                                                                      | Project-wide indexing for relevant files                | None native; Junie reads `AGENTS.md`                                                                                                          | `#`-mentions and project context selectors                   |
+| **Claude Desktop**                    | Per-conversation                                                                                             | None (it's a chat client, not a code IDE)               | **Claude Projects** — pinned files plus instructions per project                                                                              | Project files, MCP resources                                 |
 
 A few specific patterns worth calling out by name:
 
 - **Cursor's automatic summarization** is the most opaque mechanism in the table. It happens silently during long sessions — the IDE detects you're approaching limits and compacts older turns into a summary. You usually don't see it happen; you only notice the side effects (the agent "forgetting" something specific you said earlier). The fix is the same as hitting a hard limit: restart with proper primers.
 - **Claude Code's `/compact`** is the inverse — explicit, user-triggered. You decide when to compact, you can see the summary it produced, and you can edit it before continuing. More work; more control.
-- **Windsurf's Memories** is the most ambitious attempt at persistent agent memory in 2026. It works well for short pinned facts ("the user prefers ESM imports", "we deploy to Cloudflare Workers") but isn't yet a replacement for `AGENTS.md` for project-level rules.
+- **Devin Desktop's Spaces** (the former Windsurf) is the most ambitious attempt at shared agent memory in 2026: context persists across a whole fleet of local and cloud agents, not just one session. Powerful for teams running many agents; overkill if you run one agent in one project — `AGENTS.md` is still the load-bearing primer there.
+- **Claude Code's auto memory** is the other big 2026 shift: the agent saves learnings across sessions on its own, without you writing anything. Genuinely useful; also a drift risk — a wrong learned "fact" persists until someone reviews it. Treat auto-saved memories as drafts that earn promotion into `AGENTS.md`.
 - **Aider's repo-map** is a structurally different solution. Instead of indexing chunks for retrieval, it sends a compact symbolic outline of the whole repo (function signatures, class names, file structure) so the model has _shape_ without _content_. The agent asks for specific files only when it needs them. Old idea; still effective.
 - **Claude Desktop's Projects** behaves like a per-project context container: pinned files, instructions, and a knowledge base that any conversation inside the project sees automatically. The closest analogue to a stable boot primer in a chat-first product.
 
@@ -221,7 +223,7 @@ A few specific patterns worth calling out by name:
 No IDE in 2026 fully solves the context window problem. Each one solves _part_ of it, and the part it solves changes how you should layer the strategies from the previous section:
 
 - If your IDE has **strong codebase indexing** (Cursor, Copilot), you can write a thinner `AGENTS.md` because the IDE will find code on demand. But you still need primers for the things that aren't in the code — your priorities, your tone preferences, your "don't ever do X" rules.
-- If your IDE has **automatic compaction** (Cursor, Windsurf), you can have longer sessions before things degrade — but the compaction is lossy, so the "restart deliberately" habit still matters. The IDE delays the failure; it doesn't eliminate it.
+- If your IDE has **automatic compaction** (Cursor, Devin Desktop, Antigravity), you can have longer sessions before things degrade — but the compaction is lossy, so the "restart deliberately" habit still matters. The IDE delays the failure; it doesn't eliminate it.
 - If your IDE has **explicit controls only** (Aider, Zed), you need _more_ discipline, not less. Every file load is a choice you have to make. The upside: you always know exactly what's on the table.
 - If your IDE supports **MCP** (most modern ones now do), the [ContextQB MCP](contextqb://playbooks/build-mcp-for-project-context) plus any project-specific MCP servers give you the most precise context-loading mechanism available — pull specific resources by URI, only when needed.
 
@@ -233,10 +235,10 @@ The methodology from the previous section is designed to be IDE-agnostic. Boot p
 
 Like with [personalities](contextqb://guides/understanding-llms), each model has a context-handling style:
 
-- **Claude** — generally strong at long context, especially when content is well-structured (markdown with clear headers, named sections). The "lost in the middle" effect is real but less severe than in some peers. Good for long agentic loops.
+- **Claude** — generally strong at long context, with a full 1M-token window on the current frontier models (Opus 5, Sonnet 5, Fable 5.1). Especially strong when content is well-structured (markdown with clear headers, named sections). The "lost in the middle" effect is real but less severe than in some peers. Good for long agentic loops — Fable 5.1 exists precisely for those.
 - **GPT** — competitive on long context. Has a tendency to "forget" stylistic instructions or constraints when they're buried mid-context. Better at retrieving specific facts than at maintaining a complex persona across a long window.
 - **Gemini** — the largest windows in 2026 (1M+). Be careful: "in the window" is not "well-attended-to." Excellent for needle-in-haystack tasks, less so for whole-window reasoning.
-- **Local / open-source models** — typically much smaller windows (8K–128K). You have to be more selective about what loads. Disciplined context management is _mandatory_ if you're running these.
+- **Local / open-source models** — typically much smaller windows (32K–256K, with some newer models reaching 1M). You have to be more selective about what loads. Disciplined context management is _mandatory_ if you're running these.
 
 Match the model to the shape of the work. A massive whole-codebase context-load benefits from Gemini's window. A long, careful refactor benefits from Claude's attention quality. A series of targeted small tasks doesn't need a huge window at all.
 
