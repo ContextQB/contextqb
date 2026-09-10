@@ -29,6 +29,7 @@ related:
   - setting-up-git-and-github
   - the-mental-model-of-your-app
   - understanding-the-context-window
+  - run-a-multi-agent-workflow
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture

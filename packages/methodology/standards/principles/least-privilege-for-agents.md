@@ -28,6 +28,7 @@ related:
   - state-ownership
   - triage-your-secrets
   - untrusted-by-default
+  - run-a-multi-agent-workflow
 anti_patterns:
   - One MCP server exposes a single "do_anything" tool the agent always calls.
   - The agent has filesystem write access to the entire repo, including .env and secrets.
