@@ -33,10 +33,10 @@ next_steps:
   - Create your first repo and make your first commit.
   - Adopt the commit-before-and-after-the-agent rhythm.
 review:
-  status: needs-polish
+  status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R5, R7 pass. Open: F-08 (cites 'Refactor With Duplicates, Not Overwrites' as a named ContextQB habit; no such atom — G-11), F-06 (4 links). R8 pending P4."
+  reviewer_notes: "R3–R5, R7 pass. F-08 resolved 2026-09-09 (Q1 authored refactor-with-duplicates; both citations are now real links). F-06 resolved by R-02. R8 passed P4."
 ---
 
 # Setting Up Git and GitHub
