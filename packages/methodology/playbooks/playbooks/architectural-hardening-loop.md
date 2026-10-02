@@ -2,7 +2,7 @@
 id: architectural-hardening-loop
 title: Run an Architectural Hardening Loop on a Drifted Codebase
 summary: A repeating planner-executor loop that converges an AI-built codebase back toward governed architectural invariants — without a rewrite, and without trusting an agent's own claim that work is done.
-version: 0.1.1
+version: 0.1.5
 problem: |
   Codebases built across hundreds of agent sessions drift away from their own foundations. A one-shot audit cannot hold — the next 100 turns will undo it. You need a continuous loop that hardens the system faster than entropy returns to it.
 when_to_use: |
@@ -26,8 +26,8 @@ related_principles:
   - failure-modes
   - maintainability
   - orchestration
-  - state-ownership
   - refactor-with-duplicates
+  - state-ownership
 tags:
   - audit
   - refactor
@@ -38,10 +38,15 @@ related:
   - architecture-review
   - feature-build-loop
   - refactor-planning
+  - review-an-agent-workstream
   - run-a-multi-agent-workflow
+  - run-an-agent-workstream
+  - work-with-agents-through-documentation
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase
+
+The living audit and tranche history provide this loop's technical governance. If you also track the broader objective, authority, cross-cutting decisions, and continuity across hardening passes, the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method describes one shared record for doing so.
 
 This playbook is for a specific situation: you started a project with a clear structure, built features with AI agents over many sessions, and the codebase has slowly drifted. Components have grown. State ownership is unclear. Two different ways to do the same thing have appeared. A bug in one place is connected to a bug somewhere else for reasons no one remembers.
 

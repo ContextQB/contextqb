@@ -2,7 +2,7 @@
 id: documentation-as-architecture
 title: Documentation as Architecture
 summary: In the agentic era, documentation is not a byproduct of building — it is load-bearing. Agents re-derive context on every call; without explicit docs, every prompt starts from zero.
-version: 0.1.1
+version: 0.1.5
 category: documentation
 audience:
   - novice-builder
@@ -29,8 +29,10 @@ agent_instructions:
   - When you change behaviour described in documentation, update the documentation in the same change.
   - If a section of documentation is contradicted by the current code, flag it. Do not silently make the code match the docs or vice versa — surface the drift.
 related:
+  - agents-md-vs-readme
   - append-dont-overwrite
   - architectural-hardening-loop
+  - audit-a-workstream-record
   - context-quarterback-the-onboarding-map
   - detect-security-drift
   - documentation-file-naming
@@ -39,8 +41,10 @@ related:
   - feature-build-loop
   - maintainability
   - naming-conventions
+  - operations-baseline
   - product-engineering-alignment
   - retrofit-drift-detection
+  - run-an-agent-workstream
   - secrets-have-provenance
   - security-drift-is-the-real-threat
   - security-regression
@@ -50,13 +54,12 @@ related:
   - set-up-drift-detection
   - setting-up-git-and-github
   - the-mental-model-of-your-app
+  - the-plan-is-the-contract
   - understanding-the-context-window
   - what-an-application-is
+  - work-with-agents-through-documentation
   - write-a-context-qb
   - write-an-adr
-  - the-plan-is-the-contract
-  - operations-baseline
-  - agents-md-vs-readme
 
 ---
 
@@ -112,6 +115,8 @@ See the [`write-an-adr`](contextqb://playbooks/write-an-adr) playbook.
 Distinct from ADRs, architecture overviews describe the _current_ shape of the system: package boundaries, data flow, the runtime surface. They answer "what does this look like today?" rather than "why did we decide it this way?"
 
 These are typically short — one page per area — and live alongside ADRs. The ADRs are the historical record; the overviews are the snapshot.
+
+These four are the project's foundation surfaces. Process records for work in motion, such as scopes, handoffs, and, when an objective spans passes or sessions, a workstream record, are built on top of them. A workstream record carries a continuing objective, approved scopes, evidence, decisions, and next action, while pointing back to the relevant ADRs and current architecture. It extends the documentation system for work in motion; it does not replace or add a competing architectural canon. See [Work With Agents Through Documentation](contextqb://guides/work-with-agents-through-documentation) for the operator-facing habit.
 
 ## Why this matters more in agentic dev
 

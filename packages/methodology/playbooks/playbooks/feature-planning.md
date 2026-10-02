@@ -2,7 +2,7 @@
 id: feature-planning
 title: Plan a Feature Before Letting the Agent Code
 summary: A structured planning prompt that produces a feature brief, surface map, state plan, and risk list — before any code is written.
-version: 0.1.1
+version: 0.1.4
 problem: |
   Letting an agent jump straight to code on a non-trivial feature almost guarantees that pieces are added in the wrong places, state ownership is unclear, and edge cases are missed.
 when_to_use: |
@@ -23,6 +23,8 @@ related:
   - feature-build-loop
   - the-mental-model-of-your-app
   - scope-vs-punchlist
+  - work-with-agents-through-documentation
+  - run-an-agent-workstream
 related_principles:
   - modularity
   - orchestration
@@ -36,6 +38,8 @@ tags:
 ---
 
 # Plan a Feature Before Letting the Agent Code
+
+This playbook is a feature-specific planning procedure. When the feature is part of a longer effort tracked with the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method, the approved feature brief serves as the scope inside that workstream. For infrastructure, research, content, or other objectives, adapt that general method instead of forcing the work into a feature brief.
 
 The single highest-leverage habit for AI-assisted development is to plan before generating.
 
