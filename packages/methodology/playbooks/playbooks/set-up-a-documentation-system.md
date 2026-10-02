@@ -2,11 +2,11 @@
 id: set-up-a-documentation-system
 title: Set Up a Documentation System for Your Project
 summary: Scaffold the small, deliberate set of documentation surfaces your project needs from day one — sized for an operator with one agent today, ready to grow into a team-sized doc system later without restructuring.
-version: 0.1.1
+version: 0.1.5
 problem: |
   Without an intentional documentation system, every project drifts into one of two failure modes: a sprawling "docs/" folder no one reads, or no documentation at all. Both leave the agent reinventing the project on every prompt. The cost is paid in every session, not at some far-off handoff.
 when_to_use: |
-  At the very start of a new project, alongside `set-up-agents-md` and `write-a-context-qb`. Also: at the start of a new major feature or subsystem, when a new documentation surface (a scope, a runbook, a post-mortem) is about to appear for the first time.
+  At the very start of a new project, alongside `set-up-agents-md` and `write-a-context-qb`. Also: at the start of a new major objective or subsystem, when a new documentation surface (a workstream, scope, runbook, or post-mortem) is about to appear for the first time.
 expected_outputs:
   - A documented set of audience surfaces (AGENTS.md, ADRs, architecture overviews, operator-facing content) with one example file in each.
   - A documented set of process surfaces (scopes, handoffs, post-mortems, experiments, runbooks) — or an explicit list of which are not in use yet.
@@ -34,10 +34,13 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "REVIEWED. F-03 resolved 2026-09-09: keeps rank 40; set-up-drift-detection moved to 45.R3–R7 pass; the audience/process surface split is the corpus's clearest doc-system statement. Open: F-03 (rank collision at 1.4), F-06 (sibling links uncovered). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-03 resolved 2026-09-09: keeps rank 40; set-up-drift-detection moved to 45.R3–R7 pass; the audience/process surface split is the corpus's clearest doc-system statement. Open: F-03 (rank collision at 1.4), F-06 (sibling links uncovered). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 related:
   - documenting-for-your-agent
+  - run-an-agent-workstream
   - set-up-agents-md
+  - start-an-agent-workstream
+  - work-with-agents-through-documentation
   - write-a-context-qb
   - write-an-adr
 ---
@@ -95,17 +98,20 @@ These are the surfaces that show up the moment work is underway. The trap is to 
 
 The fix is to set up the directories empty, with a `README.md` in each that documents the naming pattern. The first real document then has a name pattern waiting for it.
 
-| Surface      | Path                 | When it shows up                                                                    | Naming pattern                                                                        |
-| ------------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Scopes       | `docs/scopes/`       | First feature that takes more than a session.                                       | `NNNN-<slug>.md` (ADR-anchored) or `<feature-slug>.md`.                               |
-| Handoffs     | `docs/handoffs/`     | First time you stop work mid-feature and need to leave context for a fresh session. | `YYYY-MM-DD-<feature-slug>.md`.                                                       |
-| Post-mortems | `docs/post-mortems/` | First incident or non-trivial bug.                                                  | `YYYY-MM-DD-<incident-slug>.md`.                                                      |
-| Experiments  | `experiments/`       | First time you want to test a claim with data.                                      | `YYYY-MM-<experiment-slug>/` folder with `experiment-protocol.md` and other files.    |
-| Runbooks     | `docs/operations/`   | First time you need to record "how to deploy" or "how to rotate this secret."       | `<verb-noun>.md` (e.g. `rotate-supabase-keys.md`).                                    |
-| Archive      | `docs/archive/`      | Day one (empty); populated when the first scope or handoff finishes.                | Subfolders: `scopes/`, `punchlists/`, `handoffs/`, `ad-hoc/`. Files keep their names. |
-| Changelog    | `<package>/`         | First version you want to record (often v1.0.0).                                    | `CHANGELOG.md` (Keep a Changelog format).                                             |
+| Surface      | Path                 | When it shows up                                                                      | Naming pattern                                                                                                             |
+| ------------ | -------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Scopes       | `docs/scopes/`       | First bounded assignment that takes more than a session.                              | `NNNN-<slug>.md` (ADR-anchored) or `<objective-slug>.md`.                                                                  |
+| Workstreams  | `docs/workstreams/`  | First objective that needs several passes, a review, or a session boundary.           | `<objective-slug>.md`; one current record per objective. An owning scope may serve instead.                                |
+| Handoffs     | `docs/handoffs/`     | First time you stop work mid-objective and need to leave context for a fresh session. | `YYYY-MM-DD-<objective-slug>.md`.                                                                                          |
+| Post-mortems | `docs/post-mortems/` | First incident or non-trivial bug.                                                    | `YYYY-MM-DD-<incident-slug>.md`.                                                                                           |
+| Experiments  | `experiments/`       | First time you want to test a claim with data.                                        | `YYYY-MM-<experiment-slug>/` folder with `experiment-protocol.md` and other files.                                         |
+| Runbooks     | `docs/operations/`   | First time you need to record "how to deploy" or "how to rotate this secret."         | `<verb-noun>.md` (e.g. `rotate-supabase-keys.md`).                                                                         |
+| Archive      | `docs/archive/`      | Day one (empty); populated when the first scope or handoff finishes.                  | Subfolders: `scopes/`, `punchlists/`, `handoffs/`, `ad-hoc/`, plus `workstreams/` if you use them. Files keep their names. |
+| Changelog    | `<package>/`         | First version you want to record (often v1.0.0).                                      | `CHANGELOG.md` (Keep a Changelog format).                                                                                  |
 
 **Terminology note:** A _scope_ is the pre-build contract (goal, surfaces, risks, tranches). A _punchlist_ is the end-of-build remediation list. Most governance docs are scopes; true punchlists are rare. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) for the full vocabulary.
+
+A **workstream** is the continuing flow of work toward an objective. Its record coordinates the objective, deliverables, approved scopes, pass history, evidence, decisions, and next action. A scope is one bounded assignment inside that flow; a handoff is a continuity record for moving it between sessions. Use [`run-an-agent-workstream`](contextqb://playbooks/run-an-agent-workstream) when the work needs that continuity, and register the record in your boot map so the next session finds it. The workstream record points to architecture docs, ADRs, and specialized loops; it does not replace them.
 
 You do not need to create all of these at once. Create the directories you anticipate needing in the next month; defer the others. When the moment for one arrives, set it up before writing the first document inside it — never the other way around. `docs/archive/` is the exception: set it up on day one, empty, so the policy is visible from the start.
 
@@ -116,7 +122,7 @@ Three rules. All small, all cheap to enforce:
 1. **Set up the directory before the first instance.** When you realise a new kind of document is about to be written for the first time, pause and create the directory with its `README.md` first. This takes two minutes and prevents the `PUNCHLIST.md` problem.
 2. **Document the naming pattern in the directory's `README.md`.** Even one line is enough: "Files in this directory are named `<pattern>`. See [`documentation-file-naming`](contextqb://principles/documentation-file-naming)." The second contributor (human or agent) does not have to guess.
 3. **Update docs in the same change that triggers the update.** Not a separate sprint, not a "TODO: update docs." If the structural decision changes, the ADR (or AGENTS.md, or context.qb.yaml) changes with it.
-4. **Archive finished governance docs; never delete them.** When a scope ships or a handoff is consumed, move it to `docs/archive/<category>/`. This preserves references and post-mortem trails. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
+4. **Archive finished governance docs; never delete them.** When a scope has been reviewed and accepted, and its remaining obligations are resolved or transferred, or when a handoff is consumed, move it to `docs/archive/<category>/`. An executor's delivery claim (`SHIPPED`) alone is not enough. This preserves references and post-mortem trails. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
 
 ## Copy-pasteable scaffold
 

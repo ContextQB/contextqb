@@ -2,7 +2,7 @@
 id: the-plan-is-the-contract
 title: The Plan Is the Contract
 summary: A plan that nobody verifies against is fiction. When an agent executes a plan, the plan is the contract — every tranche of work is checked against it, divergences are deliberate amendments, and "done" means the plan's own sections say so.
-version: 0.1.0
+version: 0.1.2
 category: orchestration
 audience:
   - novice-builder
@@ -28,21 +28,25 @@ agent_instructions:
   - If reality contradicts the plan, stop and surface the contradiction. Do not improvise around it.
   - Treat the plan's "Out of scope" list as a guardrail, not a suggestion. Reproduce it verbatim in every tranche's constraints.
 related:
-  - documentation-as-architecture
-  - state-ownership
-  - orchestration
-  - failure-modes
   - append-dont-overwrite
-  - feature-planning
-  - feature-build-loop
+  - audit-a-workstream-record
   - bug-as-investigation
+  - documentation-as-architecture
+  - failure-modes
+  - feature-build-loop
+  - feature-planning
   - launch-day-checklist
+  - orchestration
   - run-a-multi-agent-workflow
+  - run-an-agent-workstream
+  - start-an-agent-workstream
+  - state-ownership
+  - work-with-agents-through-documentation
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q2 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict. 2026-10-02: claim 1 was generalized from features to objectives during the workstream-vertical integration. The whole atom was not re-reviewed after that edit; last_reviewed reflects the earlier review."
 ---
 
 # The Plan Is the Contract
@@ -102,7 +106,7 @@ The move is: stop, revise the affected sections on the record (strike through th
 
 You can claim this principle if all of the following hold:
 
-1. **Every non-trivial feature has a written plan before code** — goal, surfaces, state, orchestration, edge cases, out of scope.
+1. **Every non-trivial objective has a written contract before execution** — the contract names the goal, boundaries, evidence, risks, and out-of-scope choices. For software features, the seven-section feature brief supplies that contract.
 2. **Completion is verified against the plan's sections**, in a session that did not write the code.
 3. **Divergences are amendments** — the plan is revised on the record, never silently abandoned or retro-fitted.
 4. **The out-of-scope list is enforced** — it appears verbatim in the constraints of every unit of work.

@@ -2,7 +2,7 @@
 id: append-dont-overwrite
 title: Append, Don't Overwrite
 summary: Documentation is append-only at three scales — archive whole files, strike through revised lines, and supersede rather than edit ADRs. Agents reading a doc see both the current state and the reasoning trail that produced it.
-version: 0.1.1
+version: 0.1.4
 category: documentation
 audience:
   - novice-builder
@@ -23,7 +23,7 @@ anti_patterns:
   - Removing content from a governance doc to "clean it up" without moving it to an archive.
   - Accumulating so many strikethroughs on a single line that the doc becomes unreadable.
 agent_instructions:
-  - When a scope is DONE or SHIPPED, move it to `docs/archive/scopes/` with an archive header. Do not delete it.
+  - Archive a scope only after its required review and acceptance are recorded and its remaining obligations are resolved or explicitly transferred. An executor's delivery claim (`SHIPPED`) alone is not enough. Then move it to `docs/archive/scopes/` with an archive header. Do not delete it.
   - When you revise a load-bearing line in a governance doc (goal, risk, scope boundary, version target), use strikethrough (`~~old~~ new`) to preserve the original.
   - Never edit an accepted ADR. If the decision needs to change, propose a new ADR that supersedes the old one.
   - If a paragraph accumulates three or more overlapping strikethroughs, demote the change trail to the revision history table and leave only the current state in the body.
@@ -31,15 +31,17 @@ related:
   - documentation-as-architecture
   - documentation-file-naming
   - documenting-for-your-agent
+  - run-an-agent-workstream
+  - scope-vs-punchlist
   - secrets-have-provenance
   - set-up-a-documentation-system
   - the-plan-is-the-contract
-  - scope-vs-punchlist
+  - update-an-agent-workstream
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "REVIEWED. F-11 resolved 2026-09-09: AGENTS.md link depth fixed.R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4."
+  reviewer_notes: "REVIEWED. F-11 resolved 2026-09-09: AGENTS.md link depth fixed.R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4. 2026-10-02: archive trigger clarified (a delivery claim alone is insufficient; required review/acceptance and obligation disposition precede archival) and an optional workstreams/ category added, following the workstream governance decision. The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Append, Don't Overwrite
@@ -50,25 +52,33 @@ The fix is simple: **treat documentation as append-only**. At three different sc
 
 ## The three scales
 
-| Scale        | Rule                            | Example                                                                             |
-| ------------ | ------------------------------- | ----------------------------------------------------------------------------------- |
-| **File**     | Archive, don't delete           | A finished scope moves to `docs/archive/scopes/`, not to `/dev/null`.               |
-| **Line**     | Strike through, don't overwrite | `~~Risk #5: Backward compat~~ Removed — we're the only consumer pre-launch.`        |
-| **Decision** | Supersede, don't edit           | ADR-0010 is superseded by ADR-0011; ADR-0010 stays exactly as it was when accepted. |
+| Scale        | Rule                            | Example                                                                                 |
+| ------------ | ------------------------------- | --------------------------------------------------------------------------------------- |
+| **File**     | Archive, don't delete           | A reviewed, accepted, closed scope moves to `docs/archive/scopes/`, not to `/dev/null`. |
+| **Line**     | Strike through, don't overwrite | `~~Risk #5: Backward compat~~ Removed — we're the only consumer pre-launch.`            |
+| **Decision** | Supersede, don't edit           | ADR-0010 is superseded by ADR-0011; ADR-0010 stays exactly as it was when accepted.     |
 
 All three preserve the trail. An agent (or a future human) can see what the document said at an earlier point and what changed it.
 
 ## File scale — archive, don't delete
 
-When a governance document is finished — a scope ships, a handoff is consumed, a punchlist is closed — move it to the archive. Do not delete it.
+When a governance document is finished, move it to the archive. Do not delete it. Finished means:
+
+- **A scope:** its required review and acceptance are recorded, and its remaining obligations are resolved or explicitly transferred. An executor's delivery claim (`SHIPPED`) alone is not enough; the work may still fail review.
+- **A handoff:** the next session has consumed it.
+- **A punchlist:** every item is closed.
+- **A [workstream record](contextqb://playbooks/run-an-agent-workstream)**, if your project keeps them: the objective is accepted, transferred, or cancelled, with its obligations disposed of.
 
 ```
 docs/archive/
-  scopes/           ← finished scopes
+  scopes/           ← reviewed, accepted, closed scopes
   punchlists/       ← closed remediation lists
   handoffs/         ← consumed handoffs
   ad-hoc/           ← one-offs that don't fit elsewhere
+  workstreams/      ← closed workstream records (only if you keep them)
 ```
+
+Add a category only when records of that kind exist. Existing records do not need to move.
 
 Every archived file gets a short header noting:
 
@@ -153,8 +163,9 @@ When the docs preserve the trail — via archive, strikethrough, and supersessio
 > Before merging a PR that modifies or removes a governance doc:
 >
 > 1. If the doc is being deleted, stop. Move it to `docs/archive/<category>/` with an archive header.
-> 2. If the doc is being edited, check whether any load-bearing line (goal, risk, scope, version) changed. If yes, confirm the old value is preserved via strikethrough or the revision history table.
-> 3. If the doc is an accepted ADR, reject the edit. A new ADR supersedes the old one.
+> 2. If a scope is being archived, confirm its review, acceptance, and obligation disposition are recorded. A delivery claim alone does not qualify it.
+> 3. If the doc is being edited, check whether any load-bearing line (goal, risk, scope, version) changed. If yes, confirm the old value is preserved via strikethrough or the revision history table.
+> 4. If the doc is an accepted ADR, reject the edit. A new ADR supersedes the old one.
 
 ## Companion principles
 

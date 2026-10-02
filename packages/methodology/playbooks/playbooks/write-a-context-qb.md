@@ -2,7 +2,7 @@
 id: write-a-context-qb
 title: Write a context.qb for Your Repository
 summary: Step-by-step for authoring a context.qb.yaml — the agent's boot manifest — that gets a coding agent up to speed in under 2,000 tokens.
-version: 0.1.1
+version: 0.1.3
 problem: |
   AI coding agents waste tokens (and time) at the start of every session re-scanning your repo to figure out what it is and where everything lives. Without a single small, structured map, you pay that scan-cost on every prompt.
 when_to_use: |
@@ -30,6 +30,7 @@ related:
   - the-mental-model-of-your-app
   - understanding-the-context-window
   - run-a-multi-agent-workflow
+  - run-an-agent-workstream
 related_principles:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
@@ -43,7 +44,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4."
+  reviewer_notes: "R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Write a context.qb for Your Repository
@@ -166,6 +167,8 @@ status:
 ```
 
 This is the section that an agent needs most when joining a session mid-project. Keep it current; stale status is misleading.
+
+Point each entry at whatever record holds that work's current state: a status document, an owning scope, or, if you use the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method, a workstream record such as `docs/workstreams/api-v2.md`. The path matters less than the pointer: a fresh session should reach the active record from here without being told its filename.
 
 ## Step 7 — Hand out entry points
 

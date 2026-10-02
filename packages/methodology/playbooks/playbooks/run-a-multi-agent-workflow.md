@@ -2,7 +2,7 @@
 id: run-a-multi-agent-workflow
 title: Run a Multi-Agent Workflow (Fleets, Subagents, and Background Sessions)
 summary: The 2026 agentic default is a fleet — background agents, subagents, cloud sessions, scheduled routines. This playbook is the discipline for running several agents at once without lanes colliding, context drifting, or "the fleet shipped something nobody reviewed."
-version: 0.1.1
+version: 0.1.3
 problem: |
   One-agent-one-session was the 2024 mental model; the current tools (background agents, subagents, cloud sessions, scheduled routines) make it trivially easy to run five agents at once — and just as easy to produce five unverified, mutually contradictory changes. Fleet capability without fleet discipline produces parallel spaghetti.
 when_to_use: |
@@ -23,6 +23,8 @@ related:
   - agent-instructions
   - architectural-hardening-loop
   - feature-build-loop
+  - run-an-agent-workstream
+  - work-with-agents-through-documentation
   - set-up-agents-md
   - the-plan-is-the-contract
   - write-a-context-qb
@@ -39,7 +41,7 @@ review:
   status: draft
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review G-13 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-13 — the corpus's mental model predated the fleet default (background agents, subagents, cloud sessions, routines). Awaiting a fresh-eyes pass."
+  reviewer_notes: "Authored from gap G-13 — the corpus's mental model predated the fleet default (background agents, subagents, cloud sessions, routines). Awaiting a fresh-eyes pass. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Run a Multi-Agent Workflow (Fleets, Subagents, and Background Sessions)
@@ -74,6 +76,8 @@ Know which tool you are using — they have different failure modes:
 | **Command centers**    | One surface that manages many agents (kanban of agent tasks)              | Devin Desktop Spaces, Claude Code agent view             | Treating the board as proof of progress — lanes still need verification |
 
 ## Step 1 — Decompose into lanes
+
+If you track the objective with the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method, its **workstream record** is the shared record for the whole flow of work. A lane brief is a bounded assignment inside that workstream, not a replacement for it. The record keeps the shared objective, deliverables, decisions, evidence, and next action; this playbook defines how several agents can execute independent lanes against that shared record.
 
 Before starting anything, write the lane map. One lane per concern, each with:
 

@@ -2,7 +2,7 @@
 id: scope-vs-punchlist
 title: Scope vs. Punchlist
 summary: A scope is the contract you write before the build; a punchlist is the remediation list you write at the end of one. Most governance documents are scopes; true punchlists are rare. Naming yours correctly is what keeps the archive navigable.
-version: 0.1.0
+version: 0.1.3
 audience:
   - operator
   - developer
@@ -20,11 +20,12 @@ related:
   - documentation-file-naming
   - write-an-adr
   - feature-planning
+  - run-an-agent-workstream
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q5 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Canonises the ADR-0025 vocabulary distinction that documentation-file-naming and the scopes README rely on."
+  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Canonises the ADR-0025 vocabulary distinction that documentation-file-naming and the scopes README rely on. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Scope vs. Punchlist
@@ -64,6 +65,8 @@ The convention this repo uses (and recommends):
 ## The deeper reason
 
 The vocabulary is a checksum on the process. If you can't tell whether you're writing a scope or a punchlist, the uncertainty is probably real: you may be planning remediation for a build you haven't specified yet. Name the document correctly and the process question answers itself. For the pre-build contract's shape, the [feature-planning](contextqb://playbooks/feature-planning) playbook's seven sections are the default; [write-an-adr](contextqb://playbooks/write-an-adr) covers the decision records scopes anchor to.
+
+When the objective continues across several assignments or sessions, the scope is one authorized piece inside a broader flow of work. The [agent workstream](contextqb://playbooks/run-an-agent-workstream) method tracks that flow in a workstream record, which keeps the objective and next action visible; it does not turn every update into a punchlist.
 
 ## See also
 

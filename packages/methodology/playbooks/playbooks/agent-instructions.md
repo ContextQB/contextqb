@@ -2,7 +2,7 @@
 id: agent-instructions
 title: Create Agent Instructions That Produce Documents, Not Chat Replies
 summary: How to write agent prompts that return structured, decision-grade documents rather than meandering conversational answers.
-version: 0.1.1
+version: 0.1.2
 problem: |
   Most agent prompts produce conversational answers — useful for back-and-forth, useless as a permanent artifact. For audits, reviews, and plans, you want a document you can save, share, and act on.
 when_to_use: |
@@ -35,6 +35,8 @@ related:
   - architecture-review
   - feature-build-loop
   - run-a-multi-agent-workflow
+  - review-an-agent-workstream
+  - audit-a-workstream-record
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies

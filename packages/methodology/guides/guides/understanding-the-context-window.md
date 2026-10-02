@@ -2,7 +2,7 @@
 id: understanding-the-context-window
 title: Understanding the Context Window
 summary: ContextQB is named for this. The context window is the agent's working memory — finite, lossy, and the most important variable in agentic coding. Understanding how it behaves is the difference between an agent that helps you and one that forgets what you told it five minutes ago.
-version: 0.2.0
+version: 0.2.4
 audience:
   - novice-builder
   - founder
@@ -23,12 +23,15 @@ related:
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
   - how-to-use-contextqb
+  - mcp-vs-paste
+  - resume-an-agent-workstream
+  - run-an-agent-workstream
   - set-up-agents-md
   - the-mental-model-of-your-app
   - understanding-llms
+  - work-with-agents-through-documentation
   - write-a-context-qb
   - write-an-adr
-  - mcp-vs-paste
 next_steps:
   - Open your IDE and identify which files are currently "in context" for your active agent session.
   - Write or update your AGENTS.md so it primes any new session correctly.
@@ -38,7 +41,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "F-19: context sizes updated (frontier now ~1M), IDE matrix rebuilt (Devin Desktop rename, Antigravity added, Claude Code auto memory + background agents noted). REVIEWED. R3, R4, R6, R7 pass; flagship. F-09 resolved 2026-09-09 by the September stack-verification pass: context sizes, IDE matrix (Devin Desktop rename, Antigravity added, auto memory noted), and model handling updated to current vendor docs. R8 passed P4."
+  reviewer_notes: "F-19: context sizes updated (frontier now ~1M), IDE matrix rebuilt (Devin Desktop rename, Antigravity added, Claude Code auto memory + background agents noted). REVIEWED. R3, R4, R6, R7 pass; flagship. F-09 resolved 2026-09-09 by the September stack-verification pass: context sizes, IDE matrix (Devin Desktop rename, Antigravity added, auto memory noted), and model handling updated to current vendor docs. R8 passed P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Understanding the Context Window
@@ -153,6 +156,8 @@ The principle: **a decision in your head exists for one session. A decision in a
 When you're partway through a feature and need to end the session, write a **status document** — what's been done, what's in progress, what's blocked, what decisions you made along the way. The next session reads it as one of the first things and resumes with full context, without you having to re-explain.
 
 The first ContextQB course treats this as one of the highest-leverage habits in agentic building. It is correct.
+
+When the work spans several passes, needs a review, or needs your decision, the status document can grow into a workstream record: the same idea, plus the approved scope, review evidence, and outstanding decisions. See [Work With Agents Through Documentation](contextqb://guides/work-with-agents-through-documentation).
 
 ### 4. Hand off cleanly between sessions
 

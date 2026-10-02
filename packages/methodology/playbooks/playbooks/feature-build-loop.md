@@ -2,7 +2,7 @@
 id: feature-build-loop
 title: Run a Feature Build Loop From an Approved Plan
 summary: A planner-executor loop that turns the seven-section feature brief from the feature-planning playbook into shipped code, with each section verified against the actual implementation before the next tranche begins.
-version: 0.1.0
+version: 0.1.4
 problem: |
   An approved feature plan does not ship itself. Letting an agent execute the plan top-to-bottom in one session reproduces every failure mode the plan was supposed to prevent — the agent picks the easiest place to put each line, edge cases get acknowledged but not handled, and "done" means "the agent said so."
 when_to_use: |
@@ -21,20 +21,23 @@ audience:
 journey_stage: 3
 journey_rank: 10
 related:
-  - feature-planning
-  - architectural-hardening-loop
-  - refactor-planning
   - agent-instructions
+  - architectural-hardening-loop
+  - feature-planning
   - launch-day-checklist
+  - refactor-planning
+  - review-an-agent-workstream
   - run-a-multi-agent-workflow
+  - run-an-agent-workstream
+  - work-with-agents-through-documentation
 related_principles:
+  - anti-spaghetti
+  - documentation-as-architecture
+  - failure-modes
+  - orchestration
+  - refactor-with-duplicates
   - separation-of-concerns
   - state-ownership
-  - orchestration
-  - anti-spaghetti
-  - failure-modes
-  - documentation-as-architecture
-  - refactor-with-duplicates
   - the-plan-is-the-contract
 tags:
   - features
@@ -45,10 +48,12 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal). 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Run a Feature Build Loop From an Approved Plan
+
+The feature brief and tranche log govern this loop's implementation details. When the work extends beyond code or beyond this loop, the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method shows one way to keep the wider objective, relationships, decisions, and continuity in a shared record.
 
 This playbook is the executor for the artifact produced by [`feature-planning`](contextqb://playbooks/feature-planning). The plan defines the contract; this loop ships against the contract without letting the agent invent architecture along the way.
 

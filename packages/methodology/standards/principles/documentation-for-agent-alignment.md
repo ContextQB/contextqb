@@ -2,7 +2,7 @@
 id: documentation-for-agent-alignment
 title: Documentation for Agent Alignment
 summary: In agentic development, the primary audience for your documentation is your current agent and your current self — not a future team. Docs are how you keep the agent on the architecture you've chosen, every prompt, every session.
-version: 0.1.1
+version: 0.1.2
 category: documentation
 audience:
   - novice-builder
@@ -31,6 +31,7 @@ agent_instructions:
   - When you make an architectural choice, propose writing it into a doc (an ADR, AGENTS.md, an overview) rather than carrying it in conversational memory.
   - Before declaring work complete, confirm which documentation was updated to reflect the change. If none, ask whether docs need updating.
 related:
+  - agents-md-vs-readme
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
   - documentation-file-naming
@@ -38,7 +39,7 @@ related:
   - naming-conventions
   - set-up-a-documentation-system
   - state-ownership
-  - agents-md-vs-readme
+  - work-with-agents-through-documentation
 review:
   status: final
   last_reviewed: "2026-09-09"

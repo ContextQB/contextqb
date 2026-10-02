@@ -2,7 +2,7 @@
 id: context-quarterback-the-onboarding-map
 title: The Context Quarterback — Every Repo Needs a Boot Manifest
 summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
-version: 0.1.1
+version: 0.1.4
 category: documentation
 audience:
   - novice-builder
@@ -31,24 +31,26 @@ agent_instructions:
   - Reference deeper docs by their URI when the agent needs them; do not inline their content into `context.qb.yaml`.
   - Never write secrets or credentials into `context.qb.yaml`. The file is public-equivalent.
 related:
+  - agents-md-vs-readme
   - context-qb-yaml-vs-rag
   - documentation-as-architecture
   - documentation-for-agent-alignment
   - documenting-for-your-agent
   - how-to-use-contextqb
   - naming-conventions
+  - run-an-agent-workstream
   - separation-of-concerns
   - set-up-a-documentation-system
   - set-up-drift-detection
   - the-mental-model-of-your-app
   - understanding-the-context-window
+  - work-with-agents-through-documentation
   - write-a-context-qb
-  - agents-md-vs-readme
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Evidence handling is the model to copy: cites the AGENTS.md benchmark as directional, flags context.qb-specific magnitude as an open empirical question. R8 pending P4."
+  reviewer_notes: "R3–R7 pass. Evidence handling is the model to copy: cites the AGENTS.md benchmark as directional, flags context.qb-specific magnitude as an open empirical question. R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # The Context Quarterback — Every Repo Needs a Boot Manifest
@@ -86,13 +88,15 @@ Controlled evaluations of the equivalent `AGENTS.md` standard (124-PR benchmark)
 
 ## The three artifacts that should exist together
 
-| File               | Job                                                                 | Format   |
-| ------------------ | ------------------------------------------------------------------- | -------- |
-| `AGENTS.md`        | Rules, commands, boundaries — _how the agent should behave_         | Markdown |
-| `context.qb.yaml`  | Map, index, status — _what exists, where to look, what's in flight_ | YAML 1.2 |
-| `docs/status/*.md` | Per-feature work-in-progress state                                  | Markdown |
+| File                                     | Job                                                                 | Format   |
+| ---------------------------------------- | ------------------------------------------------------------------- | -------- |
+| `AGENTS.md`                              | Rules, commands, boundaries — _how the agent should behave_         | Markdown |
+| `context.qb.yaml`                        | Map, index, status — _what exists, where to look, what's in flight_ | YAML 1.2 |
+| `docs/status/*.md` or workstream records | Per-feature or per-objective work-in-progress state                 | Markdown |
 
 `context.qb.yaml` does not replace `AGENTS.md`. They answer different questions. Both should exist in any agent-discipline repo.
+
+The third row is whatever your project uses for in-flight state: a status document, an owning scope, or, with the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method, a workstream record such as `docs/workstreams/<objective>.md`. Point the boot manifest's `status:` entries at it. That record can link the detailed scope, review, audit, handoff, or specialized feature record rather than copying their contents. A one-pass task does not need a workstream.
 
 ## What the file is not
 
