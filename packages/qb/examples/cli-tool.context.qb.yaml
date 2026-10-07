@@ -3,8 +3,9 @@
 # The agent's boot manifest (play-sheet, for the brand metaphor). Read this
 # first; drill into the referenced URIs only when the play calls for it.
 #
-# Sections: project, stack, tree, decisions, status, entry_points
-# Spec: https://contextqb.com/spec
+# Sections: project, stack, tree, decisions, paths, status, entry_points
+# Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
+# Example only: a fictional project; names and versions are illustrative.
 
 qb: "1.0"
 
@@ -35,14 +36,17 @@ decisions:
   "0003": colour-output-opt-in-not-default (accepted)
   index: docs/decisions/README.md
 
+paths:
+  decisions: docs/decisions # ADRs live here, not in the default docs/architecture/decisions
+
 status:
   v0.5: in-progress (adding `taskbar archive` command)
   cross-platform-windows-support: planned (post v0.5)
-  homebrew-tap: complete (brew install symbolscape/tap/taskbar)
+  homebrew-tap: complete (brew install example/tap/taskbar)
 
 entry_points:
   rules: AGENTS.md
-  map: context.qb (this file)
+  map: context.qb.yaml (this file)
   decisions: docs/decisions/README.md
   install: README.md#install
   contributing: CONTRIBUTING.md

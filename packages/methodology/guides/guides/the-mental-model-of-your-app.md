@@ -2,7 +2,7 @@
 id: the-mental-model-of-your-app
 title: The Mental Model of Your App
 summary: Before you write a line of code or prompt a single agent, you have to know — in plain words — what your app is actually for. This guide helps you turn an idea into a working mental model.
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): corrected the description of context.qb.yaml, which has no security-posture or principles fields; those live in AGENTS.md. Earlier notes describe the previous version: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # The Mental Model of Your App
@@ -120,7 +120,7 @@ The reason ContextQB exists is that mental models drift. You start thinking the 
 Here's how each piece of ContextQB holds part of the evolving model:
 
 - **`AGENTS.md`** — the operating instructions for any agent touching the repo. Update this whenever a decision changes how the agent should behave.
-- **`context.qb.yaml`** — the boot manifest. Lists modules, decisions, security posture, and the architecture principles in play. Updated when the structure of the project changes.
+- **`context.qb.yaml`** — the boot manifest: the map of what exists and where. It holds the project summary, the main folders and packages (`tree`), where the app is deployed (`routes`), the decisions on record (`decisions`) and what is in flight (`status`). Updated when the structure of the project changes. It does not hold security rules or the principles you follow — those go in `AGENTS.md`, which also tells the agent to read this file.
 - **ADRs (Architecture Decision Records)** — the durable record of _why_ you made a particular structural choice. Written when you decide something that future-you (or a future agent) will need to defend. Use [`write-an-adr`](contextqb://playbooks/write-an-adr) for the format.
 - **Status documents per feature** — small living docs that track purpose, scope, progress, and blockers for an in-flight feature. Surface area for what the agent should be doing right now.
 - **The schema** — once your entities solidify, the schema becomes the spine of the app. It's the most opinionated document in the repo.

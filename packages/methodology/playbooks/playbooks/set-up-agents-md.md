@@ -2,7 +2,7 @@
 id: set-up-agents-md
 title: Set Up AGENTS.md for Your Project
 summary: How to author the single most leverage-positive file in an agentic codebase — the project-level operating instructions that every agent should read first.
-version: 0.1.3
+version: 0.1.4
 problem: |
   Without AGENTS.md, every agent prompt starts from zero. The agent invents the architecture, guesses at naming, and produces inconsistent output session to session. The cost is paid continuously.
 when_to_use: |
@@ -30,7 +30,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent); R-01 remediation 2026-09-09"
-  reviewer_notes: "R3–R7 pass. Now points at the worked AGENTS.md examples on /examples/ (F-18 wire-in). R8 pending P4 (passed P4 2026-09-09)."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.4; author self-checked; independent review pending; not operator-accepted): template now opens by pointing the agent at context.qb.yaml, with a short section on the separate roles of AGENTS.md (rules) and the manifest (map). Earlier notes describe the previous version: R3–R7 pass. Now points at the worked AGENTS.md examples on /examples/ (F-18 wire-in). R8 pending P4 (passed P4 2026-09-09)."
 related:
   - agents-md-vs-readme
   - build-mcp-for-project-context
@@ -43,6 +43,7 @@ related:
   - set-up-drift-detection
   - the-mental-model-of-your-app
   - understanding-the-context-window
+  - write-a-context-qb
 ---
 
 # Set Up AGENTS.md for Your Project
@@ -62,7 +63,7 @@ The shortest useful AGENTS.md has six sections. Use this as your template:
 ```markdown
 # AGENTS.md
 
-This file is the canonical operating instructions for AI agents working in this repository. Read it before doing non-trivial work.
+This file is the canonical operating instructions for AI agents working in this repository. Read it before doing non-trivial work. Then read `context.qb.yaml` at the repository root: it is the map of what exists and where.
 
 ## 1. Project
 
@@ -95,9 +96,18 @@ This file is the canonical operating instructions for AI agents working in this 
 - ContextQB principles: <list the ones most relevant>
 ```
 
-That is it. Six sections, no ceremony.
+That is it. Six sections, no ceremony. Keep the opening line that points to `context.qb.yaml` if your project has one; if it doesn't yet, add the line when you write it.
 
 Worked examples for three project shapes live at [contextqb.com/examples/](https://contextqb.com/examples/) — a full-stack web app, a browser extension, and an MCP project. Read the one closest to your project before writing your own.
+
+## Rules and map: `AGENTS.md` and `context.qb.yaml`
+
+The two files do different jobs:
+
+- **`AGENTS.md` holds the rules** — how the agent should behave here, what it must not do, what to produce before writing code. Many agent tools load it automatically at the start of a session; support varies by tool and version, so check yours, and if it doesn't, start each session with "read AGENTS.md first."
+- **`context.qb.yaml` holds the map** — what exists, where it lives, what has been decided and what is in flight. No agent tool needs to know this format. The agent reads it because the opening line of `AGENTS.md` tells it to.
+
+That pointer is the link between them. Without it, the manifest is a file nobody opens. Write the map with [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb).
 
 ## Length and voice
 
@@ -112,7 +122,7 @@ A stale AGENTS.md is worse than no AGENTS.md, because the agent acts on it confi
 
 ## How to instruct an agent to write one
 
-> Generate an AGENTS.md for this repository following the ContextQB set-up-agents-md playbook. Use the six-section template. Be specific to this project — do not produce generic best-practice advice. Reference real file paths and real package names. End with a "Further reading" section pointing to existing documentation in the repo.
+> Generate an AGENTS.md for this repository following the ContextQB set-up-agents-md playbook. Use the six-section template. Be specific to this project — do not produce generic best-practice advice. Reference real file paths and real package names. End with a "Further reading" section pointing to existing documentation in the repo. If the repository has a context.qb.yaml, keep the opening line that tells agents to read it.
 
 After it returns, edit it. Some sections will be wrong; some will be vague. The agent's draft is a starting point, not the final word. You are the source of truth for your project's structure; AGENTS.md is your dictation of that truth.
 

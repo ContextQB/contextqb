@@ -2,7 +2,7 @@
 id: context-qb-yaml-vs-rag
 title: context.qb.yaml vs. RAG
 summary: Both put information into the agent's context window, but they put very different kinds of information there. A manifest is a hand-curated map of the project's shape. RAG is an auto-generated search index over the project's content. They complement each other; they don't compete.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -24,7 +24,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.6 (agent)"
-  reviewer_notes: "R3–R7 pass. The one briefing is good — single framed question, comparative table, complement-not-compete thesis, related: == See also. Evidence for 'grow the type' in G-05. R8 pending P4."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.1; author self-checked; independent review pending; not operator-accepted): corrected the boot step: tools may load AGENTS.md automatically; context.qb.yaml is read because AGENTS.md points to it; replaced the ~2 KB size with the spec's token guidance. Earlier notes describe the previous version: R3–R7 pass. The one briefing is good — single framed question, comparative table, complement-not-compete thesis, related: == See also. Evidence for 'grow the type' in G-05. R8 pending P4."
 ---
 
 # context.qb.yaml vs. RAG
@@ -75,7 +75,7 @@ RAG (codebase indexing, semantic retrieval — the thing that powers Cursor's `@
 
 They're complementary. A well-set-up agent session uses both:
 
-1. **Boot.** The IDE reads `context.qb.yaml` (and `AGENTS.md`) automatically. The agent now knows the project shape — what workspaces exist, what decisions are in play, what the deploy story is. That's ~2 KB of high-signal context.
+1. **Boot.** The agent tool loads `AGENTS.md` — many tools do this automatically; otherwise you ask the agent to read it — and a line near the top of `AGENTS.md` tells the agent to read `context.qb.yaml` next. The agent now knows the project shape — what workspaces exist, what decisions are in play, what the deploy story is. That's typically a few hundred to a couple of thousand tokens of high-signal context.
 2. **Mid-session.** You ask "where does this app verify Stripe webhook signatures?" The agent uses the IDE's RAG to retrieve the relevant chunks of `route.ts` and `webhook-handler.ts`. Those chunks drop into context.
 3. **Reasoning.** The agent now reasons with both — the **structural map** from the manifest plus the **specific code** from RAG. Without the manifest it would have to discover the project's shape from indexing artifacts (lossy). Without RAG it would have to load whole files to find anything (expensive).
 

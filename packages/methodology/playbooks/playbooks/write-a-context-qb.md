@@ -2,16 +2,16 @@
 id: write-a-context-qb
 title: Write a context.qb for Your Repository
 summary: Step-by-step for authoring a context.qb.yaml — the agent's boot manifest — that gets a coding agent up to speed in under 2,000 tokens.
-version: 0.1.3
+version: 0.2.0
 problem: |
   AI coding agents waste tokens (and time) at the start of every session re-scanning your repo to figure out what it is and where everything lives. Without a single small, structured map, you pay that scan-cost on every prompt.
 when_to_use: |
   Once per repository, at any stage. If the repo already exists and you have not shipped a `context.qb.yaml`, write one now. Update it whenever the shape of the repo changes.
 expected_outputs:
-  - A `context.qb.yaml` file at the repo root that passes the schema in `packages/qb/spec/schema.json`.
+  - A `context.qb.yaml` file at the repo root that validates against the published context.qb JSON Schema.
   - The file is under ~2,000 tokens for a typical repo, ~5,000 for a large monorepo.
   - All referenced paths exist on disk.
-  - Hand-authored sections (project summary, purposes, status) read naturally to a human.
+  - The meaning-carrying sections (project summary, purposes, status) have been checked by you for truth and read naturally to a human.
 audience:
   - novice-builder
   - founder
@@ -25,6 +25,7 @@ related:
   - new-project-foundation
   - retrofit-drift-detection
   - set-up-a-documentation-system
+  - set-up-agents-md
   - set-up-drift-detection
   - setting-up-git-and-github
   - the-mental-model-of-your-app
@@ -44,21 +45,21 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): agent-drafted path made explicit (agent drafts, operator checks summary/purposes/status); YAML-writing prerequisite removed; validation now uses the published JSON Schema plus the drift detector, without a repository-internal command as a learner prerequisite, and states that the CLI does not run the schema check. Review provenance neutralised. Earlier notes describe the previous version: R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Write a context.qb for Your Repository
 
 A `context.qb.yaml` file is the agent's **boot manifest** — a small, structured artifact at the root of your repo that gets a coding agent oriented in as few tokens as possible. (The play-sheet metaphor is the brand; "boot manifest" is the engineering description.)
 
-This playbook walks you through writing one for the first time. Full format spec at [`packages/qb/spec/SPEC.md`](../../../qb/spec/SPEC.md); the principle behind it is [`context-quarterback-the-onboarding-map`](../../standards/principles/context-quarterback-the-onboarding-map.md).
+This playbook walks you through your first one. You can use it two ways: ask your agent to draft the file with the prompt in [How to ask an agent to write the first one](#how-to-ask-an-agent-to-write-the-first-one) and use Steps 1–7 to review what it produced, or write it yourself step by step. Either way, the parts that carry meaning — the project summary, each `purpose` and the `status` entries — are yours to write or check, because only you know whether they are true. Full format spec at [`packages/qb/spec/SPEC.md`](../../../qb/spec/SPEC.md); the principle behind it is [`context-quarterback-the-onboarding-map`](../../standards/principles/context-quarterback-the-onboarding-map.md).
 
 ## Before you start
 
 You need:
 
 - A repository (any language, any size).
-- Familiarity with YAML (the file is YAML 1.2).
+- No YAML-writing skill. Your agent can draft the file. You need to read the summary, purposes and status and judge whether they are true.
 - ~30 minutes for the first one.
 
 The file does not replace `AGENTS.md`. They have different jobs (`AGENTS.md` is rules; `context.qb.yaml` is map). You should have both.
@@ -188,17 +189,19 @@ The agent will use this when given a vague task: "help me with the API" → load
 
 ## Step 8 — Validate
 
-If your repo uses the ContextQB tooling:
+Two checks answer two different questions.
 
-```bash
-pnpm validate:qb
-```
+**Is the file well-formed?** Validate it against the [published JSON Schema](https://github.com/ContextQB/contextqb/blob/main/format/schema.json) with any JSON Schema validator, after parsing the YAML. The easiest route is to ask your agent:
 
-Otherwise, run any YAML validator against `packages/qb/spec/schema.json`. The validator catches:
+> Parse `context.qb.yaml` and validate it against the published context.qb JSON Schema at https://github.com/ContextQB/contextqb/blob/main/format/schema.json. Report every error. Then check that every path named in `tree` and `entry_points` exists in this repository.
 
-- Missing required fields (`qb`, `project.name`, `project.summary`, `tree`)
-- Wrong types
-- (Soft) paths referenced in `tree` or `entry_points` that don't exist on disk
+The schema check catches:
+
+- Missing required fields (`qb`, `project.name`, `project.summary`, and a `tree` with at least one entry)
+- Wrong types, such as an unquoted `qb: 1.0` (the version must be a string, `"1.0"`)
+- Top-level keys the format does not define — for example a `security:` section, which is planned but not yet part of the format
+
+**Does the file match the repository?** That is the drift detector's job (`contextqb`, from the `@context-qb/cli` package), set up in the next playbook. It compares `tree`, `routes` and `decisions` with your workspaces, deploy configuration and ADR files, and it reports a missing file or invalid YAML. It does **not** run the JSON Schema check, so do both.
 
 Fix any errors before committing.
 
@@ -230,14 +233,16 @@ Treat `context.qb.yaml` like a load-bearing wall. If you change it, the agent's 
 
 If you're starting from scratch, this prompt works well:
 
-> Read the spec at `packages/qb/spec/SPEC.md`. Walk the repository's directory tree, `package.json`, ADR folder, and deploy configs. Produce a `context.qb.yaml` file at the repo root that:
+> Read the context.qb specification (`format/SPEC.md` in the public ContextQB repository on GitHub, `ContextQB/contextqb`). Walk the repository's directory tree, `package.json`, ADR folder, and deploy configs. Produce a `context.qb.yaml` file at the repo root that:
 >
 > 1. Captures the actual shape of the repo as it exists today.
 > 2. Stays under 2,000 tokens.
-> 3. Passes `pnpm validate:qb`.
-> 4. Has hand-authored, plain-language `project.summary` and `tree[].purpose` fields — not lifted verbatim from READMEs.
+> 3. Validates against the published JSON Schema (`format/schema.json` in the same repository).
+> 4. Has plain-language `project.summary` and `purpose` fields written for this project — not lifted verbatim from READMEs. Mark anything you are unsure of so I can check it.
 >
-> When you finish, run the validator and report any soft warnings.
+> When you finish, validate the file against the schema, check that every path in `tree` and `entry_points` exists, and report what you found. I will then read the summary, purposes and status for truth.
+
+After it returns, read `project.summary`, every `purpose` and every `status` entry yourself. The agent can map folders and ADRs reliably; whether the summary says what the project is _for_, and whether a status is still true, is your call.
 
 ## Anti-patterns
 

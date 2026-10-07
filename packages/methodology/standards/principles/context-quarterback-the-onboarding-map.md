@@ -2,7 +2,7 @@
 id: context-quarterback-the-onboarding-map
 title: The Context Quarterback — Every Repo Needs a Boot Manifest
 summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
-version: 0.1.4
+version: 0.1.5
 category: documentation
 audience:
   - novice-builder
@@ -50,7 +50,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Evidence handling is the model to copy: cites the AGENTS.md benchmark as directional, flags context.qb-specific magnitude as an open empirical question. R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.5; author self-checked; independent review pending; not operator-accepted): the short version now says the agent drafts the structural sections and the operator writes or checks summary, purposes and status, with validation against the published schema instead of a hand-author-only instruction. Review provenance neutralised. Earlier notes describe the previous version: R3–R7 pass. Evidence handling is the model to copy: cites the AGENTS.md benchmark as directional, flags context.qb-specific magnitude as an open empirical question. R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # The Context Quarterback — Every Repo Needs a Boot Manifest
@@ -108,7 +108,7 @@ The third row is whatever your project uses for in-flight state: a status docume
 
 ## How to write one
 
-See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) playbook for the step-by-step. The short version: hand-author the first version against the spec at [`@context-qb/spec`](../../../qb/spec/SPEC.md), keep it under ~2,000 tokens, and update it whenever the shape of the repo changes.
+See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) playbook for the step-by-step. The short version: have your agent draft the structural sections (`tree`, `routes`, `decisions`, `stack`) from the repository against the spec at [`@context-qb/spec`](../../../qb/spec/SPEC.md); write or carefully check the meaning-carrying parts yourself — `project.summary`, each `purpose` and `status`; keep it under ~2,000 tokens; validate it against the [published JSON Schema](https://github.com/ContextQB/contextqb/blob/main/format/schema.json); and update it whenever the shape of the repo changes.
 
 ## How to instruct an agent to enforce this
 

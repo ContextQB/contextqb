@@ -2,7 +2,7 @@
 id: public-endpoint-exposure
 title: Public Endpoint Exposure Audit
 summary: A focused security audit of every URL reachable from the internet — routes, APIs, webhooks, and static assets. Verify each is intentionally public with appropriate protection.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -50,7 +50,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): added a test-target rule — active tests (request bursts, injection strings, guessed paths and subdomains) run only against local, disposable or staging targets; production gets observation only unless the owner gives separate authority. Earlier notes describe 0.1.1: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Public Endpoint Exposure Audit
@@ -69,6 +69,21 @@ This audit inventories every URL reachable from the internet and verifies each i
 > 4. Identify debug, test, or admin endpoints that should not be public
 >
 > You must produce a complete inventory with evidence, not a checklist of best practices.
+>
+> Test targets: run active tests — request bursts, injection strings, guessed paths or subdomains, attempts to bypass authentication — only against a local, disposable or staging target that the operator names. Against production, observe only: read code and configuration, and make the ordinary single requests any visitor could make. Do not run active tests against production unless the operator who owns it gives separate, explicit authority for that test. If you are unsure which environment a URL belongs to, ask before sending anything.
+
+---
+
+## Before you test: choose the target
+
+Most of this audit is reading: code, configuration, route files and DNS records. Some phases also send requests. Those requests fall into two kinds, and they belong in different places.
+
+| Kind               | Examples                                                                                                                                                            | Where it may run                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Observation**    | Reading code and config; viewing your own public pages; one ordinary request to check a header, an error page or a redirect; looking up DNS and certificate records | Production is fine                                                                                                  |
+| **Active testing** | Bursts of requests to test rate limits; injection or path-traversal strings; guessing many paths or subdomains; trying to get past authentication                   | A local copy, a disposable deployment or staging — never production without separate authority from whoever owns it |
+
+Why the line matters: active tests can lock real users out, fill a database with junk, trigger emails or charges, page whoever is on call, or breach a hosting provider's terms. A staging environment that matches production's configuration gives you the same answer without those risks. If you have no staging environment, run the active phases against a local copy and say so in the report.
 
 ---
 
@@ -118,7 +133,7 @@ Check for:
 - API subdomain (api.example.com)
 - Forgotten subdomains (old.example.com)
 
-Tools: Check DNS records, certificate transparency logs, or simply try common subdomains.
+Tools: start with DNS records and certificate transparency logs (observation). Trying guessed subdomain names is active testing: do it only for domains you own, and only with the same authority as the other active tests.
 
 ---
 
@@ -196,6 +211,8 @@ For each public endpoint:
 
 ### Rate limit testing
 
+Active testing — run against a local, disposable or staging target (see "Before you test"). For production, check the rate-limit configuration and code instead.
+
 For each endpoint accepting input:
 
 1. Send 100 requests in 10 seconds
@@ -239,6 +256,8 @@ For each input:
 - [ ] Validation happens server-side (not just client)
 
 ### Injection testing
+
+Active testing — run against a local, disposable or staging target, never production without separate authority.
 
 Test for basic injection on text inputs:
 
@@ -370,7 +389,7 @@ Produce a Markdown document with:
 - Do NOT assume an endpoint is protected — verify it
 - Do NOT skip subdomains — they often have weaker protection
 - Do NOT ignore static assets — information leaks there
-- Test actual requests, not just code paths
+- Test actual requests, not just code paths — active tests against a local, disposable or staging target; production gets observation only unless the owner separately authorizes a test
 - Treat every unprotected endpoint as a finding until confirmed intentional
 - Document what information each public endpoint exposes
 

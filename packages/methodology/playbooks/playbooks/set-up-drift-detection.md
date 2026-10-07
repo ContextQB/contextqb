@@ -2,7 +2,7 @@
 id: set-up-drift-detection
 title: Set Up Drift Detection on Day One
 summary: Wire the contextqb drift detector into your repo from the moment you author your first context.qb.yaml, so the map can never drift away from the territory unnoticed.
-version: 0.1.1
+version: 0.2.0
 problem: |
   A context.qb.yaml is only useful if it stays honest as the repo changes. Without a drift detector wired into your loop, every map becomes a stale map within a month, and your agent silently reads the wrong file. Setting it up on day one costs five minutes; setting it up later means triaging accumulated drift first.
 when_to_use: |
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "REVIEWED. F-03 resolved 2026-09-09: rank 40→45.R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): CI recipe moved off end-of-life Node 20 to Node 24 LTS with action majors that run on Node 24 (verified 2026-10-06 against the Node.js release schedule and the actions' published action.yml files); first-run, provisioning and telemetry wording corrected against CLI 2.5.0 source (every command registers on first use; only the drift check sends a telemetry event; --no-telemetry does not prevent registration). Earlier notes describe 0.1.1: REVIEWED. F-03 resolved 2026-09-09: rank 40→45.R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
 ---
 
 # Set Up Drift Detection on Day One
@@ -57,15 +57,20 @@ You need:
 
 No `context.qb.yaml` yet? Start with [`write-a-context-qb`](./write-a-context-qb.md). Write the map first, then come back here.
 
-## Step 1 — Preview before opting in
+## Step 1 — Know what the CLI sends, then choose
 
-Run the detector in preview mode before it sends telemetry:
+Read this before your first run, because the first run is when the choice matters:
 
-```bash
-npx @context-qb/cli@latest --telemetry-preview
-```
+- **Every `contextqb` command registers on first use.** The first time any command runs on your machine (outside CI), the CLI registers with ContextQB and stores a membership token locally. There is no separate opt-in step.
+- **Only the drift check sends a telemetry event.** When a registered machine runs the check (`contextqb` or `contextqb check`), it sends one event after printing the results: CLI version, subcommand, event kind, adapter coverage, counts and finding codes. It does not include file contents, file paths, secrets or project names. The other commands (`membership`, `mcp setup`, `insights`, `upgrade`) do not send this event.
+- **`--no-telemetry` skips that event for one run.** It does not stop first-use registration.
+- **To run without registering at all,** set `CONTEXTQB_NO_PROVISION=true` for the run:
 
-Preview mode prints the payload that would be sent and exits without sending it. Use it to inspect the fields yourself: CLI version, subcommand, event kind, adapter coverage, counts, and finding codes. It does not include file contents, file paths, secrets, or project names.
+  ```bash
+  CONTEXTQB_NO_PROVISION=true npx @context-qb/cli@latest
+  ```
+
+- **To see the exact event before it is sent,** add `--telemetry-preview` on a machine that is already registered. It prints the payload and sends nothing. On a machine that has never registered, preview mode skips registration, so there is no payload to show yet.
 
 The full privacy page is at [contextqb.com/privacy/telemetry](https://contextqb.com/privacy/telemetry).
 
@@ -156,6 +161,8 @@ chmod +x .git/hooks/pre-commit
 
 Either version is fine. The important part is that the check runs before the commit is accepted.
 
+A hook runs the check on every commit, and on a registered machine each check sends one telemetry event. If you would rather the hook not send them, make the hook line `pnpm exec contextqb --no-telemetry` instead of `pnpm check:qb`.
+
 ## Step 6 — Add a CI check
 
 Add a small GitHub Actions job:
@@ -172,11 +179,12 @@ jobs:
   check-qb:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      # Reads the pnpm version from the "packageManager" field in package.json.
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check:qb
@@ -184,24 +192,28 @@ jobs:
 
 This makes drift visible before it merges. The check is small, fast, and specific.
 
+The versions in this recipe were checked in October 2026 (last verified 2026-10): Node.js 24 is a long-term-support line, supported until April 2028 according to the Node.js release schedule, and these three action versions run on Node 24 themselves. Runtimes and action versions move on; before you copy the recipe, check the [Node.js release schedule](https://nodejs.org/en/about/previous-releases) and each action's release page, and prefer a supported long-term-support line.
+
 ## What happens on first run
 
-On the first real run, the CLI provisions a membership token and stores it locally. That token lets the CLI send privacy-preserving telemetry and lets you use community insight tools later.
+On the first run of any `contextqb` command, outside CI and unless you have opted out, the CLI registers this machine and stores a membership token locally. With that token, drift checks send the telemetry event described in Step 1, and the token-gated community insight tools become available to you.
 
-You can inspect or opt out at any time:
+You can inspect or opt out at any time. `revoke` deletes your membership data and records a lasting opt-out on this machine:
 
 ```bash
 contextqb membership status
 contextqb membership revoke
 ```
 
-For one run only, use:
+To skip the telemetry event for one check run (registration still happens on first use):
 
 ```bash
 contextqb --no-telemetry
 ```
 
-CI environments are auto-detected by default — the CLI skips auto-provisioning when it sees `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, and similar signals. To override this on a long-lived self-hosted runner that you want counted as a cooperative member, set `CONTEXTQB_FORCE_PROVISION=true`.
+To run without registering, set `CONTEXTQB_NO_PROVISION=true` for that run.
+
+CI environments are auto-detected by default — the CLI skips registration, and therefore sends no telemetry, when it sees `GITHUB_ACTIONS`, `GITLAB_CI`, `CIRCLECI`, and similar signals. To override this on a long-lived self-hosted runner that you want counted as a cooperative member, set `CONTEXTQB_FORCE_PROVISION=true`.
 
 ## What's next
 

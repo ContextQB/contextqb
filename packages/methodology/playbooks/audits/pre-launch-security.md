@@ -2,7 +2,7 @@
 id: pre-launch-security
 title: Pre-Launch Security Audit
 summary: A condensed security checklist for launch day. Verify the essentials before going live — secrets secured, auth hardened, endpoints protected, and monitoring in place.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -50,7 +50,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; correctly scoped as launch gate, not audit replacement. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): quick tests now separate safe production observation from active tests (rapid logins, deliberate errors), which run on staging or a local copy unless the owner separately authorizes them. Earlier notes describe 0.1.1: R3–R7 pass; correctly scoped as launch gate, not audit replacement. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Pre-Launch Security Audit
@@ -69,6 +69,19 @@ This is a condensed security checklist for launch day. It's designed to be fast 
 > 4. Produce a go/no-go decision with blockers
 >
 > Be efficient. Focus on launch blockers, not aspirational improvements.
+>
+> Test targets: quick tests that send unusual or repeated requests (rapid login attempts, deliberately triggered errors, guessed paths) run against staging or a local copy configured like production. Do not run them against production — including a production deployment that is not yet public — unless the operator gives separate, explicit authority for that test. Observation is fine on production: reading configuration, checking your own pages, headers, cookies and redirects, and single ordinary requests.
+
+---
+
+## Where to run the quick tests
+
+The quick tests below are of two kinds:
+
+- **Observation** — inspecting cookies in your browser's developer tools, viewing pages, one request to a path or a nonexistent route, checking the HTTP-to-HTTPS redirect, reading dashboards and `robots.txt`. Safe on production.
+- **Active tests** — rapid repeated login attempts, deliberately causing server errors, scripted sweeps of guessed paths. Run these on staging or a local copy with production-like configuration, using test accounts. Against production they can lock out real accounts, trip a provider's abuse protection or page someone; they need separate authority from whoever owns production.
+
+If you have no staging environment, run the active tests locally and record in the result which environment you tested.
 
 ---
 
@@ -127,7 +140,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Quick tests
 
-- Try 10+ rapid login attempts — does rate limiting kick in?
+- On staging or a local copy, with a test account: try 10+ rapid failed logins — does rate limiting kick in? (Active test.)
 - Inspect cookies in browser DevTools — are security flags present?
 - Check auth provider dashboard for settings.
 
@@ -152,7 +165,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Quick tests
 
-- Try accessing /debug, /test, /admin without auth.
+- Request /debug, /test and /admin once each without signing in. (Observation; a scripted sweep of many guessed paths is an active test.)
 - Check browser DevTools → Sources for source maps.
 - Review robots.txt for internal paths.
 
@@ -175,7 +188,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Quick tests
 
-- Trigger a 500 error — what do users see?
+- On staging or a local copy, trigger a 500 error — what do users see? (Active test.)
 - Request a nonexistent API route — does response leak info?
 - Trigger a validation error — is the message appropriate?
 
@@ -222,7 +235,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Quick tests
 
-- Trigger an error — does it appear in monitoring?
+- Send a test error from staging (or your monitoring tool's test-event feature) — does it appear in monitoring?
 - Who gets alerted? Is someone actually watching?
 
 ### Result

@@ -2,7 +2,7 @@
 id: trust-boundaries-are-architecture
 title: Trust Boundaries Are Architecture
 summary: Drawing trust boundaries is a design act, not a documentation act. "Public/authenticated", "owner/admin", "user/agent", "self/third-party" — each must be named and located in the code before they can be defended.
-version: 0.1.1
+version: 0.1.2
 category: security
 audience:
   - novice-builder
@@ -48,7 +48,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Boundary table + 'the check is the boundary' framing is the pillar's load-bearing concept. R8 pending P4."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): the agent-boundary rule now points to the AGENTS.md security section enforced by the tool's settings; context.qb.yaml has no section for agent permissions. Earlier notes describe 0.1.1: R3–R7 pass. Boundary table + 'the check is the boundary' framing is the pillar's load-bearing concept. R8 pending P4."
 ---
 
 # Trust Boundaries Are Architecture
@@ -96,7 +96,7 @@ You can claim this principle if all of the following hold:
 
 4. **Data is transformed when it crosses a boundary.** A user-controlled value coming in becomes a typed, validated domain value before any business logic touches it. A trusted internal value becomes an explicit response shape before it goes out.
 
-5. **The agent boundary is named.** Your AGENTS.md or `context.qb.yaml` has a section that says what the agent can do that a regular user cannot, and what it cannot do that a regular operator can.
+5. **The agent boundary is named.** Your `AGENTS.md` has a security boundaries section that says what the agent can do that a regular user cannot, and what it cannot do that a regular operator can — and the agent tool's permission settings enforce it. (`context.qb.yaml` has no section for this today; a structured security section is planned for the format but has not shipped.)
 
 ## Signals you're getting this wrong
 

@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -63,7 +63,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): the follow-up step no longer tells readers to record surfaces in context.qb.yaml for the drift detector (it has no field for security state); surfaces go in the AGENTS.md list, hostnames and deployed services in routes/tree. Wider rewrite remains for its later batch. Earlier notes describe 0.1.1: R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Application Security Baseline Audit
@@ -327,7 +327,7 @@ After receiving the audit report:
 4. **Create tickets for medium findings.** Include them in regular work.
 5. **Save the report as your baseline.** The next audit compares against it.
 
-If you use the `contextqb check` drift detector, update your `context.qb.yaml` with any new surfaces discovered. This turns a one-time audit into ongoing protection.
+Keep what the audit found where future work will see it. Add new public endpoints and outside services to the "Public surfaces and outside services" list in your `AGENTS.md` (the `set-security-guardrails-for-your-agent` playbook has the template). If the audit found a new hostname or deployed service, add it to `routes` or `tree` in `context.qb.yaml`, so the `contextqb` drift detector can compare the map with your deploy configuration. The detector checks the map's structure, not security state; re-running this audit is what catches security drift.
 
 ---
 
