@@ -2,7 +2,7 @@
 id: understanding-the-context-window
 title: Understanding the Context Window
 summary: ContextQB is named for this. The context window is the agent's working memory — finite, lossy, and the most important variable in agentic coding. Understanding how it behaves is the difference between an agent that helps you and one that forgets what you told it five minutes ago.
-version: 0.2.4
+version: 0.2.5
 audience:
   - novice-builder
   - founder
@@ -139,7 +139,7 @@ Every session should start with the agent reading two things:
 - **[`AGENTS.md`](contextqb://playbooks/set-up-agents-md)** — operating instructions for the repo. What the project is, what conventions matter, what the agent should and shouldn't do.
 - **[`context.qb.yaml`](contextqb://playbooks/write-a-context-qb)** — the boot manifest. The project's map in a structured, machine-readable form.
 
-Together these are typically under 2,000 tokens — about 1% of a typical frontier context window. They prime the agent with what it needs to make good decisions for the rest of the session. Modern IDEs (Cursor, Claude Code, Devin Desktop, Antigravity, etc.) read these automatically.
+Together these are typically under 2,000 tokens — about 1% of a typical frontier context window. They prime the agent with what it needs to make good decisions for the rest of the session. Many coding agents load `AGENTS.md` automatically at the start of a session — support varies by tool and version, so check yours, and if it doesn't, start by asking the agent to read it. No tool needs to know about `context.qb.yaml` on its own: the agent reads it because a line near the top of `AGENTS.md` says to.
 
 ### 2. Write decisions down so the table can re-load them
 

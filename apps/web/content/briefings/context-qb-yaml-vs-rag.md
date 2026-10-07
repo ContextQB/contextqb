@@ -2,7 +2,7 @@
 id: context-qb-yaml-vs-rag
 title: context.qb.yaml vs. RAG
 summary: Both put information into the agent's context window, but they put very different kinds of information there. A manifest is a hand-curated map of the project's shape. RAG is an auto-generated search index over the project's content. They complement each other; they don't compete.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -71,7 +71,7 @@ RAG (codebase indexing, semantic retrieval — the thing that powers Cursor's `@
 
 They're complementary. A well-set-up agent session uses both:
 
-1. **Boot.** The IDE reads `context.qb.yaml` (and `AGENTS.md`) automatically. The agent now knows the project shape — what workspaces exist, what decisions are in play, what the deploy story is. That's ~2 KB of high-signal context.
+1. **Boot.** The agent tool loads `AGENTS.md` — many tools do this automatically; otherwise you ask the agent to read it — and a line near the top of `AGENTS.md` tells the agent to read `context.qb.yaml` next. The agent now knows the project shape — what workspaces exist, what decisions are in play, what the deploy story is. That's typically a few hundred to a couple of thousand tokens of high-signal context.
 2. **Mid-session.** You ask "where does this app verify Stripe webhook signatures?" The agent uses the IDE's RAG to retrieve the relevant chunks of `route.ts` and `webhook-handler.ts`. Those chunks drop into context.
 3. **Reasoning.** The agent now reasons with both — the **structural map** from the manifest plus the **specific code** from RAG. Without the manifest it would have to discover the project's shape from indexing artifacts (lossy). Without RAG it would have to load whole files to find anything (expensive).
 

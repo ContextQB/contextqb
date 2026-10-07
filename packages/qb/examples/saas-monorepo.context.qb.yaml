@@ -3,8 +3,9 @@
 # The agent's boot manifest (play-sheet, for the brand metaphor). Read this
 # first; drill into the referenced URIs only when the play calls for it.
 #
-# Sections: project, stack, tree, routes, decisions, status, entry_points
-# Spec: https://contextqb.com/spec
+# Sections: project, stack, tree, routes, decisions, paths, status, entry_points
+# Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
+# Example only: a fictional project; names and versions are illustrative.
 
 qb: "1.0"
 
@@ -71,6 +72,9 @@ decisions:
   "0012": control-library-as-pure-functions (accepted)
   index: docs/decisions/README.md
 
+paths:
+  decisions: docs/decisions # ADRs live here, not in the default docs/architecture/decisions
+
 status:
   soc2-type-2: "certified (renewal: November)"
   iso-27001: "in-progress (audit scheduled for August)"
@@ -80,7 +84,7 @@ status:
 
 entry_points:
   rules: AGENTS.md
-  map: context.qb (this file)
+  map: context.qb.yaml (this file)
   decisions: docs/decisions/README.md
   control-library: packages/controls/README.md
   api-reference: docs/api/README.md

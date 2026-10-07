@@ -3,8 +3,9 @@
 # The agent's boot manifest (play-sheet, for the brand metaphor). Read this
 # first; drill into the referenced URIs only when the play calls for it.
 #
-# Sections: project, stack, tree, decisions, status, entry_points
-# Spec: https://contextqb.com/spec
+# Sections: project, stack, tree, decisions, paths, status, entry_points
+# Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
+# Example only: a fictional project; names and versions are illustrative.
 
 qb: "1.0"
 
@@ -42,6 +43,9 @@ decisions:
   "0004": no-streaming-batch-only (accepted; revisit at 10x volume)
   index: docs/decisions/README.md
 
+paths:
+  decisions: docs/decisions # ADRs live here, not in the default docs/architecture/decisions
+
 status:
   daily-reconciliation: green (last 30 days, no missed runs)
   v2.4: in-progress (adding multi-currency support)
@@ -50,7 +54,7 @@ status:
 
 entry_points:
   rules: AGENTS.md
-  map: context.qb (this file)
+  map: context.qb.yaml (this file)
   decisions: docs/decisions/README.md
   flows: src/flows/__init__.py
   runbook: docs/runbook.md

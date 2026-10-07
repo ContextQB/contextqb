@@ -2,7 +2,7 @@
 id: context-quarterback-the-onboarding-map
 title: The Context Quarterback — Every Repo Needs a Boot Manifest
 summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
-version: 0.1.4
+version: 0.1.5
 category: documentation
 audience:
   - novice-builder
@@ -104,7 +104,7 @@ The third row is whatever your project uses for in-flight state: a status docume
 
 ## How to write one
 
-See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) playbook for the step-by-step. The short version: hand-author the first version against the spec at [`@context-qb/spec`](../../../qb/spec/SPEC.md), keep it under ~2,000 tokens, and update it whenever the shape of the repo changes.
+See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) playbook for the step-by-step. The short version: have your agent draft the structural sections (`tree`, `routes`, `decisions`, `stack`) from the repository against the spec at [`@context-qb/spec`](../../../qb/spec/SPEC.md); write or carefully check the meaning-carrying parts yourself — `project.summary`, each `purpose` and `status`; keep it under ~2,000 tokens; validate it against the [published JSON Schema](https://github.com/ContextQB/contextqb/blob/main/format/schema.json); and update it whenever the shape of the repo changes.
 
 ## How to instruct an agent to enforce this
 

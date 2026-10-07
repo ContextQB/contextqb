@@ -2,7 +2,7 @@
 id: review-a-new-feature-for-security-implications
 title: Review a New Feature for Security Implications
 summary: Before shipping a feature, walk through a structured checklist to identify security implications — new attack surfaces, data exposure, authentication gaps, and agent risks.
-version: 0.1.1
+version: 0.1.2
 problem: |
   Features ship fast, security review happens slow (or never). By the time you realize a feature created a security gap, it's in production and customers are using it.
 when_to_use: |
@@ -154,11 +154,13 @@ For each input:
 
 **Key questions:**
 
-| AI interaction          | What could go wrong?     | Mitigation                   |
-| ----------------------- | ------------------------ | ---------------------------- |
-| User question → prompt  | Prompt injection         | Sanitize, use system prompts |
-| AI response → displayed | XSS if HTML in output    | Escape output                |
-| AI response → executed  | Arbitrary code execution | Review before execute        |
+| AI interaction          | What could go wrong?     | Mitigation                                                                                                                                                                                                                  |
+| ----------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| User question → prompt  | Prompt injection         | Treat the user's text as data: keep it out of the system or developer instructions. Limit what the model can reach to the tools and data this feature needs, validate what it returns, and require approval before it acts. |
+| AI response → displayed | XSS if HTML in output    | Escape output                                                                                                                                                                                                               |
+| AI response → executed  | Arbitrary code execution | Review before execute                                                                                                                                                                                                       |
+
+A system prompt shapes the model's behaviour; it is not a security control. Filtering or "sanitising" the user's text can reduce noise but cannot reliably remove instructions hidden in it. Assume a determined user can make the model say or attempt anything the feature lets it reach — so the protection is in what it can reach and what needs approval, not in the wording of the prompt.
 
 ### Step 7 — Check for secrets and credentials
 
