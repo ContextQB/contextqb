@@ -11,6 +11,8 @@ review:
   last_reviewed: "2026-06-07"
   reviewer: "agent:tranche-ma2-privacy-disclosure"
   reviewer_notes: |-
+    2026-10-06 (curriculum renewal B0, independent review pending): replaced a link to an
+    unpublished ADR path with plain text, because absolute .md links now render as links.
     Tranche MA.2: Added "Upgrade advisory on community-tool responses" subsection under
     "Using the MCP with a token" — discloses that community_* tool responses may include
     a one-line advisory when CLI is outdated. References INV-CLI-UPD-2, notes 24h dedupe,
@@ -98,7 +100,7 @@ When your installed CLI version is older than the most recent `cli_version_lates
 
 The notice fires from `contextqb check`, `contextqb membership`, `contextqb mcp`, and `contextqb insights`. It is not rate-limited and continues to print on every run until you upgrade or until the cached `cli_version_latest` matches your installed version. The `contextqb upgrade` subcommand is **instructional only** — it detects how the CLI was installed (npx, pnpm dlx, npm-global, pnpm-global, homebrew, local dev dependency) and prints the corresponding install command. It does not run any installer itself.
 
-This behavior is governed by [ADR-0034](https://github.com/ContextQB/contextqb/blob/main/docs/architecture/decisions/0034-cli-upgrade-notice-and-always-accept-telemetry.md) and the architectural invariant INV-CLI-UPD-1. The CLI never silently degrades; older versions continue to send telemetry and continue to work, but their data is not counted in cooperative aggregates until the operator upgrades to a version that includes `project_id` (CLI 2.3.0 or newer).
+This behavior is governed by an internal architecture decision record (ADR-0034, not published) and the architectural invariant INV-CLI-UPD-1. The CLI never silently degrades; older versions continue to send telemetry and continue to work, but their data is not counted in cooperative aggregates until the operator upgrades to a version that includes `project_id` (CLI 2.3.0 or newer).
 
 #### Opt-in npm-registry poll
 
