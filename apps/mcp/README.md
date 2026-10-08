@@ -9,49 +9,11 @@ A remote MCP (Model Context Protocol) server that serves the ContextQB methodolo
 
 ## Using the MCP Server
 
-### In Cursor
-
-Add to your MCP settings:
-
-```json
-{
-  "mcpServers": {
-    "contextqb": {
-      "command": "npx",
-      "args": ["mcp-remote", "https://mcp.contextqb.com/mcp"]
-    }
-  }
-}
-```
-
-### In Claude Desktop
-
-Add to `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "contextqb": {
-      "command": "npx",
-      "args": ["mcp-remote", "https://mcp.contextqb.com/mcp"]
-    }
-  }
-}
-```
-
-### In Windsurf
-
-Add to `mcp_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "contextqb": {
-      "serverUrl": "https://mcp.contextqb.com/mcp"
-    }
-  }
-}
-```
+Follow the current client setup instructions at [contextqb.com/mcp](https://contextqb.com/mcp/).
+The endpoint is `https://mcp.contextqb.com/mcp`. That page links the dated setup
+reference, including the distinction between documented client configuration and
+ContextQB CLI output. Client compatibility is not implied by a configuration
+example; consult the recorded verification limits.
 
 ## Available Tools
 
@@ -296,7 +258,7 @@ The Worker exposes the Model Context Protocol over HTTP via two paths:
 | `GET /sse`          | Server-Sent Events (SSE) | Claude Desktop via `mcp-remote`, legacy SSE clients |
 | `POST /sse/message` | SSE message channel      | Same as `/sse`; used for client → server messages   |
 
-These endpoints are **not intended for direct curl use** — they are protocol surfaces driven by an MCP client. Configure your MCP client per the snippets at the top of this README, or run `contextqb mcp setup` to emit a ready-to-paste config.
+These endpoints are **not intended for direct curl use** — they are protocol surfaces driven by an MCP client. Configure your MCP client using the [current setup guide](https://contextqb.com/mcp/). If using `contextqb mcp setup`, check the guide's documented configuration distinctions and compatibility limits.
 
 If a request to `/mcp` or `/sse` carries a valid `Authorization: Bearer mt_...` token, the Worker records an anonymous `mcp_events` row (tool name, response time, country code) per ADR-0018. See [Privacy & Telemetry](https://contextqb.com/privacy/telemetry) for the public description. Methodology tools work without a token; community insight tools require one.
 

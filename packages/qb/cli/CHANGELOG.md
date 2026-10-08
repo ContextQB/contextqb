@@ -73,7 +73,7 @@ No functional changes from 2.4.0 beyond the prompt-string clarification. The 2.4
 - INV-TEL-1 rewritten — the "90-day deprecation window" wording is removed. The server now accepts every payload version ever shipped indefinitely. The upgrade-notice loop replaces the deprecation window as the forcing function.
 
 **Decision:** ADR-0034
-**Scope:** Internal punchlist `docs/punchlists/cli-upgrade-path.md` (Tranches U.0–U.7); CI auto-detect content carried forward from `docs/punchlists/telemetry-identity-hardening.md` Tranche C (INV-MEM-1).
+**Scope:** CLI upgrade workstream (Tranches U.0–U.7); CI auto-detect content carried forward from the telemetry identity-hardening workstream Tranche C (INV-MEM-1).
 
 ## [2.3.0] — 2026-06-03
 
@@ -88,7 +88,7 @@ No functional changes from 2.4.0 beyond the prompt-string clarification. The 2.4
 
 - Telemetry payload schema bumped from v2 to v3.
 
-**Scope:** Internal punchlist `docs/punchlists/telemetry-identity-hardening.md` Tranche E.2.
+**Scope:** The telemetry identity-hardening workstream Tranche E.2.
 
 ## [2.2.0] — 2026-06-02
 
@@ -106,7 +106,7 @@ No functional changes from 2.4.0 beyond the prompt-string clarification. The 2.4
 
 - Backfilled 2026-06-05 — the 2026-06-02 release shipped without a CHANGELOG entry. Original commit: `9fdaa6c feat(telemetry): implement integrity model per ADR-0028 + INV-INT-1`.
 
-**Scope:** Internal punchlist `docs/punchlists/telemetry-soundness-hardening.md` Tranches A–D.
+**Scope:** Telemetry soundness-hardening workstream Tranches A–D.
 
 ## [2.1.0] - 2026-05-31
 
