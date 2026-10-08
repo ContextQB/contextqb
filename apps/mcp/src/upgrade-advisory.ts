@@ -9,8 +9,8 @@
  * This is the ONLY module that writes to or reads from member_advisory_seen.
  * This is the ONLY module that computes the advisory footer.
  *
- * Ref: docs/architecture/decisions/0036-mcp-cli-freshness-advisory.md
- * Ref: docs/architecture/invariants.md (INV-CLI-UPD-2)
+ * Design: ADR-0036 (MCP CLI-freshness advisory) and invariant INV-CLI-UPD-2;
+ * those records are kept in the private upstream repository.
  */
 
 import type { Member } from "./membership.js";

@@ -282,6 +282,6 @@ export function buildSubmitFeedbackResponse(input: SubmitFeedbackInput): string 
     "",
     "---",
     "",
-    "_Filed feedback enters [`feedback/captures/`](https://github.com/ContextQB/contextqb/blob/main/feedback/captures/README.md) on triage. See [ADR-0029](https://github.com/ContextQB/contextqb/blob/main/docs/architecture/decisions/0029-external-adopter-feedback-channel.md) for the lifecycle._",
+    "_Maintainers file submitted feedback verbatim in the project's private feedback records and triage it there; see [how adopter feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md) for what happens next._",
   ].join("\n");
 }

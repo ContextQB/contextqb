@@ -21,7 +21,7 @@ Thanks for the interest. ContextQB is a methodology and a small set of tools —
 
 ## How structural decisions land
 
-This project records every structural decision as an **Architectural Decision Record (ADR)**. If a contribution affects more than one file, more than one package, or any future contributor's mental model, an ADR comes first. The format is the lightweight Nygard one (Status / Date / Context / Decision / Consequences). For an example, see [ADR-0029](https://github.com/ContextQB/contextqb/blob/main/docs/architecture/decisions/0029-external-adopter-feedback-channel.md).
+This project records every structural decision as an **Architectural Decision Record (ADR)**. If a contribution affects more than one file, more than one package, or any future contributor's mental model, an ADR comes first. The format is the lightweight Nygard one (Status / Date / Context / Decision / Consequences). The project's own ADRs are kept in the private upstream repository; the [`write-an-adr` playbook](https://contextqb.com/playbooks/write-an-adr) shows the format with a worked example.
 
 ## Code-style and conventions
 

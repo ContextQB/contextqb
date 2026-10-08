@@ -10,9 +10,9 @@
  * Per ADR-0033, n_users represents distinct projects (not members).
  * The cooperative's sole counting unit is project_id, not anonymous_id.
  *
- * Ref: docs/archive/scopes/0018-data-cooperative.md (Tranche F)
- * Ref: docs/architecture/invariants.md (INV-9, INV-10)
- * Ref: docs/architecture/decisions/0033-per-project-sole-counting-unit.md
+ * Design: data-cooperative scope, Tranche F (ADR-0018), invariants INV-9 and
+ * INV-10, and ADR-0033 (per-project sole counting unit); those records are kept
+ * in the private upstream repository.
  */
 
 import type { Member } from "./membership.js";

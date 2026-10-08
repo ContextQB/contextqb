@@ -4,5 +4,5 @@ contact_links:
     url: https://contextqb.com
     about: Methodology, principles, playbooks, and product overview.
   - name: How adopter feedback is handled
-    url: https://github.com/ContextQB/contextqb/blob/main/feedback/README.md
-    about: Lifecycle, schema, and visibility policy for adopter feedback.
+    url: https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md
+    about: What happens after you submit feedback, and how your words are used.
