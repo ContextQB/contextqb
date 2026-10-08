@@ -1,90 +1,108 @@
 ---
-eyebrow: ContextQB
-headline: |
-  AI can write code.
-  Someone still has to think.
-subhead: |
-  ContextQB helps everyday builders use AI agents with better context, clearer instructions, and steadier judgment so their projects stay coherent as they grow.
+eyebrow: Practical AI Building for Everyone
+headline: Turn your ideas and expertise into working products.
+subhead: >-
+  AI is changing who gets to build software—and what one person can accomplish.
+  ContextQB teaches you how to direct AI agents, turn your knowledge into working
+  products, and develop the skills to keep building as technology evolves.
 
-primary_cta_label: Start here
+primary_cta_label: Start Building with AI
 primary_cta_href: /start-here
-secondary_cta_label: Install the MCP
-secondary_cta_href: /mcp
+secondary_cta_label: Explore the Playbooks
+secondary_cta_href: /playbooks
 
-problem_heading: The hard part is steering the work.
+problem_heading: The ability to build is becoming everyone's advantage.
 problem_paragraphs:
   - >-
-    AI coding tools can produce working code quickly. They do not decide what
-    belongs where, what should own state, or when a shortcut will make the next
-    change harder. Without structure, generated projects get tangled fast.
+    Until recently, turning an idea into software meant learning to code, hiring
+    a developer, or abandoning the idea altogether.
+  - That's changing fast.
   - >-
-    ContextQB teaches the missing practice: how to brief an agent, organize the
-    project, inspect the result, and keep turning an idea into a working system
-    without losing the thread.
+    AI agents can now do much of the technical work. But there's a difference
+    between asking AI to make something and knowing how to guide it toward a
+    result that actually works.
+  - The people who learn that difference will have an enormous advantage.
 
-how_it_works_heading: How it works
+opportunity_heading: You already know what needs to be built.
+opportunity_paragraphs:
+  - >-
+    Maybe it's a tool that eliminates hours of repetitive work. An application
+    that helps your community. A new product or business. Something you've
+    imagined for years but never had the technical skills to create.
+  - >-
+    Your ideas and experience are the starting point. AI provides the technical
+    capability. ContextQB teaches you how to bring them together.
+  - >-
+    Learn to define your project, give AI agents the right context, direct their
+    work, evaluate what they build, and keep improving it.
+opportunity_closing: You bring the vision. Learn to call the plays.
+how_it_works_heading: Build your skills as you build your project
 how_it_works_cards:
-  - title: Read the principles
+  - title: Shape the idea
     body: >-
-      Learn the few ideas that keep an AI-built project understandable: who owns
-      state, what each module is responsible for, and how names guide the next
-      change.
-  - title: Adopt the patterns
+      Use plain-language guides to decide who your project is for, what it
+      needs to do, and where to start. Turn what you know into a clear brief
+      your agent can work from.
+  - title: Give your agent a project map
     body: >-
-      Give your agent a project map, operating rules, and a decision log so each
-      session starts with the right context instead of guessing from scratch.
-  - title: Apply the playbooks
+      Keep your instructions, project structure, and decisions in files your
+      agent can read. Learn working habits that help each session pick up
+      with the context it needs.
+  - title: Build, check, and improve
     body: >-
-      Use practical checklists when you plan, build, review, and fix. Pull them
-      into your agent through the MCP, or paste them directly into your prompts.
+      Follow practical playbooks to plan a change, build it, and check that
+      it works. Learn the principles behind good structure so the next
+      change is easier to make.
 
-guides_section_heading: Start with a guide
+guides_section_heading: Start with a practical guide
 guides_section_intro: >-
-  Guides help you do the thinking before the code: shape the idea, name the
-  moving parts, and give the agent a better first brief.
+  Learn the concepts as you need them, with concrete examples and steps you
+  can apply to your own project. No software development background required.
 
-principles_section_heading: Core principles
+principles_section_heading: Principles that keep your project understandable
 
-audience_heading: Who it is for
+audience_heading: For people ready to make something
 audience_cards:
   - title: Founders with a product idea
     body: >-
-      You are using Cursor or similar tools to move fast. ContextQB helps you
-      slow down just enough to keep the product understandable as it grows.
-  - title: Operators guiding agent work
+      You understand the problem you want to solve. Learn to turn that
+      understanding into a clear plan, guide the build, and evaluate the result.
+  - title: People improving how they work
     body: >-
-      You may not write every line yourself, but you need to judge the work.
-      These principles and audits give you a way to inspect what the agent
-      produced.
+      You know the repetitive tasks and awkward processes in your day.
+      Learn to build tools that fit the way you and your team actually work.
   - title: First-time software builders
     body: >-
-      You can ask an AI to build, but you are still learning what good structure
-      looks like. ContextQB gives you the working habits tutorials often skip.
+      You have something you want to make, even if you have never written
+      code. Get practical guidance for briefing an agent, understanding
+      your project, and checking each step.
   - title: Experienced developers with AI tools
     body: >-
-      You already know the tradeoffs. Use ContextQB as shared language for
-      agents, teammates, and reviews so the same standards show up every time.
+      Use ContextQB as shared language for agents, teammates, and reviews.
+      Make project structure and working standards explicit so others can
+      build on what you have made.
 
-playbooks_section_heading: Featured playbooks
-audits_section_heading: Audit templates
+playbooks_section_heading: Playbooks you can put to work
+audits_section_heading: Check what you and your agent have built
 
-mcp_cta_eyebrow: ContextQB MCP
-mcp_cta_heading: Bring these resources into any agent.
+mcp_cta_eyebrow: Guidance for you and your agent
+mcp_cta_heading: Bring the playbooks into your build.
 mcp_cta_body: >-
-  The ContextQB MCP server exposes every guide, principle, playbook, audit, and
-  prompt through the Model Context Protocol. Add it to Cursor, Claude Desktop,
-  or any MCP-aware tool, and your agent can pull the right standard into the
-  conversation when you need it. Members also get four community-insight tools
-  that summarize what the rest of the cooperative is building.
-mcp_cta_label: MCP setup →
+  Read a guide yourself, paste a prompt into your agent, or connect your
+  AI tool to ContextQB through the Model Context Protocol (MCP). With a
+  compatible tool, your agent can retrieve guides, principles, playbooks,
+  audits, and prompts while you work. You and your agent share a practical
+  reference for planning, building, and reviewing. Members can also explore
+  community insights when enough projects have contributed.
+mcp_cta_label: Connect your agent →
 mcp_cta_href: /mcp
 mcp_cta_secondary_label: See community insights →
 mcp_cta_secondary_href: /insights
 
-meta_title: ContextQB
+meta_title: ContextQB — Practical guidance for building with AI
 meta_description: >-
-  Learn to build with AI agents by giving them better context, clearer briefs,
-  and practical checks that keep your project coherent.
+  Practical guidance for non-developers building with AI. Learn to shape your
+  idea, guide an AI agent, and check what you build with ContextQB guides and playbooks.
 
 
 ---
