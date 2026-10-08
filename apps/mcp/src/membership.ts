@@ -5,8 +5,8 @@
  * INV-5: This is the ONLY file that issues DELETE FROM cli_events or mcp_events.
  * INV-TOK-1: Tokens stored as sha256(token); plaintext only on client + wire.
  *
- * Ref: docs/archive/scopes/0018-data-cooperative.md (Tranche B)
- * Ref: docs/architecture/invariants.md (INV-3, INV-5)
+ * Design: data-cooperative scope, Tranche B (ADR-0018), and invariants INV-3 and
+ * INV-5; those records are kept in the private upstream repository.
  */
 
 const ANONYMOUS_ID_RE = /^[0-9a-f]{64}$/;

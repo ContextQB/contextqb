@@ -131,13 +131,13 @@ pnpm deploy
 
 ## Architecture
 
-This is a stateless MCP server using Cloudflare's `createMcpHandler` with the streamable HTTP transport. Content is bundled at build time from the methodology packages (`packages/methodology/standards`, `packages/methodology/playbooks`, `packages/methodology/prompts`) into a JSON file that gets embedded in the Worker.
+This is a stateless MCP server using Cloudflare's `createMcpHandler` with the streamable HTTP transport. Content is bundled at build time by `scripts/bundle-content.ts` into a JSON file that gets embedded in the Worker. The bundler reads the full corpus (principles, playbooks, audits, prompts, guides, briefings and the four reference groups) from whichever layout it finds: the private monorepo's methodology packages, or the public mirror's `content/` directory, with briefings in `apps/web/content/briefings` in both. It refuses to build if the layout is ambiguous or an input directory is missing or empty.
 
 The server requires no authentication (public read-only access to methodology content).
 
 ## D1 Database
 
-The Worker has a D1 database binding `DB` for telemetry storage (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md)).
+The Worker has a D1 database binding `DB` for telemetry storage (per ADR-0018, the data-cooperative telemetry decision; ADRs are kept in the private upstream repository).
 
 ### Binding
 
@@ -161,11 +161,11 @@ pnpm exec wrangler d1 migrations apply contextqb-telemetry --local
 
 Both `cli_events` and `mcp_events` carry an integer `payload_schema_version` column. Bump only on backwards-incompatible payload-shape changes; the aggregation pipeline filters or coerces per version.
 
-See the [Tranche A section of scope 0018](../../docs/archive/scopes/0018-data-cooperative.md) for the schema rationale.
+The schema rationale is recorded in Tranche A of the data-cooperative scope (ADR-0018), kept in the private upstream repository.
 
 ## Membership Endpoints
 
-Three HTTP endpoints for the data cooperative membership system (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md), Tranche B).
+Three HTTP endpoints for the data cooperative membership system (per ADR-0018, Tranche B).
 
 ### POST /membership/register
 
@@ -249,7 +249,7 @@ Most endpoints require the token via **Authorization header**: `Authorization: B
 
 ## Telemetry Endpoint
 
-Record an anonymous CLI telemetry event. Requires a valid membership token. Per [INV-1](../../docs/architecture/invariants.md), this is the sole ingest path for `cli_events`.
+Record an anonymous CLI telemetry event. Requires a valid membership token. Per invariant INV-1 (recorded in the private upstream repository), this is the sole ingest path for `cli_events`.
 
 ### POST /telemetry/cli
 
@@ -298,7 +298,7 @@ The Worker exposes the Model Context Protocol over HTTP via two paths:
 
 These endpoints are **not intended for direct curl use** — they are protocol surfaces driven by an MCP client. Configure your MCP client per the snippets at the top of this README, or run `contextqb mcp setup` to emit a ready-to-paste config.
 
-If a request to `/mcp` or `/sse` carries a valid `Authorization: Bearer mt_...` token, the Worker records an anonymous `mcp_events` row (tool name, response time, country code) per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md). Methodology tools work without a token; community insight tools require one.
+If a request to `/mcp` or `/sse` carries a valid `Authorization: Bearer mt_...` token, the Worker records an anonymous `mcp_events` row (tool name, response time, country code) per ADR-0018. See [Privacy & Telemetry](https://contextqb.com/privacy/telemetry) for the public description. Methodology tools work without a token; community insight tools require one.
 
 ## Insights API
 
@@ -382,7 +382,7 @@ To add a new origin, edit `ALLOWED_ORIGINS` in `src/insights.ts` and redeploy wi
 
 ## Aggregation Pipeline
 
-A daily Cron job aggregates raw CLI telemetry events into privacy-preserving insight cells (per [ADR-0018](../../docs/architecture/decisions/0018-data-cooperative-telemetry.md), Tranche E).
+A daily Cron job aggregates raw CLI telemetry events into privacy-preserving insight cells (per ADR-0018, Tranche E).
 
 ### Cron Schedule
 
@@ -470,5 +470,6 @@ Rotation is intentionally destructive: rotation = revoke + re-register. A non-de
 
 ## Related
 
-- [`packages/methodology/mcp-server`](../../packages/methodology/mcp-server) — Local stdio-based MCP server (same functionality, local execution)
-- [PRODUCTS.md](../../PRODUCTS.md) — Product overview
+- A local stdio MCP server with the same tools exists in the private upstream repository for contributors.
+- [contextqb.com/mcp](https://contextqb.com/mcp/) — current setup instructions for each client
+- [contextqb.com](https://contextqb.com) — the methodology and product overview

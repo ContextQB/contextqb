@@ -1,5 +1,5 @@
 -- Migration 0001 — initial telemetry schema
--- Tranche A of docs/archive/scopes/0018-data-cooperative.md
+-- Tranche A of the data-cooperative scope (ADR-0018; design records kept in the private upstream)
 -- Owner: apps/mcp Worker (binding env.DB)
 
 CREATE TABLE members (

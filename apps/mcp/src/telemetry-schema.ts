@@ -1,7 +1,8 @@
 /**
  * Zod schema for CLI telemetry payloads.
  *
- * MIRROR OF packages/qb/cli/src/telemetry.ts:CliTelemetryPayload
+ * MIRROR OF the CliTelemetryPayload type in the @context-qb/cli source
+ * (published on npm; its source is kept in the private upstream repository).
  *
  * This is the wire-format enforcement point. Payloads that don't match
  * are rejected with 400. Keep this in sync with the CLI type definition.

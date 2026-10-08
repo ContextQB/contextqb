@@ -23,6 +23,18 @@
  *     pricing units/conditions, unique ids, live replacements, private-path,
  *     secret and fixture-host guards. A group that breaks them stops the
  *     bundle, in the private repository and in the public mirror alike.
+ *
+ * Source layouts. The Worker builds from two layouts of the same corpus:
+ *   - private: the monorepo (`packages/methodology/...`, briefings in
+ *     `apps/web/content/briefings`);
+ *   - mirror: the public repository written by `scripts/publish-to-public.sh`
+ *     (`content/<type>/`, including `content/references/`; briefings stay at
+ *     `apps/web/content/briefings`).
+ * `resolveLayout` picks exactly one layout from its marker directory and then
+ * requires every input directory of that layout to exist and hold Markdown.
+ * It never mixes the two, and a missing input stops the build instead of
+ * producing an apparently successful empty bundle. Explicit `BundleSources`
+ * passed by tests are used as given (fixtures may be intentionally empty).
  */
 
 import * as fs from "node:fs";
@@ -80,16 +92,6 @@ export interface BundleSources {
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..", "..", "..");
 
-export const canonicalSources: BundleSources = {
-  principles: path.join(repoRoot, "packages", "methodology", "standards", "principles"),
-  playbooks: path.join(repoRoot, "packages", "methodology", "playbooks", "playbooks"),
-  audits: path.join(repoRoot, "packages", "methodology", "playbooks", "audits"),
-  prompts: path.join(repoRoot, "packages", "methodology", "prompts", "prompts"),
-  guides: path.join(repoRoot, "packages", "methodology", "guides", "guides"),
-  briefings: path.join(repoRoot, "apps", "web", "content", "briefings"),
-  references: path.join(repoRoot, "packages", "methodology", "references", "references"),
-};
-
 function markdownFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
   return fs
@@ -97,6 +99,89 @@ function markdownFiles(dir: string): string[] {
     .filter((f) => f.endsWith(".md"))
     .sort();
 }
+
+// The package README sits beside the group files in the mirror layout
+// (`content/references/README.md`). It is package metadata, not a group, so this
+// exact file name is the only one skipped; any other Markdown file must be a
+// valid group.
+const REFERENCE_PACKAGE_METADATA = "README.md";
+
+function referenceGroupFiles(dir: string): string[] {
+  return markdownFiles(dir).filter((f) => f !== REFERENCE_PACKAGE_METADATA);
+}
+
+export type BundleLayout = "private" | "mirror";
+
+// The directory whose presence identifies each layout.
+const LAYOUT_MARKERS: Record<BundleLayout, string> = {
+  private: path.join("packages", "methodology"),
+  mirror: "content",
+};
+
+export function layoutSources(root: string, layout: BundleLayout): BundleSources {
+  const briefings = path.join(root, "apps", "web", "content", "briefings");
+  if (layout === "private") {
+    const methodology = path.join(root, "packages", "methodology");
+    return {
+      principles: path.join(methodology, "standards", "principles"),
+      playbooks: path.join(methodology, "playbooks", "playbooks"),
+      audits: path.join(methodology, "playbooks", "audits"),
+      prompts: path.join(methodology, "prompts", "prompts"),
+      guides: path.join(methodology, "guides", "guides"),
+      briefings,
+      references: path.join(methodology, "references", "references"),
+    };
+  }
+  const content = path.join(root, "content");
+  return {
+    principles: path.join(content, "principles"),
+    playbooks: path.join(content, "playbooks"),
+    audits: path.join(content, "audits"),
+    prompts: path.join(content, "prompts"),
+    guides: path.join(content, "guides"),
+    briefings,
+    references: path.join(content, "references"),
+  };
+}
+
+export interface ResolvedLayout {
+  layout: BundleLayout;
+  sources: BundleSources;
+}
+
+// Exactly one layout marker must exist, and every input of that layout must be
+// a directory holding at least one Markdown file. Throws otherwise.
+export function resolveLayout(root: string): ResolvedLayout {
+  const present = (Object.keys(LAYOUT_MARKERS) as BundleLayout[]).filter((layout) =>
+    fs.existsSync(path.join(root, LAYOUT_MARKERS[layout])),
+  );
+  if (present.length !== 1) {
+    throw new Error(
+      `[bundle-content] cannot tell the source layout under ${root}: ` +
+        (present.length === 0
+          ? "neither packages/methodology (private) nor content/ (mirror) exists"
+          : "both packages/methodology (private) and content/ (mirror) exist"),
+    );
+  }
+  const layout = present[0]!;
+  const sources = layoutSources(root, layout);
+  const missing = Object.entries(sources)
+    .filter(([kind, dir]) =>
+      kind === "references"
+        ? referenceGroupFiles(dir).length === 0
+        : markdownFiles(dir).length === 0,
+    )
+    .map(([kind, dir]) => `${kind} (${path.relative(root, dir)})`);
+  if (missing.length > 0) {
+    throw new Error(
+      `[bundle-content] ${layout} layout under ${root} is missing required input: ${missing.join(", ")}`,
+    );
+  }
+  return { layout, sources };
+}
+
+export const canonicalLayout: ResolvedLayout = resolveLayout(repoRoot);
+export const canonicalSources: BundleSources = canonicalLayout.sources;
 
 function loadDocuments(dir: string): BundledDocument[] {
   if (!fs.existsSync(dir)) {
@@ -152,7 +237,7 @@ const GROUP_ORDER = ["tools", "models", "pricing", "setup"];
 
 function loadReferenceGroups(dir: string): BundledReferenceGroup[] {
   const groups: BundledReferenceGroup[] = [];
-  for (const file of markdownFiles(dir)) {
+  for (const file of referenceGroupFiles(dir)) {
     const raw = fs.readFileSync(path.join(dir, file), "utf-8");
     const { data, content } = matter(raw);
     assertNoParsedDates(data, file);
@@ -207,7 +292,7 @@ function main(): void {
   const outDir = path.join(scriptDir, "..", "src", "generated");
   fs.mkdirSync(outDir, { recursive: true });
 
-  const bundle = buildBundle();
+  const bundle = buildBundle(canonicalSources);
   const outPath = path.join(outDir, "content-bundle.json");
   fs.writeFileSync(outPath, JSON.stringify(bundle, null, 2));
 
@@ -215,7 +300,8 @@ function main(): void {
     `[bundle-content] Bundled ${bundle.principles.length} principles, ` +
       `${bundle.playbooks.length} playbooks, ${bundle.audits.length} audits, ` +
       `${bundle.prompts.length} prompts, ${bundle.guides.length} guides, ` +
-      `${bundle.briefings.length} briefings, ${bundle.references.length} reference groups → ${outPath}`,
+      `${bundle.briefings.length} briefings, ${bundle.references.length} reference groups ` +
+      `(${canonicalLayout.layout} layout) → ${outPath}`,
   );
 }
 

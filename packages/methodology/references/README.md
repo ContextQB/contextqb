@@ -7,6 +7,7 @@ References hold the facts that change — tool capabilities, model limits, price
 ## Layout
 
 - `references/` — exactly four group files: `tools.md`, `models.md`, `pricing.md` (pricing, limits and defaults) and `setup.md` (setup, compatibility and controls). The filename equals the group `id`.
+- In the public mirror, the four group files sit in `content/references/` directly, beside this README and `LICENSE`; there is no nested `references/` directory there.
 
 Each entry is added only after its facts are checked against primary sources — the vendor's, standard body's or project's own documentation, pricing page, release record or source; each evidence item records the URL, the date it was checked and where on the page the fact appears. A fact that cannot be checked — for example a navigation path inside a signed-in dashboard — stays out of the values, and an entry with no checkable facts is marked `unverified`. Every current entry carries a review date or trigger; the website and MCP servers flag entries whose review date has passed.
 

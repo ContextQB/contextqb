@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for taking the time to file this — adopter feedback is how the methodology and tooling improve.
 
-        **A maintainer will triage this issue and file it under `feedback/reports/` in the private upstream.** The structured report stays internal by default; insights that drive a change will surface in public ADRs, scopes, or content updates with your consent honoured. See [`feedback/README.md`](https://github.com/ContextQB/contextqb/blob/main/feedback/README.md) for the full lifecycle.
+        **A maintainer will triage this issue and file it under `feedback/reports/` in the private upstream.** The structured report stays internal by default; insights that drive a change will surface in public ADRs, scopes, or content updates with your consent honoured. See [how adopter feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md) for what happens next.
 
         If you're an AI agent filing this on behalf of an operator, set "Submitted by an AI agent?" to **Yes** and name yourself in the agent field. We treat agent-authored reports as first-class data.
 

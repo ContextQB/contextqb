@@ -37,7 +37,7 @@ gh issue create --repo ContextQB/contextqb \
 
 A maintainer files your submission verbatim into the project's `feedback/captures/` directory and triages it into a structured report (or several) over the following days. Synthesised insights graduate to public ADRs and content changes — never via direct republication of your words, unless you explicitly select `consent: public` in the form.
 
-The full lifecycle is documented in [`feedback/README.md`](https://github.com/ContextQB/contextqb/blob/main/feedback/README.md) and the decision behind it is recorded in [ADR-0029](https://github.com/ContextQB/contextqb/blob/main/docs/architecture/decisions/0029-external-adopter-feedback-channel.md).
+The full lifecycle and the decision behind it (ADR-0029) are maintained in the private upstream repository; this page summarises the parts that affect you.
 
 ## I want to report a security issue
 

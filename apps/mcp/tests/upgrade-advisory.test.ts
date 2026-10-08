@@ -8,7 +8,8 @@
  * 4. no cli_events for member → returns body unchanged
  * 5. CLI_VERSION_LATEST unset → returns body unchanged
  *
- * Ref: docs/scopes/mcp-cli-freshness-advisory.md §10
+ * Design: the MCP CLI-freshness advisory scope, §10 (ADR-0036; kept in the
+ * private upstream repository).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
