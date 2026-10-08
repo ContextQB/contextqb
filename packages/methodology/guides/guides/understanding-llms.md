@@ -5,7 +5,7 @@ summary: >-
   A field guide to the models you'll work with. Each LLM has a working style you
   learn over time: strengths, costs, recurring quirks, and failure modes you can
   plan around.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -27,13 +27,14 @@ related:
   - untrusted-by-default
 next_steps:
   - Pick one model and use it for a week before forming opinions.
+  - If your tool has a reasoning-effort setting, try raising it on a hard task before you switch models.
   - Set a billing alert at your provider's dashboard.
   - Note which kinds of tasks feel easy vs. forced — that's where you'll learn what each model is good at.
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "F-19: September stack verification executed — family table, tiers, and heuristics updated to current vendor lineups (GPT-6 Astra / 5.6 family; Claude Opus 5 + Fable 5.1; Gemini 3.x tiers; Grok now Cursor-in-house). REVIEWED. F-09 addressed 2026-09-09: version-pinned model table carries a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (version-pinned model claims — GPT 5/5.1, Gemini 3.x — verify at each review), F-06 (2 links). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 review correction (0.3.1; author self-checked; independent review pending; not operator-accepted): the spending-cap habit now distinguishes a hard limit that stops requests from an alert that only notifies, says what to do when only alerts are available, and links the provider console reference. 2026-10-07 renewal B3 (0.3.0; author self-checked; independent review pending; not operator-accepted): model names, tier names, prices and context sizes moved to the dated model and pricing references; the body keeps the role tiers (careful, workhorse, fast), the cost ratios, the habits and the failure modes to listen for, now described as unnamed patterns; the how-to-use steps come first and add raising the reasoning effort before switching models; the unsupported 'default many builders reach for' endorsement removed; the only remaining dollar figure is ContextQB's own labelled estimate for a first spending cap. Earlier notes (2026-09-09 epistemology review: lineups verified in place, with open items F-09 and F-06) are closed by this revision: version-pinned claims now live in references with their own review dates, and the vendor documentation links moved there. R3, R4, R6, R7 passed then; R8 pending P4."
 ---
 
 # Understanding LLMs
@@ -44,45 +45,63 @@ review:
 
 The first instinct of most new builders is to pick "the best" model and use only that. There is no best. There are families, and within each family there's a fast cheap one, a careful expensive one, and the trade-off between them is real.
 
-Knowing the landscape — even at the level of "Claude is good at long careful reasoning, GPT is fast at routine edits, Gemini handles huge context" — is what lets you make small daily decisions that compound. If you're stuck on the wrong model for the task, you'll think the problem is your prompt when really it's the model.
+Knowing the landscape — even at the level of "this family is careful but slow, that one is fast at routine edits, this other one takes very long inputs" — is what lets you make small daily decisions that compound. If you're stuck on the wrong model for the task, you'll think the problem is your prompt when really it's the model.
 
-## The major families in 2026
+## How to use this guide
 
-_(Version-pinned content — verified 2026-09 against vendor docs. Model names and tiers move fast; re-verify before quoting at anyone.)_
+Do not try to become a model expert before you build. Pick one good default,
+use it on real work, and keep a short note about what you learn. The useful
+question is not "which model is best?" The useful question is "which model is
+good enough for this task, at this cost, with this failure mode?"
 
-| Family                                                 | Maker               | What it's known for                                                                                                                                                                                                                           | Watch for                                                                                                                     |
-| ------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Claude** (Fable, Opus, Sonnet, Haiku)                | Anthropic           | Long chains of careful reasoning. Strong at refactoring, code review, agentic loops that need to follow many steps without losing the plot. The default many ContextQB builders reach for. Fable is the long-horizon agentic tier above Opus. | Tends to over-explain. Can be verbose in chat; reins itself in nicely in agent mode.                                          |
-| **GPT** (6 Astra; 5.6 Sol / Terra / Luna)              | OpenAI              | Fast, broad capability. Excellent instruction following. Very good at routine edits, generating boilerplate, mapping between formats. Huge integrations ecosystem (Codex CLI, cloud, desktop).                                                | Can sound more confident than it should. The line between "knows" and "guesses" is thinner than with Claude.                  |
-| **Gemini** (3.x — Flash, Flash-Lite, Pro, Deep Think)  | Google              | Enormous context windows — useful when you need to feed a whole codebase or a long document. Strong multimodal capability (handles images well). Flash is the agentic workhorse tier.                                                         | The behavior of long-context retrieval can be uneven; what's in context isn't always reasoned about evenly across the window. |
-| **Grok**                                               | xAI                 | Now built into Cursor as its in-house model line (alongside Cursor's own Composer). Much more common for coding work than it used to be.                                                                                                      | Heavily integrated with the Cursor/X ecosystem; less portable as a habit elsewhere.                                           |
-| **Open-source** (Llama, Qwen, DeepSeek, Mistral, etc.) | Various / community | Run them locally for free; meaningfully behind the frontier closed models but rapidly closing the gap.                                                                                                                                        | Quality varies wildly by model size. A laptop-runnable model is not a Claude-Opus replacement.                                |
+Start simple:
 
-Within each family there's typically a tier:
+1. Use your tool's default model for a week of normal work.
+2. When a task feels stuck, first raise the reasoning-effort setting if your tool has one, and try again. Many tools let you ask the same model to think longer before you change anything else.
+3. If it is still stuck, switch once to a stronger reasoning model and compare the result.
+4. Use a cheaper model for formatting, renames, and routine edits.
+5. Use a stronger model for architecture, security, data models, and reviews.
+6. Write down the pattern you observe so future-you does not have to relearn it.
 
-- **Opus 5 / Fable 5.1 / GPT-6 Astra / Gemini Pro / large open models** — the careful, expensive ones. Use for hard reasoning.
-- **Sonnet 5 / GPT-5.6 Sol or Terra / Gemini Flash / mid open models** — the workhorses. Use for most tasks.
-- **Haiku 4.5 / GPT-5.6 Luna / Gemini Flash-Lite / small open models** — the fast cheap ones. Use for routine work, formatting, classification, anything that doesn't need depth.
+That is enough. Your model strategy should grow from real feedback, not from reading every benchmark. The rest of this guide explains the map behind those steps.
+
+## The shape of the landscape
+
+A handful of providers make the leading closed model families. You reach them through the provider's own apps and API, or through your coding tool's plan. Alongside them are **open-weight** models — published for anyone to download and run on their own machine or a host they choose.
+
+The names, versions and context limits change several times a year, so ContextQB keeps them in dated references rather than in this guide:
+
+- [Model families and current lineups](contextqb://references/models#families) — providers, current models, role tiers, context and output limits, each with the date it was checked.
+- [Open-weight model families](contextqb://references/models#open-weight) — publishers and licences.
+
+What lasts is the shape. Within each family there's typically a tier:
+
+- **Careful and expensive** — the top tier. Use for hard reasoning, design decisions and long agentic work where a mistake is costly.
+- **Workhorse** — the middle tier. Use for most tasks.
+- **Fast and cheap** — the small tier. Use for routine work, formatting, classification, anything that doesn't need depth.
+
+Open-weight models span the same range by size. The ones small enough to run on a laptop are usually behind the frontier closed models for coding; larger ones need serious hardware.
 
 Most builders end up using two to three models regularly — usually a careful one for hard tasks and a fast one for everything else.
 
 ## How they're priced
 
-The base unit is the **token**. A token is roughly a syllable — about three-quarters of a word. Pricing is quoted in dollars per million tokens, separately for input (what you send) and output (what the model returns). Output is usually 4–5× more expensive than input.
+The base unit is the **token**. A token is roughly a syllable — about three-quarters of a word. Pricing is quoted in dollars per million tokens, separately for input (what you send) and output (what the model returns). Output usually costs several times more than input.
 
 A few practical shapes to internalise:
 
-- **Frontier (most expensive):** several dollars per million input tokens, multiples of that for output. A long, deep agent session can hit a few dollars on its own.
-- **Mid-tier:** an order of magnitude cheaper. Good for the bulk of daily work.
-- **Small / fast:** another order of magnitude cheaper. Functionally a rounding error for most personal use.
+- **Top tier (most expensive):** the highest per-token prices. A long, deep agent session on it can cost noticeably more than a day of light use.
+- **Workhorse tier:** often around an order of magnitude cheaper. Good for the bulk of daily work.
+- **Small and fast:** cheaper again. Close to negligible for most personal use.
+- **Repeated input:** many providers charge less for input they have recently seen (prompt caching), which helps long sessions.
 - **Local models:** zero API cost. Hardware and electricity instead.
 
-You don't need to memorise specific prices — they change. You need to know the rough ratio so you can match the model to the task. Don't use the frontier model to format a CSV. Don't use the small model to design your data model.
+You don't need to memorise specific prices — they change. Current list prices, including caching, are in the dated [model API prices reference](contextqb://references/pricing#model-api); check the date and the provider's own page before you budget. What you need is the rough ratio, so you can match the model to the task. Don't use the top-tier model to format a CSV. Don't use the small model to design your data model.
 
 **Two habits make this safe:**
 
-1. Set a hard monthly cap at the provider dashboard before you start using a pay-per-token plan. $50 is a reasonable first ceiling.
-2. Watch a long agent task complete and look at the cost in the dashboard. Once a week is enough. You'll quickly develop intuition for "that prompt was a $0.05 prompt" vs "that prompt was a $5 prompt."
+1. Before you start a pay-per-token plan, set a monthly spending limit in the provider's console, and check whether it is a _hard limit_ that stops requests or only an _alert_ that emails you while spending continues. Providers and plans differ ([where each console's limits are](contextqb://references/setup#provider-console)). If only alerts are available, set one well below the amount you could afford to lose, act on it the day it arrives, and keep agent sessions short until you know your usage. Choose an amount you could lose without regret. (ContextQB's rough starting estimate for a solo learner is about $50 a month — an estimate, not a price.)
+2. Watch a long agent task complete and look at the cost in the dashboard. Once a week is enough. You'll quickly develop intuition for "that was a cheap prompt" vs "that one was a hundred times more expensive".
 
 ## Getting a feel for each model
 
@@ -95,7 +114,7 @@ A few specific things to listen for:
 - **How does it handle "I don't know"?** Some models are willing to say it directly. Others paper over uncertainty with confidence. Both are usable; you adjust your trust accordingly.
 - **How does it handle ambiguous prompts?** Does it ask a clarifying question, or does it pick a path and run? Both are valid styles; one wastes more time than the other depending on the task.
 - **What does its output _feel_ like?** Some models are verbose by default; some are terse. Some lean structured; some lean conversational. None of these is wrong, but you'll have preferences.
-- **Where does it break?** Every model has failure modes. Claude can get stuck in over-cautiousness loops. GPT can pretend to remember things from earlier in a session that it doesn't. Gemini can lose context in the middle of a long window. Learning each model's failure modes is half the skill.
+- **Where does it break?** Every model has failure modes, and they change between versions. Some models get stuck in over-cautious loops. Some claim to remember earlier parts of a session that they have actually lost. Some lose track of material in the middle of a very long context. Learning your models' failure modes is half the skill.
 - **How does it behave in agent mode vs. chat?** Some models that feel mediocre in chat shine when given tools and asked to loop. The opposite is also true.
 
 Two weeks of focused use with one model teaches you more than two months of reading comparisons. Pick one, build something with it, and let the feel develop.
@@ -106,37 +125,19 @@ These are starting points, not rules. You'll override them based on your own fee
 
 | Situation                                                | Lean toward                                                                                                                                                                                   |
 | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Designing the data model or a new feature from scratch   | A frontier reasoning model (Claude Opus 5 or Fable 5.1, GPT-6 Astra, Gemini Pro). The cost of being wrong is high.                                                                            |
-| Long agentic refactor — many files, many steps           | Claude (Sonnet 5, or Fable 5.1 for genuinely long-horizon work). Strong on staying on-task through long loops.                                                                                |
-| Routine edits, renames, formatting fixes                 | A mid-tier or small model. Cheap, fast, sufficient.                                                                                                                                           |
-| Reviewing a large document or codebase you've never seen | Gemini (1M+ window) for the context size; Claude Opus 5 if the document is gnarly and needs careful reading.                                                                                  |
-| Anything security-critical                               | A frontier reasoning model, and apply the [security-critical code review prompt](contextqb://prompts/security-critical-code-review). Don't skimp on the model when the cost of error is high. |
-| Generating boilerplate, scaffolding, type stubs          | A mid-tier or small model. This is what they're cheap for.                                                                                                                                    |
-| You don't know which to use                              | Whichever your IDE has set as default. Try the task. Switch if it feels wrong.                                                                                                                |
-
-## How to use this guide
-
-Do not try to become a model expert before you build. Pick one good default,
-use it on real work, and keep a short note about what you learn. The useful
-question is not "which model is best?" The useful question is "which model is
-good enough for this task, at this cost, with this failure mode?"
-
-Start simple:
-
-1. Use your IDE's default model for a week of normal work.
-2. When a task feels stuck, switch once to a stronger reasoning model and compare the result.
-3. Use a cheaper model for formatting, renames, and routine edits.
-4. Use a stronger model for architecture, security, data models, and reviews.
-5. Write down the pattern you observe so future-you does not have to relearn it.
-
-That is enough. Your model strategy should grow from real feedback, not from reading every benchmark.
+| Designing the data model or a new feature from scratch   | A top-tier reasoning model, or your workhorse with the effort setting raised. The cost of being wrong is high.                                                                                |
+| Long agentic refactor — many files, many steps           | A model that stays on task through long loops — usually a top-tier or strong workhorse model. Notice which of yours does.                                                                     |
+| Routine edits, renames, formatting fixes                 | A workhorse or small model. Cheap, fast, sufficient.                                                                                                                                          |
+| Reviewing a large document or codebase you've never seen | A model whose context window fits it ([current limits](contextqb://references/models#families)) — and a careful model if the document is gnarly and needs close reading.                      |
+| Anything security-critical                               | A top-tier reasoning model, and apply the [security-critical code review prompt](contextqb://prompts/security-critical-code-review). Don't skimp on the model when the cost of error is high. |
+| Generating boilerplate, scaffolding, type stubs          | A workhorse or small model. This is what they're cheap for.                                                                                                                                   |
+| You don't know which to use                              | Whichever your tool has set as default. Try the task. Raise the effort, then switch if it still feels wrong.                                                                                  |
 
 ## See also
 
 - [Guide: Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) — the practical setup that uses the models in this guide.
+- [Guide: Understanding the Context Window](contextqb://guides/understanding-the-context-window) — why long sessions cost more and drift.
 - [Principle: AI Output Is Untrusted Code](contextqb://principles/ai-output-is-untrusted-code) — the mental model for what the LLM produces.
-- [Prompt: Security-Critical Code Review](contextqb://prompts/security-critical-code-review) — when to lean on a frontier model.
+- [Prompt: Security-Critical Code Review](contextqb://prompts/security-critical-code-review) — when to lean on a top-tier model.
 - [Principle: Untrusted by Default](contextqb://principles/untrusted-by-default) — every model output is hostile until validated.
-- [Anthropic model docs](https://docs.claude.com/en/docs/about-claude/models)
-- [OpenAI model docs](https://platform.openai.com/docs/models)
-- [Google Gemini model docs](https://ai.google.dev/gemini-api/docs/models)
+- References (dated facts): [model families and limits](contextqb://references/models#families), [open-weight models](contextqb://references/models#open-weight), [model API prices](contextqb://references/pricing#model-api).

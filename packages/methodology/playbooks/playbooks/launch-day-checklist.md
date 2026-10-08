@@ -2,7 +2,7 @@
 id: launch-day-checklist
 title: Run a Launch Day Checklist
 summary: The going-live procedure — pre-flight verification, the deploy itself, live smoke checks, monitoring watch, and a rollback path you have actually tested. Launch is a stage, not a vibe.
-version: 0.1.1
+version: 0.1.2
 problem: |
   First launches fail in predictable ways: something passed locally but was never checked in production, an environment variable is missing, nobody is watching when the first real user hits an error, and when it goes wrong there is no practised way back. The fix is not courage — it is a checklist run in order.
 when_to_use: |
@@ -29,6 +29,8 @@ related:
   - public-endpoint-exposure
   - respond-to-a-suspected-compromise
   - the-plan-is-the-contract
+  - building-for-yourself-vs-others
+  - suspicious-behavior-investigation
 related_principles:
   - failure-modes
   - public-endpoints-are-battlegrounds
@@ -41,7 +43,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q3 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-01 — stage 8 (Launch) was the corpus's only empty non-deferred stage. Deliberately operational (no code), in the corpus's step-by-step playbook voice."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; adds no agent-initiated deploys or background merges during the launch window (pause scheduled and background agents); an agent may watch logs and surface anomalies with the suspicious-behavior prompt, but a named human watcher stays required and decides; the agent can rehearse the rollback on staging and write down the exact command in pre-flight; links the audience-tier guide (the tier change is what makes the day a launch); platform names become categories. Earlier note: Maintainer-approved for publish 2026-09-09. Authored from gap G-01 — stage 8 (Launch) was the corpus's only empty non-deferred stage. Deliberately operational (no code), in the corpus's step-by-step playbook voice."
 ---
 
 # Run a Launch Day Checklist
@@ -51,7 +53,7 @@ review:
 ## When to use this
 
 - First production deploy of a new product or feature
-- Opening something from private (just-you, trusted-group) to public
+- Opening something from private (just-you, trusted-group) to public — the tier change that turns a deploy into a launch ([Building for Yourself vs. Building for Others](contextqb://guides/building-for-yourself-vs-others))
 - Moving a hostname or cutting over infrastructure
 - Any deploy where the answer to "what if it breaks?" is currently "uhh…"
 
@@ -62,8 +64,8 @@ If you have never launched before: nervous is normal. The checklist is how nervo
 You need, already done:
 
 - **A passing pre-launch security gate.** Run [`pre-launch-security`](contextqb://audits/pre-launch-security) in the days before launch, not the morning of. Anything it flags as a blocker is a launch blocker.
-- **A rollback path you have tested.** "We can revert" is not a rollback plan. A rollback plan names the exact command or dashboard action, the person who runs it, and the signal that triggers it — and you have done it once in staging (or on a preview deploy) before today.
-- **Somewhere to watch.** At minimum: your platform's logs or error dashboard open in a tab (Cloudflare / Vercel / Supabase), plus one place users can report trouble that you will actually read today.
+- **A rollback path you have tested.** "We can revert" is not a rollback plan. A rollback plan names the exact command or dashboard action, the person who runs it, and the signal that triggers it — and you have done it once in staging (or on a preview deploy) before today. An agent can help rehearse it there and write down the exact command; the real rollback, if needed, is yours to run.
+- **Somewhere to watch.** At minimum: your hosting platform's logs or error dashboard open in a tab, plus one place users can report trouble that you will actually read today.
 
 ## Step 1 — Pre-flight (T-minus one hour)
 
@@ -74,6 +76,7 @@ Confirm each of these with evidence, in production configuration — not from me
 - [ ] Database migrations (if any) have been applied or are part of the deploy sequence, in the right order.
 - [ ] The drift check (`contextqb check` or equivalent) passes — the map matches what you are about to ship.
 - [ ] Your rollback command works: you know it, and it has been run before.
+- [ ] Scheduled and background agents are paused for the launch window. No agent deploys or merges anything today unless you explicitly approve that one change.
 
 Any unchecked box is a **no-go** until resolved. This is the discipline: the checklist decides, not adrenaline.
 
@@ -101,6 +104,7 @@ Launch day ends when the watch ends, not when the deploy lands.
 
 - Name the window: the first 4–24 hours, depending on traffic.
 - Name the watcher: a specific person (you, on a first launch) who checks logs and error dashboards on a schedule — say, every 30–60 minutes — not just when someone complains.
+- An agent can help watch — reading logs and flagging anomalies with the [suspicious behavior investigation](contextqb://prompts/suspicious-behavior-investigation) prompt — but it does not replace the named watcher, and it takes no action itself. You decide what happens next.
 - Know your first-user signals: sign-ups appearing, the first error spike, the first support message. Each gets a response, even if the response is "noted, watching."
 
 ## Step 5 — If it goes wrong
@@ -115,7 +119,7 @@ Whatever happens, write the post-launch note the same day: what shipped, what su
 
 ## How to brief the agent on launch day
 
-> We are launching today. The plan and the launch checklist are at [paths]. Your job today is verification, not invention: walk each checklist item, produce evidence (commands run, output observed), and flag anything you cannot verify as a launch blocker. Do not write code today unless I explicitly approve a hotfix. If you find a problem, report it with the evidence — do not quietly fix it.
+> We are launching today. The plan and the launch checklist are at [paths]. Do not deploy, merge, or start any background or scheduled work today unless I approve that specific action. Your job today is verification, not invention: walk each checklist item, produce evidence (commands run, output observed), and flag anything you cannot verify as a launch blocker. Do not write code today unless I explicitly approve a hotfix. If you find a problem, report it with the evidence — do not quietly fix it.
 
 That instruction — verify, don't improvise — is the whole launch-day posture for an agent.
 

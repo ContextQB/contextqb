@@ -2,7 +2,7 @@
 id: documentation-for-agent-alignment
 title: Documentation for Agent Alignment
 summary: In agentic development, the primary audience for your documentation is your current agent and your current self — not a future team. Docs are how you keep the agent on the architecture you've chosen, every prompt, every session.
-version: 0.1.2
+version: 0.2.1
 category: documentation
 audience:
   - novice-builder
@@ -44,20 +44,20 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "REVIEWED. F-10 resolved 2026-09-09: fourth surface corrected to context.qb.yaml (was 'the standards library').R3–R5, R7 pass; the five-questions test is the strongest instrument in the documentation pillar. Open: F-10 (cites four surfaces; documentation-as-architecture defines three). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 review correction (0.2.1; author self-checked; independent review pending; not operator-accepted): obsolete project documents are archived under the project's archive policy rather than deleted, matching append-dont-overwrite; correcting or deleting a tool's own memory notes stays a separate step; the enforcement prompt's verdicts say archive instead of delete. 2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the memory premise is corrected (tool memory is partial, opaque and not yours; what is in the window counts); question 1 adds auditing what the tool remembered and promoting true facts into a document; the enforcement prompt asks the agent which files it actually loaded; points to the fresh-session test. Earlier notes (2026-09-09 epistemology review): R3–R5, R7 pass; the five-questions test is the strongest instrument in the documentation pillar; R8 pending P4. F-10 was resolved on 2026-09-09 (fourth surface corrected to context.qb.yaml, matching documentation-as-architecture's four surfaces) and is not open."
 ---
 
 # Documentation for Agent Alignment
 
 Traditional software engineering treats documentation as a courtesy to the next human who will work on the code. The next human has continuous memory. They read a file once, and the content sticks. Documentation, in that world, is mostly a one-time export.
 
-Agentic development inverts the model. The agent has no continuous memory. Every prompt is a fresh boot. What the agent knows in this turn is exactly what is in its context window — your message, the files it has read, the system instructions it received, and nothing else.
+Agentic development inverts the model. The agent has no continuous memory of its own. What it knows in this turn is what is in its context window — your message, the files it has read, the system instructions it received, and whatever its tool chose to load. Some tools now save notes between sessions ([what agents keep](contextqb://references/setup#agent-memory)), but that memory is partial, opaque and not yours: you can't easily see it, review it or share it. What counts is what reaches the window.
 
 That changes who documentation is for, and when it pays off.
 
 ## The rule
 
-**The primary audience for documentation in agentic development is your current agent and your current self.** Future humans are a secondary, very real beneficiary — but they are not who the docs are written for. The docs are written so that the next prompt you write, and the next session the agent boots into, does not start from zero.
+**The primary audience for documentation in agentic development is your current agent and your current self.** Future humans are a secondary, very real beneficiary — but they are not who the docs are written for. The docs are written so that the next prompt you write, and the next session the agent boots into, starts from what you decided rather than from guesses.
 
 This is a shift in stance, not just in volume.
 
@@ -81,7 +81,7 @@ The teams getting consistent results from agents are not the teams with the best
 
 Before writing a doc, or when wondering whether an existing one is worth keeping, ask:
 
-1. **Will my agent read this in the next session?** If no, why does it exist? Either delete it or make it the kind of document the agent reads.
+1. **Will my agent read this in the next session?** If no, why does it exist? Either make it the kind of document the agent reads, or, if it no longer describes the project, move it to your archive under your project's archive policy (the _Append, Don't Overwrite_ principle describes it) so it stops being read as current without losing the history. Your tool's own memory notes are a different matter: if your tool keeps them, read what it saved now and then, promote the true facts into a project document, and correct or delete the wrong notes in the tool.
 2. **If my agent does not read this, will it reinvent the contents?** If yes, the doc is load-bearing. If no, it is decoration.
 3. **Is this aspirational or actual?** A doc describing a future state the project is not yet in is worse than no doc. The agent reads it as truth and builds toward a target you did not choose.
 4. **Is this short enough to live directly in a prompt, or is it referenced from the boot manifest?** Either is fine; uncertainty between the two is not.
@@ -115,10 +115,12 @@ The economic frame: in traditional dev, documentation is amortised over hires. I
 
 Operator-only today is fine. The agent is your only collaborator. Documentation focuses on keeping that collaboration on-architecture.
 
-Operator + small team next quarter is also fine. The same documentation now serves a second purpose: orienting the new humans. The order matters — the docs were written for the agent first, and the humans benefit from clarity that was forced by writing for an audience with no continuous memory.
+Operator + small team next quarter is also fine. The same documentation now serves a second purpose: orienting the new humans. The order matters — the docs were written for the agent first, and the humans benefit from clarity that was forced by writing for an audience with no reliable memory of its own.
 
 The teams that arrive at the team-stage with no documentation discipline find themselves writing both the agent-alignment docs and the human-onboarding docs at the same time, under deadline, from memory. That is the avoidable cost.
 
 ## How to ask an agent to enforce this
 
-> For every documentation file in this repository, evaluate it against the five questions: (1) will my agent read this in the next session? (2) if my agent does not read this, will it reinvent the contents? (3) is this aspirational or actual? (4) is this short enough to live in a prompt, or is it referenced from the boot manifest? (5) will I actually link my agent to this? For each file, give a brief verdict and the next action — keep, shorten, split, delete, or rewrite for a clearer audience. Do not rewrite anything yet; produce the verdict list first.
+> First, list the files you actually loaded at the start of this session, and say how each one got there (loaded by your tool, pointed to by another file, or read because I asked). Then, for every documentation file in this repository, evaluate it against the five questions: (1) will my agent read this in the next session? (2) if my agent does not read this, will it reinvent the contents? (3) is this aspirational or actual? (4) is this short enough to live in a prompt, or is it referenced from the boot manifest? (5) will I actually link my agent to this? For each file, give a brief verdict and the next action — keep, shorten, split, archive (under this project's archive policy), or rewrite for a clearer audience. Do not rewrite anything yet; produce the verdict list first.
+
+To see the result from the agent's side, run the fresh-session test in [Documenting for Your Agent](contextqb://guides/documenting-for-your-agent).

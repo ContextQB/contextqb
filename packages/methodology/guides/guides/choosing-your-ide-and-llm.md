@@ -2,7 +2,7 @@
 id: choosing-your-ide-and-llm
 title: Choosing Your IDE and LLM
 summary: Your IDE is the workshop. The LLM is the collaborator. This guide helps you pick both, wire them together, and understand what each costs — without getting locked into a choice you'll regret.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -10,7 +10,7 @@ audience:
 journey_stage: 0
 journey_rank: 50
 intro: |
-  Agentic coding requires two pieces of software that don't come from the same vendor: an IDE (the editor where you and the agent work together) and an LLM (the model that actually does the reasoning). They're often bundled in marketing, but they're separable tools — and getting comfortable with that separation is the difference between feeling locked in and feeling in control.
+  Agentic coding requires two kinds of software, which may or may not come from the same company: an IDE or agentic tool (where you and the agent work together) and an LLM (the model that actually does the reasoning). They're often bundled in marketing, but they're separable layers — and getting comfortable with that separation is the difference between feeling locked in and feeling in control.
 tags:
   - ide
   - llm
@@ -30,24 +30,24 @@ related:
   - understanding-the-context-window
   - what-an-application-is
 next_steps:
-  - Install one IDE (we recommend starting with Cursor or VS Code).
-  - Sign up for one LLM provider (we recommend starting with Anthropic or OpenAI).
-  - Connect the IDE to the LLM and run your first agentic prompt.
+  - Pick one agentic coding tool from the current options in the agentic tools reference and install it.
+  - Start on the plan the tool includes; connect your own model provider only when you outgrow it.
+  - Run your first agentic prompt on a small, real task.
   - Plug the ContextQB MCP in so your agent has the methodology on day one.
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "F-19: IDE landscape rebuilt for the current stack (Devin Desktop, Antigravity, multi-surface Claude Code, Codex family); starter setup + pricing verified against vendor sites. REVIEWED. F-09 addressed 2026-09-09: options list + pricing block carry last-verified notes (I7 convention).R3, R4, R6, R7 pass. Open: F-09 (pricing, model versions, MCP support matrix — verify), F-06 (5 links). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 review correction (0.3.1; author self-checked; independent review pending; not operator-accepted): the spending-cap advice now distinguishes a hard limit that stops requests from an alert that only notifies, says to check which one you have and what to do when only alerts exist; the pitfall and setup step say the same. 2026-10-07 renewal B3 (0.3.0; author self-checked; independent review pending; not operator-accepted): the tool and model tables, the named starter setup and every price moved out of the lesson; the guide now teaches the kinds of tools, the selection criteria (including plan gating and data use), the three wiring patterns with the bundled plan as the default path, and how agent spending works, and links the dated references for current tools, models, plan prices, API prices, provider consoles and local models. The unsupported claim that ContextQB writing is tested against one setup was removed; the only remaining dollar figure is ContextQB's own labelled estimate for a first spending cap. Earlier notes (2026-09-09 epistemology review: landscape rebuilt and prices verified in place, with open items F-09 and F-06) are closed by this revision: the version-pinned material now lives in references with their own review dates, and the links resolve. R3, R4, R6, R7 passed then; R8 pending P4."
 ---
 
 # Choosing Your IDE and LLM
 
-**Plain language:** You need two things to start coding with AI. The first is an IDE — basically a fancy text editor where you and the agent can both see and change files. The second is an LLM — the model that does the actual reasoning when the agent works. They're separate products, and learning that they're separate is the most important lesson in this guide. Once you know that, every other choice gets simpler.
+**Plain language:** You need two things to start coding with AI. The first is an IDE — basically a fancy text editor where you and the agent can both see and change files — or an agentic tool that plays the same role from a terminal or desktop app. The second is an LLM — the model that does the actual reasoning when the agent works. They're separate layers, and learning that they're separate is the most important lesson in this guide. Once you know that, every other choice gets simpler.
 
 ## You're in the right place
 
-If you've never picked an IDE before, or if the difference between "Cursor" and "GPT-6" is fuzzy, you're not behind. You're at the right step. This stuff is genuinely new — most of the tools in this guide didn't exist in their current form three years ago, and the marketing around them mixes the layers on purpose so each product can claim more credit.
+If you've never picked an IDE before, or if the difference between the name of a coding tool and the name of a model is fuzzy, you're not behind. You're at the right step. This stuff is genuinely new — most of these tools didn't exist in their current form a few years ago, and the marketing around them mixes the layers on purpose so each product can claim more credit.
 
 By the end of this guide you'll know what you're choosing, why, and how to change your mind later without losing work. That's all you need.
 
@@ -56,146 +56,143 @@ By the end of this guide you'll know what you're choosing, why, and how to chang
 The mental model that makes everything else easy:
 
 - The **IDE** is the room. It's where the files live in front of you, where the agent's changes appear, where the terminal opens, where you commit code, where you browse the codebase. It's a piece of software that runs on your computer.
-- The **LLM** is the brain. It's a service that lives on a server somewhere — Anthropic's servers for Claude, OpenAI's for GPT, Google's for Gemini. When the agent in your IDE "thinks," it's sending a request to that service and getting back text.
+- The **LLM** is the brain. It's a service that usually lives on a model provider's servers. When the agent in your IDE "thinks," it's sending a request to that service and getting back text. (You can also run smaller models on your own machine — Pattern C below.)
 
-The IDE talks to the LLM over the internet. You can swap one without swapping the other. Cursor with Claude. Cursor with GPT-6. VS Code with Claude. Zed with Gemini. All valid combinations. The skill is recognising which layer you're configuring at any given moment.
+The IDE talks to the LLM over the internet. Many tools let you swap one without swapping the other: the same tool with a different model, or the same model in a different tool. The skill is recognising which layer you're configuring at any given moment.
 
-## The IDE landscape
+## The kinds of tools
 
-These are the major options as of September 2026 (verified against vendor sites 2026-09). The list will look different in a year — that's fine. The framing below outlasts the products.
+Products change names, merge and reprice every few months, so this guide teaches the _kinds_ of tool. The current options — what each one is, which surfaces it runs on and where its documentation lives — are in the dated [agentic coding tools reference](contextqb://references/tools#agentic-ides).
 
-| IDE                                                                | What it is                                                                                                                                                                     | Best for                                                                                        | Free?                                            |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| **[Cursor](https://cursor.com)**                                   | A fork of VS Code rebuilt around agentic coding. Native agent mode, MCP support, multi-model picker, cloud agents, and its own in-house models (Composer, with Grok built in). | Most builders most of the time. The default we'd recommend.                                     | Free tier with limits; paid plans for heavy use. |
-| **[Claude Code](https://docs.claude.com/en/docs/claude-code)**     | Anthropic's agent, now on every surface: terminal, VS Code and JetBrains extensions, a desktop app, and the web. Background agents, subagents, and scheduled routines.         | Terminal-native developers; people who don't want a heavy editor; long-running background work. | Bundled with Claude subscription.                |
-| **[Devin Desktop](https://devin.ai)** (formerly Windsurf)          | The former Windsurf IDE, renamed and rebuilt as a command center for running fleets of local and cloud agents (Spaces, kanban of agent tasks).                                 | Operators running several agents in parallel; teams sharing agent context.                      | Free tier; Pro $20/mo.                           |
-| **[Google Antigravity](https://antigravity.google)**               | Google's AI-first development platform, built around Gemini's agentic models.                                                                                                  | Builders in the Google/Gemini ecosystem.                                                        | Free tier; usage-based beyond.                   |
-| **[VS Code](https://code.visualstudio.com) + GitHub Copilot**      | Microsoft's editor with GitHub's AI extensions. Huge ecosystem, deep enterprise support.                                                                                       | Anyone already in the Microsoft / GitHub world.                                                 | Editor is free; Copilot is paid.                 |
-| **[Zed](https://zed.dev)**                                         | A newer, very fast editor with AI integration built in. Mac-first; Linux supported.                                                                                            | Performance-sensitive users; people who liked Sublime Text.                                     | Free; AI features bring-your-own-key.            |
-| **JetBrains IDEs + AI Assistant / Junie**                          | IntelliJ, WebStorm, PyCharm, etc., with the JetBrains AI extension or the Junie agent.                                                                                         | Existing JetBrains users; teams already on those tools.                                         | IDE has free and paid tiers; AI is paid.         |
-| **[OpenAI Codex](https://openai.com/codex/)**                      | OpenAI's coding agent family: CLI, IDE extension, desktop, web, and cloud. Similar shape to Claude Code.                                                                       | Terminal-native developers; comes from the OpenAI side.                                         | Bundled with OpenAI subscription.                |
-| **[Aider](https://aider.chat) / [Continue](https://continue.dev)** | Open-source CLI / VS Code extension that talk to whichever LLM you point them at.                                                                                              | Hobbyists; privacy-conscious builders running local LLMs.                                       | Free, MIT-licensed.                              |
+- **Agentic editors.** A full code editor rebuilt around an agent: you see the files, the agent's edits and the terminal in one window. The most familiar starting point if you have never coded.
+- **Editor plus extension.** A general-purpose editor with an AI agent added as an extension. Useful if you already use that editor.
+- **Terminal and desktop agents.** An agent you talk to from a terminal or its own app, which edits the files in your project folder. Often paired with an ordinary editor for reading the code.
+- **Agent command centres.** Apps for running several agents at once, locally or in the cloud, and reviewing their work. Powerful later; more than a first project needs.
+- **Open-source agents.** Tools you can point at any model, including one running on your own machine.
+
+Many products now span several of these kinds. Choose by the criteria below, not by the category label.
 
 ## What to look for in an IDE
 
 A few criteria worth applying when you choose:
 
-1. **MCP support.** The Model Context Protocol is how agents pull in external context — like the ContextQB methodology. As of late 2026 this is table stakes: every major agentic tool (Cursor, Claude Code, Codex, Devin Desktop, Antigravity, VS Code, Zed) speaks it.
-2. **Agent mode quality.** "Chat with the editor" is table stakes. The differentiator is the agent mode — can the AI loop on a task, run shell commands, edit multiple files, and report back? Cursor and Claude Code lead here; the newer command centers (Devin Desktop, Antigravity) add multi-agent fleets on top.
-3. **Model picker.** Are you locked into one LLM, or can you swap (Claude for hard reasoning, GPT for fast edits, Gemini for big context)? Most modern IDEs let you choose.
-4. **Bring-your-own-key.** Can you plug in your own API key to bypass the IDE's subscription? Useful if you already have credits with a provider, or if you want to run a local model.
-5. **Privacy posture.** Does the IDE send your code to its servers? Does it train on your data by default? Most vendors offer enterprise tiers that turn these off — read the privacy page before pasting in secrets. (Spoiler: even with privacy mode on, don't paste secrets. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github) for why.)
-6. **Cost predictability.** Subscriptions are simpler to budget than per-token usage. Pay-per-token gives you finer control but can surprise you when you run a long agent session.
+1. **MCP support.** The Model Context Protocol is how agents pull in external context — like the ContextQB methodology. Most agentic tools support it now; the [MCP client configuration reference](contextqb://references/setup#mcp-clients) shows the setup for the clients ContextQB has checked.
+2. **Agent mode quality.** "Chat with the editor" is table stakes. The differentiator is the agent mode — can the AI loop on a task, run shell commands, edit multiple files, and report back? Try it on a small real task rather than trusting a feature list.
+3. **Model picker and effort settings.** Are you locked into one model, or can you swap a careful model for hard reasoning and a fast one for routine edits? Many tools also have a reasoning-effort setting — often the first thing to change before switching models.
+4. **Plan gating.** Some models, effort levels and agent features are only available on higher plans. Check what the plan you're considering actually includes before you pay.
+5. **Bring-your-own-key.** Can you plug in your own API key to bypass the tool's subscription? Useful if you already have credits with a provider, or if you want to run a local model.
+6. **Privacy posture.** Does the tool send your code to its servers? Does the provider train on what you send? Defaults differ by provider and plan — see [whether providers train on what you send](contextqb://references/setup#provider-data-use) and read the privacy page before you start. (Even with privacy settings on, don't paste secrets. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github) for why.)
+7. **Cost predictability.** Subscriptions are simpler to budget than per-token usage. Pay-per-token gives you finer control but can surprise you when you run a long agent session. The "What it costs" section below explains how the bills work.
 
 ## The LLM landscape, briefly
 
 The deeper version of this section is in [Understanding LLMs](contextqb://guides/understanding-llms). The short version:
 
-| Family                                                | Who makes it        | Where it shines                                                                                                      |
-| ----------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Claude** (Fable, Opus, Sonnet, Haiku)               | Anthropic           | Long reasoning chains, code review, careful refactoring, agentic loops. The default many builders reach for in 2026. |
-| **GPT** (6 Astra; 5.6 Sol / Terra / Luna)             | OpenAI              | Fast iteration, broad capability, strong "instruction following." Big ecosystem of tools and integrations.           |
-| **Gemini** (3.x — Flash, Flash-Lite, Pro, Deep Think) | Google              | Massive context windows, multimodal (handles images well), competitive on reasoning.                                 |
-| **Grok**                                              | xAI                 | Built into Cursor as its in-house model line; much more common for coding than it used to be.                        |
-| **Open-source** (Llama, Qwen, DeepSeek, Mistral)      | Various / community | Free if you run them locally; lower-quality than frontier closed models but usable for many tasks.                   |
+- A handful of providers make the leading closed **model families**. You reach them through a provider's own app or API, or through your coding tool's plan.
+- Each family has **tiers**: a careful, expensive model for hard reasoning; a workhorse for most tasks; and a fast, cheap model for routine work.
+- **Open-weight** models are published for anyone to download and run, on your own machine or a host you choose. They are free to run apart from hardware and electricity, and the ones that fit on a laptop are usually behind the frontier closed models for coding.
 
-You don't need to understand every model. Pick one provider to start, do real work with it for a couple of weeks, and you'll develop intuition about when to reach for something else. Most builders end up using 2–3 models regularly.
+Current families, tiers and context limits, with the date they were checked, are in the [model families reference](contextqb://references/models#families) and the [open-weight models reference](contextqb://references/models#open-weight).
+
+You don't need to understand every model. Start with the default your tool offers, do real work with it for a couple of weeks, and you'll develop intuition about when to reach for something else. Most builders end up using two or three models regularly.
 
 ## How to wire them together
 
-Three patterns. Pick whichever your chosen IDE supports:
+Three patterns. Start with Pattern A; move to B or C when you have a reason to.
 
-### Pattern A — IDE-bundled subscription (simplest)
+### Pattern A — Tool-bundled subscription (start here)
 
-You pay the IDE vendor a flat monthly fee. They include access to the LLMs they've negotiated with. Cursor's Individual plan, GitHub Copilot, and Devin Desktop's plans all work this way.
+You pay the tool's maker a flat monthly fee, or use a free tier. The plan includes access to the models they offer. Most agentic tools offer a plan like this ([current plans and prices](contextqb://references/pricing#ide-plans)).
 
-- **Pros:** One bill. No API keys to manage. The IDE picks sensible defaults.
-- **Cons:** You're at the IDE vendor's mercy on which models they offer and at what daily limits. Heavy users can hit caps.
-- **Setup:** Sign up, pay, log in. The IDE handles the rest.
+- **Pros:** One bill. No API keys to manage. The tool picks sensible defaults.
+- **Cons:** You're limited to the models the plan offers, at the usage limits it sets. Heavy users can hit caps.
+- **Setup:** Sign up, pay if needed, log in. The tool handles the rest.
 
-### Pattern B — Bring your own API key (most flexible)
+### Pattern B — Bring your own API key (when you outgrow the bundle)
 
-You sign up directly with an LLM provider (Anthropic, OpenAI, Google), get an API key, and paste it into your IDE's settings.
+You sign up directly with a model provider, create an API key, and add it to your tool's settings.
 
-- **Pros:** Pay per token used, full model picker, no IDE-imposed limits. Switch providers without changing IDEs.
+- **Pros:** Pay per token used, full model picker, no tool-imposed limits. Switch providers without changing tools.
 - **Cons:** You manage the keys. Cost is harder to predict (a runaway agent loop can be expensive). You'll want billing alerts.
 - **Setup:**
-  1. Create an account with the provider (e.g., [console.anthropic.com](https://console.anthropic.com)).
+  1. Create an account in the provider's developer console ([where the consoles, keys and spending limits are](contextqb://references/setup#provider-console)).
   2. Generate an API key. Treat it like a secret — see [Secrets Have Provenance](contextqb://principles/secrets-have-provenance).
-  3. In your IDE's settings, find the "model providers" or "AI settings" pane. Paste the key.
-  4. Set a billing limit / spend alert on the provider's dashboard. Do this _before_ your first heavy session.
+  3. In your tool's settings, find the "model providers" or "AI settings" pane and add the key there. That pane stores the key for the tool to use. Never paste the key into the chat with the agent: anything in the chat is sent to the model and may be kept in logs or history.
+  4. Set a spending limit in the provider's console, and check whether it is a hard limit (requests stop) or only an alert (you get an email and spending continues). Do this _before_ your first heavy session.
 
-### Pattern C — Local LLM (no internet required)
+### Pattern C — Local model (when privacy or offline work requires it)
 
-You run an LLM on your own machine using something like [Ollama](https://ollama.com), [LM Studio](https://lmstudio.ai), or [llama.cpp](https://github.com/ggml-org/llama.cpp). Your IDE talks to that local server instead of a cloud API.
+You run a model on your own machine with a local model runner. Your tool talks to that local server instead of a cloud API.
 
-- **Pros:** Free. Private. Works offline. Useful for prototyping or for situations where you can't send code to a third party.
-- **Cons:** The open-source models you can run on a laptop are still meaningfully behind frontier closed models for coding. Setup is real work. Not the right starting point for first-time builders.
-- **Setup:** Install Ollama, pull a model (e.g., `ollama pull qwen2.5-coder`), point your IDE at `localhost:11434`. Most IDEs that support BYOK also support this.
+- **Pros:** No API cost. Private. Works offline. Useful for prototyping or for situations where you can't send code to a third party.
+- **Cons:** The open-weight models you can run on a laptop are usually behind frontier closed models for coding. Setup is real work. Not the right starting point for first-time builders.
+- **Setup:** Install a runner, download a model, and point your tool at the local address the runner serves. The [local models reference](contextqb://references/setup#local-models) has the commands for the runners ContextQB has checked. Most tools that support bring-your-own-key also support this.
 
-Most builders start with Pattern A, graduate to Pattern B once they have a model preference, and only touch Pattern C for specific privacy or experimental reasons.
+Most builders start with Pattern A, move to Pattern B once they have a model preference or hit the plan's limits, and only touch Pattern C for specific privacy or experimental reasons.
 
-## A recommended starter setup
+## A sensible first setup
 
-If you want a single, opinionated answer:
+ContextQB does not recommend a particular product. A first setup that works with this methodology has these properties, whichever products you choose:
 
-1. **IDE:** [Cursor](https://cursor.com). Free tier is generous; Pro is $20/month if you want more. Excellent agent mode. Strong MCP support.
-2. **LLM:** [Claude](https://claude.com) via Anthropic. Sonnet 5 for most tasks; Opus 5 for hard reasoning (Fable 5.1 for genuinely long-horizon agentic work). (Both are available inside Cursor on its subscription.)
-3. **Integration:** Stay on Cursor's bundled subscription for the first month. You'll develop a feel for whether you need more control.
-4. **MCP:** Install the [ContextQB MCP](https://contextqb.com/mcp) — five minutes — and your agent has the methodology corpus from session one.
-
-This is the setup most ContextQB writing is tested against. It's not the only right answer. It's the one we'd send a friend through.
+1. **One agentic tool** with an agent mode, MCP support and a model picker, chosen from the [agentic coding tools reference](contextqb://references/tools#agentic-ides) using the criteria above.
+2. **Its bundled plan (Pattern A)** for the first month, with its default model. You'll develop a feel for whether you need more control.
+3. **The [ContextQB MCP](https://contextqb.com/mcp)** — five minutes — so your agent has the methodology corpus from session one.
+4. **Git set up first**, so every agent change can be undone. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github).
 
 ## What it costs
 
-Rough numbers as of mid-2026 (last verified 2026-09; these change — check current pricing before deciding):
+Prices change often, so this guide explains how the bills work and links to dated price tables: [agentic coding plan prices](contextqb://references/pricing#ide-plans) and [model API list prices](contextqb://references/pricing#model-api). Check the date on each table and the provider's own page before you decide.
 
-- **Bundled IDE plans:** $10–30/month, sometimes with a free tier. Cursor Individual ($20/mo), Devin Desktop Pro ($20/mo), and GitHub Copilot all sit in this range. Heavy use can require higher tiers ($40–200/month) for unlimited fast requests or fleet features.
-- **Pay-per-token, frontier models:** Roughly $2–10 per million input tokens, $10–50 per million output tokens (e.g. Claude Opus 5 is $5/$25; GPT-6 Astra $10/$50). A typical day of agentic coding (asking lots of questions, having the agent edit files) might run $1–10 in usage. A single agent loop that re-reads a large codebase several times can easily hit $5–20 by itself if you're not paying attention.
-- **Pay-per-token, smaller/faster models:** Often 10x cheaper. Useful for routine tasks where reasoning depth doesn't matter.
-- **Local LLMs:** Free in API cost. You pay in setup time, hardware (a recent Apple Silicon Mac or a machine with a decent GPU helps), and lower quality.
+- **Bundled plans** charge a flat monthly fee, often with a free tier and higher tiers for heavy use or extra features. The cost is predictable; the limit shows up as usage caps or slower responses instead.
+- **Pay-per-token** bills input (what you send) and output (what the model writes) separately, priced per million tokens. Output costs several times more than input, careful models cost much more than fast ones, and many providers charge less for input they have recently seen (prompt caching).
+- **Local models** have no API cost. You pay in setup time, hardware (a machine with plenty of memory or a capable graphics card helps), and lower quality.
 
-Two practical habits worth adopting:
+### How agent sessions spend money
 
-- **Set a hard monthly cap** at the provider dashboard before you start any pay-per-token plan. $50 is a reasonable first ceiling for solo builders.
-- **Watch the agent's behavior** when you give it a big task. If it reads the whole repo three times and edits eight files, that's a $2 prompt. That's fine — but be aware.
+An agent costs more than a chat because it works in loops. Every step sends the conversation so far, plus every file the agent has read, back to the model. A long session, a large file or the same files re-read several times multiply the tokens — see [The cost shape](contextqb://guides/understanding-the-context-window) in the context-window guide. On a bundled plan the same mechanics show up as hitting your usage limit sooner.
+
+Habits that keep spending predictable:
+
+- **Set a monthly spending limit** in the provider's console before you start any pay-per-token plan, and confirm what kind it is. A _hard limit_ makes requests fail once you reach it; an _alert_ only notifies you, and the agent keeps spending. Providers and plans differ ([where each console's limits are](contextqb://references/setup#provider-console)). If only alerts are available, set one well below your real limit, stop and check usage the day it arrives, and keep sessions short until you know your usage. Choose an amount you could lose without regret. (ContextQB's rough starting estimate for a solo learner is about $50 a month — an estimate, not a price.)
+- **Give the agent scoped tasks.** "Fix the date format on the signup page" costs less than "improve the app", and is easier to check.
+- **Start a fresh session for a new task** instead of continuing a long one.
+- **Look at the usage page after your first few sessions.** If a task read the whole repo three times and edited eight files, it cost noticeably more than a one-file question. That's fine — but be aware.
 
 ## You can change your mind later
 
-The single most important property of this whole space: **nothing you choose here is permanent**. Your code lives in git, not in the IDE. Your prompts and principles live in Markdown, not in any one vendor's system. If Cursor changes its pricing in a way you don't like, you can be on Devin Desktop or Antigravity in twenty minutes with the same project. If Claude's reasoning ability stops feeling right, you can be on GPT in one settings change.
+The single most important property of this whole space: **nothing you choose here is permanent**. Your code lives in git, not in the tool. Your prompts and principles live in Markdown, not in any one vendor's system. If your tool changes its pricing in a way you don't like, you can move the same project to another agentic tool in twenty minutes. If a model stops feeling right, you can switch models in one settings change.
 
 Resist the urge to research every option to perfection before starting. Pick something plausible, work in it for two weeks, then evaluate. You'll learn more by using one tool than by reading reviews of all five.
 
 ## Common pitfalls
 
-- **Pasting secrets into chat.** Your `.env` file is _not_ documentation. See the [git setup guide](contextqb://guides/setting-up-git-and-github) for what to do instead.
+- **Pasting secrets into chat.** Your `.env` file is _not_ documentation, and an API key belongs in the tool's settings, not in the conversation. See the [git setup guide](contextqb://guides/setting-up-git-and-github) for what to do instead.
 - **Letting agent mode loose on an uncommitted repo.** Always commit before running a big agent task. Always. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github) for the rhythm.
-- **Ignoring billing alerts.** Pay-per-token plans can rack up faster than you'd expect if an agent goes into a loop. Set a hard cap.
+- **Ignoring billing alerts, or mistaking an alert for a cap.** Pay-per-token plans can rack up faster than you'd expect if an agent goes into a loop. An alert does not stop spending; set a hard limit where your provider offers one, and act on alerts where it doesn't.
 - **Choosing based on benchmarks instead of feel.** Public LLM benchmarks measure things that aren't your work. The model that "wins" on a benchmark may feel worse for your actual codebase. Use the model for a week before deciding.
-- **Conflating the IDE and the LLM.** "Cursor is bad at refactoring" usually means "the LLM Cursor was using was bad at refactoring." Switch the model first.
+- **Conflating the IDE and the LLM.** "This tool is bad at refactoring" usually means "the model the tool was using was bad at refactoring" — or its effort setting was low. Raise the effort or switch the model first.
 
 ## What "good enough" looks like at this stage
 
 You've picked the right setup if:
 
-- [ ] You have one IDE installed and you've opened a real project in it.
-- [ ] You have one LLM provider set up (bundled or BYOK).
+- [ ] You have one agentic tool installed and you've opened a real project in it.
+- [ ] You have model access set up (bundled or your own key).
 - [ ] You've done at least one productive agent session — even if small.
-- [ ] You know how to switch models inside your IDE.
-- [ ] You know roughly what a day of usage costs you (check the dashboard).
+- [ ] You know how to switch models, and change the effort setting if your tool has one.
+- [ ] You know roughly what a day of usage costs you, or how much of your plan's limit it uses (check the dashboard).
 - [ ] The [ContextQB MCP](https://contextqb.com/mcp) is installed so your agent has methodology context.
 
 That's enough. The deeper questions — when to use which model, how to optimise prompts, how to stretch a free tier — those come with use.
 
 ## See also
 
-- [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — the longer, model-by-model treatment.
+- [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — model tiers, working styles and how pricing works.
+- [Guide: Understanding the Context Window](contextqb://guides/understanding-the-context-window) — why long sessions cost more and drift.
 - [Guide: The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app) — what you think about before you open the IDE.
 - [Guide: Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github) — the safety net that makes agentic coding survivable.
 - [Playbook: Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) — operating instructions for whatever agent you choose.
 - [Playbook: Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent) — what to bound your agent's capabilities to.
 - [Principle: AI Output Is Untrusted Code](contextqb://principles/ai-output-is-untrusted-code) — the mental model for what the LLM produces.
 - [Principle: Least Privilege for Agents](contextqb://principles/least-privilege-for-agents) — what to give the IDE/agent access to.
-- [Cursor docs](https://docs.cursor.com)
-- [Anthropic API docs](https://docs.claude.com)
-- [OpenAI API docs](https://platform.openai.com/docs)
+- References (dated facts): [agentic coding tools](contextqb://references/tools#agentic-ides), [model families](contextqb://references/models#families), [plan prices](contextqb://references/pricing#ide-plans), [model API prices](contextqb://references/pricing#model-api), [provider consoles and spending limits](contextqb://references/setup#provider-console), [local models](contextqb://references/setup#local-models), [provider data use](contextqb://references/setup#provider-data-use).

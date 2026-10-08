@@ -2,7 +2,7 @@
 id: secrets-and-credentials
 title: Secrets & Credentials Audit
 summary: A focused security audit of secrets management — inventory all credentials, assess blast radius, check rotation status, and identify exposure risks.
-version: 0.1.1
+version: 0.2.1
 audience:
   - novice-builder
   - founder
@@ -48,12 +48,14 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 review correction (0.2.1; author self-checked; independent review pending; not operator-accepted): redaction now starts before output reaches the agent: scanners run in a mode that redacts or masks matched values, the last-resort history search prints only metadata and locations with matches masked, and raw secret-bearing diffs are never printed into the transcript, because a tool transcript is itself a place a secret can leak. Discovery coverage and role boundaries are unchanged. 2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the agent reads instructions and configuration first, then runs a dedicated secret scanner over the working tree and full history where permitted, treating matches as leads (the plain git-log search is kept only as a last resort); secret values are never copied into the report; provider key prefixes move to the dated secret-patterns reference, with generic anchors kept in the body; platform configuration files and dashboard paths move to the platform-secret-settings reference; the learner's agent tooling (MCP client configuration, agent memory and settings files) is a secret location; the inventory fields are defined once in triage-your-secrets and referenced here; fixed 180/90/30-day thresholds become rotation intervals chosen per secret and compared with the dated security-defaults reference; provider names become categories; the audit discovers and reports, it rotates nothing. Earlier notes (2026-09-09 epistemology review): R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Secrets & Credentials Audit
 
-This audit produces a complete inventory of all secrets in your application and assesses them for exposure risk, rotation status, and proper management. It's designed for applications built with managed services (Supabase, Clerk, Cloudflare, etc.) where secrets often accumulate without formal tracking.
+This audit produces a complete inventory of all secrets in your application and assesses them for exposure risk, rotation status, and proper management. It's designed for applications built with managed services — hosting, authentication, database, payment, AI and email providers — where secrets often accumulate without formal tracking.
+
+**Before you run it.** Give the agent the names of the environment variables set in each dashboard (names only, never values) and tell it which scanners it may run. The audit discovers and reports; it does not rotate, revoke or delete anything. Run it in a session that did not set the secrets up.
 
 ## Use this as an agent instruction
 
@@ -67,6 +69,10 @@ This audit produces a complete inventory of all secrets in your application and 
 > 4. Identify hardcoded secrets, exposed secrets, and management gaps
 >
 > You must produce an actionable inventory, not a lecture on best practices.
+>
+> Start by reading the project instructions and configuration. Then, if you are permitted, run a dedicated secret scanner over the working tree and the full git history ([kinds of scanner](contextqb://references/tools#security-scanners)); its output is your discovery baseline, and every match is a lead to confirm, not a finding by itself. Never copy a secret value into your report or messages — identify each secret by name, file and line, and kind. Do not rotate, revoke or delete anything.
+>
+> Keep secret values out of your own transcript too: anything a command prints becomes part of this session's context and logs. Run the scanner in a mode that redacts or masks matched values, and read its findings as locations and kinds, not values. If you have to fall back to searching the history yourself, print only metadata — commit, file and line — with any matched text masked, and never print raw diffs that may contain secrets. To confirm a match, check its shape and location without displaying the full value.
 
 ---
 
@@ -84,18 +90,13 @@ Search for:
 - Docker/container configs with secrets
 - CI/CD workflow files with secrets
 
-Common patterns to search:
+Search for your providers' key patterns. Recognisable prefixes that vendors document are listed in the dated [secret patterns reference](contextqb://references/setup#secret-patterns); a scanner knows many more. Some patterns apply to every project:
 
 ```
-sk_live_ / sk_test_    (Stripe)
-pk_live_ / pk_test_    (Stripe)
-CLERK_SECRET_KEY       (Clerk)
-DATABASE_URL           (Database)
-OPENAI_API_KEY         (OpenAI)
-SUPABASE_SERVICE_ROLE  (Supabase)
-RESEND_API_KEY         (Resend)
-Bearer / Authorization  (API tokens)
------BEGIN             (Certificates/keys)
+*_SECRET*, *_KEY, *_TOKEN   (environment variable names)
+DATABASE_URL                (connection strings with passwords inside)
+Bearer / Authorization      (API tokens in code or fixtures)
+-----BEGIN                  (private keys and certificates)
 ```
 
 ### Configuration files
@@ -104,20 +105,21 @@ Check:
 
 - `.env` / `.env.local` / `.env.production` (should NOT be in repo)
 - `.env.example` (should have placeholders, not real values)
-- `wrangler.toml` / `wrangler.jsonc` (Cloudflare Workers secrets)
-- `vercel.json` (Vercel configuration)
+- Your hosting platform's configuration files (which files, and how each platform stores secrets, are in the [platform secret settings reference](contextqb://references/setup#platform-secret-settings))
 - Database config files
 - CI/CD configs (GitHub Actions, etc.)
 
 ### Deployment platforms
 
-Check dashboard settings for:
+Each hosting platform and service keeps its own environment-variable or secret settings. You cannot see dashboards: list the names the operator gave you, and mark any service whose list you do not have as UNKNOWN.
 
-- Vercel: Project Settings → Environment Variables
-- Cloudflare: Workers → Settings → Variables
-- Supabase: Project Settings → API
-- Clerk: Configure → API keys
-- Any other deployed service
+### Agent tooling
+
+The operator's own agent tools hold secrets too. Check, by file name and location only:
+
+- MCP client configuration files that contain tokens or API keys
+- Agent memory or notes files that may have captured a key from a past session
+- Agent tool settings and local credential files the agent can read
 
 ### Third-party integrations
 
@@ -131,20 +133,7 @@ For each external service the app uses, identify:
 
 ## Phase 2 — Inventory Documentation
 
-For each secret discovered, document:
-
-| Field             | Description                                                         |
-| ----------------- | ------------------------------------------------------------------- |
-| **Name**          | Variable/key name (e.g., `STRIPE_SECRET_KEY`)                       |
-| **Provider**      | Who issued this secret (Stripe, Clerk, etc.)                        |
-| **Type**          | API key, token, password, connection string, certificate            |
-| **Scope**         | What can this secret access? (read-only? full access?)              |
-| **Environment**   | Which environments use this? (dev, staging, prod)                   |
-| **Stored in**     | Where is this secret stored? (env vars, secrets manager, hardcoded) |
-| **Owner**         | Who is responsible for this secret?                                 |
-| **Created**       | When was this secret created?                                       |
-| **Last rotated**  | When was this secret last rotated?                                  |
-| **Rotation path** | How do you rotate this secret?                                      |
+Record every secret you discovered in the inventory schema defined once in [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) ("The inventory schema"): name, purpose, provider, type, scope, environment, where it is stored, owner, created, last rotated, rotation path, and blast radius. Never record the secret's value — only its name and where it lives. Where a field cannot be determined from what you can see (for example a creation date that only a dashboard shows), write UNKNOWN and list it for the operator.
 
 Produce a complete inventory table.
 
@@ -204,7 +193,7 @@ Check for active exposure risks:
 ### Version control exposure
 
 - [ ] No secrets in current repo files
-- [ ] No secrets in git history (check with `git log -p | grep -i "secret\|key\|password"`)
+- [ ] No secrets in git history (the secret scanner's history scan, with redacted output; as a last resort only, a search of `git log -p` that prints commit, file and line with matches masked — never the raw diff — and misses most key formats)
 - [ ] `.env` files are in `.gitignore`
 - [ ] No committed `.env.local` or similar
 
@@ -237,11 +226,11 @@ Check rotation hygiene:
 | ------ | ------- | ------------ | ------------------- | ------------------- |
 | ...    | ...     | ...          | ...                 | ...                 |
 
-Flag:
+Flag, against the rotation interval chosen for each kind of secret (standards set no single interval — lifetimes depend on the secret's function; see the [security defaults reference](contextqb://references/pricing#security-defaults)):
 
-- **Critical:** Never rotated, > 180 days old
-- **High:** Never rotated, > 90 days old
-- **Medium:** No rotation schedule, > 30 days old
+- **Critical:** never rotated, long-lived, and high blast radius
+- **High:** never rotated, or past its chosen interval
+- **Medium:** no rotation interval chosen at all
 
 For each secret that needs rotation:
 
@@ -291,7 +280,7 @@ Immediate action required:
 
 Action this week:
 
-- Secrets > 90 days old, never rotated
+- Secrets past their chosen rotation interval, or never rotated
 - Over-scoped secrets (admin where read-only would work)
 - Single secret shared across environments
 - No documented rotation path
@@ -341,6 +330,8 @@ Produce a Markdown document with:
 - Do NOT skip version control history scanning
 - Do NOT trust `.env.example` files — verify they don't contain real values
 - Be thorough — missing secrets are worse than documenting false positives
+- Treat scanner and search matches as leads; confirm each before it becomes a finding
+- Never include a secret value in the report or in your messages, and never let one reach your transcript: use redacted scanner output and masked searches
 - For every "unknown" (owner, rotation date, etc.), flag it as a finding
 - Prioritise by blast radius first, then exposure risk
 
@@ -353,7 +344,7 @@ After receiving the audit report:
 1. **Rotate any exposed secrets immediately.** Don't wait.
 2. **Assign owners to orphan secrets.** Someone must be responsible.
 3. **Remove any hardcoded secrets.** Move to environment variables.
-4. **Establish rotation schedules.** At minimum, annual for all, quarterly for critical.
+4. **Establish rotation schedules.** Choose an interval for each kind of secret and record it in the inventory — the [security defaults reference](contextqb://references/pricing#security-defaults) lists what standards say.
 5. **Save the inventory.** This becomes your baseline for future audits.
 
 Use [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) to maintain the inventory going forward.

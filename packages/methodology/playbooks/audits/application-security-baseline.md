@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -63,12 +63,22 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): the follow-up step no longer tells readers to record surfaces in context.qb.yaml for the drift detector (it has no field for security state); surfaces go in the AGENTS.md list, hostnames and deployed services in routes/tree. Wider rewrite remains for its later batch. Earlier notes describe 0.1.1: R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): adds a what-to-give-the-agent preamble (settings exports or screenshots and environment-variable names, never secret values) so the first run is not dominated by UNKNOWN; the agent reads the project instructions and configuration first, then runs the scanners it is permitted to run, treating their output as leads and evidence to check, never as verdicts; secret values are never written into the report; asks for a session that did not build the application; vendor examples in the intro and Phase 1 become provider categories with a link to the dated managed-services reference; active attack demonstrations are limited to authorized local or test targets. The FT closing-step repair is unchanged. 2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): the follow-up step no longer tells readers to record surfaces in context.qb.yaml for the drift detector (it has no field for security state); surfaces go in the AGENTS.md list, hostnames and deployed services in routes/tree. Wider rewrite remains for its later batch. Earlier notes describe 0.1.1: R3–R7 pass; the phased discover→inventory→audit→adversarial→classify structure is the security pillar's reference audit. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Application Security Baseline Audit
 
-This is a comprehensive security audit for applications built with agentic systems and deployed to managed services (Cloudflare, Vercel, Supabase, Clerk, etc.). It's designed to be run by an AI agent and produce a report a non-developer can understand and act on.
+This is a comprehensive security audit for applications built with agentic systems and deployed to managed services — hosting, authentication, database, storage and other providers ([what common services do](contextqb://references/tools#managed-services)). It's designed to be run by an AI agent and produce a report a non-developer can understand and act on.
+
+## Before you run it: what to give the agent
+
+The agent can read your code, but not your providers' dashboards. Without help, many checks come back UNKNOWN. Before the run, collect:
+
+- **Settings exports or screenshots** from your hosting, authentication, database and storage dashboards (security, session, access-rule and network settings).
+- **The names of your environment variables** — names only, never their values.
+- **Your attack-surface map** if you have one ([Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface)).
+
+Run the audit in a session that did not build the application: a fresh session, a second agent, or a person, given the project instructions and the code. A different model can add variety; it does not by itself make the audit independent.
 
 ## Use this as an agent instruction
 
@@ -82,6 +92,8 @@ This is a comprehensive security audit for applications built with agentic syste
 > 4. Produce prioritised, actionable findings
 >
 > You must operate like a security engineer conducting a real audit — skeptical, evidence-based, and focused on realistic exploitability.
+>
+> Start by reading the project instructions (`AGENTS.md` and anything it points to) and the relevant configuration. Then run the dependency, secret and code-security scanners the project has and you are permitted to run ([kinds of scanner](contextqb://references/tools#security-scanners)). Treat their output as leads to verify against the code, never as verdicts. Never copy a secret value into your report or your messages: name the file, line and kind of secret instead.
 
 ---
 
@@ -92,10 +104,10 @@ First, discover and document the actual architecture. Do NOT assume — infer fr
 Inspect:
 
 - **Framework and language** — What's the tech stack?
-- **Deployment** — Where is this deployed? (Cloudflare Workers, Vercel, etc.)
-- **Authentication** — How do users prove identity? (Clerk, Supabase Auth, custom)
-- **Database** — Where does data live? (Supabase, Cloudflare D1, etc.)
-- **Storage** — Where do files live? (R2, Supabase Storage, etc.)
+- **Deployment** — Where is this deployed? (which hosting provider or platform)
+- **Authentication** — How do users prove identity? (a hosted authentication provider, the database's built-in auth, or custom)
+- **Database** — Where does data live? (which database or data service)
+- **Storage** — Where do files live? (which object or file storage)
 - **Third-party services** — What external APIs does this call?
 - **AI integrations** — Are there LLM calls, agents, or AI features?
 - **Public endpoints** — What's reachable from the internet?
@@ -312,6 +324,9 @@ Produce a single Markdown document with these sections:
 - Explicitly identify security theatre or incomplete mitigations
 - Prioritise realistic exploitability over theoretical CVEs
 - Focus especially on authentication boundaries, secrets exposure, and AI trust
+- Treat scanner and search matches as leads; confirm each in the code before it becomes a finding
+- Never include a secret value in the report — identify it by location and kind
+- Do not run attacks. If a finding needs demonstrating, propose the test; run it only with the operator's approval and only against a local or test copy, never production
 
 You are performing a real security review, not writing a blog post.
 

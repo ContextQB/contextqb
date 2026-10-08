@@ -2,7 +2,7 @@
 id: run-an-agent-workstream
 title: Run an Agent Workstream
 summary: Define, operate, review, and close a documented flow of work between an operator and agents.
-version: 0.4.3
+version: 0.5.3
 problem: |
   An agent can complete an assignment while the objective remains unclear, unverified, or unfinished. Without a durable workstream record, authority, evidence, discoveries, and next actions disappear into chat history or competing notes.
 when_to_use: |
@@ -35,6 +35,7 @@ related_principles:
 related:
   - architectural-hardening-loop
   - audit-a-workstream-record
+  - bug-as-investigation
   - feature-build-loop
   - feature-planning
   - resume-an-agent-workstream
@@ -47,11 +48,13 @@ related:
   - update-an-agent-workstream
   - work-with-agents-through-documentation
   - write-a-context-qb
+  - refactor-with-duplicates
+  - security-critical-code-review
 review:
   status: final
   last_reviewed: "2026-10-02"
-  reviewer: "Opus 5.5, independent review of 0.3.1 (2026-10-02); Codex (CoS), independent checks of 0.4.0 and the 0.4.1 changes, and final independent QA of 0.4.2 (2026-10-02)"
-  reviewer_notes: "2026-10-02: Opus 5.5 revised this atom as developer in 0.4.0 (FIX-01), 0.4.1 (C1), and 0.4.2 (C2). Codex's final independent QA of the vertical returned verified with follow-up (2026-10-02). Travis (operator) accepted the vertical for publication on 2026-10-02. 0.4.3 removes the body draft note for publication; lesson, contract, and example content unchanged."
+  reviewer: "Independent agent review of 0.3.1 (2026-10-02); independent checks of 0.4.0 and the 0.4.1 changes, and final independent QA of 0.4.2 (2026-10-02)"
+  reviewer_notes: "2026-10-07 renewal B7 reciprocal link (0.5.3; author self-checked; independent review pending; not operator-accepted): related adds security-critical-code-review, which now records deferred REQUEST CHANGES items in Step 5's outstanding-items register; body unchanged. 2026-10-07 renewal B6 reciprocal link (0.5.2; author self-checked; independent review pending; not operator-accepted): related adds bug-as-investigation and refactor-with-duplicates, which now route a real fix and a duplicate's expiry into Step 5's outstanding-items register; body unchanged. 2026-10-07 renewal B4 review correction (0.5.1; author self-checked; independent review pending; not operator-accepted): Step 3's five-item pass sequence is one uninterrupted ordered list again (items 4 and 5 had been merged into the evidence paragraph by formatting); the evidence paragraph follows the complete list. Wording unchanged. 2026-10-07 renewal B4 (0.5.0; author self-checked; independent review pending; not operator-accepted; targeted additions to the operator-accepted 2026-10-02 vertical): adds the subagent and separate-tool independence rule to the roles; names background, scheduled and cloud agent runs as executors whose claims get the same review, with who started them, when and under what standing authority recorded, and their running state reconciled at each checkpoint; makes verifier output (command, exit status, drift-check result if used, something the operator can open) the expected evidence in Delivered and Reviewed; gives the five-item minimum record as a copyable block before the full template; offers the minimum routine as an optional AGENTS.md block. The method, record shape, steps and fictional worked example are otherwise unchanged. Review provenance neutralised (agent and model detail kept in private records); the 2026-10-02 acceptance and its history are unchanged. 2026-10-02: An agent developer revised this atom in 0.4.0 (FIX-01), 0.4.1 (C1), and 0.4.2 (C2). The final independent QA of the vertical returned verified with follow-up (2026-10-02). Travis (operator) accepted the vertical for publication on 2026-10-02. 0.4.3 removes the body draft note for publication; lesson, contract, and example content unchanged."
 ---
 
 # Run an Agent Workstream
@@ -83,10 +86,12 @@ If the project already has a document that carries the objective, its approved c
 
 When several agents work in parallel, use [Run a Multi-Agent Workflow](contextqb://playbooks/run-a-multi-agent-workflow) to divide the lanes. This record remains the shared summary, with one keeper.
 
+**Executors that run without you.** Many agentic tools can run agents in the background, on a schedule, or in the cloud ([which tools describe these features](contextqb://references/tools#agentic-ides)). Such a run is an executor like any other: it works only under an approved scope, and its delivery claims get the same review. Because no one may be watching, record for each such pass who started it, when, and under what standing authority, and at each checkpoint reconcile what is still running, finished, or failed before anyone relies on its output.
+
 **Three kinds of checking.** Name the one you have:
 
 - **Self-check:** the agent that did the work checks it. This is useful, but it is not review.
-- **Independent review:** a reviewer that did not produce the output checks it against the approved scope. A fresh session that did not implement the work qualifies. Opening a new tab or relabeling the same session does not.
+- **Independent review:** a reviewer that did not produce the output checks it against the approved scope. A fresh session that did not implement the work qualifies. Opening a new tab or relabeling the same session does not. A subagent, a second agent, or a separate review tool qualifies only when it did not produce the output and is given the record, the approved scope, and the outputs. The executor's account of its own work is a claim for the reviewer to test, not a finding to copy. A different model can widen what a review notices; it does not by itself make the review independent.
 - **Operator inspection:** you look at something you can judge yourself, such as the output folder, the published page, or the report's conclusions.
 
 ## The record shape
@@ -98,6 +103,18 @@ When several agents work in parallel, use [Run a Multi-Agent Workflow](contextqb
 3. Current state: what is verified, unfinished, or awaiting a decision.
 4. Outstanding items.
 5. The next authorized action.
+
+Copy this to begin:
+
+```markdown
+# Workstream — [objective]
+
+Objective and accountable operator:
+Approved scope (checks; my approval in my words, date, where):
+Current state (verified / unfinished / awaiting a decision):
+Outstanding items:
+Next authorized action:
+```
 
 The full shape, for when the flow grows:
 
@@ -144,9 +161,9 @@ ID | type | origin/evidence | owner | disposition | destination
 
 ### [date] — [pass]
 
-Authorized:
-Delivered:
-Reviewed: (self-check / independent review / operator inspection; record location)
+Authorized: (for a run with no operator present: who started it, when, under what standing authority)
+Delivered: (outputs and location; commands run with exit status; something the operator can open)
+Reviewed: (self-check / independent review / operator inspection; checks run and their results; record location)
 Disposition:
 Current state:
 
@@ -216,11 +233,13 @@ Operator check: what does this approval permit, and what remains a later decisio
 
 For each meaningful pass, record this sequence:
 
-1. **Authorized:** scope and revision, operator approval (words, date, where), executor, reviewer, and assignment.
+1. **Authorized:** scope and revision, operator approval (words, date, where), executor, reviewer, and assignment. For a pass that ran with no operator present, such as a background, scheduled, or cloud run, also record who started it, when, and under what standing authority.
 2. **Delivered:** actual output or revision and its location, completion claim, checks run, gaps, and discoveries.
 3. **Reviewed:** the kind of check, reviewer, output checked, criteria, evidence, findings, limits, and where the review is recorded.
 4. **Disposition:** accepted, corrected, rolled forward, proposed, deferred, rejected, or blocked; include the decision owner.
 5. **Current state:** verified progress, uncertainty, dependency effects, and next authorized action.
+
+**What counts as evidence.** In Delivered and Reviewed, prefer evidence the operator can inspect over a sentence saying it worked: the exact verifier commands run (type check, lint, tests, build) with their exit status, the drift-check result if the project uses one, and something the operator can open, such as the output file, the page, or a report. A check that was not run is recorded as not run.
 
 If the agent discovers a contradiction that requires changing the approved agreement, it stops the affected work, reports the contradiction, and waits for revision and re-approval. It does not silently widen the scope.
 
@@ -264,7 +283,7 @@ Operator check: can you tell what may proceed now and what still requires your d
 
 ## Step 6 — Checkpoint, hand off, and resume
 
-A **checkpoint** is the reconciled state at a stopping point. A **handoff** tells the next session what to read, verify, and do. It can be a section of the record or a separate dated file. Before stopping, reconcile the record with the actual files, outputs, saved revisions, and running jobs or processes. Record "none" when none exist. Say where the record is saved. Saving it in the project folder makes it available to a later session in that same checkout, even before it is committed. Saving alone does not show that it is backed up or available in another checkout or on another computer; that depends on your project's rules for committing, pushing, or copying. Anything that exists only in the chat or an unsaved editor must be saved, or explicitly carried forward, before another session can use it. Follow your project's own rules for when to commit or push. Refresh the boot-map line if the status changed.
+A **checkpoint** is the reconciled state at a stopping point. A **handoff** tells the next session what to read, verify, and do. It can be a section of the record or a separate dated file. Before stopping, reconcile the record with the actual files, outputs, saved revisions, and running jobs or processes, including any background, scheduled, or cloud agent runs: still running, finished, or failed. Record "none" when none exist. Say where the record is saved. Saving it in the project folder makes it available to a later session in that same checkout, even before it is committed. Saving alone does not show that it is backed up or available in another checkout or on another computer; that depends on your project's rules for committing, pushing, or copying. Anything that exists only in the chat or an unsaved editor must be saved, or explicitly carried forward, before another session can use it. Follow your project's own rules for when to commit or push. Refresh the boot-map line if the status changed.
 
 Ask the agent:
 
@@ -310,6 +329,19 @@ At the start of every meaningful pass:
 5. Record delivery and evidence.
 6. Review before relying on the result.
 7. Dispose of discoveries, choose the next authorized action, and save the record.
+
+If you want every session to follow this routine without being asked, you can paste a short version into your `AGENTS.md` once (optional):
+
+```markdown
+## Workstreams
+
+For work that spans passes or sessions, follow the workstream routine:
+read the active workstream record from the boot map before acting; act only
+within the approved scope; record delivery with evidence (commands, exit
+status, outputs); get a review from a session that did not do the work before
+relying on the result; and save the record with the next authorized action
+before stopping. Only the operator approves scopes and accepts results.
+```
 
 The companion prompts provide reusable versions of these instructions: [start](contextqb://prompts/start-an-agent-workstream), [update](contextqb://prompts/update-an-agent-workstream), [review](contextqb://prompts/review-an-agent-workstream), and [resume](contextqb://prompts/resume-an-agent-workstream). The [Workstream Record Audit](contextqb://audits/audit-a-workstream-record) checks whether a record is ready for another session to use.
 

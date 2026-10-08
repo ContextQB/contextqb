@@ -2,7 +2,7 @@
 id: the-mental-model-of-your-app
 title: The Mental Model of Your App
 summary: Before you write a line of code or prompt a single agent, you have to know — in plain words — what your app is actually for. This guide helps you turn an idea into a working mental model.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): corrected the description of context.qb.yaml, which has no security-posture or principles fields; those live in AGENTS.md. Earlier notes describe the previous version: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the memory claim now says tool memory is partial and owned by the tool, so decisions belong in the repository; undated; the editor example names no product; step 2 teaches how to spot a fluent but wrong restatement with a short example; steps 4–6 say the agent can draft them for you to check against your five answers. 2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): corrected the description of context.qb.yaml, which has no security-posture or principles fields; those live in AGENTS.md. Earlier notes describe the previous version: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # The Mental Model of Your App
@@ -49,7 +49,7 @@ review:
 
 If you're reading this because you have an idea and aren't sure how to start — you're not behind. You're at the right step, doing the right kind of thinking.
 
-Most people who imagine an app never begin, not because the idea is bad, but because they think the next move is "learn to code." That's no longer true. In 2026 the next move is "describe what you want clearly enough that an agent can build it." The bottleneck has shifted from syntax to clarity.
+Most people who imagine an app never begin, not because the idea is bad, but because they think the next move is "learn to code." That's no longer true. Today the next move is "describe what you want clearly enough that an agent can build it." The bottleneck has shifted from syntax to clarity.
 
 What you have right now — an idea that something _could_ exist — is the part the agent cannot do for you. Everything downstream depends on it being expressed clearly.
 
@@ -95,21 +95,23 @@ Builders who insist on a complete blueprint before starting almost never start. 
 
 If you're new to building applications, ContextQB is built for exactly the moment you're in. Two reasons:
 
-**It makes your mental model durable.** Agents have short memories. Each new chat session forgets what the last one knew. Without a system, you spend half your time re-explaining your app to the agent. ContextQB's whole point is that the things you've decided — your entities, your architecture, your conventions, your security posture — get written down once and live in places agents and humans can both read. Your mental model stops being a thing in your head and starts being a thing in your repo.
+**It makes your mental model durable.** Agent memory is partial and belongs to the tool: some tools keep notes between sessions ([what agents keep](contextqb://references/setup#agent-memory)), but you can't see or rely on what each new session actually knows. Without a system, you spend half your time re-explaining your app to the agent. ContextQB's whole point is that the things you've decided — your entities, your architecture, your conventions, your security posture — get written down once and live in places agents and humans can both read. Your mental model stops being a thing in your head and starts being a thing in your repo.
 
-**It gives you the right shape to start.** When you don't know where to start, "open VS Code and write code" is not actionable. "Write an `AGENTS.md`, declare your boot manifest in `context.qb.yaml`, list your entities, run the `feature-planning` playbook" _is_ actionable. ContextQB provides the scaffolding so you can focus on the only part nobody can do for you — the mental model itself.
+**It gives you the right shape to start.** When you don't know where to start, "open an editor and write code" is not actionable. "Write an `AGENTS.md`, declare your boot manifest in `context.qb.yaml`, list your entities, run the `feature-planning` playbook" _is_ actionable. ContextQB provides the scaffolding so you can focus on the only part nobody can do for you — the mental model itself.
 
 ## Get organised and start building
 
 You don't need to know how to code to start. You do need to do these things, in roughly this order:
 
 1. **Write a working brief.** A paragraph in your own words: who it's for, what it does, what experience it creates, what it deliberately doesn't do. Write it like you're describing the app to a close friend over coffee.
-2. **Have an agent restate your brief back to you.** Ask: "Restate this idea as a clear app concept with: who it's for, what problem it solves, what the core experience should feel like, what the must-have features are for V1." If the agent misunderstands your intent here, it will build the wrong thing later.
+2. **Have an agent restate your brief back to you.** Ask: "Restate this idea as a clear app concept with: who it's for, what problem it solves, what the core experience should feel like, what the must-have features are for V1." If the agent misunderstands your intent here, it will build the wrong thing later. Read the restatement against what you meant, not for how polished it sounds. A fluent restatement can still be wrong. For example, you wrote "a reading tracker for my book club", and the agent restates it as "a social reading platform where users discover books and follow friends". It sounds good, but it quietly turned a trusted group into the public and added features you never asked for. Correct it in plain words and ask for the restatement again.
 3. **List your entities.** What buckets of information does the app need? Don't worry about how they're stored. Just name them. "Verses. Notes. Tags. Users. Reading plans." That list is the first draft of your schema.
 4. **Open a repo.** Even an empty folder counts. Initialise it with `git`. This is where your mental model becomes a durable artefact.
 5. **Set up the project foundation.** Use the [`new-project-foundation`](contextqb://playbooks/new-project-foundation) playbook to give the repo the boundaries, naming, and orchestration story it needs before the first feature ships. Use the [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md) playbook to author the single most leverage-positive file in an agentic codebase.
 6. **Write a `context.qb.yaml`.** This is the boot manifest agents read first. The [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb) playbook walks you through it. It captures the mental model in machine-readable form.
 7. **Plan the first feature, don't code it yet.** Use the [`feature-planning`](contextqb://playbooks/feature-planning) playbook to produce a feature brief, surface map, state plan, and risk list before any code is written. Now you let the agent build.
+
+You don't have to write steps 4–6 yourself. Ask the agent to draft the repository setup, `AGENTS.md` and `context.qb.yaml`; your job is to check each draft against your five answers above and correct what doesn't match.
 
 At step 7, you've turned an idea into a structured project an agent can extend. That's the whole on-ramp.
 

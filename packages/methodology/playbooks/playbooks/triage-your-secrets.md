@@ -2,7 +2,7 @@
 id: triage-your-secrets
 title: Triage Your Secrets
 summary: Walk through your project and produce a complete inventory of every secret — API keys, tokens, passwords, certificates — with owner, scope, rotation status, and risk level.
-version: 0.1.1
+version: 0.2.0
 problem: |
   Secrets drift. Keys get created and forgotten. Tokens never rotate. Production credentials end up in development. When a breach happens, you cannot revoke what you cannot find.
 when_to_use: |
@@ -28,7 +28,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; blast-radius discipline and worked tables land. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): this playbook now holds the one inventory schema that the secrets-and-credentials audit references; the work is split by role (the agent drafts references, storage and scope, using the audit's scanner; you supply owners, dates from dashboards and blast-radius judgments); the learner's agent tooling (MCP client configuration, agent memory and settings files) is in scope; secret values never go in the inventory; service and secrets-manager lists become categories with dated references; fixed 90-day thresholds become intervals you choose per secret, compared with the security-defaults reference; the worked example's names and 2024 dates are labelled fictional. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; blast-radius discipline and worked tables land. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
   - detect-security-drift
   - map-your-attack-surface
@@ -47,30 +47,44 @@ related:
 - A team member left and you need to ensure access is revoked
 - You added a new third-party service and want to track its credentials
 - You suspect a secret may have been exposed (even if you're not sure)
-- It's been more than 90 days since your last secrets review
+- It's been longer than your chosen review interval since your last secrets review
 - You're preparing for a security audit
 
 ## What you'll produce
 
-A **secrets inventory** — a document (spreadsheet or Markdown table) containing:
+A **secrets inventory** — a document (spreadsheet or Markdown table) in the schema below.
 
-1. Every secret in your system with its name and purpose
-2. Where each secret is stored (env vars, secrets manager, etc.)
-3. Who is responsible for each secret
-4. What scope/permissions the secret grants
-5. When it was created and last rotated
-6. What damage a leak would cause (blast radius)
-7. How to rotate each secret if needed
+### The inventory schema
+
+This is the one definition of the inventory; the [Secrets & Credentials audit](contextqb://audits/secrets-and-credentials) fills the same fields.
+
+| Field             | What to record                                                                 |
+| ----------------- | ------------------------------------------------------------------------------ |
+| **Name**          | The variable or key name (for example `PAYMENTS_SECRET_KEY`) — never its value |
+| **Purpose**       | What the application uses it for                                               |
+| **Provider**      | Who issued it                                                                  |
+| **Type**          | API key, token, password, connection string, certificate                       |
+| **Scope**         | What it can access (read-only? full access? which environment?)                |
+| **Environment**   | Development, staging, production                                               |
+| **Stored in**     | Where the value lives (platform settings, secrets manager, local file)         |
+| **Owner**         | Who created it, who manages it, and who to contact at 2am                      |
+| **Created**       | When it was issued                                                             |
+| **Last rotated**  | When it was last replaced                                                      |
+| **Rotation path** | Where you go to replace it, and what must be updated afterwards                |
+| **Blast radius**  | What a leak would allow, and its severity                                      |
+
+**Who does what.** Ask the agent to draft Steps 1, 2 and 4 — the references in code, where each value is stored, and what each key can reach — using the scanner from the [Secrets & Credentials audit](contextqb://audits/secrets-and-credentials). You supply what only you can see or judge: owners, created and rotated dates from the dashboards, and the blast-radius calls. Never paste a secret's value into the conversation or the inventory.
 
 ## Before you start
 
 You'll need access to:
 
 - Your codebase (to find secret references)
-- Your deployment platforms (Cloudflare, Vercel, Supabase, etc.)
-- Your third-party service dashboards (Stripe, Clerk, OpenAI, etc.)
-- Any secrets managers you use (1Password, AWS Secrets Manager, Doppler)
+- Your hosting and deployment platforms
+- The dashboards of the services you use — authentication, payments, database, AI, email ([what common services do](contextqb://references/tools#managed-services))
+- Any secrets manager you use ([examples](contextqb://references/tools#secrets-managers))
 - Your local environment files (.env.local, .env.development)
+- Your agent tools' configuration: MCP client configuration files, agent memory or notes files, and tool settings, which can hold API keys or tokens
 
 Have your `context.qb.yaml` open if you have one — it may list dependencies that have secrets.
 
@@ -83,7 +97,7 @@ Ask your agent or search manually: **"What environment variables does this proje
 Look in:
 
 - `.env.example` or `.env.template` (list of expected variables)
-- `wrangler.jsonc` or `wrangler.toml` (Cloudflare Workers secrets)
+- Your hosting platform's configuration file ([how platforms store secrets](contextqb://references/setup#platform-secret-settings))
 - `next.config.js` or similar framework configs
 - Code that reads `process.env.*`
 - CI/CD workflows (GitHub Actions secrets, Vercel env vars)
@@ -107,6 +121,7 @@ For each variable you found, determine where the actual secret is stored.
 Check:
 
 - Local `.env` files (should NOT be in version control)
+- Agent tooling: MCP client configuration and agent memory files on your machine
 - Deployment platform environment settings
 - Secrets managers
 - CI/CD secret stores
@@ -129,6 +144,8 @@ For each secret, name who is responsible:
 - **Created by:** Who generated this secret?
 - **Managed by:** Who rotates it or revokes it?
 - **Contact:** If this breaks at 2am, who do we call?
+
+The tables in Steps 1–7 are a worked example for a fictional project; the people, dates and service names are illustrative.
 
 | Secret            | Created by      | Managed by     | Contact           |
 | ----------------- | --------------- | -------------- | ----------------- |
@@ -172,7 +189,7 @@ For each secret, determine:
 | STRIPE_SECRET_KEY | Feb 2024 | Never                   | None     | Roll in Stripe, update all envs          |
 | OPENAI_API_KEY    | Unknown  | Unknown                 | None     | Create new key, update envs, delete old  |
 
-**If "last rotated" is "never" or "unknown" for any secret older than 90 days, that's a finding.**
+**If "last rotated" is "never" or "unknown" for a long-lived secret, or it is past the interval you chose for it, that's a finding.** Standards set no single interval — a secret's lifetime depends on what it does (see the [security defaults reference](contextqb://references/pricing#security-defaults)).
 
 ### Step 6 — Assess blast radius
 
@@ -238,7 +255,7 @@ Your secrets inventory is good enough when:
 
 ## When to do this again
 
-- Every 90 days minimum
+- On a regular schedule you choose and record (quarterly is a common starting point — a suggestion, not a standard)
 - After any personnel change (hire, departure, role change)
 - After adding a new third-party service
 - After any suspected exposure or security incident

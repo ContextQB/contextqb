@@ -2,7 +2,7 @@
 id: append-dont-overwrite
 title: Append, Don't Overwrite
 summary: Documentation is append-only at three scales — archive whole files, strike through revised lines, and supersede rather than edit ADRs. Agents reading a doc see both the current state and the reasoning trail that produced it.
-version: 0.1.4
+version: 0.2.0
 category: documentation
 audience:
   - novice-builder
@@ -41,7 +41,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "REVIEWED. F-11 resolved 2026-09-09: AGENTS.md link depth fixed.R3–R6 pass. Open: F-11 (AGENTS.md link points at packages/AGENTS.md — one directory level short of the root). R8 pending P4. 2026-10-02: archive trigger clarified (a delivery claim alone is insufficient; required review/acceptance and obligation disposition precede archival) and an optional workstreams/ category added, following the workstream governance decision. The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the line-scale rule now leads with its real argument (visibility inside the agent's context window — git keeps history, but agents don't read it unprompted) and uses strikethrough only for load-bearing lines in active documents the agent re-reads, with a revision-history line otherwise; says which scale applies on day one; corrected memory premise; rendering note says GitHub-flavoured Markdown rather than every surface; the link to this repository's own AGENTS.md is replaced by the rule to put in yours. Earlier notes (2026-09-09 epistemology review): R3–R6 pass; R8 pending P4; F-11 was resolved on 2026-09-09 (link depth fixed) and is not open; the link itself is replaced in 0.2.0. 2026-10-02: archive trigger clarified (a delivery claim alone is insufficient; required review/acceptance and obligation disposition precede archival) and an optional workstreams/ category added, following the workstream governance decision. The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Append, Don't Overwrite
@@ -101,16 +101,24 @@ Secrets, credentials, tokens, API keys, and personally identifiable information 
 
 If you find a secret in a doc that needs archiving, redact it in place before moving the file.
 
+## Which scale applies on day one
+
+One rule applies from the first day: **never edit an accepted ADR; supersede it.** The other two arrive as the project grows. Archiving starts with the first scope or handoff that finishes (see [`set-up-a-documentation-system`](contextqb://playbooks/set-up-a-documentation-system) for the growth curve). Strikethrough starts with the first active governance document — a scope or a plan — whose load-bearing line changes.
+
 ## Line scale — strike through, don't overwrite
 
-When you revise a load-bearing line in a scope, a punchlist, or any other governance doc, preserve the original using strikethrough:
+Git already keeps every old version of a file. The reason to keep the old wording _in the document_ is visibility: the agent reads the document, not its git history, and won't look at `git log` unless you ask it to. If a load-bearing line changed and the document shows only the new value, the agent can't tell that a decision was revisited — and may "restore" the old one from some other stale source.
+
+So when you revise a load-bearing line in an active governance doc that the agent will keep re-reading — a scope, a plan, a punchlist — preserve the original using strikethrough:
 
 ```markdown
 ~~Version target: v1.1.0 (additive minor).~~
 Version target: v2.0.0 (honest major — we're the only consumer pre-launch).
 ```
 
-The canonical markdown form is `~~old text~~ new text`. It renders correctly in GitHub, Keystatic, Next.js (remark), and every other surface the methodology corpus uses. Agents recognise `~~` as strikethrough; the original wording stays in context.
+The canonical markdown form is `~~old text~~ new text`. Strikethrough is part of GitHub-flavoured Markdown rather than core Markdown, so it renders on GitHub and in most documentation tools that follow that flavour; where it doesn't render, the `~~` markers still show. Agents recognise `~~` as strikethrough; the original wording stays in context.
+
+For anything else — a line that isn't load-bearing, or a document the agent won't re-read — a one-line entry in the revision history table is cheaper and keeps the body clean.
 
 ### When to use strikethrough
 
@@ -136,13 +144,13 @@ ADRs are immutable once accepted. If the decision needs to change:
 2. Mark the old ADR as "Superseded by ADR-NNNN."
 3. Link forward from the old ADR to the new one.
 
-The old ADR stays exactly as it was. This is already ContextQB canon — see [`AGENTS.md §6`](../../../../AGENTS.md) ("Do not edit ADRs after they are Accepted").
+The old ADR stays exactly as it was. Put the rule in your own `AGENTS.md` so the agent sees it every session: "Do not edit ADRs after they are Accepted; supersede them with a new ADR."
 
 Supersession is the decision-scale equivalent of archive-don't-delete: the old artifact is preserved; a new artifact records the change.
 
 ## Why this matters for agents
 
-Agents do not carry session memory. Every prompt re-reads the docs. If the docs only show current state, the agent has no way to know:
+Agent memory is partial and belongs to the tool ([what agents keep](contextqb://references/setup#agent-memory)); what reliably carries from one session to the next is what the agent re-reads in your documents. If the docs only show current state, the agent has no way to know:
 
 - What used to be true.
 - Why it changed.

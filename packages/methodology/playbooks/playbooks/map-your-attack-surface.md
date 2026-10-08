@@ -2,7 +2,7 @@
 id: map-your-attack-surface
 title: Map Your Attack Surface
 summary: Walk through your application and produce a structured inventory of every public surface, every secret, every agent capability, and every third-party trust.
-version: 0.1.1
+version: 0.2.0
 problem: |
   You can't defend what you can't see. Most security failures happen on surfaces the builder didn't know existed — a public endpoint they forgot, a secret they didn't track, a third-party integration that silently gained access.
 when_to_use: |
@@ -30,7 +30,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; six-surface inventory with worked tables is the security pillar's entry instrument. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the default workflow is that the agent drafts all six tables from the repository and you fill what it cannot see (subdomains and DNS, dashboard settings, what you trust each service with, blast-radius judgments); the inventory is saved as the dated baseline that detect-security-drift and security-regression compare against, and it holds the public-surface and outside-service lists the AGENTS.md guardrails block points to; in Step 3 the fix for no formal restrictions is the tool's permission and sandbox settings plus the AGENTS.md intent block (dated agent-permissions reference); service-name lists become categories with the managed-services reference, and the tables are labelled as a worked example using real service names; AI-provider retention of prompts and outputs added to data surfaces; 'assume it has been compromised' softened to 'assume it needs rotation'; no secret values in the inventory. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; six-surface inventory with worked tables is the security pillar's entry instrument. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
   - ai-integration-security
   - application-security-baseline
@@ -67,14 +67,16 @@ An **attack surface inventory** — a document (Markdown works fine) that lists:
 5. **Third-party trust** — every external service you depend on
 6. **Data surfaces** — where sensitive data lives
 
-This document becomes your baseline. The next time you run this playbook, you'll compare against it and spot the drift.
+This document becomes your baseline. Save it with a date — for example `docs/security/attack-surface.md`, with the date and the commit or release it describes at the top — and the next time you run this playbook, or the [drift](contextqb://playbooks/detect-security-drift) and [regression](contextqb://audits/security-regression) checks, you compare against it. Its public-surface and outside-service tables are also where the "Public surfaces and outside services" list in your `AGENTS.md` comes from ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
+
+**Who does what.** Ask the agent to draft all six tables from the repository: routes, auth code, agent configuration, environment-variable names, service integrations and data stores. Then fill in what the repository cannot show: subdomains and DNS records, dashboard settings, what you trust each service with, and the blast-radius judgments. Never put a secret's value in the inventory — names, owners and locations only.
 
 ## Before you start
 
 You'll need:
 
 - Access to your codebase (or your agent can read it for you)
-- Access to your deployment environment (Cloudflare, Vercel, Supabase, Clerk, etc.)
+- Access to your providers' dashboards — hosting, authentication, database, storage — or exports and screenshots of their settings
 - A blank document to write your inventory
 
 If you have a `context.qb.yaml`, pull it up — it'll speed up the discovery.
@@ -129,7 +131,7 @@ For each, write down:
 
 Ask: **"What can my AI agents do?"**
 
-If you use Cursor, Claude, or any agent in development:
+If you use an agentic coding tool in development:
 
 - What files can it read/write?
 - Can it run shell commands?
@@ -146,12 +148,14 @@ If your application has AI features (chatbots, assistants, etc.):
 
 For each agent, write down:
 
-| Agent       | Context         | Can read                      | Can write | Can execute           | Restrictions        |
-| ----------- | --------------- | ----------------------------- | --------- | --------------------- | ------------------- |
-| Cursor      | Dev environment | All files                     | All files | Shell (with approval) | None formal         |
-| Support bot | Production      | User messages, knowledge base | Nothing   | N/A                   | Read-only by design |
+| Agent             | Context         | Can read                      | Can write | Can execute           | Restrictions        |
+| ----------------- | --------------- | ----------------------------- | --------- | --------------------- | ------------------- |
+| Your coding agent | Dev environment | All files                     | All files | Shell (with approval) | None formal         |
+| Support bot       | Production      | User messages, knowledge base | Nothing   | N/A                   | Read-only by design |
 
-**Tip:** If your agent has no documented restrictions, that's a finding. Write it down.
+**Tip:** If your agent has no documented restrictions, that's a finding. Write it down. The fix has two layers: the tool's own permission, approval and sandbox settings, which enforce limits ([what each tool offers](contextqb://references/setup#agent-permissions)), and the security block in your `AGENTS.md`, which explains your intent ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
+
+The tables in Steps 1–6 are a worked example for a fictional app; the service names in them are real examples, not recommendations. What each kind of service does is in the dated [managed services reference](contextqb://references/tools#managed-services).
 
 ### Step 4 — Inventory your secrets
 
@@ -160,7 +164,7 @@ Ask: **"What credentials does this project use?"**
 Look for:
 
 - Environment variables (`.env`, `.env.local`, deployment settings)
-- API keys (Stripe, Clerk, Supabase, OpenAI, etc.)
+- API keys for your payment, authentication, database, AI and other providers
 - Database connection strings
 - OAuth client secrets
 - Webhook signing secrets
@@ -185,13 +189,13 @@ Ask: **"What external services does this project depend on?"**
 
 Look for:
 
-- Auth providers (Clerk, Auth0, Supabase Auth)
-- Payment processors (Stripe, LemonSqueezy)
-- Databases and storage (Supabase, Cloudflare D1, R2)
-- AI providers (OpenAI, Anthropic)
-- Email services (Resend, SendGrid)
-- Analytics (Posthog, Mixpanel)
-- Monitoring (Sentry, Datadog)
+- Authentication providers
+- Payment processors
+- Databases and storage
+- AI model providers
+- Email services
+- Analytics
+- Monitoring and error tracking
 
 For each, write down:
 
@@ -213,6 +217,7 @@ Look for:
 - Analytics that track user behaviour
 - Browser storage (localStorage, cookies)
 - Vector databases with embeddings
+- What you send to AI providers: prompts and outputs may be retained, and training and retention defaults differ by provider and plan ([provider data use](contextqb://references/setup#provider-data-use))
 
 For each, write down:
 
@@ -238,7 +243,7 @@ Sort your findings. The critical and high items are where your security effort s
 - **Forgetting subdomains.** That staging.example.com you set up six months ago? It's still public.
 - **Missing webhooks.** Webhook endpoints often lack the same protections as your main API.
 - **Underestimating agent capabilities.** "It's just a dev tool" — but it can read your .env file.
-- **Not tracking secret rotation.** If you don't know when a secret was last rotated, assume it's been compromised.
+- **Not tracking secret rotation.** If you don't know when a secret was last rotated, assume it needs rotation.
 - **Trusting "internal" services.** If it's on the internet, it's not internal.
 
 ## What "good enough" looks like

@@ -2,7 +2,7 @@
 id: secrets-have-provenance
 title: Secrets Have Provenance
 summary: Every secret in your system — API key, token, password, certificate — has an origin, an owner, a scope, and an expiry. If you cannot name all four, the secret is unmanaged, and unmanaged secrets leak.
-version: 0.1.1
+version: 0.1.2
 category: security
 audience:
   - novice-builder
@@ -45,7 +45,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Origin/owner/scope/expiry quad is complete. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; the unsourced 'most common cause of security incidents' is softened to 'a common cause'; danger 3 now includes agent memory files and MCP configuration files that carry tokens — files on your disk you can inspect and clean; secrets-manager product names become a category with the dated reference, and your code host's secret scanning is named by role; 'annual rotation is a minimum' becomes an interval chosen per secret, with the security-defaults reference; Slack and Stripe kept as labelled examples. Earlier notes (2026-09-09 epistemology review): R3–R7 pass. Origin/owner/scope/expiry quad is complete. R8 pending P4."
 ---
 
 # Secrets Have Provenance
@@ -63,17 +63,17 @@ Provenance means you can trace a secret from creation to use:
 - **Scope:** What does this secret grant access to? Which environments, which resources?
 - **Expiry:** When does this secret expire? When was it last rotated?
 
-If you cannot answer these four questions for every secret in your system, you have unmanaged secrets. Unmanaged secrets are the most common cause of security incidents in production systems.
+If you cannot answer these four questions for every secret in your system, you have unmanaged secrets. Unmanaged secrets are a common cause of security incidents in production systems.
 
 ## Why it matters in agentic dev specifically
 
 When you build with an AI agent, secrets become more dangerous in several ways:
 
-1. **Agents copy-paste secrets.** If you tell an agent "use the Stripe API," it might helpfully paste your API key into the code to "make it work." Now your key is in version control, readable by anyone with repo access, and one `git push` away from GitHub's secret scanning alert — or worse, no alert at all.
+1. **Agents copy-paste secrets.** If you tell an agent "use the Stripe API," it might helpfully paste your API key into the code to "make it work." Now your key is in version control, readable by anyone with repo access, and one `git push` away from your code host's secret-scanning alert — or worse, no alert at all.
 
 2. **Agents don't distinguish environments.** An agent does not know the difference between your development key and your production key unless you tell it. If you pass it a production key during development, it will use it.
 
-3. **Agents persist context.** If you paste a secret into a chat, that secret may be stored in the conversation history, logged by the provider, or visible in session playback. The context window is not a vault.
+3. **Agents persist context.** If you paste a secret into a chat, that secret may be stored in the conversation history, logged by the provider, or visible in session playback. Agent tools also keep files on your own disk that can capture a secret: memory or notes files the agent writes, and MCP client configuration files that hold tokens. Unlike a provider's logs, those you can inspect and clean — check them. The context window is not a vault.
 
 4. **Agents create infrastructure.** When an agent provisions a database, sets up a CI workflow, or configures a deployment, it may generate new secrets. If those secrets are not documented, you have no idea what access exists.
 
@@ -83,13 +83,13 @@ When you build with an AI agent, secrets become more dangerous in several ways:
 
 You can claim this principle if you meet all of the following:
 
-1. **Secrets never appear in code or version control.** Use environment variables, secrets managers (like AWS Secrets Manager, Doppler, or 1Password for teams), or encrypted config files. A secret in a Git commit is a secret forever — even deleted commits can be recovered.
+1. **Secrets never appear in code or version control.** Use environment variables, a secrets manager ([examples](contextqb://references/tools#secrets-managers)), or encrypted config files. A secret in a Git commit is a secret forever — even deleted commits can be recovered.
 
 2. **Each secret has a documented owner.** Someone knows this secret exists, knows what it accesses, and knows they are responsible for rotating it. This can be a spreadsheet, a secrets manager with metadata, or a section in your architecture docs — but it must exist.
 
 3. **Secrets are scoped to their use.** A production database password is not used in development. A read-only analytics key does not have write access. When a third party offers fine-grained permissions, you use them.
 
-4. **Secrets rotate on a schedule.** If a secret has never been rotated, it has been exposed for its entire lifetime. Annual rotation is a minimum; high-value secrets rotate more frequently. You know when each secret was last rotated.
+4. **Secrets rotate on a schedule.** If a secret has never been rotated, it has been exposed for its entire lifetime. Choose an interval for each kind of secret — standards set none, because a secret's lifetime depends on what it does (see the [security defaults reference](contextqb://references/pricing#security-defaults)) — with high-value secrets rotating more often. You know when each secret was last rotated.
 
 5. **Secret exposure is an incident.** If a secret appears in logs, chat, a public repo, or anywhere it should not be, you treat it as a security incident: revoke immediately, rotate, and audit what happened.
 
@@ -101,7 +101,7 @@ You can claim this principle if you meet all of the following:
 
 - **Keys are "shared" in DMs.** If onboarding a new teammate involves sending them a Slack message with passwords, those passwords are now in Slack's logs forever.
 
-- **A single key works everywhere.** If your Stripe key works in development, staging, and production, you have no isolation. A dev mistake can charge real customers.
+- **A single key works everywhere.** If your payment provider's key (a Stripe key, say) works in development, staging, and production, you have no isolation. A dev mistake can charge real customers.
 
 - **You have "legacy" keys no one understands.** If a key exists but no one knows what it does, it is either unnecessary (delete it) or critical (document it).
 

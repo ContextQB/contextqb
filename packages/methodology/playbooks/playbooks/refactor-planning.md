@@ -2,7 +2,7 @@
 id: refactor-planning
 title: Plan a Refactor Without Rewriting the Whole Repo
 summary: A structured approach for scoping, sequencing, and de-risking a refactor — instead of letting an agent rewrite everything at once.
-version: 0.1.1
+version: 0.2.0
 problem: |
   When a codebase becomes painful, the instinct is to ask an agent to "clean it up." That request almost always produces a sweeping rewrite that breaks more than it fixes.
 when_to_use: |
@@ -33,13 +33,15 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "REVIEWED. F-16 resolved 2026-09-09: link text no longer names the collection while pointing at one principle.R3–R7 pass. Open: F-06 (state-ownership/extensibility links), F-16 (link text says @contextqb/standards but points at a single principle). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B6 (0.2.0; author self-checked; independent review pending; not operator-accepted): characterization tests of current behaviour are now the first instruction for each step, written and run before the change; each step runs on its own branch (or worktree, if lanes run in parallel); each step is verified in a fresh session that did not make it; the plan authorizes only the step you name. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; R8 pending P4. F-06 and F-16, once listed as open, were resolved 2026-09-09 (links declared; link text corrected) and are not open."
 related:
   - anti-spaghetti-review
   - architectural-hardening-loop
   - architecture-review
   - feature-build-loop
   - general-technical-audit
+  - review-an-agent-workstream
+  - run-a-multi-agent-workflow
   - ui-architecture
 ---
 
@@ -102,16 +104,20 @@ For each step, write:
 
 If a step has no test confirming it, you cannot prove it worked. Add the test before the step.
 
+The cheapest safety net is a set of **characterization tests**: tests that record what the code does _today_, right or wrong, so any change in behaviour shows up as a failure. Agents write these quickly. Have them written and passing before the first line of the refactor changes.
+
 ## Step 6 — Write the agent instruction
 
-> I want to refactor **\[scope]** to address **\[principle]**. The target structure is **\[brief description]**. Do not make sweeping changes. Implement step **\[N]** of the plan only:
+> I want to refactor **\[scope]** to address **\[principle]**. The target structure is **\[brief description]**. Do not make sweeping changes. First, write characterization tests that capture the current behaviour of the code this step touches, run them, and show me the command and its passing result. Then, on a new branch for this step, implement step **\[N]** of the plan only:
 >
 > 1. \[Step 1]
 > 2. \[Step 2]
 > 3. \[Step 3]
 > 4. \[Step 4]
 >
-> After step \[N], stop and produce a summary of what changed, what was preserved, and what to verify before moving to step \[N+1].
+> After step \[N], run the tests again and report the command and exit status, then stop and produce a summary of what changed, what was preserved, and what to verify before moving to step \[N+1]. Do not start the next step.
+
+Before you approve the next step, have a fresh session — one that did not make the change — check the step against its acceptance criteria and the test results ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) works for this). If you run several steps in parallel lanes, give each its own worktree, as in [Run a Multi-Agent Workflow](contextqb://playbooks/run-a-multi-agent-workflow).
 
 ## Step 7 — Have a rollback plan
 

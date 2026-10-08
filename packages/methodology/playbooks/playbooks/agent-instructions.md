@@ -2,7 +2,7 @@
 id: agent-instructions
 title: Create Agent Instructions That Produce Documents, Not Chat Replies
 summary: How to write agent prompts that return structured, decision-grade documents rather than meandering conversational answers.
-version: 0.1.2
+version: 0.2.1
 problem: |
   Most agent prompts produce conversational answers — useful for back-and-forth, useless as a permanent artifact. For audits, reviews, and plans, you want a document you can save, share, and act on.
 when_to_use: |
@@ -12,6 +12,7 @@ expected_outputs:
   - A clear set of required sections.
   - A defined audience and tone.
   - A defined deliverable format.
+  - A defined path where the document is saved.
 audience:
   - novice-builder
   - founder
@@ -29,7 +30,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; pairs cleanly with the document-producing-agent prompt (pattern vs instance). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B6 reciprocal link (0.2.1; author self-checked; independent review pending; not operator-accepted): related adds skills-mcp-and-agents-md, the briefing that explains where a saved template lives as a skill; body unchanged. 2026-10-07 renewal B5 (0.2.0; author self-checked; independent review pending; not operator-accepted): adds a seventh element (where to save the document) and the conditional clarifying-questions rule, both matching the document-producing-agent prompt; the template block now points to that prompt, its single maintained home (DEC-05(b)), instead of restating it; the 30/60/90-day plan example becomes next session / next week / later; one line on saving a filled template as a reusable instruction, linking the dated setup reference. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; pairs cleanly with the document-producing-agent prompt (pattern vs instance). R8 pending P4."
 related:
   - architectural-hardening-loop
   - architecture-review
@@ -37,6 +38,8 @@ related:
   - run-a-multi-agent-workflow
   - review-an-agent-workstream
   - audit-a-workstream-record
+  - skills-mcp-and-agents-md
+  - document-producing-agent
 ---
 
 # Create Agent Instructions That Produce Documents, Not Chat Replies
@@ -71,7 +74,7 @@ List the exact sections the document must contain, in order.
 > 4. Risks — what becomes harder if nothing is done.
 > 5. Recommendations — ordered by impact.
 > 6. Target architecture — a sketch of where this should head.
-> 7. Implementation plan — 30 / 60 / 90 days."
+> 7. Implementation plan — next session, next week, later."
 
 ### 4. Evaluation criteria
 
@@ -91,30 +94,21 @@ What the agent should _not_ do.
 
 > "Do not write code. Do not propose changes outside the scope of this review."
 
-## A template
+### 7. Where to save it
 
-Copy and adapt:
+Name the file the document goes in, and ask the agent to report the path instead of pasting the document into the chat. A document that lives only in a conversation scrolls away; a file can be reviewed, linked from your project records, and read by the next session.
 
-```text
-You are <ROLE>, producing <DOCUMENT_TYPE> for <AUDIENCE>.
+> "Save the review to `docs/reviews/architecture-review.md` and tell me the path. Do not paste it into the chat. Do not change any other file."
 
-Objective: <ONE SENTENCE>.
+### Missing information: assumptions first, questions only when they matter
 
-Required sections, in this order:
-1. <SECTION>
-2. <SECTION>
-3. ...
+An agent asked for a document will often lack some fact. Ask it to state its assumptions in the document, and to ask you a question only when an assumption would change the conclusions — then wait for your answer before writing. This keeps you from a round of trivial questions without letting a wrong guess shape the verdict. It is a rule for producing a document; it never authorizes the agent to change code or other files.
 
-Evaluation criteria: <WHAT MAKES THIS GOOD VS MEDIOCRE>.
+## The template
 
-Tone: <CONSTRAINTS>.
+The copy-ready template, with every element above as a fill-in variable and a worked example, is the [Document-Producing Agent Instruction Template](contextqb://prompts/document-producing-agent). Keep using that one copy rather than a private variant, so improvements reach every document you ask for.
 
-Out of scope: <EXPLICIT NON-GOALS>.
-
-Source material: <PATHS / RESOURCES / CONTEXT>.
-
-Produce the full document. Do not summarise it. Do not ask clarifying questions — make reasonable assumptions and state them.
-```
+If you use the same filled-in template often, many agentic tools let you save it as a reusable instruction — a skill, a prompt file or a command — so you can call it by name ([which tools offer what](contextqb://references/setup#reusable-instructions)).
 
 ## Why this matters
 

@@ -2,7 +2,7 @@
 id: choosing-your-application-channel
 title: Choosing Your Application Channel
 summary: "The channel is where the user meets the application: terminal, desktop, browser, phone, or browser app with installed behavior. Choose it from the user's situation, not from trend pressure."
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -19,6 +19,7 @@ related:
   - building-for-yourself-vs-others
   - choosing-your-ide-and-llm
   - feature-planning
+  - new-project-foundation
   - what-an-application-is
   - where-your-data-lives
 next_steps:
@@ -30,7 +31,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R7 pass; related: matches See also; channel taxonomy owns its ground. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; adds one sentence that an MCP server is itself an integration channel, inside the user's AI agent, and a reciprocal link with the new-project-foundation playbook; the Slack example is kept as a recognisable example. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; related: matches See also; channel taxonomy owns its ground. R8 pending P4."
 ---
 
 # Choosing Your Application Channel
@@ -218,6 +219,7 @@ The same logic applies elsewhere:
 - A Slack app for team communication workflows.
 - A plugin for a creative tool.
 - An API for systems that need to call your workflow directly.
+- An MCP server, which puts your workflow inside the user's own AI agent.
 
 Good fit:
 
@@ -317,3 +319,4 @@ Start where the work is. Build the smallest version that fits that place. Then l
 - [Guide: Where Your Data Lives](contextqb://guides/where-your-data-lives) - match the channel to responsible storage.
 - [Guide: What an Application Is](contextqb://guides/what-an-application-is) - understand files, runtimes, and information flow.
 - [Playbook: Plan a Feature Before Letting the Agent Code](contextqb://playbooks/feature-planning) - turn the channel decision into a buildable plan.
+- [Playbook: Prepare a New Repo for AI-Assisted Development](contextqb://playbooks/new-project-foundation) - where the channel decision feeds your first day of setup.

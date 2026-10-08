@@ -2,7 +2,7 @@
 id: naming-conventions
 title: Naming Conventions
 summary: Naming is architecture. Good names describe domain responsibility — not implementation detail or generic role.
-version: 0.1.1
+version: 0.1.2
 category: naming
 audience:
   - novice-builder
@@ -41,7 +41,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Stage-1 placement correct (day-one relevance via AGENTS.md conventions). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; adds that the rule is language-independent (case style follows the language's convention) and that you mostly review names the agent proposes, with one question to ask; the enforcement prompt asks for a list of process/handle/manage names before any judgment. The narrow-scope exception in agent_instructions is kept unchanged. Earlier notes (2026-09-09 epistemology review): R3–R7 pass. Stage-1 placement correct (day-one relevance via AGENTS.md conventions). R8 pending P4."
 ---
 
 # Naming Conventions
@@ -53,6 +53,10 @@ Naming is not aesthetic. It is structural. A well-named module is half-documente
 **Names should describe domain responsibility.**
 
 `PurchaseOrderValidator` is a name. `Validator` is a category. `Helpers` is a confession.
+
+The rule is the same in every language. The _case style_ — `camelCase`, `snake_case`, `kebab-case` file names — follows your language's and project's convention; the examples below use one style.
+
+**Who does what.** The agent proposes most names as it writes code; you review them. You don't need to know the language to do that. Ask one question of each new file or function: _can I tell what this does from its name alone?_ If you can't, ask the agent for a name that says it.
 
 ## Specific guidance
 
@@ -83,7 +87,7 @@ If a module is named `XManager`, ask: what does it manage that an `X` couldn't m
 
 ## How to ask an agent to enforce this
 
-> Review every file and exported function name in this feature. For each, ask: does the name describe a clear domain responsibility? If not, propose a better name and the reasoning behind it.
+> First, list every file and exported function in this feature whose name starts with or contains `process`, `handle`, `manage`, `do`, `util`, `helper` or `misc`, with its path. Then review every file and exported function name in this feature. For each, ask: does the name describe a clear domain responsibility? If not, propose a better name and the reasoning behind it. Where a generic name is a deliberate, narrowly scoped exception, say what its scope is.
 
 ## See also
 

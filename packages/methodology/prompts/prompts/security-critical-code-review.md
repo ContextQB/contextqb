@@ -2,7 +2,7 @@
 id: security-critical-code-review
 title: Security-Critical Code Review
 summary: A code review prompt specifically for security-sensitive changes — authentication, authorization, secrets handling, input validation, and data access.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -30,31 +30,34 @@ related:
   - trust-boundaries-are-architecture
   - understanding-llms
   - untrusted-by-default
+  - run-an-agent-workstream
 tags:
   - security
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; merge-decision verdict contract (APPROVE/REQUEST CHANGES/BLOCK) is exemplary R7. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the template-engine conditional becomes a plain line; the reviewer runs the tests and the scanners it is permitted to run and may write an exploit test for a local or test copy only with authorization; independence rule (a reviewer that did not write the change, given the scope and the change; a different model is not by itself independence); notes that tools with review integrations can run this automatically on changes touching auth, secrets or data paths, with manual paste as the fallback, described by category (B1 dropped the code-review-agents entry); a deferred REQUEST CHANGES goes to the outstanding-items register; Zod in the example labelled as one schema library. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; merge-decision verdict contract (APPROVE/REQUEST CHANGES/BLOCK) is exemplary R7. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Security-Critical Code Review
 
 This prompt is for reviewing code that touches security-sensitive areas. It's more focused than [Think Like an Attacker](contextqb://prompts/think-like-an-attacker) — instead of broad adversarial thinking, it runs a specific checklist for common security mistakes in critical code paths.
 
-Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access.
+Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access. Run it in a session that did not write the change — a fresh session, a second agent, or a person — given the change and what it was meant to do. A different model can add variety; it does not by itself make the review independent. Fill `{{CHANGE_DESCRIPTION}}` with what the change is meant to do, or "none".
+
+Some agentic tools and code hosts can run a review automatically on changes that match a rule — for example, changes touching authentication, secrets or data-access code. If yours can, this prompt is a good one to configure that way, provided the reviewer is not the agent that wrote the change. Pasting it by hand works everywhere.
 
 ## The prompt
 
 ```text
 You are performing a security-focused code review of the following changes: {{SCOPE_PATH}}
 
-{{#if CHANGE_DESCRIPTION}}
-Change description: {{CHANGE_DESCRIPTION}}
-{{/if}}
+Change description (or "none"): {{CHANGE_DESCRIPTION}}
 
 Your task is to review this code specifically for security implications. This is NOT a style review or a functional review — focus only on security.
+
+Where you are permitted to run commands, run the project's tests and its dependency and security scanners, and record each command and its result; treat scanner matches as leads to confirm in the code. If a vulnerability would be clearer demonstrated, write a test that exploits it and run it only against a local or test copy, and only if I have authorized it. Do not change the code under review.
 
 ## Checklist review
 
@@ -142,7 +145,7 @@ Based on your review, provide:
 ## What to do with the output
 
 1. **BLOCK** — Do not merge. Fix the critical issue first.
-2. **REQUEST CHANGES** — Address the listed issues, then re-review.
+2. **REQUEST CHANGES** — Address the listed issues, then re-review. If you decide to merge now and fix later, record each requested change as an item in your outstanding-items register (see [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5) with an owner, so it is not lost.
 3. **APPROVE** — Safe to merge.
 
 If confidence is "Low," consider requesting a second review or doing manual testing.
@@ -161,7 +164,7 @@ If confidence is "Low," consider requesting a second review or doing manual test
 
 ### Input handling
 
-- [x] **Validation exists** — PASS: Zod schema at line 8
+- [x] **Validation exists** — PASS: schema validation (Zod, in this example) at line 8
 - [x] **Validation is server-side** — PASS
 - [x] **Type coercion is safe** — PASS
 - [x] **Output is sanitised** — N/A: JSON response only

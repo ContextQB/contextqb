@@ -2,8 +2,9 @@
 id: state-management
 title: State Management Audit
 summary: A targeted audit that maps every piece of state in a system, identifies owners, surfaces duplicates, and flags derived-but-stored values.
-version: 0.1.1
+version: 0.2.0
 audience:
+  - novice-builder
   - founder
   - developer
   - agent
@@ -39,7 +40,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; state inventory columns map exactly to the state-ownership taxonomy. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B5 (0.2.0; author self-checked; independent review pending; not operator-accepted): preserved; adds a verified-by column to the state inventory (read the code, or ran the app and observed it), with the run done only where permitted and against a local or test copy; adds novice-builder to the audience because the output is readable without code knowledge. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; state inventory columns map exactly to the state-ownership taxonomy. R8 pending P4."
 ---
 
 # State Management Audit
@@ -53,7 +54,7 @@ This audit is narrower than a full architecture review. It focuses on the single
 > Produce a Markdown document with these sections, in order:
 >
 > 1. **Executive summary.** 3–5 bullets.
-> 2. **State inventory.** A table with columns: `name`, `kind` (server / durable-client / shared-transient / local), `owner` (file or module), `source`, `consumers`, `duplicates`, `derived`. Cover every shared state value. Use real file paths.
+> 2. **State inventory.** A table with columns: `name`, `kind` (server / durable-client / shared-transient / local), `owner` (file or module), `source`, `consumers`, `duplicates`, `derived`, `verified by` (read the code, or ran the app and observed it). Cover every shared state value. Use real file paths. Run the app only if you are permitted to, against a local or test copy.
 > 3. **Ownership analysis.** For each row in the table where the owner is unclear, explain what is ambiguous and where ownership should live.
 > 4. **Duplication and drift.** For each pair of duplicates, explain why they exist and propose a single owner.
 > 5. **Derived-but-stored.** Any value that could be computed from another value but is stored as its own state.

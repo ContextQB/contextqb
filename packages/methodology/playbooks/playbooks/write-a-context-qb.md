@@ -2,7 +2,7 @@
 id: write-a-context-qb
 title: Write a context.qb for Your Repository
 summary: Step-by-step for authoring a context.qb.yaml — the agent's boot manifest — that gets a coding agent up to speed in under 2,000 tokens.
-version: 0.2.0
+version: 0.3.0
 problem: |
   AI coding agents waste tokens (and time) at the start of every session re-scanning your repo to figure out what it is and where everything lives. Without a single small, structured map, you pay that scan-cost on every prompt.
 when_to_use: |
@@ -45,14 +45,14 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): agent-drafted path made explicit (agent drafts, operator checks summary/purposes/status); YAML-writing prerequisite removed; validation now uses the published JSON Schema plus the drift detector, without a repository-internal command as a learner prerequisite, and states that the CLI does not run the schema check. Review provenance neutralised. Earlier notes describe the previous version: R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B2 (0.3.0; author self-checked; independent review pending; not operator-accepted): the agent-drafted path now comes first, with Steps 1–7 as a review checklist; example values labelled as ContextQB's own; a single-app tree example added; the validation reference linked; the provider-terms sentence points to the data-use reference; links resolve publicly or are plain text. 2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): agent-drafted path made explicit (agent drafts, operator checks summary/purposes/status); YAML-writing prerequisite removed; validation now uses the published JSON Schema plus the drift detector, without a repository-internal command as a learner prerequisite, and states that the CLI does not run the schema check. Review provenance neutralised. Earlier notes describe the previous version: R3–R7 pass. Current with SPEC + feedback tail-block (ADR-0029). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Write a context.qb for Your Repository
 
 A `context.qb.yaml` file is the agent's **boot manifest** — a small, structured artifact at the root of your repo that gets a coding agent oriented in as few tokens as possible. (The play-sheet metaphor is the brand; "boot manifest" is the engineering description.)
 
-This playbook walks you through your first one. You can use it two ways: ask your agent to draft the file with the prompt in [How to ask an agent to write the first one](#how-to-ask-an-agent-to-write-the-first-one) and use Steps 1–7 to review what it produced, or write it yourself step by step. Either way, the parts that carry meaning — the project summary, each `purpose` and the `status` entries — are yours to write or check, because only you know whether they are true. Full format spec at [`packages/qb/spec/SPEC.md`](../../../qb/spec/SPEC.md); the principle behind it is [`context-quarterback-the-onboarding-map`](../../standards/principles/context-quarterback-the-onboarding-map.md).
+This playbook walks you through your first one. The quickest path is to ask your agent to draft the file with the prompt just below, use Steps 1–7 to check what it produced, and validate it in Step 8. You can also write it yourself step by step. Either way, the parts that carry meaning — the project summary, each `purpose` and the `status` entries — are yours to write or check, because only you know whether they are true. The full format specification is [SPEC.md in the public ContextQB repository](https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md); the principle behind it is [`context-quarterback-the-onboarding-map`](contextqb://principles/context-quarterback-the-onboarding-map).
 
 ## Before you start
 
@@ -63,6 +63,23 @@ You need:
 - ~30 minutes for the first one.
 
 The file does not replace `AGENTS.md`. They have different jobs (`AGENTS.md` is rules; `context.qb.yaml` is map). You should have both.
+
+## The quickest path: ask your agent to draft it
+
+For a first file, this is the path this playbook recommends. Give your agent this prompt:
+
+> Read the context.qb specification (`format/SPEC.md` in the public ContextQB repository on GitHub, `ContextQB/contextqb`). Walk the repository's directory tree, `package.json`, ADR folder, and deploy configs. Produce a `context.qb.yaml` file at the repo root that:
+>
+> 1. Captures the actual shape of the repo as it exists today.
+> 2. Stays under 2,000 tokens.
+> 3. Validates against the published JSON Schema (`format/schema.json` in the same repository).
+> 4. Has plain-language `project.summary` and `purpose` fields written for this project — not lifted verbatim from READMEs. Mark anything you are unsure of so I can check it.
+>
+> When you finish, validate the file against the schema, check that every path in `tree` and `entry_points` exists, and report what you found. I will then read the summary, purposes and status for truth.
+
+After it returns, read `project.summary`, every `purpose` and every `status` entry yourself. The agent can map folders and ADRs reliably; whether the summary says what the project is _for_, and whether a status is still true, is your call.
+
+Steps 1–7 below describe each section. If your agent drafted the file, use them as a checklist: for each section, compare the draft with the step and fix what is wrong. If you prefer to write the file yourself, follow them in order.
 
 ## Step 1 — Decide what's at the top
 
@@ -102,11 +119,11 @@ stack:
   pay: Stripe Checkout
 ```
 
-Resist verbose technology names. The agent already knows what Next.js is.
+These values are ContextQB's own stack, shown as an illustration; write yours. Resist verbose technology names — the agent already knows what a common framework is.
 
 ## Step 3 — Enumerate the tree
 
-List every workspace package or top-level directory worth knowing about. The simple form is a one-liner:
+List every workspace package or top-level directory worth knowing about. The simple form is a one-liner (the entries below describe an illustrative project):
 
 ```yaml
 tree:
@@ -115,7 +132,14 @@ tree:
   packages/sdk: client SDK consumed by web + external integrators
 ```
 
-For directories with meaningful dependencies, use the object form:
+A single app with one source folder still needs a `tree` — the section is required — with one entry:
+
+```yaml
+tree:
+  src: the whole app — pages, API handlers and data access
+```
+
+For directories with meaningful dependencies, use the object form (this example is from ContextQB's own repository):
 
 ```yaml
 tree:
@@ -136,14 +160,14 @@ If your project has any externally-reachable surfaces (web hostnames, MCP server
 routes:
   example.com: apps/web
   api.example.com: apps/api
-  docs.example.com: external (Notion)
+  docs.example.com: external (a hosted documentation tool)
 ```
 
 This is the section that answers "where does this code actually run, and at what address?"
 
 ## Step 5 — Index the decisions
 
-If you have an ADR system (you should — see the [`write-an-adr`](./write-an-adr.md) playbook), list each ADR with its ID and one-line summary:
+If you have an ADR system (you should — see the write-an-adr playbook), list each ADR with its ID and one-line summary. These entries are ContextQB's own; yours will be different:
 
 ```yaml
 decisions:
@@ -203,7 +227,7 @@ The schema check catches:
 
 **Does the file match the repository?** That is the drift detector's job (`contextqb`, from the `@context-qb/cli` package), set up in the next playbook. It compares `tree`, `routes` and `decisions` with your workspaces, deploy configuration and ADR files, and it reports a missing file or invalid YAML. It does **not** run the JSON Schema check, so do both.
 
-Fix any errors before committing.
+Fix any errors before committing. Where the CLI, the specification and the schema are published, and which deployment configuration files the drift check reads, are recorded in the [context.qb validation reference](contextqb://references/setup#context-qb-validation).
 
 ## Step 9 — Wire it into your AGENTS.md
 
@@ -229,21 +253,6 @@ Shape changes include:
 
 Treat `context.qb.yaml` like a load-bearing wall. If you change it, the agent's mental model changes. If you don't, the agent has the wrong map.
 
-## How to ask an agent to write the first one
-
-If you're starting from scratch, this prompt works well:
-
-> Read the context.qb specification (`format/SPEC.md` in the public ContextQB repository on GitHub, `ContextQB/contextqb`). Walk the repository's directory tree, `package.json`, ADR folder, and deploy configs. Produce a `context.qb.yaml` file at the repo root that:
->
-> 1. Captures the actual shape of the repo as it exists today.
-> 2. Stays under 2,000 tokens.
-> 3. Validates against the published JSON Schema (`format/schema.json` in the same repository).
-> 4. Has plain-language `project.summary` and `purpose` fields written for this project — not lifted verbatim from READMEs. Mark anything you are unsure of so I can check it.
->
-> When you finish, validate the file against the schema, check that every path in `tree` and `entry_points` exists, and report what you found. I will then read the summary, purposes and status for truth.
-
-After it returns, read `project.summary`, every `purpose` and every `status` entry yourself. The agent can map folders and ADRs reliably; whether the summary says what the project is _for_, and whether a status is still true, is your call.
-
 ## Anti-patterns
 
 - **Inlining content the map should reference.** `decisions` is a list of IDs and one-liners with a `→ index` link, not the full ADR text.
@@ -251,17 +260,15 @@ After it returns, read `project.summary`, every `purpose` and every `status` ent
 - **Letting status rot.** Stale `status:` is worse than empty `status:`. If a status hasn't moved in 30 days, either resolve it or rewrite it.
 - **Two `context.qb.yaml` files saying different things.** Pick one canonical file at the repo root. Use nested files only if a subtree truly has its own scope and the root is already too dense to grow.
 - **Treating `context.qb.yaml` as the only doc.** It's the index. Real documentation still belongs in `docs/`, READMEs, and ADRs. `context.qb.yaml` points at them.
-- **Putting secrets, credentials, or internal-only endpoints in the file.** Treat `context.qb.yaml` as a public artifact even when the repo is private. Anything you write ends up in every agent's context window every session, and on most provider terms of service can be used for training. Secrets belong in `.env.local`, secret managers, or environment variables — never here. See [SPEC.md §14](../../../qb/spec/SPEC.md#14-privacy-and-security).
+- **Putting secrets, credentials, or internal-only endpoints in the file.** Treat `context.qb.yaml` as a public artifact even when the repo is private. Anything you write ends up in every agent's context window every session, and may be retained or used to improve models under your provider's terms, which differ by provider and plan (see [whether providers train on what you send](contextqb://references/setup#provider-data-use)). Secrets belong in `.env.local`, secret managers, or environment variables — never here. See [SPEC.md §14](https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md#14-privacy-and-security).
 
 ## What's next
 
-Once your file passes validation, set up the detector that keeps it honest. Use [`set-up-drift-detection`](./set-up-drift-detection.md) to install `@context-qb/cli`, add `check:qb`, and wire the check into your commit and CI loop.
+Once your file passes validation, set up the detector that keeps it honest. Use [`set-up-drift-detection`](contextqb://playbooks/set-up-drift-detection) to install `@context-qb/cli`, add `check:qb`, and wire the check into your commit and CI loop.
 
 ## Technical reference
 
-For a compressed technical checklist (less methodology context, more step-by-step), see the [Authoring Guide](../../../qb/docs/authoring-guide.md).
-
-For format implementors and tool authors, see the [Format Explainer](../../../qb/docs/format-explainer.md).
+For a compressed technical checklist (less methodology context, more step-by-step), and for format implementors and tool authors, the ContextQB repository keeps two technical companions in `packages/qb/docs/`: the Authoring Guide and the Format Explainer. They are not yet published on this site.
 
 ## How did this go? Share your experience
 

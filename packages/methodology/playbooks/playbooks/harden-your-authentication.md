@@ -2,7 +2,7 @@
 id: harden-your-authentication
 title: Harden Your Authentication
 summary: Walk through your login, signup, and session management and apply baseline security hardening — rate limiting, brute-force protection, session hygiene, and secure defaults.
-version: 0.1.1
+version: 0.2.0
 problem: |
   Authentication is the front door to your application. If it's weak, nothing else matters. Most applications ship with default settings that are functional but not secure.
 when_to_use: |
@@ -27,10 +27,11 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "REVIEWED. F-09 addressed 2026-09-09: vendor dashboard paths carry a last-verified note (I7 convention).R3, R4, R6, R7 pass. Open: F-06 (2 links), F-09 (vendor dashboard navigation paths — Clerk/Supabase/Auth0 UI — decay with vendor redesigns). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the nine vendor dashboard paths are removed from the body; each step names the kind of setting to look for and points to the provider's own documentation, and the auth-provider-settings reference is described as unverified (candidate settings only), so no path is presented as checked; numeric values are labelled tier-dependent starting points to choose and record, compared with the dated security-defaults reference; the incorrect 'NIST recommends 8+' line is replaced with a pointer to that reference, which records NIST's current distinction between passwords used alone and with MFA; passkeys (WebAuthn) are added as the phishing-resistant MFA option; authenticator apps are labelled examples; failed-login tests run on a staging copy with a test account; provider names become categories. Earlier notes (2026-09-09 epistemology review): R3, R4, R6, R7 pass; R8 pending P4. The F-06 and F-09 items once listed as open are closed by this revision (links declared; dashboard paths removed from the lesson)."
 related:
   - authentication-and-authorization
   - map-your-attack-surface
+  - detect-security-drift
   - pre-launch-security
 ---
 
@@ -50,7 +51,7 @@ related:
 ## What you'll produce
 
 1. A **hardening checklist** showing what's configured and what's missing
-2. **Configuration changes** applied to your auth provider (Clerk, Supabase Auth, Auth0, etc.)
+2. **Configuration changes** applied to your auth provider
 3. **Documentation** of your session and access policies
 
 ## Before you start
@@ -61,7 +62,9 @@ You'll need:
 - Access to your codebase (to check how auth is implemented)
 - A test account to verify changes don't break legitimate login
 
-Auth providers covered by this playbook: Clerk, Supabase Auth, Auth0, NextAuth, or custom implementations. The concepts apply universally; the specific settings vary. Vendor dashboard paths below were verified 2026-09 — vendors re-label navigation often, so search the vendor's docs if a path has moved.
+This playbook covers hosted authentication providers, framework auth libraries and custom implementations ([what common providers do](contextqb://references/tools#managed-services)). The concepts apply universally; the names and locations of settings vary by provider and change often, so each step names the kind of setting to look for — search your provider's documentation for it. ContextQB's [auth provider settings reference](contextqb://references/setup#auth-provider-settings) is marked unverified: it lists candidate settings only, and none of its dashboard paths has been checked. Published provider defaults and standards are in the dated [security defaults reference](contextqb://references/pricing#security-defaults).
+
+**Test on a copy.** Steps 2, 4 and 5 suggest testing failed logins and weak passwords. Do that on a staging or local copy with a test account, not on production, where lockouts and alerts affect real users.
 
 ## Steps
 
@@ -69,14 +72,14 @@ Auth providers covered by this playbook: Clerk, Supabase Auth, Auth0, NextAuth, 
 
 List everywhere users authenticate:
 
-| Surface        | URL/Path         | Provider | Notes                 |
-| -------------- | ---------------- | -------- | --------------------- |
-| Web login      | /sign-in         | Clerk    | Primary user auth     |
-| Web signup     | /sign-up         | Clerk    | New user registration |
-| Password reset | /forgot-password | Clerk    | Recovery flow         |
-| API key auth   | /api/\*          | Custom   | Machine access        |
-| OAuth          | /sso/google      | Clerk    | Social login          |
-| Magic link     | Email            | Clerk    | Passwordless option   |
+| Surface        | URL/Path         | Provider        | Notes                 |
+| -------------- | ---------------- | --------------- | --------------------- |
+| Web login      | /sign-in         | Hosted provider | Primary user auth     |
+| Web signup     | /sign-up         | Hosted provider | New user registration |
+| Password reset | /forgot-password | Hosted provider | Recovery flow         |
+| API key auth   | /api/\*          | Custom          | Machine access        |
+| OAuth          | /sso/google      | Hosted provider | Social login          |
+| Magic link     | Email            | Hosted provider | Passwordless option   |
 
 Include any non-standard auth paths (admin login, API authentication, webhook auth).
 
@@ -89,25 +92,16 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Lockout notification is sent to the account owner
 - [ ] Rate limits apply per-IP and per-account
 
-**Where to check:**
+**Where to check:** your provider's attack-protection, brute-force or rate-limit settings; for a custom implementation, your rate-limiting middleware.
 
-- **Clerk:** Session settings → Attack protection
-- **Supabase Auth:** Project settings → Auth → Rate limits
-- **Auth0:** Security → Attack protection
-- **Custom:** Check your rate limiting middleware
-
-**Recommended minimums:**
-
-- Max 5-10 failed attempts before temporary lockout
-- Lockout duration: 15-30 minutes (increasing on repeat offenses)
-- Rate limit: 10-20 login requests per minute per IP
+**Starting points, not rules.** Choose a lockout threshold, a lockout duration (increasing on repeat offenses is common) and a per-IP rate limit, and write them down. Compare them with the published standards and provider defaults in the [security defaults reference](contextqb://references/pricing#security-defaults) — for example, some providers lock after around ten failures by default, and standards bodies cap the number rather than prescribing one.
 
 **What to do:**
 
 1. Review current settings in your auth provider
 2. Enable attack protection if it's off
 3. Set reasonable lockout thresholds
-4. Test by making failed login attempts (verify lockout triggers)
+4. On a staging or local copy, test by making failed login attempts with a test account (verify lockout triggers)
 
 ### Step 3 — Review session configuration
 
@@ -118,13 +112,9 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Session revocation is possible (logout everywhere)
 - [ ] Sessions are bound to IP or device (if applicable)
 
-**Where to check:**
+**Where to check:** your provider's session settings (session lifetime, inactivity timeout, token expiry and rotation). Some providers' defaults keep sessions open until sign-out, and some session limits depend on the plan — see the [security defaults reference](contextqb://references/pricing#security-defaults).
 
-- **Clerk:** Configure → Sessions → Session lifetime
-- **Supabase Auth:** Project settings → Auth → JWT expiry
-- **Auth0:** Applications → Your app → Settings → Rotation
-
-**Recommended settings:**
+**Illustrative starting points by tier** (ContextQB's suggestions, not a standard — adjust to your users and record what you choose):
 
 | Use case        | Session lifetime | Inactivity timeout |
 | --------------- | ---------------- | ------------------ |
@@ -149,15 +139,12 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] MFA recovery process exists and is documented
 - [ ] MFA options include TOTP (authenticator app), not just SMS
 
-**Where to check:**
-
-- **Clerk:** Configure → Multi-factor → Enable options
-- **Supabase Auth:** Project settings → Auth → MFA
-- **Auth0:** Security → Multi-factor auth
+**Where to check:** your provider's multi-factor settings.
 
 **Recommended settings:**
 
-- Enable TOTP (authenticator apps like 1Password, Google Authenticator)
+- Offer passkeys (WebAuthn) if your provider supports them — they resist phishing, because they only work on the real site
+- Enable TOTP (authenticator apps — for example 1Password or Google Authenticator)
 - Require MFA for admin accounts
 - Make MFA optional but encouraged for regular users (consider requiring after X days)
 - SMS MFA: available but not as the only option (SIM swapping risk)
@@ -173,30 +160,26 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 
 **What to verify:**
 
-- [ ] Minimum password length enforced (12+ characters)
+- [ ] Minimum password length enforced, following a published standard
 - [ ] Weak/breached passwords rejected
 - [ ] Password complexity is not overly restrictive (length > complexity)
 - [ ] Password change requires current password
 
-**Where to check:**
-
-- **Clerk:** Configure → Passwords → Password settings
-- **Supabase Auth:** Project settings → Auth → Password requirements
-- **Auth0:** Authentication → Database → Password policy
+**Where to check:** your provider's password policy settings.
 
 **Recommended settings:**
 
-- Minimum length: 12 characters (NIST recommends 8+, but 12 is better)
+- Minimum length: follow a published standard. NIST's current guidance sets a higher minimum for a password used on its own than for one used with MFA — the current figures are in the [security defaults reference](contextqb://references/pricing#security-defaults).
 - Breached password detection: ON (check against known leaked passwords)
 - Complexity rules: Allow any characters, don't require symbols (encourages longer passwords)
 - Password hints: Disabled
 
 **What to do:**
 
-1. Set minimum length to 12 characters
+1. Set the minimum length you chose from the standard, and record it in your auth policy
 2. Enable breached password detection if available
 3. Remove arbitrary complexity rules (symbols, uppercase) that encourage shorter passwords
-4. Test that weak passwords are rejected
+4. On a staging or local copy, test that weak passwords are rejected
 
 ### Step 6 — Review OAuth/social login
 
@@ -207,18 +190,14 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Account linking is secure (cannot hijack via OAuth)
 - [ ] OAuth secrets are rotated periodically
 
-**Where to check:**
-
-- **Clerk:** Configure → SSO connections
-- **Supabase Auth:** Project settings → Auth → Providers
-- **Auth0:** Authentication → Social
+**Where to check:** your provider's social login or SSO connection settings.
 
 **What to do:**
 
 1. Disable OAuth providers you don't use
 2. Review requested scopes — request only what you need
 3. Check account linking behavior (what happens if OAuth email matches existing account?)
-4. Rotate OAuth client secrets annually
+4. Rotate OAuth client secrets on a schedule you choose and record (standards give no single interval — see the [security defaults reference](contextqb://references/pricing#security-defaults))
 
 ### Step 7 — Check secure cookie/token configuration
 

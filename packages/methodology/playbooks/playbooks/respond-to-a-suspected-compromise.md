@@ -2,7 +2,7 @@
 id: respond-to-a-suspected-compromise
 title: Respond to a Suspected Compromise
 summary: When you discover or suspect a security incident — leaked credentials, unauthorized access, suspicious activity — follow this structured response to contain damage, investigate, and recover.
-version: 0.1.1
+version: 0.2.0
 problem: |
   When something security-related goes wrong, panic leads to mistakes. Without a plan, people either overreact (taking down everything) or underreact (ignoring the problem). A structured response limits damage and preserves evidence.
 when_to_use: |
@@ -28,7 +28,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; phased containment/investigate/remediate/post-mortem structure is production-grade. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): adds agent compromise to the containment table and steps (an agent acting on injected instructions, a leaked agent or MCP token, a background agent that merged unreviewed work: revoke its tokens, stop background and scheduled runs, review its recent commits and actions); says how to use an agent during an incident — read-only access to build the timeline and draft the post-mortem, with every containment action approved by you, step by step; notes that your code host's secret scanning may already have flagged a leak; provider names become categories; git filter-repo kept, labelled as one history-rewriting tool. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; phased containment/investigate/remediate/post-mortem structure is production-grade. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
   - detect-security-drift
   - pre-launch-security
@@ -69,12 +69,14 @@ related:
 
 Gather:
 
-- Access to your auth provider (Clerk, Supabase, etc.)
+- Access to your auth provider's dashboard
 - Access to your secrets management
 - Access to your application logs
 - A notes document to record everything
 
 **Start a timeline now:** Write down the current time and what you know so far.
+
+**Using an agent during an incident.** An agent can help a lot — reading logs, building the timeline, tracing what a leaked key could reach, drafting the post-mortem — with read-only access. It does not take containment actions itself: you approve each one, step by step, and run or confirm it. If the agent itself might be the cause (see "Agent compromise" below), use a fresh session with no tools that could change anything. The [suspicious behavior investigation](contextqb://prompts/suspicious-behavior-investigation) prompt sets these limits for you.
 
 ## Steps
 
@@ -86,19 +88,20 @@ The goal is to stop the incident from getting worse. Don't worry about understan
 
 Ask: "What type of incident is this?"
 
-| Type                       | Examples                                                 | Immediate containment                |
-| -------------------------- | -------------------------------------------------------- | ------------------------------------ |
-| **Secret exposed**         | API key in public repo, credentials in logs              | Revoke/rotate the secret immediately |
-| **Unauthorized access**    | Login from unknown location, admin actions by wrong user | Disable the affected account(s)      |
-| **Data breach**            | User data accessed without authorization                 | Restrict access to the data source   |
-| **Application compromise** | Unexpected behavior, modified files                      | Consider taking the service offline  |
-| **Unknown**                | Something feels wrong but unclear                        | Increase monitoring, restrict access |
+| Type                       | Examples                                                                                                              | Immediate containment                                             |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Secret exposed**         | API key in public repo, credentials in logs                                                                           | Revoke/rotate the secret immediately                              |
+| **Unauthorized access**    | Login from unknown location, admin actions by wrong user                                                              | Disable the affected account(s)                                   |
+| **Data breach**            | User data accessed without authorization                                                                              | Restrict access to the data source                                |
+| **Application compromise** | Unexpected behavior, modified files                                                                                   | Consider taking the service offline                               |
+| **Agent compromise**       | An agent acted on injected instructions; an agent or MCP token leaked; a background agent merged work nobody reviewed | Revoke the agent's tokens, stop its background and scheduled runs |
+| **Unknown**                | Something feels wrong but unclear                                                                                     | Increase monitoring, restrict access                              |
 
 #### Step 1.2 — Take immediate containment actions
 
 **If secret exposed:**
 
-1. Revoke the exposed secret immediately
+1. Revoke the exposed secret immediately (your code host's secret scanning may already have flagged it — check its alerts)
 2. Generate a new secret
 3. Update all systems that use the secret
 4. Confirm the old secret no longer works
@@ -115,6 +118,14 @@ Ask: "What type of incident is this?"
 1. Restrict access to the affected data source
 2. Enable additional logging
 3. Preserve current logs (don't let them rotate away)
+
+**If agent compromise:**
+
+1. Revoke the agent's API keys and MCP tokens, and disconnect MCP servers you do not fully trust
+2. Stop background, cloud and scheduled agent runs
+3. Review the agent's recent commits, merges and tool actions (session transcripts, hook logs, your git host's history)
+4. Treat any secret the agent could read as exposed — rotate it
+5. Check the agent's memory and instruction files for injected content before you use it again
 
 **If application compromise:**
 
@@ -220,13 +231,13 @@ Use your [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) invent
 
 Based on root cause, fix the vulnerability:
 
-| Root cause       | Remediation                                                 |
-| ---------------- | ----------------------------------------------------------- |
-| Secret in repo   | Remove from history (git filter-repo), add pre-commit hooks |
-| Missing MFA      | Enable and require MFA                                      |
-| Weak auth        | Implement rate limiting, lockout                            |
-| Misconfiguration | Fix config, add validation                                  |
-| Vulnerable code  | Patch, add tests, add security review step                  |
+| Root cause       | Remediation                                                                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Secret in repo   | Rotate first; then remove from history with a history-rewriting tool (git filter-repo is one) and add a pre-commit secret check |
+| Missing MFA      | Enable and require MFA                                                                                                          |
+| Weak auth        | Implement rate limiting, lockout                                                                                                |
+| Misconfiguration | Fix config, add validation                                                                                                      |
+| Vulnerable code  | Patch, add tests, add security review step                                                                                      |
 
 #### Step 3.3 — Verify remediation
 

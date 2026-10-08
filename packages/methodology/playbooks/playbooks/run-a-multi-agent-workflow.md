@@ -1,8 +1,8 @@
 ---
 id: run-a-multi-agent-workflow
 title: Run a Multi-Agent Workflow (Fleets, Subagents, and Background Sessions)
-summary: The 2026 agentic default is a fleet — background agents, subagents, cloud sessions, scheduled routines. This playbook is the discipline for running several agents at once without lanes colliding, context drifting, or "the fleet shipped something nobody reviewed."
-version: 0.1.3
+summary: Agentic tools now make it easy to run a fleet — background agents, subagents, cloud sessions, scheduled routines. This playbook is the discipline for running several agents at once without lanes colliding, context drifting, or "the fleet shipped something nobody reviewed."
+version: 0.2.0
 problem: |
   One-agent-one-session was the 2024 mental model; the current tools (background agents, subagents, cloud sessions, scheduled routines) make it trivially easy to run five agents at once — and just as easy to produce five unverified, mutually contradictory changes. Fleet capability without fleet discipline produces parallel spaghetti.
 when_to_use: |
@@ -28,6 +28,7 @@ related:
   - set-up-agents-md
   - the-plan-is-the-contract
   - write-a-context-qb
+  - refactor-planning
 related_principles:
   - failure-modes
   - least-privilege-for-agents
@@ -41,7 +42,7 @@ review:
   status: draft
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review G-13 (authored 2026-09-09)"
-  reviewer_notes: "Authored from gap G-13 — the corpus's mental model predated the fleet default (background agents, subagents, cloud sessions, routines). Awaiting a fresh-eyes pass. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B6 (0.2.0; author self-checked; independent review pending; not operator-accepted; review.status stays draft — promotion to final is Travis's decision after Codex's review, per DEC-08): names the Tier-1 starter pattern (one build lane plus one review lane); parallel writers each get their own working directory, such as a separate worktree or clone, because branches in one checkout share the same files on disk; one integrator owns review and merge; the vendor 'where it lives' column moved to the dated agentic-tools reference, keeping primitives and watch-fors; the $4/hour line is now labelled invented budget arithmetic, not a price (B1 dropped the budget-heuristics entry, so nothing is linked; this closes the SYNTH-11 follow-up for this atom); undated 'the 2026 agentic default' and 'as of late 2026'; review provenance neutralised. Earlier notes: Authored from gap G-13 — the corpus's mental model predated the fleet default (background agents, subagents, cloud sessions, routines). Awaiting a fresh-eyes pass. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Run a Multi-Agent Workflow (Fleets, Subagents, and Background Sessions)
@@ -63,17 +64,21 @@ Do **not** reach for a fleet when:
 - The lanes share mutable state or the same files (they will collide — silently).
 - You cannot verify each lane's output. An unreviewed lane is a liability, not a speedup.
 
-## The fleet primitives (as of late 2026)
+## Start with two lanes
 
-Know which tool you are using — they have different failure modes:
+If you have never run more than one agent at once, start with the smallest fleet that is still a fleet: **one build lane and one review lane.** The build lane implements a brief; the review lane, in a context that did not build it, checks the result against the brief before you merge. Add a second build lane only when you have work that truly splits into independent concerns.
 
-| Primitive              | What it is                                                                | Where it lives                                           | Watch for                                                               |
-| ---------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Foreground session** | The agent you are talking to right now                                    | Your IDE / terminal                                      | The one you supervise most closely — spend the attention here           |
-| **Subagents**          | Spawned inside a session with a scoped brief and their own context window | Claude Code subagents, Codex, others                     | Scope bleed — a subagent that inherits too much context wanders         |
-| **Background agents**  | Run without you watching, produce a PR or a report                        | Cursor cloud agents, Codex cloud, Claude Code on the web | Unreviewed merges; cost accruing out of sight                           |
-| **Scheduled routines** | Recurring or event-triggered agent runs                                   | Claude Code routines, IDE automations                    | A routine nobody reads the output of is a cron job with opinions        |
-| **Command centers**    | One surface that manages many agents (kanban of agent tasks)              | Devin Desktop Spaces, Claude Code agent view             | Treating the board as proof of progress — lanes still need verification |
+## The fleet primitives
+
+Know which kind of primitive you are using — they have different failure modes. Which tools offer which primitive, and under what names, changes often; the dated [agentic coding tools reference](contextqb://references/tools#agentic-ides) describes the parallel-work features each tool documents.
+
+| Primitive              | What it is                                                                | Watch for                                                               |
+| ---------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Foreground session** | The agent you are talking to right now                                    | The one you supervise most closely — spend the attention here           |
+| **Subagents**          | Spawned inside a session with a scoped brief and their own context window | Scope bleed — a subagent that inherits too much context wanders         |
+| **Background agents**  | Run without you watching, produce a PR or a report                        | Unreviewed merges; cost accruing out of sight                           |
+| **Scheduled routines** | Recurring or event-triggered agent runs                                   | A routine nobody reads the output of is a cron job with opinions        |
+| **Command centers**    | One surface that manages many agents (a board of agent tasks)             | Treating the board as proof of progress — lanes still need verification |
 
 ## Step 1 — Decompose into lanes
 
@@ -83,6 +88,7 @@ Before starting anything, write the lane map. One lane per concern, each with:
 
 - **A written brief** — the same seven-section discipline as a feature plan, scaled down. The brief is the lane's contract (see [`the-plan-is-the-contract`](contextqb://principles/the-plan-is-the-contract)).
 - **Named file/package ownership** — the surfaces this lane may touch, and by implication the ones it may not.
+- **Its own working directory**, if the lane writes files. Branches alone do not isolate parallel writers: two agents on different branches in the _same_ checkout still share the files on disk, and each will see — or overwrite — the other's uncommitted changes. Give each writing lane a separate working directory, such as a separate git worktree or clone (or a cloud agent's own environment), and let the integrator merge the branches. Read-only lanes, such as a review lane, can share.
 - **A done condition** that is checkable by someone who did not write the code.
 
 If two lanes need to edit the same file, they are one lane. Split by concern, not by convenience.
@@ -97,7 +103,7 @@ If a lane needs extra context, put it in the lane's brief — not in a shared in
 
 Before the fleet runs, answer:
 
-- Who integrates the lanes' output — you, or a designated integrator lane?
+- Who integrates the lanes' output — you, or a designated integrator lane? There is exactly one integrator, and it owns review and merge for every lane.
 - In what order do lanes merge? (Foundations before dependents; isolated before shared.)
 - What is the conflict rule when two lanes disagree? (Stop and ask beats pick-a-winner.)
 
@@ -123,12 +129,12 @@ Merge lanes one at a time, running the build and tests after each. Then do one f
 - **Shared-mutable-file lanes.** Two agents editing `schema.ts` in parallel is not parallelism; it's a merge conflict generator with a confidence problem.
 - **The unread background agent.** A cloud agent whose PRs you rubber-stamp. If you won't review the lane, don't run the lane.
 - **The board-as-proof fallacy.** A kanban full of "done" agent tasks is not verified work. Verification walks the brief against the code, per lane, every time.
-- **Cost blindness.** Five lanes at $4/hour is $20/hour. Set the budget before the fleet runs, and put the numbers in the review.
+- **Cost blindness.** Parallel lanes multiply spend. As invented arithmetic, not a price: if one lane cost $4 an hour, five lanes would cost $20 an hour. Check your own usage and current prices, set the budget before the fleet runs, and put the numbers in the review.
 
 ## What "good enough" looks like
 
 - [ ] Every lane has a written brief, named surfaces, and a checkable done condition.
-- [ ] No two lanes share a mutable file.
+- [ ] No two lanes share a mutable file, and every writing lane has its own working directory.
 - [ ] Every lane booted from the same `AGENTS.md` + `context.qb.yaml`.
 - [ ] The integrator and merge order were named before the fleet ran.
 - [ ] Every lane was verified by a session that didn't write it — including background lanes.

@@ -2,7 +2,7 @@
 id: write-an-adr
 title: Write an Architectural Decision Record
 summary: A lightweight, opinionated process for capturing the structural decisions in a project — so future readers (human or agent) know what was chosen, why, and what it cost.
-version: 0.1.1
+version: 0.2.0
 problem: |
   Architectural decisions made in chat, in meetings, or implicitly in code become invisible within weeks. Future contributors — especially agents — re-litigate or accidentally undo them.
 when_to_use: |
@@ -30,7 +30,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; matches repo practice exactly. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B5 (0.2.0; author self-checked; independent review pending; not operator-accepted): the worked example is now a short, self-contained, illustrative ADR quoted inline instead of a pointer to this repository's own decisions folder, which learners on the website or through the MCP cannot reach; one plain example per condition in the three-condition test; the agent may propose that a decision deserves an ADR, with the three-condition test as your filter. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; matches repo practice exactly. R8 pending P4."
 related:
   - new-project-foundation
   - set-up-a-documentation-system
@@ -48,9 +48,9 @@ An ADR (Architectural Decision Record) is a small, dated file that captures one 
 
 Write an ADR when **all three** of these are true:
 
-1. The decision is structural — it affects how modules, data, or workflows are shaped, not just how a single function is written.
-2. A future reader might reasonably question the decision later.
-3. The reason is not obvious from the code alone.
+1. The decision is structural — it affects how modules, data, or workflows are shaped, not just how a single function is written. _Example: "store uploaded photos in object storage, not in the database."_
+2. A future reader might reasonably question the decision later. _Example: someone will ask "why not just put them in the database?"_
+3. The reason is not obvious from the code alone. _Example: the reason is a size limit on the database plan, which the code never mentions._
 
 If only one or two are true, you do not need an ADR. Resist writing them for everything; that dilutes the signal.
 
@@ -108,13 +108,44 @@ Maintain a `docs/architecture/decisions/README.md` that lists every ADR with its
 
 ## A worked example
 
-> See `docs/architecture/decisions/` in this repository. Every ADR there was written following this playbook.
+An illustrative ADR for a fictional photo-sharing app — short, and complete:
+
+```markdown
+# ADR-0003: Store uploaded photos in object storage, not the database
+
+- **Status:** Accepted
+- **Date:** 2026-03-14
+- **Deciders:** Project owner
+
+## Context
+
+Members upload photos of up to 10 MB. Our database plan limits total storage and
+slows down as large binary values accumulate. We considered storing photos as
+database values, and storing them in an object-storage bucket with only a
+reference in the database.
+
+## Decision
+
+We will store each photo in object storage and keep only its key, size and owner
+in the database.
+
+## Consequences
+
+Easier: the database stays small and fast; photos can be served directly.
+Harder: deleting a member must also delete their photos in a second system.
+Follow-on: a cleanup job for orphaned photos.
+Revisit if: we move to a database plan built for large files.
+```
+
+Every part of the template is there, it reads in under two minutes, and it passes all three conditions above.
 
 ## How to ask an agent to write one
 
 > I made the following structural decision: **\[describe it].** Write an ADR following the ContextQB ADR format. Number it as the next available number under `docs/architecture/decisions/`. Update the index. Be specific about the consequences — name at least one thing this makes easier and one thing it makes harder.
 
 Resist the urge to let the agent invent the decision. An ADR records a decision _you_ made; the agent's job is to write it down well.
+
+The agent can, though, _propose_ that a decision deserves an ADR — "this choice of storage seems worth recording" — when it notices one during a change. Use the three-condition test above as your filter: if all three hold, ask it to draft the ADR for your approval; if not, a line in the change description is enough.
 
 ## Anti-patterns
 

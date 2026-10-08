@@ -2,7 +2,7 @@
 id: maintainability
 title: Maintainability
 summary: Code is read more than it is written. Optimise for the version of you that comes back in six months.
-version: 0.1.1
+version: 0.1.2
 category: maintainability
 audience:
   - novice-builder
@@ -43,12 +43,14 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B5 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; names the next agent session as a reader who may 'simplify' clever code wrongly; the prompt's 1–5 scoring is replaced by the three functions a new reader would most need explained, and why; adds your check (can the agent explain the file in plain language in one pass?). Earlier notes (2026-09-09 epistemology review): R3–R7 pass. R8 pending P4."
 ---
 
 # Maintainability
 
 Most software is maintained for longer than it took to write. Most code is read more than it is written. The decisions that matter most are the ones that affect how easy it is to come back to the code in six months — or for a different person, or a different agent — and understand it without archaeology.
+
+The most frequent new reader is the next agent session. It arrives without your context, and it may "simplify" clever code it misunderstands, quietly removing the reason it was written that way. So even if you never read the code yourself, maintainability decides how safely the agent can change it. Your check: ask the agent to explain a file in plain language in one pass. If it can't without hedging, the next session will struggle too.
 
 ## The four questions
 
@@ -95,4 +97,4 @@ When you write a file, imagine reading it six months from now with no context. I
 
 ## How to ask an agent to enforce this
 
-> Review this module for maintainability. For each function, score it 1–5 on: clarity in one pass, ease of testing, justification of abstractions, and quality of comments (or absence where unnecessary). Identify the three highest-priority improvements.
+> Review this module for maintainability. Name the three functions a new reader — a person or a fresh agent session — would most need explained, and say why each is hard to follow (unclear in one pass, hard to test, an abstraction that doesn't earn its cost, or a missing or misleading comment). Then propose the three highest-priority improvements.

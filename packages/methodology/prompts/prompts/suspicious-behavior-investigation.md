@@ -2,7 +2,7 @@
 id: suspicious-behavior-investigation
 title: Suspicious Behavior Investigation
 summary: A prompt for investigating anomalies — unexpected errors, unusual access patterns, or anything that makes you think "something is off."
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -30,13 +30,14 @@ related:
   - security-regression
   - untrusted-by-default
   - operations-baseline
+  - launch-day-checklist
 tags:
   - security
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent); R-04 remediation 2026-09-09"
-  reviewer_notes: "R3–R6 pass. F-17 resolved 2026-09-09: stray fence removed, 4-backtick prompt close restored, example block closes correctly. F-06 resolved by R-02. R8 passed P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the two template-engine conditionals become plain lines with 'none' allowed; you may paste data or grant read-only log access; the investigating agent takes no containment or other action itself — you approve each step, as in the compromise-response playbook; secret values found in logs are referred to, never repeated; the example's 2024 timestamps are labelled fictional. Earlier notes (2026-09-09 epistemology review): R3–R6 pass. F-17 resolved 2026-09-09: stray fence removed, 4-backtick prompt close restored, example block closes correctly. F-06 resolved by R-02. R8 passed P4."
 ---
 
 # Suspicious Behavior Investigation
@@ -45,6 +46,8 @@ This prompt helps investigate anomalies that might be security-relevant. Use it 
 
 The goal is triage: figure out what happened, assess the risk, and decide what to do next.
 
+**You decide; the agent investigates.** Paste the relevant logs or data into `{{LOGS_OR_DATA}}`, or give the agent read-only access to them and say so there. The agent reads and reasons; it does not block, rotate, delete, deploy or contact anyone. Any action — containment included — is yours to approve, step by step, as in [Respond to a Suspected Compromise](contextqb://playbooks/respond-to-a-suspected-compromise). Use "none" for any field you cannot fill.
+
 ## The prompt
 
 ````text
@@ -52,16 +55,12 @@ You are investigating a potentially suspicious anomaly in a production system.
 
 **What was observed:** {{ANOMALY_DESCRIPTION}}
 
-{{#if LOGS_OR_DATA}}
-**Available data:**
+**Available data (pasted, or a description of the read-only access you have; or "none"):**
 {{LOGS_OR_DATA}}
-{{/if}}
 
-{{#if CONTEXT}}
-**Additional context:** {{CONTEXT}}
-{{/if}}
+**Additional context (or "none"):** {{CONTEXT}}
 
-Your task is to investigate this anomaly and determine its nature. This is a security triage, not a comprehensive forensic analysis.
+Your task is to investigate this anomaly and determine its nature. This is a security triage, not a comprehensive forensic analysis. You have read-only access at most: do not change, block, rotate, delete or deploy anything, and do not contact anyone. If you find a secret value in the data, refer to it by name and location; do not repeat it.
 
 ## Investigation approach
 
@@ -239,6 +238,8 @@ Provide your findings as:
 - Set a clear timeline for when you'll re-evaluate
 
 ## Example output
+
+The system, events and timestamps below are fictional.
 
 ```markdown
 ## Investigation Summary

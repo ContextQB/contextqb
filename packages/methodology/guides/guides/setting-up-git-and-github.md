@@ -2,7 +2,7 @@
 id: setting-up-git-and-github
 title: Setting Up Git and GitHub
 summary: Git is the time machine that makes agentic coding safe. Without it, every agent session is a roll of the dice. This guide walks first-time builders through installing git, choosing a remote, and using both day-to-day with an AI coding agent.
-version: 0.1.2
+version: 0.2.2
 audience:
   - novice-builder
   - founder
@@ -25,18 +25,19 @@ related:
   - respond-to-a-suspected-compromise
   - state-ownership
   - the-mental-model-of-your-app
+  - work-with-agents-through-documentation
   - write-a-context-qb
   - write-an-adr
 next_steps:
   - Install git on your machine.
-  - Pick a remote (GitHub, GitLab, Codeberg, or self-hosted Forgejo).
+  - Pick a remote — a Git hosting service or a self-hosted forge (see the git hosting reference).
   - Create your first repo and make your first commit.
   - Adopt the commit-before-and-after-the-agent rhythm.
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R5, R7 pass. F-08 resolved 2026-09-09 (Q1 authored refactor-with-duplicates; both citations are now real links). F-06 resolved by R-02. R8 passed P4."
+  reviewer_notes: "2026-10-07 renewal B4 reciprocal link (0.2.2; author self-checked; independent review pending; not operator-accepted): related adds work-with-agents-through-documentation, whose copy habit now links here; one See also line. 2026-10-07 renewal B3 review correction (0.2.1; author self-checked; independent review pending; not operator-accepted): the untracked-files preview is now git clean -nd, which lists new folders as well as files and so matches what git clean -fd deletes (plain -n omits untracked directories; reproduced in a temporary repository); the prose and checklist match. 2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): keeps the manual git minimum and the commit, read-the-diff, commit-or-reset rhythm; adds what the agent can do for you and what you keep (commit-or-reset, pushes, anything forced); corrects the panic button, which leaves new untracked files (preview with git clean -n); softens the claim that agents never pause or ask; teaches a file-by-file change summary before spot-checking the diff; install and SSH-key commands, the host list and the git client list moved to dated references, with GitHub kept as the guide's worked example rather than a recommendation; removes git commit -a, a flag the guide never teaches. Earlier notes (2026-09-09 epistemology review): R3–R5, R7 pass. F-08 resolved 2026-09-09 (Q1 authored refactor-with-duplicates; both citations are now real links). F-06 resolved by R-02. R8 passed P4."
 ---
 
 # Setting Up Git and GitHub
@@ -53,11 +54,11 @@ You don't need to learn git like a developer. You need to learn the seven or eig
 
 ## Why agentic coding needs git
 
-Here is what you have to understand before anything else. An AI agent does not work the way a human collaborator works. A human collaborator might pause, ask a question, or refuse to do something they don't understand. An agent will not. An agent will:
+Here is what you have to understand before anything else. An AI agent does not work the way a human collaborator works. Current agents often do ask questions, and most tools ask for your approval before certain actions — but an agent can also act confidently, quickly and widely on a misunderstanding, without pausing where a careful human would. An agent may:
 
 - **Rewrite a working file from scratch** because it believes the new version is cleaner.
 - **Delete a function** it thinks is unused, when actually it's the function that ties the app together.
-- **Refactor across twelve files** in a single response and never tell you which ones it touched.
+- **Refactor across twelve files** in a single response, with a summary that doesn't mention half of them.
 - **Confidently break a feature** while fixing a different feature.
 - **Lose track of where it was** mid-task and overwrite half-finished work with a different half-finished work.
 
@@ -94,19 +95,18 @@ That vocabulary is the whole thing. Everything else is variations on those.
 
 ## What GitHub is (and what its alternatives are)
 
-GitHub is a website. You can think of it as Dropbox for git repos, plus a layer of social and collaboration tools on top — pull requests, issues, discussions, releases. It's owned by Microsoft and is the most common place to host a repo. If you don't know which service to use, use GitHub.
+GitHub is a website. You can think of it as Dropbox for git repos, plus a layer of social and collaboration tools on top — pull requests, issues, discussions, releases. It is one of several places to host a repo — a **remote**, the copy of your history that lives somewhere other than your laptop.
 
-But it's not the only choice. A few alternatives, in rough order of how often you'll see them:
+The kinds of remote you'll come across:
 
-- **GitHub** — `github.com`. Owned by Microsoft. Free for public _and_ private repos, with generous limits. Default choice. Best agentic ecosystem (Copilot, Codespaces, Actions). Recommended unless you have a specific reason otherwise.
-- **GitLab** — `gitlab.com`. Free tier comparable to GitHub. Strong CI/CD. Also offers a self-hosted version. Used a lot in companies that want everything in one platform.
-- **Bitbucket** — `bitbucket.org`. Atlassian's offering. Integrates tightly with Jira. Less common for solo builders.
-- **Codeberg** — `codeberg.org`. Community-run, non-profit, hosts open-source projects for free. Built on Forgejo.
-- **Forgejo (self-hosted)** — `forgejo.org`. A community fork of Gitea. This is what people mean when they talk about "running their own GitHub" on a home server or a cheap VPS. Lightweight, easy to install, no vendor lock-in. Probably the alternative you were trying to remember.
-- **Gitea (self-hosted)** — `gitea.com`. The original self-hosted option that Forgejo forked from. Still actively maintained.
+- **Hosted services** — companies that run git hosting for you, usually with a free tier, collaboration tools and built-in automation.
+- **Community-run hosts** — non-profit services, often focused on open-source projects.
+- **Self-hosted forges** — software you install on your own server, if you want to run "your own GitHub".
 - **Local-only** — git works fine without any remote at all. Your history lives in `.git/`. But your laptop is one spilled coffee away from being your only copy. Not recommended.
 
-For a first-time builder, the call is simple: **start with GitHub**. You can always migrate later. The rest of this guide uses GitHub in examples, but every step works on the others — the commands are identical; only the URLs change.
+The current options, with what each one is, are in the dated [git hosting reference](contextqb://references/tools#git-hosting). Choose by a few plain questions: Can you keep the repo private? Are your collaborators already there? Do your tools and your agent work with it? Do you want someone else to run it, or to run it yourself?
+
+This guide uses **GitHub as its worked example**, so the screens and URLs below are GitHub's. That is an example, not a requirement: every step works on the others — the git commands are identical; only the URLs and the menus change. You can also move a repo to another host later.
 
 ## Get set up
 
@@ -114,27 +114,13 @@ This section is the practical part. Estimated time: 15–30 minutes.
 
 ### Step 1 — Install git
 
-**On macOS:**
-
-```bash
-# If you have Homebrew (recommended)
-brew install git
-
-# Otherwise, install Xcode Command Line Tools
-xcode-select --install
-```
-
-**On Windows:** Download the installer from [git-scm.com/download/win](https://git-scm.com/download/win). Accept the defaults; the installer is sensible.
-
-**On Linux:** Use your package manager — `sudo apt install git` (Debian/Ubuntu), `sudo dnf install git` (Fedora), etc.
-
-Verify the install:
+Many computers already have git. Check first:
 
 ```bash
 git --version
 ```
 
-You should see something like `git version 2.45.0` (or newer).
+If you see something like `git version 2.x`, you're done. If the command isn't found, install git with your operating system's usual method — the [install reference](contextqb://references/setup#git-install) has the current commands for macOS, Windows and Linux — then run `git --version` again.
 
 ### Step 2 — Tell git who you are
 
@@ -159,37 +145,20 @@ git config --global init.defaultBranch main
 
 Go to [github.com](https://github.com) and sign up. The free tier is plenty for everything in this guide.
 
-Enable two-factor authentication on your account immediately. Use an authenticator app (1Password, Google Authenticator, Authy) — not SMS. This is non-negotiable. Your GitHub account holds your code; treat it like a bank account.
+Enable two-factor authentication on your account immediately. Use an authenticator app (for example 1Password, Google Authenticator or Authy — examples, not recommendations) — not SMS. This is non-negotiable. Your GitHub account holds your code; treat it like a bank account.
 
 ### Step 4 — Set up SSH keys (recommended)
 
 SSH keys let your machine prove its identity to GitHub without typing a password every time. Set them up once and you're done forever.
 
-Generate a key:
+A key comes in two halves. The **private key** stays on your machine and is never shared, pasted or committed. The **public key** (the file ending in `.pub`) is the half you give to GitHub. The steps are:
 
-```bash
-ssh-keygen -t ed25519 -C "you@example.com"
-```
+1. Generate a key pair in your terminal, and set a passphrase if you want extra security.
+2. Copy the _public_ key.
+3. Add it in your GitHub account's SSH key settings, with a name that tells you which machine it belongs to.
+4. Test the connection.
 
-Accept the default file location. Set a passphrase if you want extra security (you'll be prompted for it occasionally).
-
-Copy the public key to your clipboard:
-
-```bash
-# macOS
-pbcopy < ~/.ssh/id_ed25519.pub
-
-# Linux
-cat ~/.ssh/id_ed25519.pub
-# Then copy the output manually
-
-# Windows (PowerShell)
-Get-Content ~\.ssh\id_ed25519.pub | clip
-```
-
-In GitHub, click your avatar → Settings → SSH and GPG keys → "New SSH key." Paste the key, give it a name like "MacBook Pro 2024," save.
-
-Test it:
+The [SSH key reference](contextqb://references/setup#github-ssh-keys) has the current commands for each step. The test is the same everywhere:
 
 ```bash
 ssh -T git@github.com
@@ -197,7 +166,7 @@ ssh -T git@github.com
 
 You should see something like `Hi <your-username>! You've successfully authenticated...`
 
-(You can skip SSH and use HTTPS + Personal Access Tokens instead, but SSH is less painful long-term. If you do choose HTTPS, GitHub has clear docs on PATs.)
+(You can skip SSH and use HTTPS with a personal access token instead, but SSH is less painful long-term. If you do choose HTTPS, GitHub's documentation covers tokens.)
 
 ### Step 5 — Create your first repo
 
@@ -248,10 +217,19 @@ The flow is always: **change files → status → add → commit → push**. Tha
 A sixth command worth knowing — the panic button:
 
 ```bash
-git reset --hard HEAD           # Undo every uncommitted change in the working folder
+git reset --hard HEAD           # Undo every uncommitted change to files git already tracks
 ```
 
-That single line undoes everything the agent has done since your last commit. It is the reason you commit before letting the agent run.
+That line puts every file git already knows about back the way it was at your last commit. It is the reason you commit before letting the agent run.
+
+It does **not** remove brand-new files the agent created since then — git calls those _untracked_. To clear them as well, preview first:
+
+```bash
+git clean -nd                   # List the untracked files and folders that would be deleted (deletes nothing)
+git clean -fd                   # Delete exactly those untracked files and folders
+```
+
+Keep the `d` in both: without it, the preview leaves out new folders that `-fd` would delete. Run `git clean -fd` only after reading the `-nd` list: anything new and uncommitted on it is gone for good. (Files your `.gitignore` excludes, such as `.env`, are left alone by both commands.)
 
 ## The agentic coding workflow
 
@@ -259,10 +237,10 @@ This is the rhythm that makes git earn its keep when you're working with an agen
 
 1. **Commit before you give the agent a task.** Even if the task is small. The commit is your save point.
 2. **Let the agent do the work.** Watch what it does, but don't fight every detail.
-3. **Read the diff.** Use your editor's git pane or `git diff` to see exactly what changed. Don't trust the agent's summary of what it did; look at the actual changes.
+3. **Read the diff.** Use your editor's git pane or `git diff` to see exactly what changed. Don't trust the agent's summary of what it did; look at the actual changes. When many files changed, ask the agent for a file-by-file summary of what it changed and why, check that `git status` lists the same files, then spot-check the diff of the files that matter most.
 4. **Either commit or reset.**
    - If it looks good: `git add .` then `git commit -m "describe what shipped"`. New save point.
-   - If it broke something or went off the rails: `git reset --hard HEAD` and try again with a clearer prompt.
+   - If it broke something or went off the rails: `git reset --hard HEAD` (plus `git clean -nd`, then `git clean -fd`, for new files and folders, as above) and try again with a clearer prompt.
 5. **Push when you've got something stable.** `git push`. Now it exists somewhere other than your laptop.
 
 That's the loop. It feels slow at first. Within a week it's invisible.
@@ -273,6 +251,23 @@ A few refinements:
 - **For experimental ideas, also use a branch.** You can always throw the branch away.
 - **For sessions that span multiple commits, push at the end.** No reason to push after every tiny commit unless you're collaborating.
 - **Don't commit broken code to `main` if other people are working on the repo.** Use a branch.
+
+### What the agent can do for you, and what you keep
+
+You don't have to type every git command yourself. Your agent can run the routine ones:
+
+- check `git status`, stage files and write a commit message for you to approve;
+- create a branch for a risky change;
+- summarise each changed file before you commit;
+- explain a merge conflict and propose a resolution.
+
+Some decisions stay with you, because they are how you stay in control:
+
+- **commit or reset** — you decide whether the agent's work becomes a save point;
+- **push** — you decide when work leaves your machine;
+- **anything with `--force`**, or anything that deletes history or untracked files — you run it, or explicitly approve it, after reading what it will do.
+
+Keep the manual skill even when the agent usually runs the commands. When something goes wrong, you need to be able to press the panic button yourself.
 
 ## Branches: the safety valve for big changes
 
@@ -348,10 +343,12 @@ If you do accidentally commit a secret: **rotate the secret immediately** (in wh
 
 You don't have to do everything in the terminal. A few options:
 
-- **Your editor's built-in git pane.** Cursor, VS Code, and Zed all have a git tab that shows the diff, lets you stage and commit, and handles branches. For 90% of daily work, this is enough.
-- **GitHub Desktop** — a free GUI from GitHub. Polished, friendly, opinionated. A good fit for someone uncomfortable with the terminal.
-- **`gh` CLI** — GitHub's official command-line tool. Lets you create repos, open PRs, view issues without leaving the terminal. Install with `brew install gh` (macOS) or from [cli.github.com](https://cli.github.com).
-- **`lazygit`** — terminal UI for git that's much friendlier than raw commands. Niche but loved by people who try it.
+- **Your editor's built-in git pane.** Most code editors and agentic tools have a git view that shows the diff, lets you stage and commit, and handles branches. For 90% of daily work, this is enough.
+- **A desktop git app** — a graphical program for git. A good fit for someone uncomfortable with the terminal.
+- **Your host's command-line tool** — lets you create repos, open pull requests and view issues without leaving the terminal.
+- **A terminal interface for git** — friendlier than raw commands, without leaving the terminal.
+
+The current options in each kind, with install pointers, are in the [git clients reference](contextqb://references/tools#git-clients).
 
 Use whatever feels least painful. The discipline matters more than the tool.
 
@@ -362,7 +359,7 @@ Use whatever feels least painful. The discipline matters more than the tool.
 - **Force-pushing to a shared branch.** `git push --force` overwrites the remote history. If anyone else (or any deployed system) was using that history, it's gone. Don't force-push to `main` ever, and only force-push your own branches when you understand what you're doing.
 - **Not pulling before pushing.** If the remote has changes you don't, your push will fail. Pull, then push.
 - **Panicking on a merge conflict.** Conflicts are normal. Your editor will mark the conflicting sections. Pick what you want, save, commit. Ask the agent if you're not sure — agents are good at resolving conflicts when you show them the conflict markers.
-- **Committing secrets** (see above). The worst one. Always check `git status` before `git commit -a` to see what you're about to commit.
+- **Committing secrets** (see above). The worst one. Always check `git status` before you commit, and read the list of files you're about to add.
 
 ## What "good enough" looks like at this stage
 
@@ -376,7 +373,7 @@ You have set up git correctly enough if:
 - [ ] You have a remote configured (`git remote -v` shows a GitHub URL).
 - [ ] Your repo has a `.gitignore` that excludes `.env` files at minimum.
 - [ ] You've made at least three commits and pushed at least once.
-- [ ] You know the panic button: `git reset --hard HEAD`.
+- [ ] You know the panic button: `git reset --hard HEAD`, and `git clean -nd` to see the new files and folders it leaves behind.
 
 If those are all true, you have everything you need. Everything else — branching strategies, pull requests, rebasing, hooks, CI — is a question for when you actually need it. Don't pre-learn.
 
@@ -388,7 +385,7 @@ Once the basics feel natural, the next things worth learning, roughly in order:
 2. **`git log` and `git diff` flags** — searching history and viewing changes in different ways.
 3. **`git stash`** — temporarily set aside uncommitted changes so you can switch branches.
 4. **`.gitattributes`** — for projects with binary files or specific line-ending requirements.
-5. **GitHub Actions / GitLab CI** — automate tests, linting, deployments on every push.
+5. **Continuous integration (CI)** — your host's automation (GitHub Actions, in this guide's example) that runs tests, linting and deployments on every push.
 6. **Git worktrees** — work on multiple branches simultaneously in separate folders. Very useful for parallel agent attempts.
 
 You don't need any of these on day one. You'll know when you need them because something will be annoying enough that you'll ask "isn't there a better way?" — and the answer will be on the list above.
@@ -402,5 +399,7 @@ You don't need any of these on day one. You'll know when you need them because s
 - [Playbook: Respond to a Suspected Compromise](contextqb://playbooks/respond-to-a-suspected-compromise) — if a secret slips into git, this is the response.
 - [Principle: Documentation as Architecture](contextqb://principles/documentation-as-architecture) — git history is documentation; treat it that way.
 - [Principle: Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate) — git is the most basic verifier you have.
+- [Guide: Work With Agents Through Documentation](contextqb://guides/work-with-agents-through-documentation) — the record that sits alongside your commits when work spans several passes.
 - [GitHub Docs: Quickstart](https://docs.github.com/en/get-started/quickstart) — the official version of step 1.
 - [Pro Git book](https://git-scm.com/book/en/v2) — free, comprehensive, the canonical reference for when you need to go deeper.
+- References (dated facts): [installing git](contextqb://references/setup#git-install), [SSH keys for GitHub](contextqb://references/setup#github-ssh-keys), [git hosting services](contextqb://references/tools#git-hosting), [git clients](contextqb://references/tools#git-clients).

@@ -2,7 +2,7 @@
 id: security-regression
 title: Security Regression Audit
 summary: A change-focused security audit comparing current state against a prior baseline. Identifies what changed, what degraded, and whether new risks were introduced by recent work.
-version: 0.1.1
+version: 0.2.1
 audience:
   - novice-builder
   - founder
@@ -51,7 +51,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; delta-not-absolute framing operationalises security-drift-is-the-real-threat. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 review correction (0.2.1; author self-checked; independent review pending; not operator-accepted): the Baseline source row now names the dated attack-surface inventory or a documented security review as the baseline, with context.qb.yaml only as supplementary structural evidence, never the sole security baseline, matching the prerequisites. 2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the baseline schema is map-your-attack-surface's dated inventory, shared with detect-security-drift, and is compared at a named tag, commit or date; the agent computes the mechanical diff first (routes, middleware, environment-variable names, dependency manifests, MCP configuration) and then judges; team roles become you, as accountable operator, unless a team exists; dependency scanners are named by role with the dated security-scanners reference; scanner matches are leads and secret values are never copied. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; delta-not-absolute framing operationalises security-drift-is-the-real-threat. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Security Regression Audit
@@ -71,17 +71,14 @@ This audit compares current security posture against a documented baseline to id
 > 5. Assess each change for security impact
 >
 > Focus on delta, not absolute state. The baseline already passed review.
+>
+> Start by reading the project instructions and configuration. Then compute the mechanical diff between the baseline revision and now — routes, middleware, environment-variable names, dependency manifests, MCP and agent configuration — and only then judge each change. Treat scanner and search matches as leads to confirm. Never copy a secret value into your report.
 
 ---
 
 ## Prerequisites
 
-You need a baseline to compare against. This can be:
-
-- A prior [Application Security Baseline](contextqb://audits/application-security-baseline) audit
-- An attack surface inventory from [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface)
-- A documented security review
-- Your `context.qb.yaml` from a known-good state
+You need a baseline to compare against. The shared baseline is the dated inventory from [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) — the same one [Detect Security Drift](contextqb://playbooks/detect-security-drift) uses — together with the git tag, commit or date it describes. A prior [Application Security Baseline](contextqb://audits/application-security-baseline) report or another documented security review can add detail. Your `context.qb.yaml` from that point helps with structure, but it records no security state.
 
 If you don't have a baseline, stop and run the baseline audit first. You cannot detect regression without a reference point.
 
@@ -93,13 +90,14 @@ Document what you're comparing against.
 
 ### Baseline metadata
 
-| Field                    | Value                                       |
-| ------------------------ | ------------------------------------------- |
-| Baseline date            | ?                                           |
-| Baseline source          | (prior audit / inventory / context.qb.yaml) |
-| Time since baseline      | X days                                      |
-| Commits since baseline   | X commits                                   |
-| Deployers since baseline | (who shipped changes)                       |
+| Field                    | Value                                                                                                                                                                             |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline date            | ?                                                                                                                                                                                 |
+| Baseline source          | (dated attack-surface inventory, or a documented security review / prior audit; `context.qb.yaml` only as supporting structural evidence, never the security baseline on its own) |
+| Time since baseline      | X days                                                                                                                                                                            |
+| Commits since baseline   | X commits                                                                                                                                                                         |
+| Baseline revision        | (tag or commit the baseline describes)                                                                                                                                            |
+| Deployers since baseline | (who or what shipped changes — people, agents, automated jobs)                                                                                                                    |
 
 ### Baseline summary
 
@@ -212,13 +210,13 @@ Identify settings that changed (not added or removed, but modified).
 
 ## Phase 5 — Dependency Changes
 
-New dependencies can introduce vulnerabilities.
+New dependencies can introduce vulnerabilities. Run the project's dependency vulnerability scanner if you are permitted to ([kinds of scanner](contextqb://references/tools#security-scanners)), and record the command and its result.
 
 ### New dependencies
 
-| Dependency  | Version | Purpose   | Known vulnerabilities? |
-| ----------- | ------- | --------- | ---------------------- |
-| new-package | 1.0.0   | Feature X | Check npm audit / Snyk |
+| Dependency  | Version | Purpose   | Known vulnerabilities?                           |
+| ----------- | ------- | --------- | ------------------------------------------------ |
+| new-package | 1.0.0   | Feature X | Check with your dependency vulnerability scanner |
 
 ### Upgraded dependencies
 
@@ -280,10 +278,10 @@ Categorize each change:
 
 ### Needs review (unclear if regression)
 
-| Finding            | Question                    | Who decides   |
-| ------------------ | --------------------------- | ------------- |
-| MFA now optional   | Was this intentional?       | Product owner |
-| New OAuth provider | Was this security reviewed? | Security lead |
+| Finding            | Question                    | Who decides                    |
+| ------------------ | --------------------------- | ------------------------------ |
+| MFA now optional   | Was this intentional?       | You (accountable operator)     |
+| New OAuth provider | Was this security reviewed? | You, or the reviewer you named |
 
 ---
 
@@ -355,6 +353,7 @@ Produce a Markdown document with:
 - Configuration drift without documentation is suspicious
 - New capabilities without security review are findings
 - Compare line-by-line when possible, not just at summary level
+- "Who decides" is the accountable operator unless the project names a team; do not invent roles
 
 ---
 

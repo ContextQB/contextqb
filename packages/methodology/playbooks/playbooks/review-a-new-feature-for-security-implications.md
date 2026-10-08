@@ -2,7 +2,7 @@
 id: review-a-new-feature-for-security-implications
 title: Review a New Feature for Security Implications
 summary: Before shipping a feature, walk through a structured checklist to identify security implications — new attack surfaces, data exposure, authentication gaps, and agent risks.
-version: 0.1.2
+version: 0.2.0
 problem: |
   Features ship fast, security review happens slow (or never). By the time you realize a feature created a security gap, it's in production and customers are using it.
 when_to_use: |
@@ -28,7 +28,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): Step 6 prompt-injection mitigation no longer offers sanitising or a system prompt as the control; it now matches the trust boundary taught in the AI-integration audit and principles. Earlier notes describe 0.1.1: R3–R7 pass; ship/go-with-caveats/block decision output is exactly the R7 contract. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): says the agent can draft Steps 1–8 from the diff while the ship decision stays yours; notes that tools with review integrations can run this checklist automatically on changes touching data, auth, endpoints or AI, described by category (B1 dropped the code-review-agents entry), with the reviewer not being the agent that wrote the change; the time estimate is labelled ContextQB's estimate and restated for an agent-drafted review; the FT Step 6 repair is unchanged. 2026-10-06 renewal fast-track repair (0.1.2; author self-checked; independent review pending; not operator-accepted): Step 6 prompt-injection mitigation no longer offers sanitising or a system prompt as the control; it now matches the trust boundary taught in the AI-integration audit and principles. Earlier notes describe 0.1.1: R3–R7 pass; ship/go-with-caveats/block decision output is exactly the R7 contract. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
   - application-security-baseline
   - review-your-ai-integration
@@ -62,7 +62,11 @@ You'll need:
 - Understanding of what the feature does
 - Access to test/preview the feature if possible
 
-Time estimate: 15-30 minutes for typical features, longer for complex ones.
+**Who does what.** Ask an agent that did not write the feature to draft Steps 1–8 from the diff, quoting the code it relies on. You read the draft, check the attacker's-eye view in Step 8 against what you know about your users, and make the ship decision in Step 9 — that decision is yours.
+
+Some agentic tools and code hosts can run a review automatically on changes that match a rule. If yours can, this checklist suits changes that touch data, authentication, public endpoints or AI features; the reviewer must still be something other than the agent that wrote the change. Running it by hand works everywhere.
+
+Time estimate (ContextQB's estimate): with an agent drafting, reading the draft and deciding takes about 15–30 minutes for a typical feature; longer for complex ones.
 
 ## Steps
 

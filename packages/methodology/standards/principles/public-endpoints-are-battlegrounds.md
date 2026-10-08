@@ -1,8 +1,8 @@
 ---
 id: public-endpoints-are-battlegrounds
 title: Public Endpoints Are Battlegrounds
-summary: Every URL, API route, and webhook exposed to the internet is under constant attack. Assume they are being scanned, probed, and abused within hours of going live.
-version: 0.1.1
+summary: Every URL, API route, and webhook exposed to the internet is under constant attack. Assume they are being scanned, probed, and abused soon after going live.
+version: 0.1.2
 category: security
 audience:
   - novice-builder
@@ -45,7 +45,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; the unsourced 'within hours' becomes 'soon after' and 'quickly'; posture item 1 notes it can be checked mechanically (compare the route list with the middleware or auth coverage, and search for debug routes); webhook examples generalised with Stripe and GitHub kept as labelled examples; the OWASP API Top 10 link is labelled with its 2023 edition. Earlier notes (2026-09-09 epistemology review): R3–R7 pass. R8 pending P4."
 ---
 
 # Public Endpoints Are Battlegrounds
@@ -65,7 +65,7 @@ Automated scanners continuously sweep the internet looking for vulnerable endpoi
 - **Denial of service** — overwhelming endpoints with requests to exhaust resources
 - **Webhook forgery** — sending fake webhook payloads to trigger actions in your system
 
-This is not theoretical. Any endpoint exposed to the internet will receive automated attack traffic within hours. The question is not whether you will be attacked, but whether your endpoints are ready.
+This is not theoretical. Any endpoint exposed to the internet will quickly receive automated attack traffic. The question is not whether you will be attacked, but whether your endpoints are ready.
 
 ## Why it matters in agentic dev specifically
 
@@ -85,7 +85,7 @@ When you build with an AI agent, public endpoints become more dangerous in sever
 
 You can claim this principle if you meet all of the following:
 
-1. **Every endpoint has explicit authentication or a documented exception.** Unauthenticated endpoints (public marketing pages, health checks, public APIs) are explicitly listed and justified. There are no "accidentally public" endpoints.
+1. **Every endpoint has explicit authentication or a documented exception.** Unauthenticated endpoints (public marketing pages, health checks, public APIs) are explicitly listed and justified. There are no "accidentally public" endpoints. This can be checked mechanically: have the agent list every route next to the middleware or auth check that covers it, and search for debug or test routes.
 
 2. **Rate limiting is applied to all endpoints.** At minimum: authentication endpoints (login, password reset), form submissions, file uploads, and any endpoint that writes data. Use stricter limits on sensitive operations.
 
@@ -105,7 +105,7 @@ You can claim this principle if you meet all of the following:
 
 - **Your error pages show stack traces.** If production errors display file paths, database schemas, or internal state, attackers are mapping your system.
 
-- **Your webhooks process any request.** If your Stripe or GitHub webhook handler does not verify signatures, anyone can forge events.
+- **Your webhooks process any request.** If your payment or code-hosting webhook handler (Stripe and GitHub are common examples) does not verify signatures, anyone can forge events.
 
 - **You have `/test`, `/debug`, or `/admin` routes.** If these exist in production without strong gating, they are being scanned.
 
@@ -126,4 +126,4 @@ You can claim this principle if you meet all of the following:
 - [Audit: Authentication & Authorization](contextqb://audits/authentication-and-authorization) — systematic review of access controls
 - [Principle: Trust Boundaries Are Architecture](contextqb://principles/trust-boundaries-are-architecture) — where you enforce security in code
 - [Playbook: Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) — identifying all your exposure points
-- [OWASP API Security Top 10](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)
+- [OWASP API Security Top 10 (2023 edition)](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)

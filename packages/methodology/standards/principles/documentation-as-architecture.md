@@ -1,8 +1,8 @@
 ---
 id: documentation-as-architecture
 title: Documentation as Architecture
-summary: In the agentic era, documentation is not a byproduct of building — it is load-bearing. Agents re-derive context on every call; without explicit docs, every prompt starts from zero.
-version: 0.1.5
+summary: In the agentic era, documentation is not a byproduct of building — it is load-bearing. Agents re-derive context on every call; without explicit docs, every session starts from guesses.
+version: 0.2.0
 category: documentation
 audience:
   - novice-builder
@@ -64,12 +64,12 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "REVIEWED. F-10 resolved 2026-09-09: canon is four surfaces (AGENTS.md, context.qb.yaml, ADRs, overviews); the qb manifest section added.R3–R5, R7 pass. Open: F-10 (defines three load-bearing surfaces; documentation-for-agent-alignment cites four, including the standards library — reconcile the enumeration). R8 pending P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the memory premise is corrected (tool memory exists but is partial, opaque, unreviewed and not portable — a stronger reason for repo-owned documentation); the AGENTS.md tool list is replaced by the open convention and the dated instruction-files reference; the rule states the division (the agent drafts and maintains the surfaces; you approve what becomes canon); the enforcement prompt checks for an ADR index rather than a template, matching the documentation-system playbook, and points to the fresh-session test. Earlier notes (2026-09-09 epistemology review): R3–R5, R7 pass; R8 pending P4; F-10 was resolved on 2026-09-09 (canon is four surfaces: AGENTS.md, context.qb.yaml, ADRs, overviews) and is not open. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Documentation as Architecture
 
-In a traditional codebase, documentation is helpful. In an agentic codebase, documentation is structural. The difference is that an agent does not accumulate context the way a human teammate does. Every prompt starts from approximately zero. The agent reads what it can find in the working set, makes assumptions about everything else, and acts.
+In a traditional codebase, documentation is helpful. In an agentic codebase, documentation is structural. The difference is that an agent does not accumulate context the way a human teammate does. Some tools now keep memory between sessions ([what agents keep](contextqb://references/setup#agent-memory)), but that memory is partial, owned by the tool, hard to inspect, unreviewed and not shared with your other tools or collaborators. The agent reads what it can find in the working set, makes assumptions about everything else, and acts.
 
 If the working set is just code, the agent will reinvent your architecture every session. It will guess at naming. It will guess at where state lives. It will guess at which boundaries are intentional and which are accidental. Sometimes it will guess right. Often it will not — and the guesses compound.
 
@@ -78,6 +78,8 @@ Explicit documentation closes that gap.
 ## The rule
 
 **Treat documentation as part of the system, not as a description of it.**
+
+You don't have to write it all by hand. The agent drafts and maintains the documentation surfaces as it works; you approve what becomes canon — the decisions, the boundaries and the rules — and you check that what is written is true.
 
 Four documentation surfaces are load-bearing in an agentic project. Skip any of them and you pay continuously, not once.
 
@@ -92,7 +94,7 @@ A single file at the repo root that an agent is expected to read first. It tells
 - What the agent must not do.
 - Where to look next (ADRs, architecture overviews, principles).
 
-`AGENTS.md` is becoming the de facto convention across agentic tools — Cursor, Claude Desktop, Aider, and others all recognise it. Even tools that do not auto-load it benefit when a user says "read AGENTS.md first."
+`AGENTS.md` is an open convention, stewarded as a shared standard rather than by one vendor, and most agentic coding tools read it — which ones, and which tool-specific files they read alongside it, is in the dated [instruction files reference](contextqb://references/setup#agents-md-support). Even tools that do not auto-load it benefit when a user says "read AGENTS.md first."
 
 Without `AGENTS.md`, every prompt has to either re-explain the project or accept whatever defaults the agent invents. With it, every prompt starts from a shared baseline.
 
@@ -126,7 +128,7 @@ These four are the project's foundation surfaces. Process records for work in mo
 
 In traditional dev, the cost of missing documentation falls mostly on new hires and on yourself six months later. The team carries the context.
 
-In agentic dev, the cost falls on every interaction. The agent is your new hire, every prompt. There is no accumulating team knowledge — only what you write down.
+In agentic dev, the cost falls on every interaction. The agent is close to a new hire in every session. What a tool remembers on its own is partial and private to that tool; the team knowledge you can rely on is what you write down.
 
 The teams that get consistent performance from agents are not the ones with the best prompts. They are the ones with the best documentation, and prompts that point the agent at it.
 
@@ -150,10 +152,12 @@ The cure is not more prompts. The cure is documentation that the prompts can poi
 >
 > 1. `AGENTS.md` at the repo root.
 > 2. `context.qb.yaml` at the repo root.
-> 3. An ADR directory with a template and at least one decision recorded.
+> 3. An ADR directory with an index and at least one decision recorded.
 > 4. Per-area architecture overviews.
 >
 > For each, evaluate whether the content is specific to this project or generic. Flag generic content. Flag any place where current code contradicts documentation. Propose a prioritised list of documentation work, smallest viable items first.
+
+To check the result from the agent's side, run the fresh-session test in [Documenting for Your Agent](contextqb://guides/documenting-for-your-agent).
 
 ## Companion principles
 

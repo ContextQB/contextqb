@@ -5,7 +5,8 @@
 #
 # Sections: project, stack, tree, routes, decisions, paths, status, entry_points
 # Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
-# Example only: a fictional project; names and versions are illustrative.
+# Example only: a fictional project; names, versions and tool choices are
+# illustrative, not recommendations.
 
 qb: "1.0"
 
@@ -52,7 +53,7 @@ tree:
   packages/db: drizzle schema + migrations (single source of truth)
   packages/controls: control library (one file per control, pure functions)
   packages/integrations: third-party connectors (AWS, GCP, Okta, GitHub)
-  packages/ui: shared React component library (HeroUI Pro under the hood)
+  packages/ui: shared React component library (built on a third-party component kit)
   packages/agents-md: shared AGENTS.md fragments per package type
   infra: Pulumi stacks for Cloudflare + Neon + Upstash
 
@@ -68,7 +69,8 @@ decisions:
   "0003": neon-postgres-with-branching (accepted)
   "0004": workos-not-clerk (accepted; SCIM was the deciding factor)
   "0005": pulumi-typescript-not-terraform (accepted)
-  "0011": multi-region-active-active (accepted; replaced 0008 single-region)
+  "0008": single-region-us-east (superseded-by 0011)
+  "0011": multi-region-active-active (accepted; supersedes 0008)
   "0012": control-library-as-pure-functions (accepted)
   index: docs/decisions/README.md
 
@@ -76,8 +78,8 @@ paths:
   decisions: docs/decisions # ADRs live here, not in the default docs/architecture/decisions
 
 status:
-  soc2-type-2: "certified (renewal: November)"
-  iso-27001: "in-progress (audit scheduled for August)"
+  soc2-type-2: "certified (renewal due November 2026)"
+  iso-27001: "in-progress (audit scheduled for August 2027)"
   v4.2: in-progress (HRIS-driven access reviews)
   ap-southeast-region: ramping (live for 30% of APAC tenants)
   customer-zero-migration: complete (all internal use is on production tenants)

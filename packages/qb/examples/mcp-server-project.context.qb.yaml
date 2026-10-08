@@ -5,7 +5,8 @@
 #
 # Sections: project, stack, tree, decisions, paths, status, entry_points
 # Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
-# Example only: a fictional project; names and versions are illustrative.
+# Example only: a fictional project; names, versions and tool choices are
+# illustrative, not recommendations.
 
 qb: "1.0"
 
@@ -16,7 +17,7 @@ project:
     A Model Context Protocol (MCP) server that gives an AI agent safe,
     audited access to a PostgreSQL database. Read-only by default, with
     opt-in write tools that require an explicit allowlist. Speaks stdio and
-    HTTP/SSE; ships as both an npm package and a single static binary.
+    Streamable HTTP; ships as both an npm package and a single static binary.
 
 stack:
   lang: TypeScript 5.7 (strict)

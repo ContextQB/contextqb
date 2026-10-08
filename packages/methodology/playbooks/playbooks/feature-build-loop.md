@@ -2,7 +2,7 @@
 id: feature-build-loop
 title: Run a Feature Build Loop From an Approved Plan
 summary: A planner-executor loop that turns the seven-section feature brief from the feature-planning playbook into shipped code, with each section verified against the actual implementation before the next tranche begins.
-version: 0.1.4
+version: 0.2.0
 problem: |
   An approved feature plan does not ship itself. Letting an agent execute the plan top-to-bottom in one session reproduces every failure mode the plan was supposed to prevent — the agent picks the easiest place to put each line, edge cases get acknowledged but not handled, and "done" means "the agent said so."
 when_to_use: |
@@ -48,7 +48,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes. Open: F-06. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal). 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B6 (0.2.0; author self-checked; independent review pending; not operator-accepted): this playbook now holds the canonical governed-loop section (roles, independence, SHIPPED versus VERIFIED, evidence, roll-forward, recorded authority) that the architectural hardening loop links to (DEC-05(a)); separation is of role and context, not app windows, with the in-tool planner / executor subagent or lane / fresh verifier version; the independence rule matches the workstream vertical; a criterion-based gate (more than one tranche, a new state owner, or several surfaces) replaces the implied size rule, with the small-change path; 'please use plan mode' becomes your tool's planning or read-only mode; walk 6 and the executor report ask for tests with command and exit status; the goal walk may use a browser-driving agent, with your own use as the standard; invariants path is 'or your project's equivalent'; review provenance neutralised. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; the seven-section governance walk is the corpus's deepest instrument and dogfooded by this repo's scopes; R8 pending P4. F-06, once listed as open, was resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal). 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Run a Feature Build Loop From an Approved Plan
@@ -67,7 +67,17 @@ You wrote the plan to prevent three failure modes. A single-session execution re
 - **Edge-case theater.** "Edge cases and risks" gets acknowledged in chat ("yes, I'll handle empty state") and never lands in code. The agent self-reports completion against the plan without anyone walking the actual implementation.
 - **Scope creep into out-of-scope.** While implementing one section, the agent notices something adjacent that "would be quick" and ships it anyway. The "Out of scope" list is the first casualty.
 
-The build loop is designed to defend against all three. If you do not need the defence — the feature is genuinely tiny, one file, one concern — you do not need this playbook. Use feature-planning's plan as a checklist and ship.
+The build loop is designed to defend against all three.
+
+## When to use the loop, and when not
+
+Use the loop when any of these is true:
+
+- the plan needs more than one tranche to build;
+- it introduces a new state owner;
+- it touches several surfaces.
+
+Otherwise, take the small-change path: plan → build → one independent review ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream)) → your own use of the feature. That keeps the contract and the independent check without the tranche machinery.
 
 ## The shape of the loop
 
@@ -86,16 +96,29 @@ The build loop is designed to defend against all three. If you do not need the d
 
 The plan is the map. The tranche is the unit of work. Verification walks the plan's seven sections against the code. Plan revision is the escape valve when reality contradicts the plan.
 
-## Roles — non-negotiable separation
+## The governed loop: roles, independence, evidence and authority
 
-The loop requires **two distinct agent sessions**, each with a different prompt and a different job. This is the same separation [`architectural-hardening-loop`](contextqb://playbooks/architectural-hardening-loop) uses, for the same reason: the author of a fix is the worst auditor of the fix.
+This section is the one shared description of how a governed loop works. The [architectural hardening loop](contextqb://playbooks/architectural-hardening-loop) uses the same mechanics and links here; only its input (an audit instead of a plan) and its extracted artifact (invariants instead of feature contracts) differ.
 
-- **Planner.** Reasons about the plan. Defines tranches. Verifies completed work against the actual codebase, walking each of the seven plan sections. Extracts feature contracts. Never executes code changes.
+**Roles.** The loop needs three separated roles:
+
+- **Planner.** Reasons about the plan. Defines tranches. Never executes code changes.
 - **Executor.** Implements one tranche. Preserves existing behavior outside the tranche scope. Reports completion in a structured format. Never self-certifies.
+- **Verifier.** Checks the completed tranche against the plan and the actual code, in a context that did not produce it. In this playbook the planner, started fresh, does the verifying; the executor never does.
 
-If you run both jobs in the same session, the loop collapses into single-shot execution. The separation is what makes verification real.
+What matters is separation of _role and context_, not separate app windows. In a tool with subagents or parallel lanes ([which tools describe them](contextqb://references/tools#agentic-ides)), the planner can run in your main session, hand each tranche to an executor subagent or lane, and have a fresh session or subagent verify. If you run planning, execution and verification in the same context, the loop collapses into single-shot execution.
 
-See [`agent-instructions`](contextqb://playbooks/agent-instructions) for how to write document-producing prompts that hold an executor to a structured output.
+**Independence.** A verifier counts as independent only when it did not produce the work and is given the plan (or audit), the governance record and the actual artifacts. The executor's completion report is a claim for the verifier to test, not evidence. A different model can add variety to verification; it does not by itself make it independent. [Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) is a ready-made independent-review prompt.
+
+**`SHIPPED` versus `VERIFIED`.** `SHIPPED` means the executor claims the item is done. `VERIFIED` means a verifier checked the actual code and evidence and agrees. Only the planner (as verifier) moves items to `VERIFIED`. The gap between the two counts is the loop working.
+
+**Evidence.** Prefer evidence that can be re-run over prose: a test that exercises the item, the command that ran it and its exit status, a diff limited to the named surfaces. A passing test for each edge case or invariant is stronger than a `file:line` reference alone.
+
+**Roll-forward first.** Anything incomplete, inaccurate or regressed becomes the first task of the next tranche.
+
+**Recorded authority.** The approved plan (or audit) and its tranche log are the authority. When reality contradicts them, the planner revises the affected section on the record and the operator re-approves before work continues. A tranche never silently widens its own scope.
+
+In this loop the planner also walks each of the seven plan sections and extracts feature contracts. See [`agent-instructions`](contextqb://playbooks/agent-instructions) for how to write document-producing prompts that hold an executor to a structured output.
 
 ## The seven-section plan as the governance document
 
@@ -150,12 +173,12 @@ Cross-reference: [`refactor-planning`](contextqb://playbooks/refactor-planning) 
 
 Verification is the step that turns the plan from a one-time artifact into a contract. The planner, in a fresh session, performs all seven walks before any new tranche is planned:
 
-1. **Goal walk.** Open the feature. Use it. Does the user achieve the Goal sentence? If yes, mark Goal `SHIPPED` (only `VERIFIED` after every other section is also clean).
+1. **Goal walk.** Open the feature. Use it. Does the user achieve the Goal sentence? An agent that can drive a browser can walk the flow and report what it saw, but your own use of the feature is the standard. If yes, mark Goal `SHIPPED` (only `VERIFIED` after every other section is also clean).
 2. **Surfaces walk.** Diff the tranche against the surfaces named in the plan. Any file changed outside the named surfaces is unauthorized — surface it as a finding, decide whether to revert or to revise the plan.
 3. **New modules walk.** For each named module: does it exist? Does its content match its stated single responsibility? Or has it grown a second concern already?
 4. **State walk.** For each piece of state: where does it live in the code? Does that match the plan? If the plan said "owned by the server" and you find a parallel client copy, that is drift.
 5. **Orchestration walk.** Open the named coordinator. Is it actually orchestrating? Or did the executor put orchestration into a component / hook / handler instead?
-6. **Edge cases walk.** For each named risk: find the code that handles it. If you cannot find the code, the case is not handled — only acknowledged. Roll it forward.
+6. **Edge cases walk.** For each named risk: find the code that handles it and the test that exercises it, and run the test. A passing test (command and exit status recorded) is the evidence; the list of test names is something the operator can read. If you cannot find the code, the case is not handled — only acknowledged. Roll it forward.
 7. **Out-of-scope walk.** Diff the tranche against the "Out of scope" list. Any item that crept in: revert, or escalate to a plan revision (see below).
 
 Write the result of each walk into the plan's status fields. Update the tranche history log. The first time you do this honestly, the rate of `VERIFIED` items will be lower than the rate of `SHIPPED` items. That gap is the loop working — it is the difference between what was claimed and what was actually built.
@@ -186,15 +209,15 @@ Examples of real feature contracts:
 - Webhook signatures are verified in `verifyWebhookSignature`. Adding a new webhook handler must call this verifier first.
 - The `OrderStatus` type is the union of these five literals; adding a sixth requires updating the renderer in three named files.
 
-After each tranche, the planner writes any new contracts into the feature's own README, an `AGENTS.md` cross-reference, or `docs/architecture/invariants.md` if the contract has system-wide reach. Cross-reference [`anti-spaghetti`](contextqb://principles/anti-spaghetti) for what these contracts defend against.
+After each tranche, the planner writes any new contracts into the feature's own README, an `AGENTS.md` cross-reference, or `docs/architecture/invariants.md` (or your project's equivalent) if the contract has system-wide reach. Cross-reference [`anti-spaghetti`](contextqb://principles/anti-spaghetti) for what these contracts defend against.
 
 ## Prompt 1 — Kickoff (one-time)
 
 Use this once, after the feature plan has been written and approved per [`feature-planning`](contextqb://playbooks/feature-planning). The kickoff prompt converts the brief into a governance document and plans Tranche 1. **It does not execute any code changes.**
 
-Run this in your **planner** session.
+Run this in your **planner** session. Planning-mode names differ by tool ([reference](contextqb://references/setup#planning-modes)); a planning mode does not by itself stop every action, so the prompt also says not to execute changes.
 
-> Please use plan mode if you are not already using it.
+> If your tool has a planning or read-only mode, use it for this turn.
 >
 > We are establishing a feature build loop for an approved feature plan.
 >
@@ -246,7 +269,7 @@ After this turn returns, hand the Tranche 1 spec to a **separate executor sessio
 
 Use this for every cycle after Tranche 1 has been executed. Run it in a **fresh planner session** — not the session that planned the previous tranche, and never the session that executed it.
 
-> Please use plan mode if you are not already using it.
+> If your tool has a planning or read-only mode, use it for this turn.
 >
 > We are continuing the feature build loop for an approved feature plan.
 >
@@ -264,7 +287,7 @@ Use this for every cycle after Tranche 1 has been executed. Run it in a **fresh 
 > 3. **New modules walk.** Each named module: exists? Single responsibility? Or has it grown a second concern?
 > 4. **State walk.** Each piece of state: where does it live? Does it match the plan? Any parallel copy is drift.
 > 5. **Orchestration walk.** Is the named coordinator actually orchestrating? Has orchestration leaked into a component, hook, or handler?
-> 6. **Edge cases walk.** Each named risk: where in the code is it handled? If you cannot find the code, the case is acknowledged but not handled — roll forward.
+> 6. **Edge cases walk.** Each named risk: where in the code is it handled, and which test exercises it? Run the tests and record the command and exit status. If you cannot find the code, the case is acknowledged but not handled — roll forward.
 > 7. **Out-of-scope walk.** Any creep into the "Out of scope" list: revert, or flag for plan revision.
 >
 > For every issue discovered: explain the gap, assess severity, propose remediation, and include the remediation as **the first task** in the next tranche.
@@ -306,7 +329,7 @@ Use this for every cycle after Tranche 1 has been executed. Run it in a **fresh 
 >
 > ### Phase D — Feature contract extraction
 >
-> If the verified tranche established new public surface (types, state shape, orchestrator entry point) that future agent sessions must respect, write the contract into the feature's README or `docs/architecture/invariants.md` as appropriate. Note the addition in the tranche history log.
+> If the verified tranche established new public surface (types, state shape, orchestrator entry point) that future agent sessions must respect, write the contract into the feature's README or `docs/architecture/invariants.md` (or this project's equivalent) as appropriate. Note the addition in the tranche history log.
 >
 > **Do not execute the next tranche in this turn unless explicitly instructed.** This turn is for verification, governance updates, plan revisions, contract extraction, and next-tranche planning.
 
@@ -325,7 +348,7 @@ The executor never plans the next tranche and never verifies its own work. Its j
 > ## Edge cases handled (with file:line references)
 > ## Out-of-scope items NOT touched (re-stated for the planner)
 > ## Plan-reality contradictions encountered
-> ## Tests performed
+> ## Tests written and run (command and exit status for each)
 > ## Remaining concerns
 > ```
 
@@ -342,7 +365,7 @@ The executor must also be told, explicitly:
 - **Edge-case theater.** Walk 6 demands a `file:line` reference for each named risk. "I'll handle that" without code is not a handle.
 - **Scope creep.** Walk 7 plus the verbatim "Out of scope" guardrail in tranche definitions catches creep before it ships.
 - **Silent plan rewriting.** Plan revision is an explicit phase with a re-approval requirement. Drift becomes a deliberate amendment instead of a quiet fait accompli.
-- **Self-certified completion.** Planner / executor separation, mandated by fresh sessions, is the same defence the hardening loop uses.
+- **Self-certified completion.** Planner / executor separation, with verification in a context that did not produce the work, is the same defence the hardening loop uses.
 
 ## When the loop is done
 

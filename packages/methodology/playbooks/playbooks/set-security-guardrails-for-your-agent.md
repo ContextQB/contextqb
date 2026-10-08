@@ -2,7 +2,7 @@
 id: set-security-guardrails-for-your-agent
 title: Set Security Guardrails for Your Agent
 summary: Set your agent tool's permission controls first, then write a security section in your AGENTS.md that explicitly bounds what your agent can do — which files it can edit, which commands it can run, which secrets it can read, which integrations it can call.
-version: 0.2.0
+version: 0.3.2
 problem: |
   Agents inherit whatever privileges the environment hands them. Without an explicit security section in AGENTS.md, you've consented to "anything the host shell allows."
 when_to_use: |
@@ -20,6 +20,7 @@ journey_rank: 50
 related_principles:
   - ai-output-is-untrusted-code
   - least-privilege-for-agents
+  - untrusted-by-default
 tags:
   - security
   - agents
@@ -27,11 +28,14 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): replaced the template's unsupported context.qb.yaml security.public / security.third_party instructions with an AGENTS.md-resident 'Public surfaces and outside services' list; added the tool-settings enforcement layer; verification now checks that the tool blocks or prompts, using a harmless test action. Earlier notes describe 0.1.1: R3–R7 pass; template + verification step are excellent. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 reciprocal link (0.3.2; author self-checked; independent review pending; not operator-accepted): related_principles adds untrusted-by-default, whose review-before-execution posture item now points here for the tool settings; body unchanged. 2026-10-07 renewal B3 reciprocal link (0.3.1; author self-checked; independent review pending; not operator-accepted): related adds building-for-yourself-vs-others, which now links here. 2026-10-07 renewal B2 (0.3.0; author self-checked; independent review pending; not operator-accepted): links the setup reference for per-tool permission controls; adds a check of the mode the tool starts in, since some tools now start in an automatic, classifier-approved mode; reciprocal link to new-project-foundation. 2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): replaced the template's unsupported context.qb.yaml security.public / security.third_party instructions with an AGENTS.md-resident 'Public surfaces and outside services' list; added the tool-settings enforcement layer; verification now checks that the tool blocks or prompts, using a harmless test action. Earlier notes describe 0.1.1: R3–R7 pass; template + verification step are excellent. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
+  - building-for-yourself-vs-others
   - choosing-your-ide-and-llm
   - map-your-attack-surface
+  - new-project-foundation
   - review-your-ai-integration
+  - untrusted-by-default
   - set-up-agents-md
 ---
 
@@ -63,12 +67,14 @@ The block is short, paste-ready, and lives at the top of `AGENTS.md` so the agen
 
 ## Two layers: settings enforce, `AGENTS.md` explains
 
-An `AGENTS.md` rule is an instruction the agent reads and usually follows. It is not a lock. A model can misread it, a long session can push it out of view, and text the agent reads from a web page or file can try to argue it away (prompt injection). The lock is your agent tool's own controls. Most coding agents and AI-enabled editors offer some of these; their names, defaults and coverage vary by tool and version, so check your tool's documentation:
+An `AGENTS.md` rule is an instruction the agent reads and usually follows. It is not a lock. A model can misread it, a long session can push it out of view, and text the agent reads from a web page or file can try to argue it away (prompt injection). The lock is your agent tool's own controls. Most coding agents and AI-enabled editors offer some of these; their names, defaults and coverage vary by tool and version, so check your tool's documentation. The [agent permissions reference](contextqb://references/setup#agent-permissions) records, with dates, what several tools document:
 
 - **Approval prompts** — the tool asks you before it runs a shell command, edits files or calls an outside tool.
 - **Allow and deny lists** — commands, paths or tools that are always permitted or always refused.
 - **Sandboxing** — the agent runs with limited access to files or the network, so a mistake cannot reach beyond the project.
 - **Read-only or planning modes** — the agent can look and propose, but not change anything.
+
+Check which mode your tool **starts** in, not only which modes it offers. Some tools now start in an automatic mode, where a model-based check — not you — approves routine actions; others start by asking for each new kind of action. The starting mode can depend on the tool's version, your plan, or how a session was opened (a separate background or worktree session, for example). If your rules need your approval, make sure the starting mode actually asks you.
 
 Set those controls first, so that delete, deploy, charge, send and secret-reading actions are blocked or need your approval. Then write the `AGENTS.md` section so the agent knows the rules, the reasons and how to ask. You need both: settings without the section leave the agent guessing why it was blocked; the section without settings is a request, not a boundary.
 

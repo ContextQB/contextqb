@@ -2,7 +2,7 @@
 id: set-up-drift-detection
 title: Set Up Drift Detection on Day One
 summary: Wire the contextqb drift detector into your repo from the moment you author your first context.qb.yaml, so the map can never drift away from the territory unnoticed.
-version: 0.2.0
+version: 0.3.1
 problem: |
   A context.qb.yaml is only useful if it stays honest as the repo changes. Without a drift detector wired into your loop, every map becomes a stale map within a month, and your agent silently reads the wrong file. Setting it up on day one costs five minutes; setting it up later means triaging accumulated drift first.
 when_to_use: |
@@ -38,7 +38,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): CI recipe moved off end-of-life Node 20 to Node 24 LTS with action majors that run on Node 24 (verified 2026-10-06 against the Node.js release schedule and the actions' published action.yml files); first-run, provisioning and telemetry wording corrected against CLI 2.5.0 source (every command registers on first use; only the drift check sends a telemetry event; --no-telemetry does not prevent registration). Earlier notes describe 0.1.1: REVIEWED. F-03 resolved 2026-09-09: rank 40→45.R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). Open: F-03 (rank collision at 1.4). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 review metadata cleanup (0.3.1; author self-checked; independent review pending; not operator-accepted): the 2026-09-09 note's 'Open: F-03' fragment is historical; F-03 (rank collision at 1.4) was resolved the same day (rank 40→45) and is not open. Body unchanged. 2026-10-07 renewal B2 (0.3.0; author self-checked; independent review pending; not operator-accepted): roles stated (you decide the Step 1 choice and read the first clean run; the agent does Steps 2–6); Husky init uses its documented commands and is labelled one hook manager; the CI recipe states its pnpm prerequisites and links the CI reference; monthly npm outdated ritual replaced by the upgrade notice and contextqb upgrade; mcp setup client options and the anonymous configuration reference added; links resolve on the site. 2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): CI recipe moved off end-of-life Node 20 to Node 24 LTS with action majors that run on Node 24 (verified 2026-10-06 against the Node.js release schedule and the actions' published action.yml files); first-run, provisioning and telemetry wording corrected against CLI 2.5.0 source (every command registers on first use; only the drift check sends a telemetry event; --no-telemetry does not prevent registration). Earlier notes describe 0.1.1: REVIEWED. F-03 resolved 2026-09-09: rank 40→45.R3–R7 pass; current with CLI 2.4+ reality (telemetry-preview, upgrade notice, CI auto-detect). F-03 (rank collision at 1.4) was listed as open in that note; it was resolved 2026-09-09 as recorded above and is closed. R8 pending P4."
 ---
 
 # Set Up Drift Detection on Day One
@@ -55,7 +55,9 @@ You need:
 - Node.js and your package manager (`pnpm`, `npm`, or `yarn`).
 - Five minutes to wire the check into your normal workflow.
 
-No `context.qb.yaml` yet? Start with [`write-a-context-qb`](./write-a-context-qb.md). Write the map first, then come back here.
+No `context.qb.yaml` yet? Start with [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb). Write the map first, then come back here.
+
+**Who does what.** Step 1 is your decision: read it and choose how the CLI should run on your machine. Steps 2–6 are mechanical — ask your agent to do them in one pass. Then read the first clean run's output and the hook and CI files it added; that is your check that the setup works.
 
 ## Step 1 — Know what the CLI sends, then choose
 
@@ -141,12 +143,15 @@ Fix the map, then run the check again.
 
 The goal is simple: if the repo shape changes, the same commit updates `context.qb.yaml`.
 
-If you use Husky, add a pre-commit hook:
+If you use Husky (one of several Git hook managers), install it, initialise it, and set the pre-commit hook to run the check:
 
 ```bash
-pnpm dlx husky init
+pnpm add --save-dev husky
+pnpm exec husky init
 printf 'pnpm check:qb\n' > .husky/pre-commit
 ```
+
+`husky init` creates `.husky/pre-commit` and a `prepare` script; the last line replaces the hook's default contents. The commands for npm and other package managers are in the [Git hooks reference](contextqb://references/setup#git-hooks).
 
 If you do not use Husky, a plain Git hook works:
 
@@ -192,7 +197,9 @@ jobs:
 
 This makes drift visible before it merges. The check is small, fast, and specific.
 
-The versions in this recipe were checked in October 2026 (last verified 2026-10): Node.js 24 is a long-term-support line, supported until April 2028 according to the Node.js release schedule, and these three action versions run on Node 24 themselves. Runtimes and action versions move on; before you copy the recipe, check the [Node.js release schedule](https://nodejs.org/en/about/previous-releases) and each action's release page, and prefer a supported long-term-support line.
+This is the recipe for a pnpm project. It expects a `packageManager` field in `package.json` (for example `"packageManager": "pnpm@<version>"`) and a committed `pnpm-lock.yaml`; without the field, give `pnpm/action-setup` a `version` input instead. For npm or yarn, drop the pnpm step and use that package manager's install command.
+
+The versions in this recipe were checked in October 2026 (last verified 2026-10): Node.js 24 is a long-term-support line, supported until April 2028 according to the Node.js release schedule, and these three action versions run on Node 24 themselves. Runtimes and action versions move on; before you copy the recipe, check the [CI runtime and action versions reference](contextqb://references/setup#ci-recipes), which records the release lines and action versions with their dates, and prefer a supported long-term-support line.
 
 ## What happens on first run
 
@@ -223,19 +230,19 @@ If your agent uses MCP, run:
 contextqb mcp setup --client cursor
 ```
 
-That prints the client configuration with your membership token filled in. See the [MCP page](https://contextqb.com/mcp) for the full setup path.
+Use `--client claude` for the Claude Desktop shape, or no option to print both. The command prints the client configuration with your membership token filled in; keep that output out of your repository. The configurations without a token, for several clients, are in the [MCP client configuration reference](contextqb://references/setup#mcp-clients); see the [MCP page](https://contextqb.com/mcp) for the full setup path.
 
-If this repo is not actually greenfield and the first run produced a wall of findings, switch to [`retrofit-drift-detection`](./retrofit-drift-detection.md). An accumulated repo needs a reconciliation pass before enforcement.
+If this repo is not actually greenfield and the first run produced a wall of findings, switch to [`retrofit-drift-detection`](contextqb://playbooks/retrofit-drift-detection). An accumulated repo needs a reconciliation pass before enforcement.
 
 ## Keep it current
 
-The drift detector is stable, but its capabilities expand over time. Run this monthly:
+The drift detector is stable, but its capabilities expand over time. You do not need a calendar reminder: from 2.4.0 onward the CLI prints an upgrade notice on every run when a newer version exists. When you see it, run:
 
 ```bash
-npm outdated @context-qb/cli
+contextqb upgrade
 ```
 
-If a newer version exists, upgrade with `npm install -D @context-qb/cli@latest` and re-run `contextqb check`. From 2.4.0 onward the CLI prints an upgrade notice automatically when outdated — so if you see no notice, you're current.
+It prints the right upgrade command for how the CLI was installed. Run that command, then re-run `contextqb check`. If you want to look yourself, your package manager can list outdated packages (see the [package manager commands reference](contextqb://references/setup#package-manager-commands)).
 
 ## How did this go? Share your experience
 

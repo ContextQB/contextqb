@@ -2,7 +2,7 @@
 id: how-to-use-contextqb
 title: How to Use ContextQB
 summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it is, why we built it, how we pay for it, and how to start using it without feeling lost.
-version: 0.1.1
+version: 0.2.0
 intro: |
   A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
@@ -14,6 +14,7 @@ journey_rank: 0
 related:
   - choosing-your-ide-and-llm
   - context-quarterback-the-onboarding-map
+  - repo-readiness
   - understanding-llms
   - understanding-the-context-window
   - what-an-application-is
@@ -22,15 +23,15 @@ tags:
   - getting-started
   - ai
 next_steps:
-  - "Pick an IDE you are comfortable with (Cursor is the easiest entry point)."
-  - "Pick an LLM you trust to work with day to day."
+  - "Pick an agentic coding tool you are comfortable with (the Choosing Your IDE and LLM guide explains the kinds and how to choose)."
+  - "Start with the model your tool offers by default; change it once you know what you need."
   - "Read one principle or one playbook on contextqb.com — not all of them."
-  - "When you have a real project, install @context-qb/cli and run it once."
+  - "When you have a real project, install @context-qb/cli — ContextQB's command-line tool, which checks your project map against the repository — and run it once."
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "REVIEWED. F-02 resolved 2026-09-09: keeps rank 0; what-an-application-is moved to rank 5.R3–R7 pass. Open: F-02 (rank collision at stage 0), F-06 (context-quarterback linked in body, absent from related:). R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): product names in the next steps and vocabulary replaced by categories with links to the dated tool and model references; the LLM entry no longer lists a chat product as a model; the CLI is explained where it first appears; the already-have-a-project lane says honestly that ContextQB is written first for new projects and points to the repo readiness audit; the agent drafts project-map updates for the learner to review. Earlier notes (2026-09-09 epistemology review: R3–R7 pass, R8 pending P4) listed F-02 and F-06 as open; both were resolved then (F-02: rank 0 kept, what-an-application-is moved to rank 5; F-06: the context-quarterback link is declared) and nothing remains open from them."
 ---
 
 # How to Use ContextQB
@@ -71,7 +72,7 @@ When you build with an AI agent, you are in that role. The agent runs the routes
 
 Our job is to help you become a good **context quarterback**: a game manager for your project. In football, a game-managing quarterback is not the one who throws the spectacular pass. They read the field clearly, keep the offense out of bad situations, and put the team in position to score. The flashy plays come from the team. The good outcomes come from the manager.
 
-In agentic development, the version of game management you have to learn is **managing the agent's contexts** — across files, across sessions, across tasks. Every time you sit down to build, the agent starts from whatever you put in front of it. What it sees first, what it sees next, what you asked it to ignore, what it learned last session, what it forgot — those are the variables that decide how the work goes. The single most important of them is the agent's [context window](contextqb://guides/understanding-the-context-window): the finite working memory it can reason over right now. The brand is named for that variable. The methodology is what lets you manage it on purpose.
+In agentic development, the version of game management you have to learn is **managing the agent's contexts** — across files, across sessions, across tasks. Every time you sit down to build, the agent starts mostly from whatever you put in front of it, plus whatever its tool loads on its own. What it sees first, what it sees next, what you asked it to ignore, what it learned last session, what it forgot — those are the variables that decide how the work goes. The single most important of them is the agent's [context window](contextqb://guides/understanding-the-context-window): the finite working memory it can reason over right now. The brand is named for that variable. The methodology is what lets you manage it on purpose.
 
 A good context quarterback briefs the agent cleanly, reviews the work honestly, keeps the project legible to anyone who picks it up next, and steers the build so it stays understandable as it grows. None of that requires being a great coder. It requires being a good operator.
 
@@ -80,8 +81,8 @@ A good context quarterback briefs the agent cleanly, reviews the work honestly, 
 You do not need to master these on day one. These are the basic terms that show up across the site:
 
 - **AI agent** — an AI system that can do more than answer questions. It can take actions, such as reading files, editing code, running commands, or helping manage a project.
-- **LLM** — a large language model, such as ChatGPT, Claude, or Gemini. The engine behind many AI tools.
-- **IDE** — the app where software gets built. Many people now use tools like Cursor or VS Code because they let an AI agent work directly inside a coding project.
+- **LLM** — a large language model: the engine behind AI tools. A handful of providers make the leading model families; chat apps and coding tools are products built on top of those models ([current model families](contextqb://references/models#families)).
+- **IDE** — the app where software gets built. Many people now use agentic coding tools — editors or apps that let an AI agent work directly inside a coding project ([current options](contextqb://references/tools#agentic-ides)).
 - **Repo** — short for repository. The folder where your project lives: code, files, notes, configuration, documentation, and everything else the app needs.
 - **Context** — the information the agent is using to understand the task. Your prompt, your files, your project notes, your previous decisions, and the instructions you give it.
 - **Context window** — the amount of information the AI can pay attention to at one time. It is not infinite. If the wrong things are in context, or the right things fall out of context, the agent can lose track.
@@ -137,13 +138,15 @@ Write down the simplest version of what you want to build. Do not start with eve
 
 ### If you already have a project
 
+ContextQB is written first for people starting a new project, so this lane is lightly served today. The best entry point is the [repo readiness audit](contextqb://audits/repo-readiness): it has your agent check what is already in place and list the gaps, in a form you can read.
+
 Start by helping the agent understand the project. Before asking for new features, make sure the agent knows what already exists. Give it a map. Ask it to inspect the structure. Ask it to explain how the project works. Ask it where the risks are.
 
 Then move in smaller steps. Do not ask the agent to rebuild everything unless you actually want everything rebuilt. Ask for specific changes, review the result, and keep track of what changed.
 
-### If you are using Cursor or another agentic IDE
+### If you are already using an agentic coding tool
 
-Use ContextQB as a working method inside your IDE. Before each task, brief the agent clearly. Before accepting changes, inspect the output. After meaningful changes, update the project map. When the project starts to feel confusing, stop and re-orient. The agent can move quickly. Your job is to keep the work legible.
+Use ContextQB as a working method inside your tool. Before each task, brief the agent clearly. Before accepting changes, inspect the output. After meaningful changes, ask the agent to draft the update to the project map, and review it before you accept it. When the project starts to feel confusing, stop and re-orient. The agent can move quickly. Your job is to keep the work legible.
 
 ## A reasonable first day
 

@@ -11,6 +11,13 @@
 //   unverified  "Not verified" notice and candidate subjects only — never values
 //   withdrawn   tombstone: date, reason, replacement or "No replacement"
 // Leads are never rendered.
+//
+// Response policy for prices: every group or entry response from a pricing
+// group starts with PRICING_RESPONSE_NOTICE, before any value, whatever the
+// entries' freshness. The notice is response text, not stored content, and it
+// carries no date of its own: verification dates stay per entry ("Verified on",
+// derived from cited evidence). The policy keys on the group, not on keyword
+// detection; reference tests keep currency figures out of the other groups.
 
 import {
   deriveFreshness,
@@ -76,6 +83,21 @@ export interface ReferenceRenderOptions {
 
 export const REFERENCE_SCOPE_NOTE =
   "Reference — factual, dated, outside the learning sequence. Neutral facts only; no recommendations.";
+
+// Groups whose responses always carry the pricing notice (ADR-0039 "pricing,
+// limits and defaults"). Approved October 7, 2026: prices stay available to
+// agents, but never without this caveat.
+export const PRICING_REFERENCE_GROUP_IDS: readonly string[] = ["pricing"];
+
+export const PRICING_RESPONSE_NOTICE =
+  "Pricing is a dated reference, not a live quote. Current prices, plans and billing conditions may differ. Check the provider's official pricing page before making a purchase or budget decision. When presenting these figures to a user, include this caveat and the recorded verification date; do not describe them as current unless you have checked the official source during this interaction.";
+
+export const PRICING_DATE_NOTE =
+  'Each verified entry\'s recorded verification date is its "Verified on" line. The evaluation date and review dates in this response are not verification dates.';
+
+export function isPricingReferenceGroup(groupId: string): boolean {
+  return PRICING_REFERENCE_GROUP_IDS.includes(groupId);
+}
 
 function cell(text: string | undefined): string {
   return (text ?? "").replace(/\|/gu, "\\|").replace(/\r?\n/gu, " ");
@@ -206,9 +228,19 @@ export function renderReferenceGroupMarkdown(
     "",
     `_${REFERENCE_SCOPE_NOTE}_`,
     "",
+  ];
+  if (isPricingReferenceGroup(group.id)) {
+    lines.push(
+      `> **Pricing notice:** ${PRICING_RESPONSE_NOTICE}`,
+      ">",
+      `> ${PRICING_DATE_NOTE}`,
+      "",
+    );
+  }
+  lines.push(
     `_Evaluated on ${options.evaluationDate} (UTC)._${options.provenanceNote ? ` ${options.provenanceNote}` : ""}`,
     "",
-  ];
+  );
   if (!options.entryId && group.body.trim().length > 0) lines.push(group.body.trim(), "");
   lines.push("---", "");
   for (const entry of entries)

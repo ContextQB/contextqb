@@ -2,7 +2,7 @@
 id: public-endpoint-exposure
 title: Public Endpoint Exposure Audit
 summary: A focused security audit of every URL reachable from the internet — routes, APIs, webhooks, and static assets. Verify each is intentionally public with appropriate protection.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -50,7 +50,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): added a test-target rule — active tests (request bursts, injection strings, guessed paths and subdomains) run only against local, disposable or staging targets; production gets observation only unless the owner gives separate authority. Earlier notes describe 0.1.1: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.3.0; author self-checked; independent review pending; not operator-accepted): framework-specific discovery moves to the dated framework-route-discovery reference so the audit is not tied to one framework, with the generic instruction to find where the project's framework and platform declare routes; preview-domain and bundled-asset examples labelled; subdomain discovery tools named by role; webhook examples labelled as examples; the agent reads instructions and configuration first and treats scanner or search matches as leads. The FT test-target rule and observation/active split are unchanged. 2026-10-06 renewal fast-track repair (0.2.0; author self-checked; independent review pending; not operator-accepted): added a test-target rule — active tests (request bursts, injection strings, guessed paths and subdomains) run only against local, disposable or staging targets; production gets observation only unless the owner gives separate authority. Earlier notes describe 0.1.1: R3–R7 pass. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Public Endpoint Exposure Audit
@@ -113,27 +113,18 @@ Filter to public-only (Auth required = No).
 
 ### Framework-specific discovery
 
-**Next.js:**
-
-- `app/` directory routes without middleware
-- `pages/api/` routes without auth checks
-- Static exports in `public/`
-
-**Cloudflare Workers:**
-
-- Routes in `wrangler.jsonc`
-- Routes without auth in handler code
+Every framework and hosting platform declares routes in its own places — route folders, configuration files, platform routing rules, middleware files. Read the project's instructions and configuration first, then find where its framework and platform declare routes; the dated [framework route discovery reference](contextqb://references/setup#framework-route-discovery) lists the conventions for the frameworks and platforms ContextQB has checked. For each declared route, check whether the handler or middleware actually enforces authentication. A search match is a lead; confirm it in the code.
 
 ### Subdomain discovery
 
 Check for:
 
 - Production domain (example.com)
-- Staging/preview (staging.example.com, \*.vercel.app)
+- Staging/preview (staging.example.com, or your host's preview domains)
 - API subdomain (api.example.com)
 - Forgotten subdomains (old.example.com)
 
-Tools: start with DNS records and certificate transparency logs (observation). Trying guessed subdomain names is active testing: do it only for domains you own, and only with the same authority as the other active tests.
+Tools: start with DNS records and certificate transparency logs (observation); a subdomain-enumeration tool that reads those public sources is also observation. Trying guessed subdomain names is active testing: do it only for domains you own, and only with the same authority as the other active tests.
 
 ---
 
@@ -147,17 +138,17 @@ Search for:
 
 - Routes containing "webhook" or "hook"
 - Routes that accept POST from third parties
-- Stripe, Clerk, GitHub, or other provider webhooks
+- Payment, authentication, code-hosting or other provider webhooks
 
 ### Webhook audit
 
-For each webhook:
+For each webhook (the rows below are examples):
 
-| Webhook              | Provider | Signature verified? | Replay protected? |
-| -------------------- | -------- | ------------------- | ----------------- |
-| /api/webhooks/stripe | Stripe   | ?                   | ?                 |
-| /api/webhooks/clerk  | Clerk    | ?                   | ?                 |
-| /api/webhooks/github | GitHub   | ?                   | ?                 |
+| Webhook              | Provider         | Signature verified? | Replay protected? |
+| -------------------- | ---------------- | ------------------- | ----------------- |
+| /api/webhooks/stripe | Stripe (example) | ?                   | ?                 |
+| /api/webhooks/clerk  | Clerk            | ?                   | ?                 |
+| /api/webhooks/github | GitHub           | ?                   | ?                 |
 
 ### Webhook verification checklist
 
@@ -178,7 +169,7 @@ Public files can leak information.
 Check:
 
 - `/public/` directory contents
-- Bundled assets (`/_next/`, `/assets/`)
+- Bundled assets (your framework's build output folders — for example `/_next/` or `/assets/`)
 - Source maps (should not be public in production)
 - Configuration files accidentally exposed
 

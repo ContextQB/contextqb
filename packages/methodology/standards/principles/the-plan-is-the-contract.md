@@ -2,7 +2,7 @@
 id: the-plan-is-the-contract
 title: The Plan Is the Contract
 summary: A plan that nobody verifies against is fiction. When an agent executes a plan, the plan is the contract — every tranche of work is checked against it, divergences are deliberate amendments, and "done" means the plan's own sections say so.
-version: 0.1.2
+version: 0.1.3
 category: orchestration
 audience:
   - novice-builder
@@ -46,7 +46,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q2 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict. 2026-10-02: claim 1 was generalized from features to objectives during the workstream-vertical integration. The whole atom was not re-reviewed after that edit; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B6 (0.1.3; author self-checked; independent review pending; not operator-accepted): preserved; verification in a session that did not write the code now carries the independence rule (a verifier, subagent or separate tool counts only if it did not produce the work and is given the plan, record and artifacts; a different model is not by itself independence), with a pointer to the governed-loop section in feature-build-loop; the edge-case walk is best satisfied by a test that exercises the case, and the list of test names is readable; the hook-to-server-action example is labelled framework-specific. Earlier notes: Maintainer-approved for publish 2026-09-09. Authored from gap G-12 — the build loops (feature-planning, feature-build-loop) were the corpus's signature practice with no KNOW atom behind them. Long-form principle shape per the P4 template verdict. 2026-10-02: claim 1 was generalized from features to objectives during the workstream-vertical integration. The whole atom was not re-reviewed after that edit; last_reviewed reflects the earlier review."
 ---
 
 # The Plan Is the Contract
@@ -83,14 +83,16 @@ None of these are malice. They are what a fast, confident generator does in the 
 - The surfaces: did anything change outside the named files?
 - The state: is it owned where the plan said, or did a parallel copy appear?
 - The orchestration: does the named coordinator actually coordinate?
-- The edge cases: for each named risk, point at the code that handles it. If you can't find the code, the case was acknowledged, not handled.
+- The edge cases: for each named risk, point at the code that handles it — best of all, at a test that exercises the case and passes. If you can't find the code, the case was acknowledged, not handled. The list of test names is something you can read without reading the code.
 - The out-of-scope list: diff against it. Anything that crept in gets reverted or escalates to a plan revision.
 
 The gap between what was claimed and what was found is the contract working. Close the gap before the next tranche begins.
 
+"A fresh session" means a verifier that did not produce the work — a new session, a subagent, a separate review tool or a person — given the plan, the governance record and the actual artifacts. The executor's report is a claim to test, not evidence. A different model can add variety; it does not by itself make verification independent. The [feature build loop](contextqb://playbooks/feature-build-loop) describes these governed-loop mechanics in full.
+
 ## The amendment is honest, the drift is not
 
-Plans are wrong sometimes. The executor discovers the client lifecycle can't survive the redirect; the hook has to become a server action. This is normal and good — it is the plan doing its job of forcing the real constraint into the open.
+Plans are wrong sometimes. The executor discovers the client lifecycle can't survive the redirect; in a React framework, for example, the hook has to become a server action. This is normal and good — it is the plan doing its job of forcing the real constraint into the open.
 
 The move is: stop, revise the affected sections on the record (strike through the old line; log the reason), re-approve, resume. The move that kills projects is silently rolling forward — then the plan describes a system that was never built, and every future session reads fiction as truth.
 

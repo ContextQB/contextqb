@@ -2,7 +2,7 @@
 id: refactor-with-duplicates
 title: Refactor With Duplicates, Not Overwrites
 summary: When changing what existing code does, build the new thing next to the old thing and migrate deliberately — never let an agent overwrite working behaviour in place. The duplicate is the safety net; deletion is the last step, not the first.
-version: 0.1.1
+version: 0.1.2
 category: maintainability
 audience:
   - novice-builder
@@ -35,11 +35,12 @@ related:
   - maintainability
   - refactor-planning
   - setting-up-git-and-github
+  - run-an-agent-workstream
 review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q1 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-11 / finding F-08 — the corpus cited this habit by name (setting-up-git-and-github) with no atom behind it. Long-form principle shape per the P4 template verdict."
+  reviewer_notes: "2026-10-07 renewal B6 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved; one pointer that each duplicate's owner and deletion condition belong in the outstanding-items register of the workstream record, and a note that the verify step is now cheaper (characterization tests, both implementations run against the same inputs). This principle is about code; documentation follows the archive policy in append-dont-overwrite (named in plain text). Earlier notes: Maintainer-approved for publish 2026-09-09. Authored from gap G-11 / finding F-08 — the corpus cited this habit by name (setting-up-git-and-github) with no atom behind it. Long-form principle shape per the P4 template verdict."
 ---
 
 # Refactor With Duplicates, Not Overwrites
@@ -100,7 +101,9 @@ You can claim this principle if all of the following hold:
 1. **No in-place rewrites of working code.** Refactors of live behaviour go through duplicate → migrate → verify → delete.
 2. **Deletions are their own change.** Removing the old implementation is a separate commit (or PR) from building the new one.
 3. **Call sites migrate incrementally.** Each migration is small enough to revert on its own.
-4. **Duplicates carry an expiry.** Each has a named owner and a deletion condition ("delete when checkout-flow runs on the new path for a week").
+4. **Duplicates carry an expiry.** Each has a named owner and a deletion condition ("delete when checkout-flow runs on the new path for a week"), recorded where it will be seen — if you keep a workstream record, as an item in its outstanding-items register ([Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5), not in someone's memory.
+
+The verify step is cheaper than it used to be: ask the agent for characterization tests of the old implementation, then run both implementations against the same inputs and compare. Matching results are evidence you can read. (This principle is about code. Documents are not duplicated and deleted; they follow the archive policy in the _Append, Don't Overwrite_ principle.)
 
 ## How it relates to other ContextQB principles
 

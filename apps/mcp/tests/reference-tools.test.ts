@@ -20,6 +20,7 @@ import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import { buildBundle, canonicalSources } from "../scripts/bundle-content";
+import { PRICING_RESPONSE_NOTICE } from "../src/reference-render";
 import {
   buildMcpServerForRequest,
   createServer,
@@ -208,6 +209,74 @@ describe("rendering rules on the Worker surface", () => {
   it("builds an empty reference list from the canonical (empty) directory", () => {
     const canonical = buildBundle({ ...canonicalSources, references: emptyDir });
     expect(canonical.references).toEqual([]);
+  });
+});
+
+// Pricing response policy on the Worker routes: tool calls (whole group and
+// single entry) and resource reads carry the caveat before any value, on the
+// per-request entry point the fetch handler uses.
+describe("pricing notice on every Worker pricing route", () => {
+  const VALUE = "FIXTURE-PRICE 1.00";
+  const requestServer = async (iso: string, source: ContentBundle = bundle) =>
+    (
+      await buildMcpServerForRequest(mcpRequest(), env, {
+        bundle: source,
+        clock: () => new Date(iso),
+      })
+    ).server;
+
+  function expectCaveatBeforeValue(text: string, value = VALUE): void {
+    const caveat = text.indexOf(PRICING_RESPONSE_NOTICE);
+    expect(caveat).toBeGreaterThanOrEqual(0);
+    expect(text.indexOf(value)).toBeGreaterThan(caveat);
+  }
+
+  it("warns before the review date in group, entry and resource responses", async () => {
+    const client = await connect(await requestServer("2026-10-20T12:00:00Z"));
+    const group = await callText(client, "get_reference", { id: "pricing" });
+    const entry = await callText(client, "get_reference", {
+      id: "pricing",
+      entry: "synthetic-api-prices",
+    });
+    const read = await client.readResource({ uri: "contextqb://references/pricing" });
+    for (const text of [group, entry, (read.contents[0] as { text: string }).text]) {
+      expectCaveatBeforeValue(text);
+      expect(text).not.toContain("Review overdue");
+      expect(text).toContain("**Verified on:** 2026-10-05");
+      expect(text).toContain("| FIXTURE-PRICE 1.00 | standard tier (fixture) |");
+    }
+  });
+
+  it("warns after the review date and keeps the overdue label", async () => {
+    const client = await connect(await requestServer("2026-11-09T12:00:00Z"));
+    const text = await callText(client, "get_reference", {
+      id: "pricing",
+      entry: "synthetic-api-prices",
+    });
+    expectCaveatBeforeValue(text);
+    expect(text).toContain("Review overdue (was due by 2026-10-31)");
+  });
+
+  it("is not added to other groups", async () => {
+    const client = await connect(await requestServer("2026-10-20T12:00:00Z"));
+    expect(await callText(client, "get_reference", { id: "tools" })).not.toContain(
+      PRICING_RESPONSE_NOTICE,
+    );
+  });
+
+  it("covers the canonical pricing group in the canonical bundle", async () => {
+    const canonical = buildBundle(canonicalSources, "2026-10-07T00:00:00.000Z");
+    const client = await connect(await requestServer("2026-10-08T12:00:00Z", canonical));
+    const read = await client.readResource({ uri: "contextqb://references/pricing" });
+    for (const text of [
+      await callText(client, "get_reference", { id: "pricing" }),
+      await callText(client, "get_reference", { id: "pricing", entry: "ide-plans" }),
+      (read.contents[0] as { text: string }).text,
+    ]) {
+      const caveat = text.indexOf(PRICING_RESPONSE_NOTICE);
+      expect(caveat).toBeGreaterThanOrEqual(0);
+      expect(text.search(/\$\d/u)).toBeGreaterThan(caveat);
+    }
   });
 });
 

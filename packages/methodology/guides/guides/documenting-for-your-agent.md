@@ -2,7 +2,7 @@
 id: documenting-for-your-agent
 title: Documenting for Your Agent
 summary: Documentation in agentic dev isn't paperwork for a future hire — it's how you keep your current agent on the architecture you've chosen. This guide is the operator's plain-language introduction to the documentation discipline ContextQB depends on.
-version: 0.1.1
+version: 0.2.1
 audience:
   - novice-builder
   - founder
@@ -17,6 +17,7 @@ tags:
   - alignment
 related:
   - append-dont-overwrite
+  - audit-a-workstream-record
   - context-quarterback-the-onboarding-map
   - documentation-as-architecture
   - documentation-file-naming
@@ -27,7 +28,7 @@ related:
   - write-a-context-qb
 next_steps:
   - Open the project you're working on and identify which documents your agent actually reads.
-  - Write or update your `AGENTS.md` so the next session does not start from zero.
+  - Write or update your `AGENTS.md` so the next session starts from your project's rules, not from guesses.
   - Write or update your `context.qb.yaml` so the agent can boot from one file.
   - Pick one decision you've made this week and write a one-page ADR for it.
   - Before creating your next document, run the three filename smell tests from `documentation-file-naming`.
@@ -35,7 +36,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "R3–R7 pass; strongest guide voice in the set. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B4 reciprocal link (0.2.1; author self-checked; independent review pending; not operator-accepted): one sentence points to the Workstream Record Audit, which applies the same fresh-session test to one workstream record; related adds it. 2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the memory premise now says tool memory is partial, tool-owned and not shared, so the repository is the only memory you control; the agent drafts the day-one files and you judge them; the archive README's day-one job is stated; the fresh-session test asks the agent to quote exact lines, since a fluent paraphrase can hide a wrong answer, and notes what a tool may still load in a fresh session. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; strongest guide voice in the set. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Documenting for Your Agent
@@ -56,13 +57,13 @@ That sentence is the whole guide. Everything else explains why it is true and wh
 
 ## Why the shift matters
 
-The agent has no continuous memory. Every prompt is a fresh boot. What the agent knows in this turn is exactly what is in its working memory — your message, the files it has read, the system instructions it received, and nothing else.
+The agent's memory is partial and belongs to its tool. What the agent knows in this turn is what is in its working memory — your message, the files it has read, the system instructions it received, and whatever its tool chose to load or keep. Some tools save notes between sessions ([what agents keep](contextqb://references/setup#agent-memory)), but you can't easily see those notes, they aren't shared with your other tools or collaborators, and they can be wrong. Your repository is the only memory you fully control.
 
 If the working memory does not include your project's structure, conventions, and decisions, the agent makes them up. Sometimes the guesses are good. Often they are not, and over a week of work the project quietly drifts as each session makes slightly different calls than the last.
 
 The teams getting consistent results from agents are not the teams with better prompts. They are the teams whose documentation is the prompt — short instructions like "before doing X, read these three files," pointing at documents that exist and say what they need to say.
 
-Your job, as the operator, is to make those documents exist. Not all of them. Not perfectly. The day-one minimum.
+Your job, as the operator, is to make sure those documents exist and say what is true. You don't have to type them: the agent can draft them. Your part is judging whether each draft describes your project correctly. Not all of them. Not perfectly. The day-one minimum.
 
 ## The day-one minimum
 
@@ -81,7 +82,7 @@ The [`set-up-a-documentation-system`](contextqb://playbooks/set-up-a-documentati
 
 ## What about future engineers?
 
-If your project grows enough to bring on people, the documentation you wrote for your agent will help them too. That is a real, valuable benefit — but it is not the goal. It is a bonus. Writing for the agent first produces shorter, sharper, more current documentation than writing for a hypothetical future engineer first. The future engineer gets the same docs, written better, because they were forced to survive the test of being read every session by an audience with no continuous memory.
+If your project grows enough to bring on people, the documentation you wrote for your agent will help them too. That is a real, valuable benefit — but it is not the goal. It is a bonus. Writing for the agent first produces shorter, sharper, more current documentation than writing for a hypothetical future engineer first. The future engineer gets the same docs, written better, because they were forced to survive the test of being read every session by an audience with no reliable memory of its own.
 
 This is one of the genuinely good surprises of agentic dev: doing the thing that helps you most today turns out to also be the thing that helps future contributors most.
 
@@ -113,7 +114,7 @@ You do not need to set everything up at once. You do need to set each thing up _
 
 A reasonable growth curve looks like this:
 
-- **Day 1.** `AGENTS.md`, `context.qb.yaml`, the first ADR, the first overview, and `docs/archive/` (empty but with a README explaining the archive policy).
+- **Day 1.** `AGENTS.md`, `context.qb.yaml`, the first ADR, the first overview, and `docs/archive/` (empty but with a README explaining the archive policy, so the first time a document is retired there is already a rule saying it is moved here, not deleted).
 - **First feature that takes more than a session.** Add `docs/scopes/` with a `README.md` describing the naming pattern. Then create the scope for the feature.
 - **First time you stop work mid-feature.** Add `docs/handoffs/` with a `README.md` describing the naming pattern. Then write the handoff.
 - **First incident.** Add `docs/post-mortems/` with a `README.md`. Then write the post-mortem.
@@ -124,17 +125,17 @@ Each step is small. Each one prevents the next bad-naming cycle. The discipline 
 
 ## The one test you can run today
 
-Pick a feature you have shipped recently. Open a fresh agent session — no context, no history, just a blank prompt. Ask the agent:
+Pick a feature you have shipped recently. Open a fresh agent session — no conversation history, just a blank prompt. (Your tool may still load `AGENTS.md` and any notes it saved; that is part of what you're testing.) Ask the agent:
 
-> Read this repository and tell me how it is structured, what its main conventions are, and what the most important architectural decisions have been. Cite the files you used to learn this.
+> Read this repository and tell me how it is structured, what its main conventions are, and what the most important architectural decisions have been. For each claim, quote the exact lines you are relying on and name the file they come from.
 
-Then read the answer. Three things can happen:
+Then read the answer, and check a few of the quotes against the files. A fluent paraphrase can hide a wrong answer; an exact quote you can verify can't. Three things can happen:
 
 1. **The agent quotes your actual documentation and gives a correct answer.** Your documentation system is working. Keep it healthy as the project grows.
 2. **The agent invents a plausible-sounding but wrong answer.** Your documentation system has a gap. The specific things the agent got wrong are the documents that need to exist or need to be more findable.
 3. **The agent says it cannot find any documentation and walks the source tree.** Your project does not yet have a documentation system. Today is a good day to start.
 
-This is the single highest-signal experiment you can run on an agentic project, and it costs one prompt.
+This is the single highest-signal experiment you can run on an agentic project, and it costs one prompt. The [Workstream Record Audit](contextqb://audits/audit-a-workstream-record) applies the same test to one workstream record: can a fresh session find it, and act on it?
 
 ## Where to go from here
 

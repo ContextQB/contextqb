@@ -2,7 +2,7 @@
 id: think-like-an-attacker
 title: Think Like an Attacker
 summary: A reusable framing prompt for any code review — if you were attacking this, where would you start and what would you target?
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -34,23 +34,21 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.5 (agent)"
-  reviewer_notes: "R3–R7 pass; worked example earns its place. Also mixes link conventions (site-relative vs contextqb://) — logged as P4 input. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the template-engine conditional block around CONTEXT becomes a plain line, so the paste-verbatim prompt has only plain placeholders; adds that an attack may be demonstrated with a test or request only against an authorized local or test copy, never production; the example names an HTML sanitiser as the role, keeping DOMPurify as a labelled example; asks for a session that did not build the code. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; worked example earns its place. Also mixes link conventions (site-relative vs contextqb://) — logged as P4 input. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Think Like an Attacker
 
 This prompt forces adversarial thinking on any code review. Instead of asking "does this work?" it asks "how would I break this?"
 
-Use it when you're reviewing agent-generated code, merging a feature, or just want a security sanity check.
+Use it when you're reviewing agent-generated code, merging a feature, or just want a security sanity check. Paste it into a session that did not write the code — a fresh session, a second agent, or a person. A different model can add variety; it does not by itself make the review independent. Fill `{{CONTEXT}}` with anything the reviewer should know, or "none".
 
 ## The prompt
 
 ```text
 You are reviewing the following code with an attacker's mindset: {{SCOPE_PATH}}
 
-{{#if CONTEXT}}
-Additional context: {{CONTEXT}}
-{{/if}}
+Additional context (or "none"): {{CONTEXT}}
 
 Your task is NOT to find bugs or style issues. Your task is to identify how a malicious actor would exploit this code.
 
@@ -100,6 +98,8 @@ After analysing individual attacks, answer:
 4. **What would fall to a determined attacker?** — Where are the weak points
 
 Be specific. Reference files and line numbers. Do not give generic security advice — only findings grounded in this code.
+
+Do not attack anything. Where a finding would be clearer with a demonstration, write the test or request that would show it, and run it only if I have authorized you to and only against a local or test copy — never against production or a live service.
 ```
 
 ## When to use this
@@ -135,7 +135,7 @@ If the analysis reveals trust assumptions you hadn't considered, update your att
 **Likelihood:** High — trivial to execute  
 **Severity:** High — session hijacking  
 **Current protection:** None observed  
-**Recommendation:** Sanitise on input, escape on output. Use a library like DOMPurify for HTML content.
+**Recommendation:** Sanitise on input, escape on output. Use an HTML sanitiser library for HTML content (DOMPurify is one example).
 
 ---
 

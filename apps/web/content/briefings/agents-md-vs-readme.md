@@ -2,7 +2,7 @@
 id: agents-md-vs-readme
 title: AGENTS.md vs. README.md
 summary: They sit at the same spot in the repo and look like siblings, but they answer different questions for different readers. The README is the human's front door; AGENTS.md is the agent's operating manual. A repo that confuses them serves neither.
-version: 0.1.0
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -24,7 +24,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q5 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Resolves the README/AGENTS.md confusion named in set-up-agents-md's anti-patterns."
+  reviewer_notes: "2026-10-07 renewal B3 (0.2.0; author self-checked; independent review pending; not operator-accepted): the convention row now describes an open, foundation-stewarded standard and links the dated instruction-files reference; the read-when row says many tools load it at the start of a session; the deeper reason uses the corrected memory premise and adds why a stale rule in AGENTS.md is so durable; the playbook is described as the seven-section template it now uses. Earlier note: Maintainer-approved for publish 2026-09-09. Authored from G-05 (grow briefings). Resolves the README/AGENTS.md confusion named in set-up-agents-md's anti-patterns."
 ---
 
 # AGENTS.md vs. README.md
@@ -37,20 +37,20 @@ The README tells a human what this project is. `AGENTS.md` tells an agent how to
 
 A README is read **once, by a person, deciding whether to care.** It earns its place with a pitch: what the project is, why it exists, how to install it, where to learn more.
 
-`AGENTS.md` is read **every session, by a machine, deciding what to do.** It earns its place with constraints: the naming rules, the package boundaries, where state lives, what the agent must not do, and where to look next.
+`AGENTS.md` is read **at the start of every session, by a machine, deciding what to do.** It earns its place with constraints: the naming rules, the package boundaries, where state lives, what the agent must not do, and where to look next.
 
 The tells are different too. A good README has a logo and a quickstart. A good `AGENTS.md` has a banned-filenames list.
 
 ## Side-by-side
 
-|                  | README.md                              | AGENTS.md                                         |
-| ---------------- | -------------------------------------- | ------------------------------------------------- |
-| **Reader**       | A human browsing the repo              | An agent about to edit the repo                   |
-| **Read when**    | Once, at discovery                     | Every session, at boot                            |
-| **Voice**        | Inviting, outward-facing               | Direct, second person, operational                |
-| **Content**      | What and why; install; links           | How to work here: rules, boundaries, prohibitions |
-| **Failure mode** | Out of date → a human is mildly misled | Out of date → an agent confidently builds wrong   |
-| **Convention**   | Universal, decades old                 | Emerging standard across agentic tools            |
+|                  | README.md                              | AGENTS.md                                                                                                              |
+| ---------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Reader**       | A human browsing the repo              | An agent about to edit the repo                                                                                        |
+| **Read when**    | Once, at discovery                     | Every session, at boot (many tools load it automatically)                                                              |
+| **Voice**        | Inviting, outward-facing               | Direct, second person, operational                                                                                     |
+| **Content**      | What and why; install; links           | How to work here: rules, boundaries, prohibitions                                                                      |
+| **Failure mode** | Out of date → a human is mildly misled | Out of date → an agent confidently builds wrong                                                                        |
+| **Convention**   | Universal, decades old                 | Open standard, stewarded by a foundation; [read by most agentic tools](contextqb://references/setup#agents-md-support) |
 
 ## How they work together
 
@@ -60,10 +60,12 @@ And neither replaces the map. The README is the front door, `AGENTS.md` is the o
 
 ## The deeper reason
 
-The agent does not accumulate context between sessions — every prompt starts from zero. The README was never designed for that reader. [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) is the principle: in an agentic project, the operating instructions are load-bearing, so they get their own file with its own conventions. [Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) is the playbook.
+Little of a session carries into the next one. Some tools keep notes of their own ([what agents keep](contextqb://references/setup#agent-memory)), but that memory is partial and belongs to the tool; the agent mostly starts from the files it is pointed at. The README was never designed for that reader.
+
+The same mechanics make `AGENTS.md` unusually powerful — and unusually dangerous when it's wrong. Because the root instruction file is read at the start of every session (and, in at least one tool, read again after the conversation is compacted), a stale rule in `AGENTS.md` is the most durable mistake a project can carry. When a rule changes, change the file the same day. [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) is the principle: in an agentic project, the operating instructions are load-bearing, so they get their own file with its own conventions. [Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) is the playbook.
 
 ## See also
 
-- [Playbook: Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) — the six-section template
+- [Playbook: Set Up AGENTS.md for Your Project](contextqb://playbooks/set-up-agents-md) — the seven-section template
 - [Principle: Documentation for Agent Alignment](contextqb://principles/documentation-for-agent-alignment) — who documentation is really for
 - [Principle: The Context Quarterback](contextqb://principles/context-quarterback-the-onboarding-map) — the boot manifest that pairs with AGENTS.md

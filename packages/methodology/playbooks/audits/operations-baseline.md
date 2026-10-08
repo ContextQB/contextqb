@@ -2,7 +2,7 @@
 id: operations-baseline
 title: Operations Baseline Audit
 summary: A recurring audit of the boring machinery that keeps a live application alive — monitoring, logging, alerting, backups, dependency health, and cost. Run it after launch and on a cadence, before the incident forces the question.
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -52,7 +52,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review Q4 (authored 2026-09-09)"
-  reviewer_notes: "Maintainer-approved for publish 2026-09-09. Authored from gap G-03 — stage 9 (Operations) had only incident-mode atoms; this is the routine-ops instrument. Follows the corpus's audit envelope + agent-instruction pattern."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.2; author self-checked; independent review pending; not operator-accepted): preserved, nine sections unchanged; adds agent and model spend to the cost section, with the warning that a billing alert is not a cap (dated provider-console reference); adds scheduled agents, agent-run jobs and MCP servers as operational components with owners and failure modes; restore claims need evidence — the restore test is performed or witnessed by you, on a non-production copy, and backup existence alone is UNKNOWN; adds the export-or-screenshot note for dashboards the agent cannot see; the audit can run as a monthly agent routine whose report you read — an option, not something this lesson sets up; no secrets or personal data in the report. Earlier note: Maintainer-approved for publish 2026-09-09. Authored from gap G-03 — stage 9 (Operations) had only incident-mode atoms; this is the routine-ops instrument. Follows the corpus's audit envelope + agent-instruction pattern."
 ---
 
 # Operations Baseline Audit
@@ -70,14 +70,14 @@ review:
 
 > You are performing an operations baseline audit of this application. The app is live. Your job is not features and not security — it is the machinery that detects trouble, survives data loss, and answers "what happened?" at 2am.
 >
-> Read the deployment configuration, CI workflows, environment setup, and any monitoring/logging configuration. Then produce a Markdown document with these sections, in order:
+> Read the project instructions, deployment configuration, CI workflows, environment setup, and any monitoring/logging configuration. You cannot see provider dashboards: use the settings exports and screenshots the operator gives you, and mark anything you could not see as UNKNOWN. Never copy a secret or personal data into the report. Then produce a Markdown document with these sections, in order:
 >
 > 1. **Executive summary.** 3–5 bullets: the overall operational posture and the single most important gap.
 > 2. **Monitoring and alerting inventory.** For each critical user flow (sign-in, the core action, checkout/payment if any): what signal fires if it breaks? Where does that signal go? Who reads it? Flag any critical flow with no signal.
 > 3. **Logging posture.** What is logged, where, with what retention? Could you reconstruct "what happened to user X at time T" from logs alone? Flag any logs containing secrets or PII.
-> 4. **Backup and restore verification.** What is backed up, where, how often? When was a restore last tested? A backup that has never been restored is a hypothesis, not a backup.
-> 5. **Dependency and vendor watch.** Every third-party service the app depends on (auth, database, payments, email, AI provider, hosting). For each: who owns the relationship, what breaks if it goes down, and how would we notice a deprecation announcement?
-> 6. **Cost and quota drift.** Current monthly cost per service, quota headroom (rate limits, storage, invocations), and what happens at 10× usage. Flag anything with no billing alert.
+> 4. **Backup and restore verification.** What is backed up, where, how often? When was a restore last tested, by whom, onto what, and what evidence shows it worked (for example, the restored copy's record counts or a check you ran against it)? A backup that has never been restored is a hypothesis, not a backup: report "backup exists, restore untested" as UNKNOWN, never as a pass. Do not run a restore yourself; the operator performs or witnesses it, on a non-production copy.
+> 5. **Dependency and vendor watch.** Every third-party service the app depends on (auth, database, payments, email, AI provider, hosting), and every agent-run component: scheduled agents, agent-run jobs, and the MCP servers the app or its developers rely on. For each: who owns it, what breaks if it goes down or misbehaves, and how would we notice a deprecation announcement or a run that silently stopped?
+> 6. **Cost and quota drift.** Current monthly cost per service — including model and agent spend, both the app's own model calls and the coding agents and scheduled agents that run on its behalf — quota headroom (rate limits, storage, invocations), and what happens at 10× usage. Flag anything with no billing alert, and say for each whether a hard spending limit exists: an alert notifies, it does not stop spending ([provider consoles and spending limits](contextqb://references/setup#provider-console)).
 > 7. **Runbook and ownership surface.** If the app breaks tonight, is there a document that says what to check first? Who is "on call" (even if that's just you)? Do `AGENTS.md` and `context.qb.yaml` reflect the system as it runs today?
 > 8. **Blocking findings.** Gaps that should be fixed this week — a critical flow with no alerting, an untested backup, an orphan dependency.
 > 9. **Non-blocking suggestions.** Improvements that can wait.
@@ -87,7 +87,8 @@ review:
 ## How to read the output
 
 - **Start with blocking findings.** An app with no alerting on its core flow is flying blind — that is a this-week fix.
-- **The restore test is the tell.** If the audit reports "backups exist" but no restore has ever been run, treat the backup as absent until tested.
+- **The restore test is the tell.** If the audit reports "backups exist" but no restore has ever been run, treat the backup as absent until tested. Do the restore yourself, or watch it done, on a copy — that is the one part of this audit you should not delegate.
+- **Run it on a schedule if you like.** An agent can run this audit monthly and leave you the report to read. That is an option you can set up later; the audit works by hand too.
 - **Compare against last time.** On the second and later runs, the delta is the story: new dependencies, new costs, new unmonitored flows. Save each report; the cadence is the point.
 
 ## Common mistakes
@@ -103,7 +104,8 @@ review:
 - [ ] Every critical flow has a signal and every signal has a reader.
 - [ ] A restore has been tested within the last quarter.
 - [ ] Every third-party dependency has an owner and a "what breaks" answer.
-- [ ] Billing alerts exist on every metered service.
+- [ ] Billing alerts exist on every metered service — including model and agent spend — and you know which ones also have a hard limit.
+- [ ] Every scheduled agent, agent-run job and MCP server has an owner and a "what breaks" answer.
 - [ ] A short runbook exists: what to check first, in what order, and who does it.
 - [ ] The next audit date is on the calendar.
 

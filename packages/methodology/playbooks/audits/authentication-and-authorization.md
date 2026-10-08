@@ -2,7 +2,7 @@
 id: authentication-and-authorization
 title: Authentication & Authorization Audit
 summary: A focused security audit of identity and access — verify login hardening, session security, authorization checks, and access control enforcement.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -50,12 +50,18 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; IDOR phase is the right kind of paranoid. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): adds what to give the agent (settings exports or screenshots when it cannot see the provider dashboard) and a test-target rule: request bursts, brute-force and IDOR tests run only against a local or staging copy with test accounts, never production without separate authority from its owner; numeric values become deliberate, written-down choices compared with the dated security-defaults reference instead of fixed recommendations; passkeys (WebAuthn) or another phishing-resistant method added to the MFA checklist without per-provider claims; provider names become categories (managed-services reference); provider dashboard paths are not given, because the auth-provider-settings reference is unverified; independence note; reports never include secret values or session tokens. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; IDOR phase is the right kind of paranoid. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # Authentication & Authorization Audit
 
-This audit examines how users prove their identity (authentication) and how the application controls what they can access (authorization). It's designed for applications using managed auth providers (Clerk, Supabase Auth, Auth0) and focuses on configuration gaps and implementation errors.
+This audit examines how users prove their identity (authentication) and how the application controls what they can access (authorization). It's designed for applications using a managed authentication provider or a framework auth library ([what common providers do](contextqb://references/tools#managed-services)) and focuses on configuration gaps and implementation errors.
+
+**Before you run it.**
+
+- **Give the agent what it cannot see.** Export or screenshot your auth provider's security, session, password and MFA settings; the agent cannot read the dashboard. Never paste secret keys or session tokens.
+- **Choose the test target.** The tests below send many requests, try passwords and change IDs in requests. Run them only against a local copy or a staging deployment with test accounts. Against production, the agent only reads code and configuration and makes ordinary single requests — never bursts, password guessing or ID tampering without separate authority from the system's owner.
+- **Use an independent reviewer.** A session that did not build the auth code, given the code and the settings. A different model can add variety; it does not by itself make the audit independent.
 
 ## Use this as an agent instruction
 
@@ -69,6 +75,8 @@ This audit examines how users prove their identity (authentication) and how the 
 > 4. Identify bypass paths, misconfigurations, and missing checks
 >
 > You must produce evidence-based findings, not generic advice.
+>
+> Test target: run active tests (request bursts, password attempts, ID tampering, role changes in requests) only against the local or staging target I name, with test accounts. If I have not named one, do not run them: mark the check UNKNOWN and write the test you would run. Never include a password, secret key or session token in your report.
 
 ---
 
@@ -95,7 +103,7 @@ Identify every way users can authenticate.
 
 ### Provider configuration
 
-Identify the auth provider (Clerk, Supabase Auth, Auth0, NextAuth, custom) and access its dashboard to verify configuration.
+Identify the auth provider (a hosted provider, a framework auth library, or custom) and verify its configuration — from the dashboard if you have access, otherwise from the settings export or screenshots the operator provides. Mark anything you could not see as UNKNOWN.
 
 ---
 
@@ -108,7 +116,7 @@ Check that authentication endpoints are protected from automated attacks.
 For each auth endpoint, verify:
 
 - [ ] Rate limiting is enabled
-- [ ] Rate limit is reasonable (10-20 attempts per minute max)
+- [ ] The limit is a deliberate, written-down number suited to your traffic (there is no single standard figure)
 - [ ] Rate limiting applies per-IP AND per-account
 - [ ] Rate limit responses are consistent (no enumeration via timing)
 
@@ -118,8 +126,8 @@ Test: "If I try 100 passwords in 1 minute, what happens?"
 
 Verify:
 
-- [ ] Account locks after N failed attempts (5-10 recommended)
-- [ ] Lockout duration is reasonable (15-30 minutes minimum)
+- [ ] Account locks, or slows down, after a set number of failed attempts — compare your setting with the standards and provider defaults in the dated [security defaults reference](contextqb://references/pricing#security-defaults)
+- [ ] Lockout duration is a deliberate choice, recorded with the threshold
 - [ ] Lockout notification is sent to account owner
 - [ ] Lockout can be bypassed via forgot password (not via login)
 
@@ -127,7 +135,7 @@ Verify:
 
 - [ ] Breached password detection is enabled
 - [ ] Common passwords are rejected
-- [ ] Password requirements enforce length (12+ chars)
+- [ ] Password requirements enforce a minimum length that follows a published standard (current figures in the [security defaults reference](contextqb://references/pricing#security-defaults)); length matters more than composition rules
 
 For each **FAIL**, document:
 
@@ -176,6 +184,7 @@ Verify MFA availability and enforcement.
 
 - [ ] MFA is available to all users
 - [ ] TOTP (authenticator app) is supported
+- [ ] Passkeys (WebAuthn) or another phishing-resistant method is available, if the provider offers one
 - [ ] SMS MFA is available but not the only option
 - [ ] MFA recovery process exists
 
@@ -242,7 +251,7 @@ List all routes and their protection status:
 
 ### Test route protection
 
-For each protected route:
+For each protected route, on the local or staging target only:
 
 1. **Unauthenticated access:** What happens if you access without a session?
 2. **Wrong role access:** What happens if a regular user accesses admin routes?
@@ -265,7 +274,7 @@ Route protection is not enough — verify access control on individual resources
 
 ### IDOR testing (Insecure Direct Object Reference)
 
-Test: "If I change the ID in a request, can I access another user's data?"
+Test, on the local or staging target with two test accounts: "If I change the ID in a request, can I access another user's data?"
 
 | Resource     | Endpoint        | Access control | IDOR test result |
 | ------------ | --------------- | -------------- | ---------------- |
@@ -372,9 +381,10 @@ Produce a Markdown document with:
 - Do NOT assume middleware is applied — verify each route
 - Do NOT skip IDOR testing — it's the most common authz bug
 - Do NOT trust UI-based protection — always test API directly
-- Test with actual requests, not just code review
+- Test with actual requests, not just code review — on the local or staging target only; if none is named, mark the check UNKNOWN and write the test
 - Flag any "unclear" authorization as a finding
-- Verify auth provider configuration in the dashboard, not just code
+- Verify auth provider configuration from the dashboard or the operator's export, not just code
+- Never include passwords, secret keys or session tokens in the report
 
 ---
 

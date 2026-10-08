@@ -2,7 +2,7 @@
 id: least-privilege-for-agents
 title: Least Privilege for Agents
 summary: Give the agent only the tools, scopes, and data it needs for the current task. Default to denying tool access; expand explicitly. Most security failures in agentic systems come from agents that had more capability than the task required.
-version: 0.1.1
+version: 0.2.0
 category: security
 audience:
   - novice-builder
@@ -29,6 +29,8 @@ related:
   - triage-your-secrets
   - untrusted-by-default
   - run-a-multi-agent-workflow
+  - mcp-project
+  - building-for-yourself-vs-others
 anti_patterns:
   - One MCP server exposes a single "do_anything" tool the agent always calls.
   - The agent has filesystem write access to the entire repo, including .env and secrets.
@@ -45,7 +47,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Capability × autonomy = risk framing lands. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): says where enforcement lives — posture items 1–3 are settings in the agent tool (permission lists, sandbox, approvals; dated agent-permissions reference), the AGENTS.md block is the intent layer, then verify with the guardrails playbook; each subagent or lane gets its own minimal scope (link to run-a-multi-agent-workflow); 'Whatever Cursor offers' becomes 'whatever your tool offers'; the uncited 'almost every notable incident' claim becomes the reasoning it supports; the periodic review can start from an export of the tool's permission settings and MCP server list; reciprocal link with building-for-yourself-vs-others. 2026-10-07 renewal B5 reciprocal link (0.1.2; author self-checked; independent review pending; not operator-accepted): related adds mcp-project, which now links here; body unchanged. Earlier notes: R3–R7 pass. Capability × autonomy = risk framing lands. R8 pending P4."
 ---
 
 # Least Privilege for Agents
@@ -69,7 +71,7 @@ A capable agent with narrow privileges is a productive collaborator. A capable a
 
 ## Why it matters in agentic dev specifically
 
-Almost every notable agentic-coding incident reported in the wild has the same shape: an agent with more capability than the task required, acting on a confused or compromised instruction. The fix in every case is not "smarter agent." It's "smaller scope."
+The dangerous case has a recognisable shape: an agent with more capability than the task required, acting on a confused or compromised instruction. The fix for that shape is not a smarter agent. It's a smaller scope.
 
 Three specific dynamics amplify this in agentic dev:
 
@@ -85,7 +87,7 @@ The defence is the same one humans use: scope down. Give the agent the smallest 
 
 You can claim this principle if all of the following hold:
 
-1. **The agent's tool list is finite and enumerated.** You can list every tool the agent can call. "Whatever Cursor offers" is not a list.
+1. **The agent's tool list is finite and enumerated.** You can list every tool the agent can call. "Whatever your tool offers" is not a list.
 
 2. **Destructive tools are gated.** Delete, deploy, drop, and send all require explicit per-call confirmation. The user clicks an approval, or a policy explicitly allows it.
 
@@ -93,7 +95,11 @@ You can claim this principle if all of the following hold:
 
 4. **Per-environment separation.** Your development agent has development credentials. Your production agent (if any) has separate, narrower credentials. They do not share.
 
-5. **Capabilities are revisited.** At least quarterly, you re-read your agent's capability set and remove the ones the agent didn't actually use.
+5. **Capabilities are revisited.** On a regular schedule, you re-read your agent's capability set and remove the ones the agent didn't actually use. Start from an export or screenshot of the tool's permission settings and its list of connected MCP servers.
+
+6. **Each subagent or lane has its own scope.** When several agents work at once, each gets only what its own task needs — a review lane can be read-only — rather than sharing one broad set ([Run a Multi-Agent Workflow](contextqb://playbooks/run-a-multi-agent-workflow)).
+
+**Where this is enforced.** Items 1–3 are settings in your agent tool — its permission lists, sandbox and approval modes — which actually stop actions ([what each tool offers](contextqb://references/setup#agent-permissions)). The security block in your `AGENTS.md` states your intent, so the agent understands the limits and works within them; it does not enforce anything by itself. Set both, then check that the tool really blocks or prompts, as the [guardrails playbook](contextqb://playbooks/set-security-guardrails-for-your-agent) shows.
 
 ## Signals you're getting this wrong
 

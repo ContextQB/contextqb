@@ -2,7 +2,7 @@
 id: ai-integration-security
 title: AI Integration Security Audit
 summary: A focused audit of every AI/LLM integration in the application — prompt injection surface, tool execution, autonomous loops, data leakage, cross-session contamination.
-version: 0.1.1
+version: 0.2.1
 audience:
   - novice-builder
   - founder
@@ -48,6 +48,8 @@ related:
   - suspicious-behavior-investigation
   - think-like-an-attacker
   - trust-boundaries-are-architecture
+  - mcp-project
+  - mcp-vs-paste
 tags:
   - security
   - ai-safety
@@ -55,7 +57,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.4 (agent)"
-  reviewer_notes: "R3–R7 pass; scope explicitly defers non-AI surfaces to application-security-baseline — good boundary hygiene. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 review correction (0.2.1; author self-checked; independent review pending; not operator-accepted): the filtering claim is scoped to prompt injection: filtering untrusted prompt text cannot guarantee protection or replace an enforced trust boundary, while input and schema validation, allowlists and output sanitisation keep their roles in their own contexts; the central rule stands — system prompts and prompt filters alone cannot enforce tool authority, so permissions and scope are enforced outside the model. 2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): provider and SDK names become categories, with the names to search for kept as discovery anchors in the dated AI-SDK and model-family references; the agent reads instructions and configuration first, never copies secret values, and runs injection demonstrations only on an authorized local or test copy; memory poisoning now includes the operator's own coding agent's memory; adds an MCP access check — compare actual exposure with an explicit access policy (intentionally public read-only content may be anonymous; protected data and actions need authentication and authorization), and when no policy is written, record the missing intent and ask rather than inferring it from what the code allows; the unsupported claim about provider training defaults is replaced by the dated provider-data-use reference; the rule against relying on system prompts is extended to input filtering, with the remedy of constraining authority, tools and outputs. 2026-10-07 renewal B5 reciprocal link (0.1.2; author self-checked; independent review pending; not operator-accepted): related adds mcp-project and mcp-vs-paste, which now link here; body unchanged. Earlier notes: R3–R7 pass; scope explicitly defers non-AI surfaces to application-security-baseline — good boundary hygiene. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 ---
 
 # AI Integration Security Audit
@@ -76,6 +78,8 @@ Designed to be executed by an AI agent against your codebase. The output is a Ma
 > 4. Produce prioritised, actionable findings
 >
 > Operate like a security engineer who specialises in agentic systems. Be skeptical of trust assumptions, especially the assumption that AI output is "just suggestions."
+>
+> Start by reading the project instructions and configuration. Never copy an API key or other secret value into your report — name the variable and where it is used. Do not run injection attempts against anything; if a demonstration would help, write it and run it only against a local or test copy I have authorized.
 
 ---
 
@@ -83,13 +87,13 @@ Designed to be executed by an AI agent against your codebase. The output is a Ma
 
 First, find every place an LLM is called. Do NOT assume — search the codebase for:
 
-- Direct API calls to OpenAI, Anthropic, Google, Mistral, Cohere, etc.
-- LangChain, LlamaIndex, AI SDK, Vercel AI usage
+- Direct API calls to model providers (provider names to search for are in the dated [model families reference](contextqb://references/models#families))
+- AI SDK and agent-framework usage (package names to search for are in the [AI SDKs reference](contextqb://references/tools#ai-sdks))
 - MCP server definitions (incoming or outgoing)
 - Embedding generation
 - Retrieval pipelines / vector store reads
 - Agent loops (agents that can call tools)
-- Browser-side AI usage (Web LLM, Transformers.js, etc.)
+- Browser-side AI usage (in-browser model libraries; see the same reference)
 - Background jobs that invoke models (summarisation, classification, generation)
 
 For each, document:
@@ -159,14 +163,14 @@ Trace every path from an untrusted source to the model. For each path, ask:
 
 Specifically inventory prompt injection vectors. Common ones:
 
-| Vector                                  | Example                                                                                           |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Direct user input**                   | User message contains "Ignore previous instructions and ..."                                      |
-| **Retrieval poisoning**                 | A document in the vector store contains hidden instructions                                       |
-| **Document ingestion**                  | An uploaded PDF / Markdown / HTML file contains injected text                                     |
-| **Tool result injection**               | A tool returns attacker-controlled content (e.g., web fetch) that the model then trusts           |
-| **Indirect injection via integrations** | A Slack message, email, or third-party comment crosses into the prompt                            |
-| **Memory poisoning**                    | An attacker writes content into the agent's persistent memory in one session that affects another |
+| Vector                                  | Example                                                                                                                                                           |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Direct user input**                   | User message contains "Ignore previous instructions and ..."                                                                                                      |
+| **Retrieval poisoning**                 | A document in the vector store contains hidden instructions                                                                                                       |
+| **Document ingestion**                  | An uploaded PDF / Markdown / HTML file contains injected text                                                                                                     |
+| **Tool result injection**               | A tool returns attacker-controlled content (e.g., web fetch) that the model then trusts                                                                           |
+| **Indirect injection via integrations** | A Slack message, email, or third-party comment crosses into the prompt                                                                                            |
+| **Memory poisoning**                    | An attacker writes content into the agent's persistent memory in one session that affects another — including the memory files of the operator's own coding agent |
 
 For each vector that exists in the system, document:
 
@@ -195,7 +199,11 @@ When the model decides to call a tool, what authorizes that call?
 - A per-tool permission check
 - A user confirmation gate
 
-"Just the model's decision" is the default in many MCP setups and is the most common high-severity finding.
+"Just the model's decision" is common in MCP setups and is a high-severity finding.
+
+### MCP access policy
+
+For each MCP server the application exposes or connects to, find its written access policy: which resources and tools are intentionally public and read-only (these may be open to anonymous callers), and which data or actions are protected (these need authentication and authorization — for remote servers, the protocol's authorization where the server supports it; see the [transports and authorization reference](contextqb://references/setup#mcp-transports-auth)). Then compare what is actually reachable with that policy. If no policy is written, do not infer the intended access from what the code currently allows — that would treat the implementation as its own specification. Record the missing intent as a finding, mark the access decision UNKNOWN, and ask the operator.
 
 ### Recursion / autonomous loops
 
@@ -247,7 +255,7 @@ Look for places AI integration data leaks where it shouldn't:
 ### Third-party model providers
 
 - What data leaves the system when you call the provider?
-- Does the provider train on your data by default? (Some do; some explicit opt-out is required.)
+- Does the provider train on, or retain, what you send? Defaults differ by provider and plan — check the dated [provider data use reference](contextqb://references/setup#provider-data-use) and the account's own settings.
 - Is the API key scoped to only this project?
 
 ---
@@ -318,7 +326,7 @@ Produce a single Markdown document with these sections:
 
 - Do NOT treat "the AI just suggests" as zero-trust. Suggestions become actions when users approve reflexively.
 - Do NOT skip small integrations. An autocomplete that calls the LLM with user input is a real surface.
-- Do NOT assume the system prompt protects against prompt injection — it is not a security control.
+- Do NOT assume the system prompt protects against prompt injection — it is not a security control. Filtering untrusted prompt text for injected instructions does not guarantee protection either, and cannot replace an enforced trust boundary. (Input and schema validation, allowlists and output sanitisation still matter in their own contexts — for example, validating a field's type or escaping text before it is rendered.) A system prompt or a prompt filter alone cannot enforce what the model is allowed to do: enforce that outside the model by limiting its tools and their scope, validating its outputs, and requiring approval for consequential actions.
 - Be specific about untrusted-input paths; "user input goes to the model" is not enough — trace which field reaches which prompt slot.
 - Treat retrieval and memory as input sources, not as trusted context.
 - Prioritise realistic exploitability over theoretical risks (e.g., "this integration is reachable by anonymous users and can call a destructive tool" beats "this model could in principle hallucinate").

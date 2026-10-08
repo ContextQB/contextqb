@@ -2,7 +2,7 @@
 id: detect-security-drift
 title: Detect Security Drift
 summary: Compare your current application state against your security baselines and prior audits to identify what changed, what degraded, and what new risks emerged.
-version: 0.1.1
+version: 0.2.0
 problem: |
   Security doesn't fail in one big moment — it degrades gradually. A setting gets changed, a new endpoint is added without auth, a secret stops rotating. By the time you notice, the drift has accumulated.
 when_to_use: |
@@ -27,7 +27,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.3 (agent)"
-  reviewer_notes: "R3–R7 pass; baseline-diff discipline is well operationalised. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
+  reviewer_notes: "2026-10-07 renewal B7 (0.2.0; author self-checked; independent review pending; not operator-accepted): the baseline is map-your-attack-surface's dated inventory, shared with the security-regression audit, compared against a named tag or commit instead of HEAD~30; steps 2, 4, 5 and 6 are marked mechanical, so an agent can draft the drift report on a schedule you choose while you disposition each item — automation is offered as an option, not installed, and the manual steps remain; step 3 needs an export of the auth settings, compared with your authentication policy; the planned context.qb security section is described as future, not current; written for one accountable operator, with collaborators optional; the agent table's tool name generalised. Earlier notes (2026-09-09 epistemology review): R3–R7 pass; baseline-diff discipline is well operationalised. R8 pending P4. F-06/F-15 resolved 2026-09-09 by R-02 lattice reconciliation (links now declared + reciprocal)."
 related:
   - application-security-baseline
   - map-your-attack-surface
@@ -36,6 +36,7 @@ related:
   - suspicious-behavior-investigation
   - triage-your-secrets
   - operations-baseline
+  - harden-your-authentication
   - launch-day-checklist
 ---
 
@@ -46,7 +47,7 @@ related:
 ## When to use this
 
 - After shipping a significant feature
-- After onboarding new team members or agents
+- After giving a new person or a new agent access
 - Monthly or quarterly as a hygiene check
 - When you have a "feeling" something changed
 - After a security incident (to understand scope)
@@ -67,8 +68,12 @@ You'll need:
 
 - Your previous attack surface inventory or security audit
 - Access to your current codebase
-- Access to your deployment and auth provider dashboards
-- Your `context.qb.yaml` if you maintain one
+- Access to your deployment and auth provider dashboards, or exports of their settings
+- Your `context.qb.yaml` if you maintain one (it records structure — workspaces, routes, decisions — not security state; a `security:` section is planned for the format but does not exist yet, so this playbook is the mechanism for now)
+
+**The baseline.** Your baseline is the dated inventory from [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface), plus your secrets inventory and authentication policy. The [Security Regression audit](contextqb://audits/security-regression) compares against the same baseline. Record the commit or release it describes, and tag it if you use git — for example `git tag security-baseline-2026-10`.
+
+**Mostly mechanical.** Steps 2, 4, 5 and 6 compare facts an agent can extract from the repository — routes, environment-variable names, middleware, MCP server lists, agent permission files — with the baseline. If you want, you can have an agent draft the drift report on a schedule (per release, or monthly), and spend your own time on the decisions in Step 8. Setting that up is an option, not a requirement; the manual steps below work on their own.
 
 **If you don't have a baseline:** Run [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) first. You can't detect drift without knowing where you started.
 
@@ -84,13 +89,13 @@ Collect your prior security state:
 - Auth configuration documentation
 - Your `context.qb.yaml` from the last stable point
 
-If you use version control, you can diff these documents:
+If you use version control, diff against the baseline's tag or commit rather than an arbitrary number of commits back:
 
 ```bash
-git diff HEAD~30 -- docs/security/attack-surface.md
+git diff security-baseline-2026-10 -- docs/security/
 ```
 
-Or ask your agent: "Show me all changes to security-related documentation in the last 30 days."
+Or ask your agent: "Show me all changes to security-related documentation and code since [baseline tag or date]."
 
 ### Step 2 — Scan for new public surfaces
 
@@ -125,7 +130,7 @@ Compare current auth settings to your documented policy.
 - New OAuth providers added
 - Password policy changes
 
-Check your auth provider dashboard against your authentication policy document.
+This is the one step the agent cannot do from the repository: export or screenshot your auth provider's settings and compare them with your authentication policy document (from [Harden Your Authentication](contextqb://playbooks/harden-your-authentication), Step 8).
 
 **Record your findings:**
 
@@ -194,10 +199,10 @@ Check `AGENTS.md`, MCP configurations, and any agent-related settings.
 
 **Record your findings:**
 
-| Agent       | Baseline capability  | Current capability  | Change                            |
-| ----------- | -------------------- | ------------------- | --------------------------------- |
-| Cursor      | Read/write workspace | Read/write + shell  | Shell added — review restrictions |
-| Support bot | Read knowledge base  | Read KB + user data | User data access — why?           |
+| Agent             | Baseline capability  | Current capability  | Change                            |
+| ----------------- | -------------------- | ------------------- | --------------------------------- |
+| Your coding agent | Read/write workspace | Read/write + shell  | Shell added — review restrictions |
+| Support bot       | Read knowledge base  | Read KB + user data | User data access — why?           |
 
 ### Step 7 — Compile the drift report
 
@@ -238,7 +243,7 @@ For each finding, decide:
 
 1. **Fix** — Restore the security control or remove the exposure
 2. **Accept** — Document why this drift is acceptable and set a review date
-3. **Escalate** — This needs broader discussion or approval
+3. **Escalate** — You can't decide yet: it needs more evidence, or someone else's approval (a client, a collaborator, a provider)
 
 **Do not leave findings in limbo.** Every item either gets fixed, accepted with documentation, or escalated.
 
@@ -267,7 +272,7 @@ Your drift detection is good enough when:
 - Quarterly for typical applications
 - After every major release
 - After any security incident
-- After team changes (new members may introduce drift unknowingly)
+- After someone, or some agent, gains or loses access
 
 ## See also
 

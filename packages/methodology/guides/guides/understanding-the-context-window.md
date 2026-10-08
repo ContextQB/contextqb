@@ -2,7 +2,7 @@
 id: understanding-the-context-window
 title: Understanding the Context Window
 summary: ContextQB is named for this. The context window is the agent's working memory — finite, lossy, and the most important variable in agentic coding. Understanding how it behaves is the difference between an agent that helps you and one that forgets what you told it five minutes ago.
-version: 0.2.5
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -33,7 +33,7 @@ related:
   - write-a-context-qb
   - write-an-adr
 next_steps:
-  - Open your IDE and identify which files are currently "in context" for your active agent session.
+  - Open your agentic tool and identify which files are currently "in context" for your active session.
   - Write or update your AGENTS.md so it primes any new session correctly.
   - Write or update your context.qb.yaml so the agent can boot from one file.
   - When you finish your next coding session, write a one-paragraph handoff note for next time.
@@ -41,33 +41,26 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.1 (agent)"
-  reviewer_notes: "2026-10-06 renewal fast-track repair (0.2.5; author self-checked; independent review pending; not operator-accepted): corrected the claim that tools read AGENTS.md and context.qb.yaml automatically: tools may load AGENTS.md; the manifest is read because AGENTS.md points to it. Earlier notes describe the previous version: F-19: context sizes updated (frontier now ~1M), IDE matrix rebuilt (Devin Desktop rename, Antigravity added, Claude Code auto memory + background agents noted). REVIEWED. R3, R4, R6, R7 pass; flagship. F-09 resolved 2026-09-09 by the September stack-verification pass: context sizes, IDE matrix (Devin Desktop rename, Antigravity added, auto memory noted), and model handling updated to current vendor docs. R8 passed P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in Codex's final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
+  reviewer_notes: "2026-10-07 renewal B3 review correction (0.3.1; author self-checked; independent review pending; not operator-accepted): removed the unsupported attribution of the status-document habit to a ContextQB course; the habit and its reasons are unchanged. 2026-10-07 renewal B3 (0.3.0; author self-checked; independent review pending; not operator-accepted): window sizes, the per-tool table and named tool and model call-outs moved to dated references (model families, agent memory and compaction, codebase search, instruction files), leaving the four patterns and questions to ask of your own tool; compaction replaces drop-the-oldest as the usual behaviour; tool memory described as partial, tool-owned and something to audit; the cost section notes prompt caching and softens the unsourced multipliers; the 1% arithmetic and dated phrases removed; the ContextQB MCP serves the methodology while project files come through the agent's workspace access. Review provenance neutralised. 2026-10-06 renewal fast-track repair (0.2.5; author self-checked; independent review pending; not operator-accepted): corrected the claim that tools read AGENTS.md and context.qb.yaml automatically: tools may load AGENTS.md; the manifest is read because AGENTS.md points to it. Earlier notes describe earlier versions: 2026-09-09 epistemology review — context sizes, the per-tool matrix and model handling were updated in place (moved to references in 0.3.0); R3, R4, R6, R7 pass; flagship; F-09 resolved 2026-09-09; R8 passed P4. 2026-10-02: body cross-references to the agent workstream method were added (those diffs were inspected in an independent final QA of the workstream vertical) and then finalized for publication (a wording edit that postdates that QA). The whole atom was not re-reviewed; last_reviewed reflects the earlier review."
 ---
 
 # Understanding the Context Window
 
-**Plain language:** When you talk to an AI agent, everything it's "thinking with" — your messages, its replies, the files it's read, the instructions it was given at the start — has to fit inside a fixed budget called the context window. It's the agent's entire working memory for that conversation. The window is finite. When it fills up, things fall out. Even before it fills up, the agent has a harder time finding what's in the middle. Almost every weird thing an agent does — forgetting a constraint you mentioned earlier, contradicting a decision you made, making the same mistake twice — comes back to how you managed the window.
+**Plain language:** When you talk to an AI agent, everything it's "thinking with" — your messages, its replies, the files it's read, the instructions it was given at the start — has to fit inside a fixed budget called the context window. It's the agent's entire working memory for that conversation. The window is finite. When it fills up, the tool compresses or drops older material to make room. Even before it fills up, the agent has a harder time finding what's in the middle. Almost every weird thing an agent does — forgetting a constraint you mentioned earlier, contradicting a decision you made, making the same mistake twice — comes back to how you managed the window.
 
 ## You're in the right place
 
-The context window is the single most important concept in agentic coding, and almost nobody explains it well. Marketing pages talk about "200K context" or "1M context" as if it were a feature like RAM. It is not. It's a constraint that shapes every interaction with the model, whether you notice or not.
+The context window is the single most important concept in agentic coding, and almost nobody explains it well. Marketing pages quote context sizes as if they were a feature like RAM. It is not. It's a constraint that shapes every interaction with the model, whether you notice or not.
 
 ContextQB is _literally named for this problem_. The brand is "Context Quarterback" — the idea that every repo needs someone (you, with help from the methodology) calling the plays about what context the agent gets, when, and in what order. This guide is the foundation that every other ContextQB piece builds on. If you understand the context window, the rest of the methodology stops looking like overhead and starts looking obvious.
 
 ## What the context window actually is
 
-Imagine a worktable. The agent — the LLM — can only work with what's on the table right now. If a piece of paper is on the table, the agent can read it, refer to it, reason about it. If a piece of paper is not on the table, that information may as well not exist for this agent, in this moment. There is no filing cabinet to pull things from. There is no memory of last week. There is only the table.
+Imagine a worktable. The agent — the LLM — can only work with what's on the table right now. If a piece of paper is on the table, the agent can read it, refer to it, reason about it. If a piece of paper is not on the table, that information may as well not exist for this agent, in this moment. The model has no filing cabinet it can reach into on its own. Some tools keep notes between sessions, but those notes count only once the tool puts them back on the table. There is only the table.
 
-The **context window** is the maximum amount of text that fits on the table. It's measured in **tokens** — roughly three-quarters of a word per token. Different models have different table sizes:
+The **context window** is the maximum amount of text that fits on the table. It's measured in **tokens** — roughly three-quarters of a word per token. Different models have different table sizes, and the sizes change with each release: the largest frontier windows are very large, while many smaller and locally run models hold far less. Current limits, with the date they were checked, are in the [model families reference](contextqb://references/models#families) and the [open-weight models reference](contextqb://references/models#open-weight).
 
-| Model family            | Typical context size (verified 2026-09)                  |
-| ----------------------- | -------------------------------------------------------- |
-| Claude (frontier)       | 1M tokens (Opus 5 / Sonnet 5 / Fable 5.1); 200K on Haiku |
-| GPT (frontier)          | ~1M tokens (GPT-6 Astra and the GPT-5.6 family)          |
-| Gemini                  | 1M+ tokens                                               |
-| Most open-source models | 32K–256K tokens (some newer ones reach 1M)               |
-
-For perspective: 200K tokens is roughly 150,000 words, or about three average-length novels — and frontier windows are now five times that. That sounds enormous. In practice, you'll be surprised how fast it fills: a whole-codebase read, a long session's history, and a few tool results can eat a megatoken window faster than you'd think.
+For perspective: 100,000 tokens is roughly 75,000 words — about one long novel. Large windows sound enormous. In practice, you'll be surprised how fast it fills: a whole-codebase read, a long session's history, and a few tool results can eat a megatoken window faster than you'd think.
 
 ## What lives in the context
 
@@ -79,21 +72,24 @@ When you send a message in an agentic IDE, the context typically contains all of
 4. **Every file the agent has opened or been shown.** When the agent reads `src/api.ts`, the entire contents of that file are now on the table, consuming as many tokens as the file is large.
 5. **Every tool call result** — output from any shell command, search, web fetch, or other tool the agent invoked.
 6. **Anything pulled via MCP** — like the ContextQB principles, when your agent calls `get_principle`, the principle's full Markdown text drops onto the table.
-7. **Project-level primers** — `AGENTS.md`, `.cursorrules`, `context.qb.yaml`, or whatever your IDE loads automatically at session start.
+7. **Project-level primers** — `AGENTS.md` or a tool-specific instruction file your tool loads at session start ([which tools read which files](contextqb://references/setup#agents-md-support)), plus anything those files tell the agent to read, such as `context.qb.yaml`.
+8. **Notes the tool saved for itself** — some tools write their own memory notes and load them at the start of each session ([what agents keep between sessions](contextqb://references/setup#agent-memory)).
 
-Each of these costs tokens. The agent has access to all of them, but the table only holds so much. Once you exceed the limit, the IDE has to make a decision about what to drop or compress. You usually don't get to choose what gets dropped — the IDE does, on a best-effort basis (usually dropping the oldest turns first).
+Each of these costs tokens. The agent has access to all of them, but the table only holds so much. When it fills, the tool has to make room. Most current agentic tools _compact_: they rewrite older turns as a shorter summary and keep the summary. Some simply drop the oldest turns. Either way, you usually don't get to choose what is lost — the tool does, on a best-effort basis.
 
 ## The two failure modes
 
 ### 1. The window runs out
 
-You hit the token limit. The IDE has to drop something. Usually it drops the earliest messages — which is _usually_ the worst possible thing to drop, because the earliest messages are where you established the goal, the constraints, the architecture. Now turn 80 is going great except the agent has forgotten the rule you set in turn 3 about not modifying the public API.
+You hit the token limit and the tool makes room. Usually it _compacts_ — collapsing earlier turns into a short summary. That's better than losing them outright, but it's lossy. A summary of "we decided to use SQLite" might leave out the four important reasons _why_, which the agent then violates because the reasons aren't on the table anymore. Or the rule you set in turn 3 about not modifying the public API survives only as a vague line, and turn 80 quietly breaks it.
 
-If your IDE doesn't drop things, it _summarizes_ them — collapsing earlier turns into a short note. That's better than dropping but still lossy. A summary of "we decided to use SQLite" might leave out the four important reasons _why_, which the agent then violates because the reasons aren't on the table anymore.
+A tool that drops the earliest messages instead does worse: those are where you established the goal, the constraints, the architecture.
+
+What survives compaction differs by tool. At least one tool re-reads the project's root instruction file from disk after compacting, while instructions you gave only in conversation do not come back ([details by tool](contextqb://references/setup#agent-memory)). That is the practical rule: **the primer carries the constraints, and the status document carries the detail.** Anything that must survive goes in a file, not only in chat.
 
 ### 2. Recall degrades even before the window runs out
 
-This is the subtle, dangerous one. Even when there's plenty of room on the table, the model doesn't attend to all of it evenly. There's a well-documented effect — **"lost in the middle"** — where models recall information from the start and end of the context much better than information from the middle. A massive 1M-token context window does not mean the model will reliably find the relevant detail buried at position 500,000.
+This is the subtle, dangerous one. Even when there's plenty of room on the table, the model doesn't attend to all of it evenly. There's a widely reported effect — **"lost in the middle"** — where models often recall information from the start and end of the context much better than information from the middle. A very large window does not mean the model will reliably find a detail buried halfway through it.
 
 This is why "just load the whole codebase into context" doesn't work as well as the marketing suggests. The model technically has access to it. It can't reliably _use_ all of it.
 
@@ -101,9 +97,9 @@ This is why "just load the whole codebase into context" doesn't work as well as 
 
 Three consequences flow directly from these mechanics. Internalise these and the rest of the methodology stops looking like overhead.
 
-### Consequence 1: The agent forgets between sessions
+### Consequence 1: Little carries between sessions unless you write it down
 
-There is no continuity between session A and session B unless you create it. When you open a new chat tomorrow, _everything is gone_ unless something brings it back onto the table. Whatever architectural decision you made yesterday doesn't exist for the new agent unless it's written somewhere the agent reads at the start of the new session.
+When you open a new chat tomorrow, yesterday's conversation is not on the table. Some tools bring a little back on their own — an instruction file they load, notes they saved — but that memory is partial, owned by the tool, often stored outside your project, and hard to inspect. Whatever architectural decision you made yesterday is reliable for the new session only if it's written in the repository, somewhere the agent reads at the start.
 
 This is the load-bearing claim behind every artifact in the methodology — `AGENTS.md`, `context.qb.yaml`, ADRs, status documents, the MCP. Each of them is a way to put yesterday's context back on tomorrow's table.
 
@@ -115,22 +111,22 @@ This is why the methodology pushes you toward short, structured sessions with ex
 
 ### Consequence 3: Loading files is not free, and it lingers
 
-When the agent reads `src/payments.ts` to answer your question, that file is now on the table. It will be on the table for the rest of the session. If `payments.ts` is 3,000 tokens, you're paying for those 3,000 tokens on _every subsequent turn_ — because most pricing charges for the full context on every model response.
+When the agent reads `src/payments.ts` to answer your question, that file is now on the table, and it stays there until the tool compacts or drops it. If `payments.ts` is 3,000 tokens, those 3,000 tokens are sent again on _every subsequent turn_ — because the whole context goes to the model on each response. Many providers charge less for input they have recently seen (prompt caching; [current API prices](contextqb://references/pricing#model-api)), which lowers the bill but not the attention problem: the file still competes for the model's attention.
 
 The corollary: **a thoughtful agent that reads one targeted file is cheaper and more accurate than an enthusiastic agent that reads twenty.** You want the table to hold what matters and nothing else.
 
 ## The cost shape
 
-Every token in your context is sent to the model on every turn of the conversation. If your context is 50,000 tokens and you exchange 20 messages, the model has been billed for processing roughly 1,000,000 tokens of input across that session — on top of whatever output it generated.
+Every token in your context is sent to the model on every turn of the conversation. If your context is 50,000 tokens and you exchange 20 messages, the model has processed roughly 1,000,000 tokens of input across that session — on top of whatever output it generated. Prompt caching can make much of that repeated input cheaper; it is still processed.
 
 Practical implications:
 
 - **Long sessions cost more per turn than short ones.** Not just in total — _per turn_. Each turn carries the full weight of everything before it.
 - **Reading large files mid-session** means every subsequent turn pays for those files. If you've read 20K tokens of code at turn 3, turn 50 pays for those 20K tokens too.
-- **Closing the session resets the meter.** A fresh session with the same primers but no accumulated history can be 5–10× cheaper than continuing a long one.
+- **Closing the session resets the meter.** A fresh session with the same primers but no accumulated history can be several times cheaper per turn than continuing a long one.
 - **Pay-per-token plans surface this cost; bundled plans hide it behind rate limits.** Either way, the underlying mechanic is the same — the cost just shows up in different places.
 
-This is not a small effect. The difference between a builder who manages context tightly and one who doesn't can be a 10× spread in monthly LLM bills for the same amount of actual progress.
+This is not a small effect. Managing context tightly can change your monthly bill several-fold for the same amount of actual progress — an estimate from how the arithmetic above compounds, not a measured study.
 
 ## Strategies (this is the ContextQB methodology)
 
@@ -143,7 +139,7 @@ Every session should start with the agent reading two things:
 - **[`AGENTS.md`](contextqb://playbooks/set-up-agents-md)** — operating instructions for the repo. What the project is, what conventions matter, what the agent should and shouldn't do.
 - **[`context.qb.yaml`](contextqb://playbooks/write-a-context-qb)** — the boot manifest. The project's map in a structured, machine-readable form.
 
-Together these are typically under 2,000 tokens — about 1% of a typical frontier context window. They prime the agent with what it needs to make good decisions for the rest of the session. Many coding agents load `AGENTS.md` automatically at the start of a session — support varies by tool and version, so check yours, and if it doesn't, start by asking the agent to read it. No tool needs to know about `context.qb.yaml` on its own: the agent reads it because a line near the top of `AGENTS.md` says to.
+Together these are typically a few thousand tokens at most — a small fraction of a large context window. They prime the agent with what it needs to make good decisions for the rest of the session. Many coding agents load `AGENTS.md` automatically at the start of a session — support varies by tool and version, so [check yours](contextqb://references/setup#agents-md-support), and if it doesn't, start by asking the agent to read it. No tool needs to know about `context.qb.yaml` on its own: the agent reads it because a line near the top of `AGENTS.md` says to.
 
 ### 2. Write decisions down so the table can re-load them
 
@@ -155,7 +151,7 @@ The principle: **a decision in your head exists for one session. A decision in a
 
 When you're partway through a feature and need to end the session, write a **status document** — what's been done, what's in progress, what's blocked, what decisions you made along the way. The next session reads it as one of the first things and resumes with full context, without you having to re-explain.
 
-The first ContextQB course treats this as one of the highest-leverage habits in agentic building. It is correct.
+It is one of the highest-leverage habits in agentic building: a few minutes of writing at the end of a session saves re-explaining at the start of the next.
 
 When the work spans several passes, needs a review, or needs your decision, the status document can grow into a workstream record: the same idea, plus the approved scope, review evidence, and outstanding decisions. See [Work With Agents Through Documentation](contextqb://guides/work-with-agents-through-documentation).
 
@@ -167,7 +163,7 @@ This is the alternative to "I'll just keep this chat open for two weeks." You wo
 
 ### 5. Use the MCP to pull only what you need
 
-The whole point of the [ContextQB MCP](contextqb://playbooks/build-mcp-for-project-context) is that it gives agents a way to pull in specific principles, playbooks, audits, or prompts _by URI_ — without you having to paste the whole methodology into the chat. The agent calls `get_principle` or `get_playbook` only when it needs the content. The rest stays off the table.
+The whole point of the [ContextQB MCP](contextqb://playbooks/build-mcp-for-project-context) is that it gives agents a way to pull in specific principles, playbooks, audits, or prompts _by URI_ — without you having to paste the whole methodology into the chat. The agent calls `get_principle` or `get_playbook` only when it needs the content. The rest stays off the table. (The ContextQB MCP serves the methodology and its references. Your own project's files reach the agent through its ordinary access to your workspace.)
 
 Every MCP server is, conceptually, a way to add precise things to the table only when they're needed.
 
@@ -177,82 +173,75 @@ When the agent asks "should I read the whole repo first?", the answer is almost 
 
 ### 7. Summarize before you compress
 
-If a session is approaching the limit, don't let the IDE auto-truncate randomly. Stop, ask the agent to write a summary of the session so far (file changes, decisions, open questions), save that summary to a status document, and start a fresh session with the summary as input. You've turned an about-to-degrade context into a curated one.
+If a session is approaching the limit, don't wait for the tool to compact on its own terms. Stop, ask the agent to write a summary of the session so far (file changes, decisions, open questions), save that summary to a status document, and start a fresh session with the summary as input. You've turned an about-to-degrade context into a curated one.
 
 ### 8. Restart sessions deliberately
 
 The single most under-used habit in agentic coding: **closing the chat and starting a new one when the current one feels heavy.** A new session with `AGENTS.md`, `context.qb.yaml`, the relevant ADRs, and your specific question on it will outperform a 200-turn marathon almost every time.
 
-## How modern IDEs help with the context window
+## How agentic tools help with the context window
 
-Knowing what your IDE does for you automatically is half the battle. The other half is doing the things it _doesn't_ do — which is where the methodology in the previous section earns its keep. As of 2026, every major agentic IDE has its own approach to context management. None of them solve the problem completely. They make different trade-offs between **automatic compression** (less work for you, but lossy) and **manual control** (more work for you, but precise).
+Knowing what your tool does for you automatically is half the battle. The other half is doing the things it _doesn't_ do — which is where the methodology in the previous section earns its keep. Every major agentic tool has its own approach to context management. None of them solve the problem completely. They make different trade-offs between **automatic compression** (less work for you, but lossy) and **manual control** (more work for you, but precise).
 
-Four patterns recur across the landscape. Recognising them is more useful than memorising any one IDE's features.
+Four patterns recur across the landscape. Recognising them is more useful than memorising any one tool's features.
 
 ### The four patterns
 
-**1. Context compaction** (also called summarization or compression). The IDE periodically takes the older parts of a conversation and rewrites them as a shorter summary. The summary stays in context; the original messages drop out. This buys you more room in the window at the cost of some fidelity — the summary loses detail. Some IDEs do this automatically and silently; some give you a manual trigger and show you what was compacted.
+**1. Context compaction** (also called summarization or compression). The tool periodically takes the older parts of a conversation and rewrites them as a shorter summary. The summary stays in context; the original messages drop out. This buys you more room in the window at the cost of some fidelity — the summary loses detail. Some tools do this automatically and silently; some give you a manual trigger, let you say what to keep, or show you what was compacted.
 
-**2. Codebase indexing** (also called semantic retrieval or RAG over the codebase). The IDE pre-processes your repo into an index — a vector embedding, a symbolic map, or a hybrid — that it can query on demand. When you ask a question, instead of loading every file into context, the IDE retrieves only the chunks that look relevant. This is what makes "ask a question about a 100K-file repo" feel workable. The trade-off: relevance is heuristic. The index can miss what matters and surface what doesn't.
+**2. Codebase search** (also called codebase indexing, semantic retrieval or RAG over the codebase). Some tools pre-process your repo into an index — a vector embedding, a symbolic map, or a hybrid — that they query on demand; others search the files directly with fast text search each time. When you ask a question, instead of loading every file into context, the tool retrieves only what looks relevant. This is what makes "ask a question about a 100K-file repo" feel workable. The trade-off: relevance is heuristic. The index can miss what matters and surface what doesn't.
 
-**3. Persistent memory** (also called long-term memory or agent memory). The IDE stores facts about your project, your preferences, or past sessions in a separate store that survives across conversations. The next session pulls from that store to bootstrap. This is the part of "the agent learns over time" that's actually real — and it's still early in 2026, mostly limited to short pinned facts rather than full session continuity.
+**3. Persistent memory** (also called long-term memory or agent memory). The tool stores facts about your project, your preferences, or past sessions in a separate store that survives across conversations, and the next session loads from it. This is the part of "the agent learns over time" that's actually real. It can be substantial — some tools write and maintain their own memory files — but it belongs to the tool: often outside your repository, only partly visible, not shared with your other tools or collaborators, and sometimes wrong. Treat auto-saved memories as drafts that earn promotion into `AGENTS.md`: read what your tool remembered, and move the true facts into a document the whole project shares.
 
-**4. Explicit context controls** (also called @-mentions, slash commands, or pins). Manual tools you use to say "load _this_ file, _these_ functions, _that_ documentation page" into the current context. Every modern IDE has some version of this. They are the most precise tool but the most labour-intensive.
+**4. Explicit context controls** (also called @-mentions, slash commands, or pins). Manual tools you use to say "load _this_ file, _these_ functions, _that_ documentation page" into the current context. Every modern agentic tool has some version of this. They are the most precise tool but the most labour-intensive.
 
-### How the major IDEs implement them (verified 2026-09 — vendor features move fast)
+### Which tool does what
 
-| IDE                                   | Compaction                                                                                                   | Codebase indexing                                       | Persistent memory                                                                                                                             | Explicit controls                                            |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **Cursor**                            | Automatic session summarization at long-context thresholds                                                   | Built-in codebase indexing (semantic + symbolic)        | Rules files (`AGENTS.md`, `.cursorrules`) plus memories; skills and hooks extend them                                                         | `@file`, `@folder`, `@codebase`, `@docs`, `@web`, `@git`     |
-| **Claude Code**                       | `/compact` (manual) plus auto-compact at threshold                                                           | Native file / grep / glob tools instead of an index     | Project rules in `CLAUDE.md` (and `AGENTS.md`); **auto memory** saves learnings across sessions on its own; subagents preserve scoped context | Slash commands, `@`-mentions, MCP for everything else        |
-| **Devin Desktop** (formerly Windsurf) | Automatic compaction; multi-agent command center (Spaces) keeps shared context across local and cloud agents | Live codebase awareness, real-time indexing             | Memories plus Spaces (shared context across a fleet of agents)                                                                                | `@`-mentions, pins, agent-task controls                      |
-| **Google Antigravity**                | Automatic summarization in long sessions                                                                     | Built-in codebase indexing                              | Rules files and agent instructions                                                                                                            | `@`-mentions, agent manager surfaces                         |
-| **GitHub Copilot (in VS Code)**       | Limited automatic summarization                                                                              | Workspace indexing (`@workspace`)                       | Custom instructions in `.github/copilot-instructions.md`; `AGENTS.md` supported                                                               | `@workspace`, `@terminal`, `@vscode`, slash commands         |
-| **Aider**                             | Token-budget-aware truncation                                                                                | **Repo-map** — a compact symbolic summary of every file | None native                                                                                                                                   | `/add`, `/drop`, `/clear`, `/tokens` for explicit management |
-| **Continue**                          | Customizable per provider                                                                                    | Plugs into your choice of indexer                       | Context providers can be persistent                                                                                                           | Highly customizable `@`-mentions and slash commands          |
-| **Zed**                               | Minimal — relies on user control                                                                             | Project search rather than full RAG                     | None native                                                                                                                                   | Slash commands and explicit file mentions                    |
-| **JetBrains (AI Assistant / Junie)**  | Limited                                                                                                      | Project-wide indexing for relevant files                | None native; Junie reads `AGENTS.md`                                                                                                          | `#`-mentions and project context selectors                   |
-| **Claude Desktop**                    | Per-conversation                                                                                             | None (it's a chat client, not a code IDE)               | **Claude Projects** — pinned files plus instructions per project                                                                              | Project files, MCP resources                                 |
+Exactly how each tool compacts, searches, remembers and loads instruction files changes with each release, so ContextQB keeps those details in dated references rather than in this guide:
 
-A few specific patterns worth calling out by name:
+- [What agents keep between turns and sessions](contextqb://references/setup#agent-memory) — memory files and compaction, for the tools whose documentation was checked.
+- [How agentic tools search a codebase](contextqb://references/tools#codebase-retrieval) — indexes, repository maps and on-demand search.
+- [Project instruction files each agent reads](contextqb://references/setup#agents-md-support) — `AGENTS.md` and tool-specific files.
 
-- **Cursor's automatic summarization** is the most opaque mechanism in the table. It happens silently during long sessions — the IDE detects you're approaching limits and compacts older turns into a summary. You usually don't see it happen; you only notice the side effects (the agent "forgetting" something specific you said earlier). The fix is the same as hitting a hard limit: restart with proper primers.
-- **Claude Code's `/compact`** is the inverse — explicit, user-triggered. You decide when to compact, you can see the summary it produced, and you can edit it before continuing. More work; more control.
-- **Devin Desktop's Spaces** (the former Windsurf) is the most ambitious attempt at shared agent memory in 2026: context persists across a whole fleet of local and cloud agents, not just one session. Powerful for teams running many agents; overkill if you run one agent in one project — `AGENTS.md` is still the load-bearing primer there.
-- **Claude Code's auto memory** is the other big 2026 shift: the agent saves learnings across sessions on its own, without you writing anything. Genuinely useful; also a drift risk — a wrong learned "fact" persists until someone reviews it. Treat auto-saved memories as drafts that earn promotion into `AGENTS.md`.
-- **Aider's repo-map** is a structurally different solution. Instead of indexing chunks for retrieval, it sends a compact symbolic outline of the whole repo (function signatures, class names, file structure) so the model has _shape_ without _content_. The agent asks for specific files only when it needs them. Old idea; still effective.
-- **Claude Desktop's Projects** behaves like a per-project context container: pinned files, instructions, and a knowledge base that any conversation inside the project sees automatically. The closest analogue to a stable boot primer in a chat-first product.
+Instead of memorising a feature matrix, ask these questions of the tool you actually use (its documentation answers most of them, and you can ask the agent to find out):
+
+- **Compaction.** Does it compact automatically? Can you trigger it yourself, tell it what to keep, or see the summary it produced? Which files does it re-read afterwards?
+- **Search.** Does it build an index of your code, or search the files directly each time? Can you see what it retrieved?
+- **Memory.** Does it save its own notes between sessions? Where are they stored, and can you read and edit them?
+- **Explicit controls.** How do you add a specific file, folder or documentation page to the current context — and how do you remove one?
+
+A tool that compacts silently is the most opaque case: you notice only the side effects (the agent "forgetting" something specific you said earlier). The fix is the same as hitting a hard limit — restart with proper primers. A tool that saves its own memories is useful and also a drift risk: a wrong learned "fact" persists until someone reviews it.
 
 ### What this means for the methodology
 
-No IDE in 2026 fully solves the context window problem. Each one solves _part_ of it, and the part it solves changes how you should layer the strategies from the previous section:
+No tool fully solves the context window problem. Each one solves _part_ of it, and the part it solves changes how you should layer the strategies from the previous section:
 
-- If your IDE has **strong codebase indexing** (Cursor, Copilot), you can write a thinner `AGENTS.md` because the IDE will find code on demand. But you still need primers for the things that aren't in the code — your priorities, your tone preferences, your "don't ever do X" rules.
-- If your IDE has **automatic compaction** (Cursor, Devin Desktop, Antigravity), you can have longer sessions before things degrade — but the compaction is lossy, so the "restart deliberately" habit still matters. The IDE delays the failure; it doesn't eliminate it.
-- If your IDE has **explicit controls only** (Aider, Zed), you need _more_ discipline, not less. Every file load is a choice you have to make. The upside: you always know exactly what's on the table.
-- If your IDE supports **MCP** (most modern ones now do), the [ContextQB MCP](contextqb://playbooks/build-mcp-for-project-context) plus any project-specific MCP servers give you the most precise context-loading mechanism available — pull specific resources by URI, only when needed.
+- If your tool has **strong codebase search**, you can write a thinner `AGENTS.md` because the tool will find code on demand. But you still need primers for the things that aren't in the code — your priorities, your tone preferences, your "don't ever do X" rules.
+- If your tool has **automatic compaction**, you can have longer sessions before things degrade — but the compaction is lossy, so the "restart deliberately" habit still matters. The tool delays the failure; it doesn't eliminate it.
+- If your tool **saves its own memories**, review them now and then. Promote what is true into `AGENTS.md` or a project document, and delete what is wrong.
+- If your tool relies mostly on **explicit controls**, you need _more_ discipline, not less. Every file load is a choice you have to make. The upside: you always know exactly what's on the table.
+- If your tool supports **MCP** (most agentic tools now do), the [ContextQB MCP](contextqb://playbooks/build-mcp-for-project-context) plus any project-specific MCP servers give you the most precise context-loading mechanism available — pull specific resources by URI, only when needed.
 
-A useful rule of thumb: **the more your IDE does automatically, the less you can _see_ what's actually in the context** — which makes failure modes harder to diagnose. The more explicit your IDE, the more work you do, but the easier it is to know exactly what the model is reasoning over.
+A useful rule of thumb: **the more your tool does automatically, the less you can _see_ what's actually in the context** — which makes failure modes harder to diagnose. The more explicit your tool, the more work you do, but the easier it is to know exactly what the model is reasoning over.
 
-The methodology from the previous section is designed to be IDE-agnostic. Boot primers, status documents, ADRs, and deliberate session restarts work regardless of which IDE you use. What changes per-IDE is _how much you can lean on the tool_ and _how much you have to do manually_. As IDEs mature, the manual share shrinks. It is not zero in 2026, and won't be soon.
+The methodology from the previous section is designed to be tool-agnostic. Boot primers, status documents, ADRs, and deliberate session restarts work regardless of which tool you use. What changes per tool is _how much you can lean on the tool_ and _how much you have to do manually_. As tools mature, the manual share shrinks. It is not zero today, and won't be soon.
 
 ## How different models handle the context window
 
-Like with [personalities](contextqb://guides/understanding-llms), each model has a context-handling style:
+Like with [working styles](contextqb://guides/understanding-llms), models differ in how they handle long context, and window sizes differ by model ([current limits](contextqb://references/models#families)). A few patterns hold across them:
 
-- **Claude** — generally strong at long context, with a full 1M-token window on the current frontier models (Opus 5, Sonnet 5, Fable 5.1). Especially strong when content is well-structured (markdown with clear headers, named sections). The "lost in the middle" effect is real but less severe than in some peers. Good for long agentic loops — Fable 5.1 exists precisely for those.
-- **GPT** — competitive on long context. Has a tendency to "forget" stylistic instructions or constraints when they're buried mid-context. Better at retrieving specific facts than at maintaining a complex persona across a long window.
-- **Gemini** — the largest windows in 2026 (1M+). Be careful: "in the window" is not "well-attended-to." Excellent for needle-in-haystack tasks, less so for whole-window reasoning.
-- **Local / open-source models** — typically much smaller windows (32K–256K, with some newer models reaching 1M). You have to be more selective about what loads. Disciplined context management is _mandatory_ if you're running these.
+- **Structure helps every model.** Content with clear headers and named sections is easier to use than one long wall of text.
+- **"In the window" is not "well attended to."** Finding one specific fact in a huge context is easier than reasoning evenly over all of it, and instructions buried mid-context are the first to be ignored.
+- **Smaller and locally run models usually have much smaller windows.** You have to be more selective about what loads; disciplined context management is _mandatory_ there.
 
-Match the model to the shape of the work. A massive whole-codebase context-load benefits from Gemini's window. A long, careful refactor benefits from Claude's attention quality. A series of targeted small tasks doesn't need a huge window at all.
+Match the model to the shape of the work. A one-off read of a very large document benefits from a large window. A long, careful refactor benefits from a careful model. A series of targeted small tasks doesn't need a huge window at all.
 
 ## Common mistakes
 
 - **Pasting an entire log file when you wanted one error.** Now you're paying tokens for thousands of lines you didn't need, on every turn, and the actual signal is buried.
 - **Starting a new chat and re-explaining from scratch.** You should have a handoff doc or `AGENTS.md` primer. If you don't, write one before you start the new chat.
-- **Letting auto-truncation decide what to drop.** Take control. Summarize and restart instead.
-- **Assuming the agent remembers yesterday.** It does not. Yesterday is on a different table.
+- **Letting automatic compaction decide what survives.** Take control. Summarize into a status document and restart instead.
+- **Assuming the agent remembers yesterday.** Some tools keep notes, but you can't count on which ones, or on their being right. If it matters, it's in a file the agent reads.
 - **Reading whole files when grep would have done.** Use the agent's search/grep tools first, narrow to the relevant section, then read only that section if needed.
 - **Long branching conversations.** Each branch keeps history. If you're exploring three different approaches, do them in three different sessions and merge the conclusions in a status document.
 - **Treating context size as the same thing as model intelligence.** A bigger window doesn't make the model smarter. It just means it's _allowed_ to look at more — not that looking at more will help.
@@ -282,5 +271,6 @@ The methodology won't save you from a context window that's been mismanaged. But
 - [Playbook: Write a context.qb for Your Repository](contextqb://playbooks/write-a-context-qb) — the structured boot manifest.
 - [Playbook: Write an Architectural Decision Record](contextqb://playbooks/write-an-adr) — how to make decisions durable across sessions.
 - [Playbook: Build an MCP for Reusable Project Context](contextqb://playbooks/build-mcp-for-project-context) — how to make your own context server.
-- [Guide: Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) — where window sizes and pricing live.
-- [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — model personalities and the cost shape.
+- [Guide: Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) — choosing and wiring the tool and the model.
+- [Guide: Understanding LLMs](contextqb://guides/understanding-llms) — model working styles and the cost shape.
+- References (dated facts): [model families and context limits](contextqb://references/models#families), [what agents keep between sessions](contextqb://references/setup#agent-memory), [how agentic tools search a codebase](contextqb://references/tools#codebase-retrieval), [model API prices](contextqb://references/pricing#model-api).

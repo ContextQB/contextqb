@@ -2,7 +2,7 @@
 id: security-drift-is-the-real-threat
 title: Security Drift Is the Real Threat
 summary: Most breaches come from changes that bypassed earlier protections, not from never having protections. A passing audit on Tuesday is not a passing audit on Friday. Continuous drift detection beats one-time hardening.
-version: 0.1.2
+version: 0.1.3
 category: security
 audience:
   - novice-builder
@@ -45,7 +45,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. Forward reference to the planned security: section in context.qb.yaml is honestly labeled; ROADMAP link verified. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.3; author self-checked; independent review pending; not operator-accepted): preserved; the repository-relative ROADMAP link, which learners cannot reach, now points to the public repository's format/ROADMAP.md; the 'when that ships' status points to the one first-party feature-status entry (the dated context.qb validation reference); the Stripe example labelled. Earlier notes (2026-09-09 epistemology review): R3–R7 pass. Forward reference to the planned security: section in context.qb.yaml is honestly labeled; ROADMAP link verified. R8 pending P4."
 ---
 
 # Security Drift Is the Real Threat
@@ -89,7 +89,7 @@ The discipline this principle requires is to **declare the security shape explic
 
 You can claim this principle if all of the following hold:
 
-1. **You have a declared security shape.** Somewhere — a Markdown checklist, a `security:` section in `context.qb.yaml` when that ships, an architecture doc — there is an explicit description of what's public, what's authed, what's privileged, and what the trust relationships are.
+1. **You have a declared security shape.** Somewhere — a Markdown checklist, a `security:` section in `context.qb.yaml` when that ships (its current status is tracked in the [context.qb validation reference](contextqb://references/setup#context-qb-validation)), an architecture doc — there is an explicit description of what's public, what's authed, what's privileged, and what the trust relationships are.
 
 2. **You check that shape against reality periodically.** Quarterly at a minimum; per-release ideally; per-change in steady state. The check is something you actually do, not something on the roadmap.
 
@@ -103,7 +103,7 @@ You can claim this principle if all of the following hold:
 
 - **You audit once, then never again.** A launch audit exists; nothing since.
 - **"We checked that already."** A protection assumed without re-verification against the current code.
-- **No one knows when secrets were last rotated.** "I think Stripe was last year? Maybe?"
+- **No one knows when secrets were last rotated.** "I think the payment key (Stripe, say) was last year? Maybe?"
 - **New features look the same as old features.** Public endpoint, no extra thought, no extra check.
 - **Your auth middleware is opt-in.** Routes have to remember to apply it; nothing breaks if they don't.
 - **Production incidents trace back to "small" changes.** The post-mortem says "this should have been caught." The next post-mortem will say the same thing.
@@ -122,5 +122,5 @@ You can claim this principle if all of the following hold:
 - [Playbook: Detect Security Drift](contextqb://playbooks/detect-security-drift) — operational workflow for catching drift
 - [Audit: Application Security Baseline](contextqb://audits/application-security-baseline) — the static audit that the declared shape lets you re-run cheaply
 - [Audit: Security Regression](contextqb://audits/security-regression) — change-focused audit comparing current state to baseline
-- [`packages/qb/spec/ROADMAP.md`](../../../qb/spec/ROADMAP.md) — the planned `security:` section that operationalises this principle
+- [The `context.qb` format roadmap](https://github.com/ContextQB/contextqb/blob/main/format/ROADMAP.md) — the planned `security:` section that operationalises this principle
 - [Principle: Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate)

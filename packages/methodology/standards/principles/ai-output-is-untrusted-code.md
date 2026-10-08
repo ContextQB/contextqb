@@ -2,7 +2,7 @@
 id: ai-output-is-untrusted-code
 title: AI Output Is Untrusted Code
 summary: When an agent generates code that runs (tool calls, file edits, shell commands, API requests), treat it like input from the public internet. Constrain it, validate it, and never execute it without intent.
-version: 0.1.1
+version: 0.1.2
 category: security
 audience:
   - novice-builder
@@ -44,7 +44,7 @@ review:
   status: final
   last_reviewed: "2026-09-09"
   reviewer: "epistemology-review P2.2 (agent)"
-  reviewer_notes: "R3–R7 pass. 'Every prompt is a curl | bash' is the corpus's sharpest security line. R8 pending P4."
+  reviewer_notes: "2026-10-07 renewal B7 (0.1.2; author self-checked; independent review pending; not operator-accepted): force 1 no longer claims auto-execute is the default in most tools — defaults differ by tool and version (dated agent-permissions reference), approval prompts are common, and convenience modes put approve-everything one setting away — with the rule never to turn approve-everything on for a session that can touch secrets, production or git history; posture items 1 and 4 point to the tool's permission settings and the guardrails playbook; item 5 says where refusals and approvals are recorded (the session transcript, and hook logs if you add hooks). Earlier notes (2026-09-09 epistemology review): R3–R7 pass. 'Every prompt is a curl | bash' is the corpus's sharpest security line. R8 pending P4."
 ---
 
 # AI Output Is Untrusted Code
@@ -63,7 +63,7 @@ This does not mean "don't use agents." It means: build the boundary between "age
 
 Three forces converge to make this principle load-bearing:
 
-1. **Auto-execute is the default.** Most agent IDEs and MCP clients are configured to execute tool calls automatically. The agent suggests a shell command and runs it in the same breath. This is the convenient default and the most expensive one — there is no review window where a human or policy can intervene.
+1. **Auto-execute is one setting away.** Agentic tools differ in what they run without asking, and their defaults change between versions ([what each tool does today](contextqb://references/setup#agent-permissions)). Many ask before shell commands or destructive actions, but most also offer a convenience mode that approves everything, and some start in an automatic mode. Once that mode is on, the agent suggests a shell command and runs it in the same breath — there is no review window where a human or policy can intervene. The rule: **never turn on approve-everything for a session that can touch secrets, production or your git history.**
 
 2. **Capability accretion is silent.** Yesterday the agent could only read files. Today you wired up shell access for a one-off task. Tomorrow you forgot to remove it. The agent's blast radius has grown without anyone tracking it.
 
@@ -75,15 +75,15 @@ The combined effect is that agentic systems make it trivial to execute untrusted
 
 You can claim this principle if all of the following hold:
 
-1. **No auto-execute for destructive operations.** Anything that deletes, deploys, sends, charges, or mutates external state requires explicit human (or automated policy) approval. "Read this file" can auto-execute; "remove this file" cannot.
+1. **No auto-execute for destructive operations.** Anything that deletes, deploys, sends, charges, or mutates external state requires explicit human (or automated policy) approval. "Read this file" can auto-execute; "remove this file" cannot. This is a setting in your agent tool, not a habit to remember ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
 
 2. **Generated code that mutates external state is reviewed before merge.** Even if the agent wrote it, a human or a CI gate reads it before it lands in main. Agent-generated diffs are not exempt from review.
 
 3. **Secrets are not in the agent's reach during normal operation.** The agent does not have ambient access to `.env`, the production database, or your cloud account. If it needs them for a specific task, the access is scoped, time-bound, and named.
 
-4. **The agent's tool list is enumerable.** You can name every tool the agent can call and what each one does. "Whatever the IDE supports" is not an answer.
+4. **The agent's tool list is enumerable.** You can name every tool the agent can call and what each one does — the tool's permission settings and its list of connected MCP servers are where to look. "Whatever the IDE supports" is not an answer.
 
-5. **A failed agent action is logged.** If the agent tried to do something it wasn't allowed to do, there is a record. You learn from refusals, not just from successes.
+5. **A failed agent action is logged.** If the agent tried to do something it wasn't allowed to do, there is a record — at minimum the session transcript, and the logs of any hooks you add. You learn from refusals, not just from successes.
 
 ## Signals you're getting this wrong
 

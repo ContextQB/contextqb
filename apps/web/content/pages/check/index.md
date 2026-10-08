@@ -151,9 +151,10 @@ firstrun_eyebrow: Membership
 firstrun_heading: What happens on first run.
 firstrun_paragraphs:
   - >-
-    The first time you run any `contextqb` subcommand, a membership token is
-    silently provisioned and stored locally. There is no prompt, no
-    interruption — you see the normal output of whatever you ran.
+    The first time you run a `contextqb` command on your machine (outside CI,
+    and unless you have opted out), the CLI registers and stores a membership
+    token locally. There is no prompt — you see the normal output of whatever
+    you ran.
   - >-
     The token unlocks two things: community insights at [/insights](/insights)
     and the token-gated MCP tools that summarise aggregate trends. Telemetry

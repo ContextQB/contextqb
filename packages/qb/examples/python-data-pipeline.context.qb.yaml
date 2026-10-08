@@ -5,7 +5,8 @@
 #
 # Sections: project, stack, tree, decisions, paths, status, entry_points
 # Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
-# Example only: a fictional project; names and versions are illustrative.
+# Example only: a fictional project; names, versions and tool choices are
+# illustrative, not recommendations.
 
 qb: "1.0"
 
@@ -25,7 +26,7 @@ stack:
   data: pandas + pyarrow; Snowflake via snowflake-connector-python
   test: pytest + hypothesis
   deploy: Prefect Cloud (workers on Fly.io)
-  package: uv (formerly pip-tools)
+  package: uv
 
 tree:
   src/extract: source-by-source extractors (stripe, postgres, ledger)
@@ -49,7 +50,7 @@ paths:
 status:
   daily-reconciliation: green (last 30 days, no missed runs)
   v2.4: in-progress (adding multi-currency support)
-  warehouse-migration: planned (Snowflake → BigQuery, Q3)
+  warehouse-migration: planned (Snowflake → BigQuery, Q3 2027)
   oncall: rotates weekly; runbook at docs/runbook.md
 
 entry_points:
