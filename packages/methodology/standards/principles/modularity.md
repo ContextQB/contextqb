@@ -2,7 +2,7 @@
 id: modularity
 title: Modularity
 summary: Modules should have clear boundaries and limited responsibilities — small, well-named, and replaceable.
-version: 0.1.1
+version: 0.1.2
 category: modularity
 audience:
   - novice-builder
@@ -50,7 +50,7 @@ related:
 
 A module is a unit of code with a clear boundary and a clear purpose. A repository is modular when you can describe each module's job in one sentence.
 
-AI assistants tend to expand existing files rather than create new ones, because creating a new file requires more context. Without explicit pushback, this drifts every repository toward a small number of huge files.
+Agents tend to extend whichever file they were pointed at, unless they are told where new code belongs. Without explicit direction — in the request, or in `AGENTS.md` — this drifts every repository toward a small number of huge files.
 
 ## The rule
 
@@ -76,6 +76,8 @@ If you cannot name a module without using "and," it is two modules.
 ## How to ask an agent to enforce this
 
 > List every module that is larger than 300 lines. For each, identify the distinct responsibilities it has accumulated. Propose a target module structure with file names and responsibilities.
+
+The 300-line figure is a prompt to look, not a rule: a long file with one clear job is fine, and a short one with three jobs is not. Two of the symptoms above can be checked mechanically. Ask the agent to add linter rules that flag circular imports and files over a size you choose, and to run them with the other verifiers, so the check happens every time instead of when someone remembers.
 
 ## When to break the rule
 

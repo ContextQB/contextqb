@@ -2,7 +2,7 @@
 id: security-critical-code-review
 title: Security-Critical Code Review
 summary: A code review prompt specifically for security-sensitive changes — authentication, authorization, secrets handling, input validation, and data access.
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -30,6 +30,7 @@ related:
   - trust-boundaries-are-architecture
   - understanding-llms
   - untrusted-by-default
+  - run-an-agent-workstream
 tags:
   - security
 
@@ -39,18 +40,20 @@ tags:
 
 This prompt is for reviewing code that touches security-sensitive areas. It's more focused than [Think Like an Attacker](contextqb://prompts/think-like-an-attacker) — instead of broad adversarial thinking, it runs a specific checklist for common security mistakes in critical code paths.
 
-Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access.
+Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access. Run it in a session that did not write the change — a fresh session, a second agent, or a person — given the change and what it was meant to do. A different model can add variety; it does not by itself make the review independent. Fill `{{CHANGE_DESCRIPTION}}` with what the change is meant to do, or "none".
+
+Some agentic tools and code hosts can run a review automatically on changes that match a rule — for example, changes touching authentication, secrets or data-access code. If yours can, this prompt is a good one to configure that way, provided the reviewer is not the agent that wrote the change. Pasting it by hand works everywhere.
 
 ## The prompt
 
 ```text
 You are performing a security-focused code review of the following changes: {{SCOPE_PATH}}
 
-{{#if CHANGE_DESCRIPTION}}
-Change description: {{CHANGE_DESCRIPTION}}
-{{/if}}
+Change description (or "none"): {{CHANGE_DESCRIPTION}}
 
 Your task is to review this code specifically for security implications. This is NOT a style review or a functional review — focus only on security.
+
+Where you are permitted to run commands, run the project's tests and its dependency and security scanners, and record each command and its result; treat scanner matches as leads to confirm in the code. If a vulnerability would be clearer demonstrated, write a test that exploits it and run it only against a local or test copy, and only if I have authorized it. Do not change the code under review.
 
 ## Checklist review
 
@@ -138,7 +141,7 @@ Based on your review, provide:
 ## What to do with the output
 
 1. **BLOCK** — Do not merge. Fix the critical issue first.
-2. **REQUEST CHANGES** — Address the listed issues, then re-review.
+2. **REQUEST CHANGES** — Address the listed issues, then re-review. If you decide to merge now and fix later, record each requested change as an item in your outstanding-items register (see [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5) with an owner, so it is not lost.
 3. **APPROVE** — Safe to merge.
 
 If confidence is "Low," consider requesting a second review or doing manual testing.
@@ -157,7 +160,7 @@ If confidence is "Low," consider requesting a second review or doing manual test
 
 ### Input handling
 
-- [x] **Validation exists** — PASS: Zod schema at line 8
+- [x] **Validation exists** — PASS: schema validation (Zod, in this example) at line 8
 - [x] **Validation is server-side** — PASS
 - [x] **Type coercion is safe** — PASS
 - [x] **Output is sanitised** — N/A: JSON response only

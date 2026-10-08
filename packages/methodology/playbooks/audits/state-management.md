@@ -2,8 +2,9 @@
 id: state-management
 title: State Management Audit
 summary: A targeted audit that maps every piece of state in a system, identifies owners, surfaces duplicates, and flags derived-but-stored values.
-version: 0.1.1
+version: 0.2.0
 audience:
+  - novice-builder
   - founder
   - developer
   - agent
@@ -49,7 +50,7 @@ This audit is narrower than a full architecture review. It focuses on the single
 > Produce a Markdown document with these sections, in order:
 >
 > 1. **Executive summary.** 3–5 bullets.
-> 2. **State inventory.** A table with columns: `name`, `kind` (server / durable-client / shared-transient / local), `owner` (file or module), `source`, `consumers`, `duplicates`, `derived`. Cover every shared state value. Use real file paths.
+> 2. **State inventory.** A table with columns: `name`, `kind` (server / durable-client / shared-transient / local), `owner` (file or module), `source`, `consumers`, `duplicates`, `derived`, `verified by` (read the code, or ran the app and observed it). Cover every shared state value. Use real file paths. Run the app only if you are permitted to, against a local or test copy.
 > 3. **Ownership analysis.** For each row in the table where the owner is unclear, explain what is ambiguous and where ownership should live.
 > 4. **Duplication and drift.** For each pair of duplicates, explain why they exist and propose a single owner.
 > 5. **Derived-but-stored.** Any value that could be computed from another value but is stored as its own state.

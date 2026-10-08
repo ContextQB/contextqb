@@ -2,7 +2,7 @@
 id: machine-verifiable-substrate
 title: Machine-Verifiable Substrate
 summary: Agents are generators; verifiers are what keep them honest. Every architectural choice that gives you a mechanical verifier tightens the feedback loop and reduces silent drift.
-version: 0.1.1
+version: 0.2.2
 category: structure
 audience:
   - novice-builder
@@ -19,7 +19,7 @@ tags:
   - build-time
 anti_patterns:
   - Accepting agent output without a mechanical check — reviewing generated code line by line instead of letting the compiler reject it.
-  - Using a permissive runtime where a strict one exists (JavaScript when TypeScript is available, Python without type hints when Pyright/mypy is available).
+  - Using a permissive runtime where a strict one exists (JavaScript when TypeScript is available, Python without type hints when a Python type checker is available).
   - Trusting string-typed data across boundaries instead of validating with a schema.
   - Disabling strict modes, suppressing lints, or skipping CI to "move fast."
   - Treating tests as the only verifier when compile-time checks are available.
@@ -39,10 +39,12 @@ related:
   - new-project-foundation
   - programming-language-selection
   - retrofit-drift-detection
+  - review-an-agent-workstream
   - security-drift-is-the-real-threat
   - set-up-drift-detection
   - setting-up-git-and-github
   - refactor-with-duplicates
+  - untrusted-by-default
 
 ---
 
@@ -58,15 +60,23 @@ The answer is verifiers: compilers, type checkers, schema validators, linters, f
 
 Not all verifiers are equal. They differ in when they run and what they catch.
 
-| Level | Verifier                    | When it runs                          | What it catches                                                           |
-| ----- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
-| 1     | **Compiler / type checker** | Build time, before any execution      | Type mismatches, missing fields, unreachable code, invalid imports        |
-| 2     | **Schema validator**        | Runtime, at I/O boundaries            | Malformed payloads, missing required fields, wrong types in external data |
-| 3     | **Linter / formatter**      | Build time or pre-commit              | Style violations, common bugs, unused variables, complexity thresholds    |
-| 4     | **Contract test**           | CI, against real or mock dependencies | Integration mismatches, broken API contracts                              |
-| 5     | **Human review**            | Pull request, post-generation         | Logic errors, design mistakes, domain-specific correctness                |
+| Level | Verifier                                          | When it runs                           | What it catches                                                           |
+| ----- | ------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- |
+| 1     | **Compiler / type checker**                       | Build time, before any execution       | Type mismatches, missing fields, unreachable code, invalid imports        |
+| 2     | **Schema validator**                              | Runtime, at I/O boundaries             | Malformed payloads, missing required fields, wrong types in external data |
+| 3     | **Linter / formatter**                            | Build time or pre-commit               | Style violations, common bugs, unused variables, complexity thresholds    |
+| 4     | **Automated tests** (unit, integration, contract) | Before commit and in CI                | Wrong behaviour in specific cases, broken integrations and API contracts  |
+| 5     | **Review**                                        | After the change, before you accept it | Logic errors, design mistakes, "it works but does the wrong thing"        |
 
 Level 1 is the cheapest and fastest. Level 5 is the most expensive and slowest. Every error you can push to a lower level is a win.
+
+Which tool fills each role depends on your language; the dated [verifiers reference](contextqb://references/tools#verifiers-by-language) lists the current options.
+
+**Tests are often written by the agent too.** That makes them cheap, and it also means a test can encode the agent's misunderstanding: code and test agree with each other and are both wrong. Two habits help. Read the test _names_ as a plain-language specification ("rejects an order with no items", "refunds only the paying user") and ask about anything that doesn't match what you meant. And when you find a bug, ask the agent for a test that reproduces it _before_ the fix, so you see it fail and then pass.
+
+**Review, for you, is not reading every line.** Level 5 is two things: an independent review (a second agent session, or another person, checking the change against the plan) and your own check of the behaviour: use the feature the way a user would and see whether it does what you asked. The [review prompt](contextqb://prompts/review-an-agent-workstream) is a ready-made instruction for the independent half.
+
+**The one rule.** If the build, the type check, the linter and the tests have not all passed — with their output shown to you, not just reported — the work is not done.
 
 ## Why this matters for AI-assisted development
 
@@ -74,7 +84,7 @@ When a human writes code, they hold context in their head. They notice when some
 
 If the verifiers are weak, the agent's mistakes reach you. You become the verifier, reviewing every line. That does not scale.
 
-If the verifiers are strong, the agent's mistakes are rejected before you see them. The agent iterates until the build passes. You review logic and design, not typos and type errors.
+If the verifiers are strong, the agent's mistakes are rejected before you see them. Current agents read a failing check and fix it in a loop, quickly — so every mistake a verifier can catch costs you nothing. You review logic, design and behaviour, not typos and type errors.
 
 ## Worked examples
 
@@ -99,7 +109,7 @@ interface User {
 
 async function getUser(id: number): Promise<User> {
   const response = await fetch(`/api/users/${id}`);
-  return response.json() as User;
+  return (await response.json()) as User;
 }
 
 const user = await getUser(123);
@@ -110,7 +120,7 @@ The TypeScript version catches the typo before execution. The agent gets immedia
 
 ### Schema validation at boundaries
 
-Even in TypeScript, `response.json()` returns `any` (or `unknown` in strict mode). The type assertion `as User` is a lie — it tells the compiler to trust you, not to verify.
+Even in TypeScript, `response.json()` returns `any` — strict mode does not change that. The type assertion `as User` is a lie — it tells the compiler to trust you, not to verify.
 
 ```ts
 // Unverified boundary — runtime surprises
@@ -129,9 +139,9 @@ const data = UserSchema.parse(await response.json()); // throws if invalid
 
 The schema validator is a Level 2 verifier. It runs at runtime, but it runs at the boundary — before invalid data propagates through your system.
 
-### Strict linter configurations
+### Strict compiler and linter settings
 
-A linter can catch what the compiler cannot: unused variables, implicit `any`, missing return types, overly complex functions.
+Default settings let a lot through. The compiler's strict settings — shown below for TypeScript — reject implicit `any`, unused variables and parameters, and other loose code. A linter adds rules the compiler doesn't have, such as risky patterns and overly complex functions; those rules live in the linter's own configuration file.
 
 ```json
 // tsconfig.json — strict mode
@@ -164,10 +174,9 @@ Not every context justifies a strict substrate:
 
 - **Notebooks and exploratory analysis** — the goal is iteration speed, not production durability.
 - **One-off scripts** — if it runs once and is discarded, verification overhead may exceed value.
-- **ML training loops** — the model is the verifier; the code is scaffolding.
 
 Even here, consider partial strictness: type hints in Python cost little and catch much.
 
 ## How to ask an agent to enforce this
 
-> Before implementing this feature, list every I/O boundary (API calls, database queries, file reads, user inputs). For each, name the schema validator that will reject invalid data. If no validator exists, create one. Then implement, ensuring the code passes `pnpm typecheck` and `pnpm lint` with zero suppressions.
+> Before implementing this feature, list every I/O boundary (API calls, database queries, file reads, user inputs). For each, name the schema validator that will reject invalid data. If no validator exists, create one. Then implement, ensuring the code passes this project's typecheck, lint and test commands with zero suppressions. Show me the commands you ran and their output.

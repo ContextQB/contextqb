@@ -2,7 +2,7 @@
 id: review-your-ai-integration
 title: Review Your AI Integration
 summary: For any agent or LLM call in your system, document what it reads, what it writes, what it can execute, what data it sees, and where untrusted input can influence it.
-version: 0.1.1
+version: 0.1.3
 problem: |
   AI integrations frequently expand in capability without anyone tracking the cumulative trust surface. By the time something goes wrong, no one can answer "what can this thing actually do?"
 when_to_use: |
@@ -70,18 +70,21 @@ If you have an `AGENTS.md` or `context.qb.yaml`, pull them up — both will spee
 
 ## Steps
 
+**Who does what.** The agent can draft Steps 1–5 from the code and configuration. Steps 6 and 7 are a joint effort: the agent traces the paths, you decide what each capability is really needed for. Step 8 — the worst case for each integration — is yours to write, because it depends on what you would lose.
+
 ### Step 1 — List every AI integration
 
 Walk through your project (or ask your agent to) and list every place an LLM is called. Don't miss the small ones — auto-suggest features, summary generators, classification calls, embedding generators, and retrieval pipelines all count.
 
 For each, write down:
 
-| Integration            | Where it lives      | What it nominally does                       |
-| ---------------------- | ------------------- | -------------------------------------------- |
-| Support chatbot        | `/api/support/chat` | Answers user questions from a knowledge base |
-| Email summariser       | Background job      | Summarises incoming support tickets          |
-| Code-explanation popup | Browser extension   | Explains highlighted code to user            |
-| Internal MCP server    | `apps/mcp`          | Exposes methodology content to agents        |
+| Integration            | Where it lives                                | What it nominally does                                                 |
+| ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------- |
+| Support chatbot        | `/api/support/chat`                           | Answers user questions from a knowledge base                           |
+| Email summariser       | Background job                                | Summarises incoming support tickets                                    |
+| Code-explanation popup | Browser extension                             | Explains highlighted code to user                                      |
+| Internal MCP server    | `apps/mcp`                                    | Exposes methodology content to agents (ContextQB's own, as an example) |
+| Your coding agent      | Your editor or terminal, plus its MCP servers | Reads and changes your code; can run commands                          |
 
 If the list is longer than you expected, that's the first finding. Keep going.
 
@@ -178,7 +181,7 @@ This is the disciplined version of `think-like-an-attacker` applied to AI surfac
 
 - **Treating "the AI just suggests" as zero-trust.** Suggestions become actions when the user reflexively approves. Suggestion is action.
 - **Forgetting retrieval as an input.** If the agent reads from a vector store full of user-submitted content, every record is a prompt injection vector.
-- **Mistaking system prompt for security.** "Do not reveal secrets" in the system prompt is a hope, not a control. Untrusted input can override system prompts; the model will sometimes comply.
+- **Mistaking system prompt for security.** "Do not reveal secrets" in the system prompt is a hope, not a control. Untrusted input can override system prompts; the model will sometimes comply. Filtering the prompt text for injected instructions cannot guarantee protection either. (Ordinary input validation and escaping output before it is rendered still do their own jobs.) Neither a system prompt nor a prompt filter can enforce what the model is allowed to do; what works is limiting what it can reach and do outside the model — its tools, their scope, and approval before consequential actions.
 - **Not separating user/agent boundary from user/admin.** An agent acting on behalf of a user inherits the user's privileges by default; that's often more than the agent should have for the task in front of it.
 - **Skipping the small integrations.** A "harmless" autocomplete that calls the LLM with user input is still a prompt injection surface.
 

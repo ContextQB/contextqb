@@ -2,7 +2,7 @@
 id: work-with-agents-through-documentation
 title: Work With Agents Through Documentation
 summary: A plain-language introduction to using project records to direct agents, evaluate results, govern discoveries, and continue work across sessions.
-version: 0.2.1
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -30,6 +30,7 @@ related:
   - run-a-multi-agent-workflow
   - run-an-agent-workstream
   - set-up-a-documentation-system
+  - setting-up-git-and-github
   - start-an-agent-workstream
   - the-plan-is-the-contract
   - understanding-the-context-window
@@ -69,7 +70,7 @@ Imagine you want a small tool that organizes downloaded files. You do not need t
 
 > I want to organize a copy of 20 downloaded files into agreed categories so I can see whether the rules work before using the tool on my real folder.
 
-Notice the copy. A first assignment you can undo is a good habit: work on copies, drafts, or a test account before anything real.
+Notice the copy. A first assignment you can undo is a good habit: work on copies, drafts, or a test account before anything real. In a project that uses git, a commit before the assignment and a branch for the experiment let you put the project's files back the way they were — but only files git tracks and you have committed. Git does not undo changes to data outside the project, to accounts or services, or messages that were sent, so keep using copies, drafts, and test accounts for those. See [Setting Up Git and GitHub](contextqb://guides/setting-up-git-and-github).
 
 Ask the agent to create or reuse a **workstream** for that objective. A workstream is the continuing flow of work toward an objective. Its record keeps the objective, responsibilities, decisions, evidence, and next action together. The same idea works for infrastructure recovery, research, writing, or a product capability.
 
@@ -115,7 +116,7 @@ The records protect your control in five ways.
 There are three kinds of checking:
 
 - **Self-check:** the agent that did the work checks it. Useful, but not a review.
-- **Independent review:** a reviewer that did not produce the work checks it. A fresh session that did not build the work can do this; [restart deliberately](contextqb://guides/understanding-the-context-window) and give it the record, the agreement, and the outputs. Opening another tab on the same conversation does not count.
+- **Independent review:** a reviewer that did not produce the work checks it. A fresh session that did not build the work can do this; [restart deliberately](contextqb://guides/understanding-the-context-window) and give it the record, the agreement, and the outputs. Opening another tab on the same conversation does not count. The same rule applies to a subagent, a second agent, or a separate review tool: it counts as independent only when it did not produce the work and is given the record, the agreement, and the outputs to check. What the builder says about its own work is useful, but it is a claim for the reviewer to test, not a finding. Using a different model can widen what a review notices; it does not by itself make the review independent.
 - **Your inspection:** something you can judge yourself, such as opening the folder, reading the page, or trying the tool once.
 
 Ask which kind of check produced each claim.

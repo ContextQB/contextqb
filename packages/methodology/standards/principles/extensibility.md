@@ -2,7 +2,7 @@
 id: extensibility
 title: Extensibility
 summary: Features should be added into clear extension points — not bolted on with one-off flags and special cases.
-version: 0.1.1
+version: 0.1.2
 category: extensibility
 audience:
   - novice-builder
@@ -51,7 +51,7 @@ A codebase is extensible when adding a new feature feels like adding to a system
 
 ## Composition over configuration
 
-When a component has more than a handful of boolean props, it is usually doing too many things. Two small components that compose are almost always better than one large component with many flags.
+When a component has more than a handful of boolean props, it is usually doing too many things. Two small components that compose are almost always better than one large component with many flags. (The example below uses one UI library's syntax, JSX; the idea is the same in any framework.)
 
 ```tsx
 <Button variant="primary" />
@@ -74,6 +74,10 @@ A useful extension point has three properties:
 - **A clear boundary.** What can the extension assume, and what is off-limits?
 
 Without all three, an "extension point" is just code that someone hopes will be reused.
+
+## Who adds the flags
+
+In an agent-built project, the agent is usually the one adding "just one more" option, because that is the smallest change that satisfies the request. Put the rule where every session sees it — a line in your `AGENTS.md` must-not list, such as "Do not add a new boolean option to an existing component to handle a new case; propose an extension point instead." Your check, from time to time: ask the agent how many optional switches a busy component has now, and what each one is for.
 
 ## How to ask an agent to enforce this
 

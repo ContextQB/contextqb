@@ -2,7 +2,7 @@
 id: product-engineering-alignment
 title: Product-to-Engineering Alignment
 summary: Code abstractions should mirror product abstractions. The product is the source of truth for vocabulary.
-version: 0.1.1
+version: 0.1.2
 category: alignment
 audience:
   - novice-builder
@@ -52,6 +52,8 @@ This sounds obvious. In practice, it breaks constantly — especially when agent
 ## The rule
 
 **Code abstractions should mirror product abstractions.**
+
+You own this vocabulary, even if you never read the code. The buckets of information you named in your brief — the entities in [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app) — are the product vocabulary. Give the agent that list, and ask it to use those words.
 
 - Use the same nouns. If product says "project," code says `project`, not `container` or `workspace`.
 - Use the same verbs. If the product action is "archive," the function is `archiveProject`, not `softDeleteProject` or `deactivateProject`.

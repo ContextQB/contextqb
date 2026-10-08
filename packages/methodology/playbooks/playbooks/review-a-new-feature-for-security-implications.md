@@ -2,7 +2,7 @@
 id: review-a-new-feature-for-security-implications
 title: Review a New Feature for Security Implications
 summary: Before shipping a feature, walk through a structured checklist to identify security implications — new attack surfaces, data exposure, authentication gaps, and agent risks.
-version: 0.1.2
+version: 0.2.0
 problem: |
   Features ship fast, security review happens slow (or never). By the time you realize a feature created a security gap, it's in production and customers are using it.
 when_to_use: |
@@ -57,7 +57,11 @@ You'll need:
 - Understanding of what the feature does
 - Access to test/preview the feature if possible
 
-Time estimate: 15-30 minutes for typical features, longer for complex ones.
+**Who does what.** Ask an agent that did not write the feature to draft Steps 1–8 from the diff, quoting the code it relies on. You read the draft, check the attacker's-eye view in Step 8 against what you know about your users, and make the ship decision in Step 9 — that decision is yours.
+
+Some agentic tools and code hosts can run a review automatically on changes that match a rule. If yours can, this checklist suits changes that touch data, authentication, public endpoints or AI features; the reviewer must still be something other than the agent that wrote the change. Running it by hand works everywhere.
+
+Time estimate (ContextQB's estimate): with an agent drafting, reading the draft and deciding takes about 15–30 minutes for a typical feature; longer for complex ones.
 
 ## Steps
 

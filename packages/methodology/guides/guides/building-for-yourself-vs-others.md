@@ -2,7 +2,7 @@
 id: building-for-yourself-vs-others
 title: Building for Yourself vs. Building for Others
 summary: "The first user decision is not technical. It is social: is this just for you, for a trusted group, or for the public?"
-version: 0.1.1
+version: 0.2.2
 audience:
   - novice-builder
   - founder
@@ -17,11 +17,16 @@ tags:
   - getting-started
 related:
   - choosing-your-application-channel
+  - feature-planning
+  - new-project-foundation
+  - set-security-guardrails-for-your-agent
   - state-ownership
   - the-mental-model-of-your-app
   - trust-boundaries-are-architecture
   - what-an-application-is
   - where-your-data-lives
+  - least-privilege-for-agents
+  - launch-day-checklist
 next_steps:
   - "Name the first audience tier for your app: just-me, trusted-group, or public."
   - Write down what that tier lets you skip for now.
@@ -76,6 +81,8 @@ Even a just-me tool needs enough structure that future-you can understand it aga
 
 Just-me does not mean careless. It means the blast radius is small.
 
+One thing the tier does not change is the agent working on your machine. Whatever the tier, a coding agent can read your files, run commands and use any keys it can reach, and it can be steered by instructions hidden in text it reads. The tier changes who your _app_ can hurt. It does not change whether the agent building it needs [permissions and guardrails](contextqb://playbooks/set-security-guardrails-for-your-agent) — the smallest set of capabilities its task needs ([Least Privilege for Agents](contextqb://principles/least-privilege-for-agents)).
+
 ## Tier 2: trusted group
 
 A trusted-group application is for people you know or can identify: family, friends, a class, a small organization, a client team, a church group, or internal staff.
@@ -96,7 +103,7 @@ This is the tier where many first-time builders get surprised. They think, "It i
 
 Who can invite someone? Who can delete a record? Who can see private notes? What happens when two people edit the same thing? What if someone leaves the group?
 
-Those are not advanced questions. They are the basic questions of building for anyone besides yourself.
+Those are not advanced questions. They are the basic questions of building for anyone besides yourself. They are also your checklist when you review what the agent built: for each one, ask the agent to show you where the answer lives — in the code, in a document, or nowhere yet.
 
 The trusted-group tier is also where ContextQB becomes especially useful. You need the agent to remember decisions about roles, data ownership, and boundaries. Those decisions should live in the repo, not in a forgotten chat.
 
@@ -126,14 +133,14 @@ Public use is an architectural boundary.
 
 Every tier lets you skip some things and forces you to handle others.
 
-| Decision area    | Just me                  | Trusted group                         | Public                                        |
-| ---------------- | ------------------------ | ------------------------------------- | --------------------------------------------- |
-| Identity         | Often none               | Usually simple accounts or membership | Required, with recovery and abuse handling    |
-| Data storage     | Local files may be fine  | Shared storage becomes likely         | Managed storage with privacy controls         |
-| Interface polish | Whatever you can use     | Clear enough for known users          | Clear enough for strangers                    |
-| Documentation    | Notes for future-you     | Basic instructions for the group      | Public onboarding, support, and policies      |
-| Failure handling | You can inspect and fix  | Users need a recovery path            | Failures need predictable, user-safe behavior |
-| Security posture | Keep secrets out of code | Protect shared data                   | Treat public input as hostile                 |
+| Decision area    | Just me                                              | Trusted group                         | Public                                        |
+| ---------------- | ---------------------------------------------------- | ------------------------------------- | --------------------------------------------- |
+| Identity         | Often none                                           | Usually simple accounts or membership | Required, with recovery and abuse handling    |
+| Data storage     | Local files may be fine                              | Shared storage becomes likely         | Managed storage with privacy controls         |
+| Interface polish | Whatever you can use                                 | Clear enough for known users          | Clear enough for strangers                    |
+| Documentation    | Notes for future-you                                 | Basic instructions for the group      | Public onboarding, support, and policies      |
+| Failure handling | You can inspect and fix                              | Users need a recovery path            | Failures need predictable, user-safe behavior |
+| Security posture | Keep secrets out of code; set the agent's guardrails | Protect shared data                   | Treat public input as hostile                 |
 
 This table is not meant to scare you. It is meant to stop you from carrying the wrong assumptions forward.
 
@@ -196,6 +203,8 @@ Assume hostile input, privacy expectations, account recovery, and support needs.
 
 That one sentence can prevent a lot of wrong architecture. It tells the agent what to take seriously and what not to build yet.
 
+Then record the tier where every future session will see it: a line near the top of your `AGENTS.md`, or the project summary in `context.qb.yaml`. A tier that lives only in one chat is forgotten by the next one. The [playbook for preparing a new repo](contextqb://playbooks/new-project-foundation) uses this decision on day one.
+
 ## What good enough looks like
 
 Before you choose a channel or a database, write down:
@@ -215,3 +224,5 @@ Start at the right tier. Build the smallest version that serves that tier honest
 - [Guide: The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app) - turn your tier decision into a working app concept.
 - [Principle: State Ownership](contextqb://principles/state-ownership) - why shared data needs a clear owner.
 - [Principle: Trust Boundaries Are Architecture](contextqb://principles/trust-boundaries-are-architecture) - why public input changes the system.
+- [Playbook: Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent) - the permissions and rules the agent needs at every tier.
+- [Playbook: Prepare a New Repo for AI-Assisted Development](contextqb://playbooks/new-project-foundation) - where the tier decision feeds your first day of setup.

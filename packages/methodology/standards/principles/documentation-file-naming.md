@@ -2,7 +2,7 @@
 id: documentation-file-naming
 title: Documentation File Naming
 summary: A documentation filename describes a responsibility. If you can only imagine one instance of the file ever existing, you have named a category, not a file. The same rule that governs code filenames governs doc filenames — with one small list of conventional exceptions.
-version: 0.1.1
+version: 0.2.0
 category: naming
 audience:
   - novice-builder
@@ -64,17 +64,22 @@ Documentation files often live in flat directories — `docs/`, the repo root, a
 
 A small set of UPPERCASE filenames earn singleton status because every tool in the ecosystem — version control hosts, package managers, agents, IDEs — recognises them. Keep these as-is:
 
-| Filename                 | Why it earns the exception                                    |
-| ------------------------ | ------------------------------------------------------------- |
-| `README.md`              | The universal repository entry-point.                         |
-| `LICENSE` / `LICENSE.md` | Required by hosts and package managers for legal recognition. |
-| `CHANGELOG.md`           | Tool-recognised; one per package.                             |
-| `CONTRIBUTING.md`        | Tool-recognised; one per repository.                          |
-| `AGENTS.md`              | Emerging convention; agents look for it by name.              |
-| `CODE_OF_CONDUCT.md`     | Tool-recognised; one per repository.                          |
-| `SECURITY.md`            | Tool-recognised for vulnerability reporting.                  |
+| Filename                 | Why it earns the exception                                            |
+| ------------------------ | --------------------------------------------------------------------- |
+| `README.md`              | The universal repository entry-point.                                 |
+| `LICENSE` / `LICENSE.md` | Required by hosts and package managers for legal recognition.         |
+| `CHANGELOG.md`           | Tool-recognised; one per package.                                     |
+| `CONTRIBUTING.md`        | Tool-recognised; one per repository.                                  |
+| `AGENTS.md`              | Open standard, stewarded by a foundation; agents look for it by name. |
+| `CODE_OF_CONDUCT.md`     | Tool-recognised; one per repository.                                  |
+| `SECURITY.md`            | Tool-recognised for vulnerability reporting.                          |
 
 These earn the all-caps singleton treatment because they are universally one-per-repo and the ecosystem has agreed on the name. Outside this list, an UPPERCASE singleton is a smell.
+
+Two neighbours of the list:
+
+- **Tool-specific instruction files.** Some agentic tools read their own instruction file or rules folder, with a name the tool chooses, alongside or instead of `AGENTS.md`. Use the name your tool expects — the dated [instruction files reference](contextqb://references/setup#agents-md-support) lists them for the tools checked — and keep the shared rules in `AGENTS.md` so every tool sees them.
+- **One per package, when the package _is_ that thing.** In a package whose whole job is a specification or a roadmap, `SPEC.md` or `ROADMAP.md` inside that package names exactly what it holds, and there will only ever be one there. The smell is a generic singleton at the repository root or in a folder that will someday need a second one.
 
 ## Patterns that scale
 
@@ -101,6 +106,8 @@ Three quick checks. If any of them flag the filename, it is probably a category 
 ## What to do when you find an offender
 
 In a tier-1 / greenfield context, you almost never will — because you authored the name with this principle in front of you. The remediation lane (renaming generically-named files in an existing repository) is tier-2 work under ADR-0019; a future audit template and remediation playbook will cover it.
+
+If you already have one or two — a `NOTES.md` from your first week, say — rename each with git (`git mv NOTES.md docs/<what-it-actually-holds>.md`), then ask the agent to find and fix every link to the old name in the same change.
 
 For greenfield work, the discipline is purely preventive:
 

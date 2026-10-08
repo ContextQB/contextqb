@@ -5,7 +5,8 @@
 #
 # Sections: project, stack, tree, decisions, paths, status, entry_points
 # Spec: https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md
-# Example only: a fictional project; names and versions are illustrative.
+# Example only: a fictional project; names, versions and tool choices are
+# illustrative, not recommendations.
 
 qb: "1.0"
 

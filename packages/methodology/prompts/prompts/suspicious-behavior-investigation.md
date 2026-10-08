@@ -2,7 +2,7 @@
 id: suspicious-behavior-investigation
 title: Suspicious Behavior Investigation
 summary: A prompt for investigating anomalies — unexpected errors, unusual access patterns, or anything that makes you think "something is off."
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -30,6 +30,7 @@ related:
   - security-regression
   - untrusted-by-default
   - operations-baseline
+  - launch-day-checklist
 tags:
   - security
 
@@ -41,6 +42,8 @@ This prompt helps investigate anomalies that might be security-relevant. Use it 
 
 The goal is triage: figure out what happened, assess the risk, and decide what to do next.
 
+**You decide; the agent investigates.** Paste the relevant logs or data into `{{LOGS_OR_DATA}}`, or give the agent read-only access to them and say so there. The agent reads and reasons; it does not block, rotate, delete, deploy or contact anyone. Any action — containment included — is yours to approve, step by step, as in [Respond to a Suspected Compromise](contextqb://playbooks/respond-to-a-suspected-compromise). Use "none" for any field you cannot fill.
+
 ## The prompt
 
 ````text
@@ -48,16 +51,12 @@ You are investigating a potentially suspicious anomaly in a production system.
 
 **What was observed:** {{ANOMALY_DESCRIPTION}}
 
-{{#if LOGS_OR_DATA}}
-**Available data:**
+**Available data (pasted, or a description of the read-only access you have; or "none"):**
 {{LOGS_OR_DATA}}
-{{/if}}
 
-{{#if CONTEXT}}
-**Additional context:** {{CONTEXT}}
-{{/if}}
+**Additional context (or "none"):** {{CONTEXT}}
 
-Your task is to investigate this anomaly and determine its nature. This is a security triage, not a comprehensive forensic analysis.
+Your task is to investigate this anomaly and determine its nature. This is a security triage, not a comprehensive forensic analysis. You have read-only access at most: do not change, block, rotate, delete or deploy anything, and do not contact anyone. If you find a secret value in the data, refer to it by name and location; do not repeat it.
 
 ## Investigation approach
 
@@ -235,6 +234,8 @@ Provide your findings as:
 - Set a clear timeline for when you'll re-evaluate
 
 ## Example output
+
+The system, events and timestamps below are fictional.
 
 ```markdown
 ## Investigation Summary

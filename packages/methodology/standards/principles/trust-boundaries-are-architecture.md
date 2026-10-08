@@ -2,7 +2,7 @@
 id: trust-boundaries-are-architecture
 title: Trust Boundaries Are Architecture
 summary: Drawing trust boundaries is a design act, not a documentation act. "Public/authenticated", "owner/admin", "user/agent", "self/third-party" — each must be named and located in the code before they can be defended.
-version: 0.1.2
+version: 0.1.3
 category: security
 audience:
   - novice-builder
@@ -55,14 +55,14 @@ agent_instructions:
 
 A trust boundary is the line in your system where data, requests, or actors stop being treated as "we know what this is" and start being treated as "we have to check what this is." Common boundaries:
 
-| Boundary             | Trusted side       | Untrusted side                              |
-| -------------------- | ------------------ | ------------------------------------------- |
-| **Public / Authed**  | Authenticated user | Anyone on the internet                      |
-| **User / Admin**     | Admin              | Regular user                                |
-| **User / Owner**     | Resource owner     | Other users                                 |
-| **Self / Agent**     | Human operator     | AI agent acting on behalf of operator       |
-| **Self / 3rd-party** | Your services      | Clerk, Stripe, OpenAI, anything outside you |
-| **Inside / Outside** | Internal service   | Public webhook, scraper, browser            |
+| Boundary             | Trusted side       | Untrusted side                                             |
+| -------------------- | ------------------ | ---------------------------------------------------------- |
+| **Public / Authed**  | Authenticated user | Anyone on the internet                                     |
+| **User / Admin**     | Admin              | Regular user                                               |
+| **User / Owner**     | Resource owner     | Other users                                                |
+| **Self / Agent**     | Human operator     | AI agent acting on behalf of operator                      |
+| **Self / 3rd-party** | Your services      | Your auth, payment and AI providers — anything outside you |
+| **Inside / Outside** | Internal service   | Public webhook, scraper, browser                           |
 
 Each of these is a real line. Each requires a real check — at a specific file, in a specific function, with a specific input contract. "It's internal" or "they're authenticated" is not a check; it's a hope. The check is the boundary.
 
@@ -84,7 +84,7 @@ The fix is to make the boundary explicit before the agent writes code. If the bo
 
 You can claim this principle if all of the following hold:
 
-1. **Every public route is explicitly marked public.** Not "everything not in the admin folder is public." Public is a positive declaration, not the absence of a declaration.
+1. **Every public route is explicitly marked public.** Not "everything not in the admin folder is public." Public is a positive declaration, not the absence of a declaration. This one can be checked mechanically: keep a list of routes with their declared access level, and have a test or lint rule fail when a route has none.
 
 2. **Authentication is a single boundary, not a sprinkle.** There is one place where "is this request authenticated?" is decided. Downstream code reads the answer; it does not re-derive it.
 
@@ -102,7 +102,7 @@ You can claim this principle if all of the following hold:
 
 - **A typo in an env var disables auth.** If renaming a config key silently makes a protected route public, the boundary is fragile by construction.
 
-- **Third-party data flows directly into your domain.** A Stripe webhook payload becomes a `Subscription` object with no transformation step in between.
+- **Third-party data flows directly into your domain.** A payment provider's webhook payload (a Stripe webhook, for example) becomes a `Subscription` object with no transformation step in between.
 
 - **"Internal" is doing too much work.** If the same word covers "behind a VPN", "on the intranet", "called by another service", and "I think no one knows the URL", you're using it as a substitute for an actual boundary.
 

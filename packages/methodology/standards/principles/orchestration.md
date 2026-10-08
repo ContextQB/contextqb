@@ -2,7 +2,7 @@
 id: orchestration
 title: Orchestration
 summary: Every system needs explicit control flow. Decide what coordinates what, and put the coordinator somewhere obvious.
-version: 0.1.1
+version: 0.1.2
 category: orchestration
 audience:
   - novice-builder
@@ -70,9 +70,12 @@ Distributed orchestration (event buses, pub/sub, queues) is appropriate when:
 
 If you cannot defend distribution, choose centralisation.
 
+The same rule applies when the workers are agents. When several agents work on one objective, one keeper decides what runs next and keeps the shared record; see [Run a Multi-Agent Workflow](contextqb://playbooks/run-a-multi-agent-workflow).
+
 ## Symptoms of missing orchestration
 
-- `useEffect` calls that depend on `useEffect` calls.
+- You cannot say, in order, what happens after the user clicks.
+- In React, for example: `useEffect` calls that depend on `useEffect` calls.
 - "Sometimes it loads, sometimes it doesn't."
 - Two requests fire when one should.
 - The order of operations changes based on render timing.

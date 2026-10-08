@@ -2,7 +2,7 @@
 id: separation-of-concerns
 title: Separation of Concerns
 summary: Divide systems by responsibility so each piece does one thing clearly and changes for one reason.
-version: 0.1.1
+version: 0.1.2
 category: structure
 audience:
   - novice-builder
@@ -54,7 +54,7 @@ related:
 
 # Separation of Concerns
 
-The most common reason AI-assisted codebases collapse is that everything ends up living next to everything else. A single React component fetches data, parses it, transforms it, stores it, renders it, and handles errors. A single backend function authenticates the user, validates input, runs business logic, writes to the database, and sends an email.
+One of the most common reasons AI-assisted codebases collapse is that everything ends up living next to everything else. A single UI component (a React component, say) fetches data, parses it, transforms it, stores it, renders it, and handles errors. A single backend function authenticates the user, validates input, runs business logic, writes to the database, and sends an email.
 
 Each of those is a different concern. When they share a file, they share a fate: you cannot change one without risking the others.
 
@@ -76,7 +76,11 @@ A feature usually has at least these concerns:
 | Presentation  | Components                        | The design changes.           |
 | Orchestration | A coordinator (page, route, hook) | The workflow changes.         |
 
+The table is shaped like a web front end, but the same five concerns exist in a command-line tool or a data pipeline, with different homes: transport might be a file reader or an HTTP client, presentation might be the printed output or a report, and orchestration the main command or the pipeline's runner.
+
 Mixing two of these in one file is acceptable when the feature is tiny. Mixing four is almost never acceptable.
+
+**Your check.** You don't need to read the code to apply this. Ask the agent to say, in one sentence per file, what each file is for. A file that needs "and" in its sentence is doing more than one job.
 
 ## How to ask an agent to enforce this
 
@@ -85,3 +89,5 @@ Mixing two of these in one file is acceptable when the feature is tiny. Mixing f
 ## When to break the rule
 
 For prototypes that will be thrown away in a week. Almost never otherwise.
+
+Prototypes rarely get thrown away. When one survives and starts gaining users, run the enforcement prompt above before the next feature, not after the third.

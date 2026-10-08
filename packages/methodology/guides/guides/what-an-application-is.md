@@ -2,7 +2,7 @@
 id: what-an-application-is
 title: What an Application Is
 summary: An application is not magic and it is not just a screen. It is a set of files that a runtime can execute to move information from one place to another.
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -58,7 +58,7 @@ Inside that folder are files. The files have different jobs:
 - **Data files** may hold information the app reads or writes.
 - **Instruction files** tell humans and agents how to work in the project.
 
-When you open a project in an editor like Cursor or VS Code, you are usually opening that folder. The folder is the workshop. The files inside it are the materials and instructions.
+When you open a project in a code editor or agentic coding tool ([current options](contextqb://references/tools#agentic-ides)), you are usually opening that folder. The folder is the workshop. The files inside it are the materials and instructions.
 
 This is why ContextQB cares so much about project structure. Agents do not understand your intent by magic. They read files. A well-organized application gives the agent a map: where the important decisions live, where the code lives, where the data model lives, and what should not be touched casually.
 
@@ -170,7 +170,7 @@ The clearer the information flow, the easier it is for the agent to choose files
 
 At this stage, resist the urge to pick a stack.
 
-Do not start with "Should I use Next.js?" or "Should this be Supabase?" or "Should it be a mobile app?" Those questions matter later. They are not the first question.
+Do not start with a framework or database question — "Should I use Next.js?" or "Should this be Supabase?", to name two you may have heard of — or "Should it be a mobile app?" Those questions matter later. They are not the first question.
 
 The first question is:
 

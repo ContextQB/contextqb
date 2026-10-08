@@ -2,7 +2,7 @@
 id: anti-spaghetti
 title: Anti-Spaghetti Development
 summary: Concrete checklist for identifying spaghetti code — the hidden coupling, ad hoc orchestration, and brittle lifecycle assumptions that AI assistants generate by default.
-version: 0.1.1
+version: 0.1.3
 category: diagnosis
 audience:
   - novice-builder
@@ -90,11 +90,18 @@ Run through this list when reviewing a module, a feature, or a whole repo.
 
 - Does the system depend on a specific render or mount order?
 - Does it break if a request finishes "too fast" or "too slow"?
+- On a backend: does a job assume the record it needs was already written by another job, or that a process never restarts mid-task?
 
 ### 8. Features bolted on, not integrated
 
 - Are recent features visible as `if` branches and feature flags scattered across unrelated files?
 - Or are they isolated behind clear extension points?
+
+## Tools first, judgment second
+
+Four signals can be partly found mechanically. Repeated logic (2) by a duplicate-code detector; state updated from too many places (5) by searching for every write to a value; hidden dependencies (6) by a dependency-graph or import-cycle tool; bolted-on features (8) by searching for feature flags and scattered branches. Ask the agent to read the project instructions and the relevant configuration first, then run whatever tools of those kinds the project has and it is permitted to run — or plain searches — and report what it ran. Use the results to decide which code to read closely. A tool match is a lead, not a finding: the agent still reads the matches and judges whether each is really the signal (two similar functions may be intentionally separate; a flag may be properly isolated). The four that need reading from the start are unclear data flow (1), mixed concerns (3), unpredictable side effects (4) and fragile lifecycle assumptions (7).
+
+Your own check needs no code: for signal 1, ask the agent to "walk me through, step by step, what happens when I click X." If it can't do that without hedging or reading five files, the signal is present.
 
 ## How to ask an agent to use this checklist
 

@@ -2,7 +2,7 @@
 id: audit-a-workstream-record
 title: Workstream Record Audit
 summary: A structured check that a workstream record can govern work across agents and sessions without hiding authority, evidence, or decisions.
-version: 0.2.2
+version: 0.3.0
 audience:
   - founder
   - operator
@@ -43,6 +43,8 @@ deliverables:
 related:
   - agent-instructions
   - documentation-as-architecture
+  - documenting-for-your-agent
+  - resume-an-agent-workstream
   - review-an-agent-workstream
   - run-an-agent-workstream
   - the-plan-is-the-contract
@@ -57,20 +59,24 @@ tags:
 
 # Workstream Record Audit
 
+**For long workstreams,** run this audit as the first step of a resume (before the [resume prompt](contextqb://prompts/resume-an-agent-workstream)). You only need to read the verdict and any blockers; the rest of the report is for the agent and the record keeper.
+
+The audit's first step, starting as a fresh session would, is the same discovery test as the fresh-session test in [Documenting for Your Agent](contextqb://guides/documenting-for-your-agent), applied to one record.
+
 ## Use this as an agent instruction
 
 > You are auditing the workstream record at **[WORKSTREAM_RECORD]**.
 >
 > Start as a fresh session would: read the project instructions and boot map first, and note whether they lead you to this record. Then read the record, its active scope, latest delivery and review records, handoff, related project documentation, and the actual files, outputs, or processes needed to reconcile the current state.
 >
-> Produce a Markdown report with these sections, in order:
+> Produce a Markdown report with these sections, in order. If the record is a minimal one (objective, approved scope, current state, outstanding items, next action), sections 3–9 may be one line each: state the finding and its evidence, and write "not applicable at this size" where that is true.
 >
 > 1. **Executive summary and readiness verdict.** Choose one: **Ready** (another session can govern the next pass from these records), **Ready after listed repairs**, or **Not ready**. Give the three most important reasons.
 > 2. **Discovery and proportionality check.** Can a fresh session find this record from the boot map or records index without being told its filename? Does the record's weight fit the objective? A one-pass task does not need a full record. A scope or review may live inside the record as its one maintained copy, and a concise summary that points to its source is fine. Flag competing maintained copies (the same scope, review, or current state kept in two places that can drift) and copied claims that are now stale against their source.
 > 3. **Objective and ownership check.** Confirm the objective, accountable operator, record keeper, status, and current state.
 > 4. **Deliverables, relationships, and dependency conditions.** For each deliverable, name its owner, acceptance evidence, and current status. For each dependency, name the condition, owner, verifier, and evidence.
 > 5. **Authority and approval provenance check.** Confirm the active approved scope, revision, executor, reviewer, review destination, boundaries, exclusions, and next assignment. For each approval, confirm it quotes or faithfully paraphrases the operator's own reply, with date and source. An agent's recommendation, silence, or passing tests are not approval. Flag work that appears to have escaped authority.
-> 6. **Pass history and evidence check.** Trace at least the latest meaningful pass through Authorized → Delivered → Reviewed → Disposition → Current state. Distinguish claims from independent evidence, name the kind of check (self-check, independent review, operator inspection), and preserve unverified criteria.
+> 6. **Pass history and evidence check.** Trace at least the latest meaningful pass through Authorized → Delivered → Reviewed → Disposition → Current state. Distinguish claims from independent evidence, name the kind of check (self-check, independent review, operator inspection), and preserve unverified criteria. Look for mechanical evidence: the verifier commands run with their exit status, the drift-check result if the project uses one, and outputs the operator can open. A sentence saying checks passed, with no command or result, is a claim. For a pass that ran with no operator present, confirm the record says who started it, when, and under what authority.
 > 7. **Outstanding-items disposition check.** Classify incomplete work, corrections, proposed additions, blockers, and settled decisions. Flag anything that could be mistaken for approved work.
 > 8. **Checkpoint and handoff reconciliation.** Compare the handoff with actual files, outputs, revisions, processes, and where the record is saved. Identify stale instructions and the exact next read-first set.
 > 9. **Closure or transfer check.** Determine whether the bounded objective is accepted, paused, transferred, cancelled, or still active, and whether the boot-map entry matches. Do not treat adjacent work or a whole project as complete without evidence.

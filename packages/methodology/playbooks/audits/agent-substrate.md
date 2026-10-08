@@ -2,7 +2,7 @@
 id: agent-substrate
 title: Agent Substrate Audit
 summary: A retrospective audit that scores an existing repository's language stack on agent-friendliness — are verifiers in place to catch the agent's mistakes before they ship?
-version: 0.1.1
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -23,7 +23,7 @@ required_sections:
   - Non-blocking suggestions
 evaluation_criteria:
   - Every surface uses a language with compile-time or static type checking, or has an explicit documented exception.
-  - Type coverage is above 90% (no widespread `any`, `unknown`, or untyped code).
+  - Type coverage is above 90% (no widespread `any`, `unknown`, or untyped code), measured with the language's coverage tool where one exists, or estimated qualitatively and labelled as an estimate.
   - Every I/O boundary (API call, database query, file read, user input) has schema validation.
   - CI gates on type check and lint failures; builds do not pass with errors.
   - A canonical formatter is enforced; formatting is not a manual review concern.
@@ -47,11 +47,15 @@ tags:
 
 This audit evaluates whether an existing repository provides the mechanical verification needed for sustainable AI-assisted development. It is the retrospective counterpart to the [`choose-a-language-stack`](contextqb://playbooks/choose-a-language-stack) playbook — run it on codebases that already exist to identify gaps.
 
+"Existing" includes a new project once its first feature is in. The usual order is: set up the repository (the _Prepare a New Repo for AI-Assisted Development_ playbook), check it with [`repo-readiness`](contextqb://audits/repo-readiness), build the first feature, then run this audit.
+
+**Who does what.** The agent runs the audit and writes the report. You read the score and the blocking findings, and decide which gaps to fix first.
+
 ## Use this as an agent instruction
 
 > You are auditing this repository's language stack for agent-friendliness. Your goal is to determine whether the agent's output can be mechanically verified before it ships, or whether human review is required to catch errors.
 >
-> Read the repository structure, configuration files (`tsconfig.json`, `pyproject.toml`, `.eslintrc`, CI workflows), and sample source files. Then produce a Markdown document with these sections:
+> Read the repository structure, the type-checker, linter and formatter configuration files for each language in the repository (find them; they differ by language and tool version), the CI workflows, and sample source files. Then produce a Markdown document with these sections:
 >
 > ### 1. Executive summary
 >
@@ -72,6 +76,8 @@ This audit evaluates whether an existing repository provides the mechanical veri
 > | Surface      | Type checker | Strict mode? | Schema at boundaries? | Linter | Formatter | CI enforced? |
 > | ------------ | ------------ | ------------ | --------------------- | ------ | --------- | ------------ |
 > | Web frontend | tsc          | Yes          | Yes (Zod)             | ESLint | Prettier  | Yes          |
+>
+> (The row above is an illustrative TypeScript example; use the tools this repository actually has.)
 >
 > Use these values:
 >
@@ -134,3 +140,4 @@ Include the score in the executive summary.
 - [`machine-verifiable-substrate`](contextqb://principles/machine-verifiable-substrate) — the principle this audit operationalises.
 - [`programming-language-selection`](contextqb://principles/programming-language-selection) — guidance on choosing languages.
 - [`repo-readiness`](contextqb://audits/repo-readiness) — the broader audit for new repositories.
+- The current type checkers, linters and formatters for each language are in the dated [verifiers reference](contextqb://references/tools#verifiers-by-language).

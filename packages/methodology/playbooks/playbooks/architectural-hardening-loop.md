@@ -2,7 +2,7 @@
 id: architectural-hardening-loop
 title: Run an Architectural Hardening Loop on a Drifted Codebase
 summary: A repeating planner-executor loop that converges an AI-built codebase back toward governed architectural invariants — without a rewrite, and without trusting an agent's own claim that work is done.
-version: 0.1.5
+version: 0.2.0
 problem: |
   Codebases built across hundreds of agent sessions drift away from their own foundations. A one-shot audit cannot hold — the next 100 turns will undo it. You need a continuous loop that hardens the system faster than entropy returns to it.
 when_to_use: |
@@ -37,6 +37,7 @@ related:
   - agent-instructions
   - architecture-review
   - feature-build-loop
+  - new-project-foundation
   - refactor-planning
   - review-an-agent-workstream
   - run-a-multi-agent-workflow
@@ -45,6 +46,8 @@ related:
 ---
 
 # Run an Architectural Hardening Loop on a Drifted Codebase
+
+> **Tier 2 — for an existing codebase that has drifted.** If your project is new, you don't need this yet: set it up with the [new-repo playbook](contextqb://playbooks/new-project-foundation) and build features with the [feature build loop](contextqb://playbooks/feature-build-loop). Come back here if, after many sessions, point fixes stop helping.
 
 The living audit and tranche history provide this loop's technical governance. If you also track the broader objective, authority, cross-cutting decisions, and continuity across hardening passes, the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method describes one shared record for doing so.
 
@@ -83,12 +86,12 @@ The audit is the map. The tranche is the unit of work. Verification is non-optio
 
 ## Roles — non-negotiable separation
 
-The loop requires **two distinct agent sessions**, each with a different prompt and a different job:
+This loop uses the same governed-loop mechanics as the feature build loop, described once in [The governed loop: roles, independence, evidence and authority](contextqb://playbooks/feature-build-loop): a planner that never executes, an executor that never self-certifies, verification in a context that did not produce the work, `SHIPPED` versus `VERIFIED`, roll-forward first, and recorded authority with re-approval when the plan must change. Separation is of role and context — a fresh session, a subagent or a separate lane — not of app windows. In this loop:
 
 - **Planner.** Reasons about architecture. Defines tranches. Verifies completed work against the actual codebase. Extracts invariants. Never executes code changes.
 - **Executor.** Implements one tranche at a time. Preserves existing behavior. Reports completion in a structured format. Never self-certifies.
 
-If you run both jobs in the same session, the loop collapses into a normal audit-then-fix workflow with the same failure modes. The separation is what makes the workflow recursive in practice — the planner sees what the executor cannot.
+If you run both jobs in the same context, the loop collapses into a normal audit-then-fix workflow with the same failure modes. The separation is what makes the workflow recursive in practice — the planner sees what the executor cannot.
 
 Related: see [`agent-instructions`](contextqb://playbooks/agent-instructions) for how to write document-producing prompts that hold an agent to a structured output.
 
@@ -146,7 +149,7 @@ Verification is the step most workflows skip. It is also the step that makes thi
 
 After every executed tranche, the **planner** (in a fresh session) does the following before any new work is planned:
 
-1. **Validate every claimed completion against the actual code.** Open the files. Read what changed. Confirm the behavior described in the executor's report matches what was actually shipped.
+1. **Validate every claimed completion against the actual code.** Open the files. Read what changed. Run the project's verifiers and the tests that cover the tranche, and record each command and its exit status. Confirm the behavior described in the executor's report matches what was actually shipped.
 2. **Look for things the executor cannot see.** New duplication. Drift in naming. New patterns introduced "temporarily." Hidden coupling. Race conditions added during a refactor. See [`failure-modes`](contextqb://principles/failure-modes) for the full failure-mode taxonomy.
 3. **Update the audit document.** Move items to `VERIFIED`, `PARTIALLY SHIPPED`, or `DEFERRED` based on what was actually found.
 4. **Roll failed work forward.** Any item that is incomplete, inaccurate, or regressed becomes the **first** item in the next tranche. Not a deferred item — the **first** item. This creates back-pressure against completion theater.
@@ -169,6 +172,8 @@ Examples of real invariants:
 
 Invariants live in a single file the agents read on every session — `docs/architecture/invariants.md` is a reasonable default. This becomes the constitutional layer of the codebase. Update your `AGENTS.md` to reference it. Future agent sessions will inherit the rules without you re-stating them every time.
 
+Make each invariant enforceable in the same tranche that extracts it: a lint rule or a test where the rule can be checked mechanically, and a line in `AGENTS.md` where it cannot. An invariant that lives only in a document relies on every future session reading it.
+
 This is also where [`state-ownership`](contextqb://principles/state-ownership) and [`orchestration`](contextqb://principles/orchestration) become enforceable rather than aspirational.
 
 ## Horizontal sweeps
@@ -189,9 +194,9 @@ Cross-reference: [`anti-spaghetti`](contextqb://principles/anti-spaghetti) descr
 
 Use this once, after the initial audit document exists (see [`architecture-review`](contextqb://playbooks/architecture-review) for how to commission one). The kickoff prompt converts the audit into a governance document and plans Tranche 1. **It does not execute any code changes.**
 
-Run this in your **planner** session.
+Run this in your **planner** session. Planning-mode names differ by tool ([reference](contextqb://references/setup#planning-modes)).
 
-> Please use plan mode if you are not already using it.
+> If your tool has a planning or read-only mode, use it for this turn. It does not by itself stop every action; do not execute changes in this turn.
 >
 > We are establishing a recursive architectural hardening loop for this codebase.
 >
@@ -248,7 +253,7 @@ After this turn returns, hand the Tranche 1 spec to a **separate executor sessio
 
 Use this for every cycle after Tranche 1 has been executed. Run it in a **fresh planner session** — not the session that planned the previous tranche, and never the session that executed it.
 
-> Please use plan mode if you are not already using it.
+> If your tool has a planning or read-only mode, use it for this turn. It does not by itself stop every action; do not execute changes in this turn.
 >
 > We are continuing the architectural hardening loop for this codebase.
 >
@@ -326,7 +331,7 @@ The executor never plans the next tranche and never verifies its own work. Its j
 > ## Blocked
 > ## Architectural decisions made
 > ## Risks introduced
-> ## Tests performed
+> ## Tests written and run (command and exit status for each)
 > ## Remaining concerns
 > ```
 
@@ -338,6 +343,13 @@ The executor must also be told, explicitly: preserve existing behavior unless ch
 - **Audit completion theater.** Items marked complete without architectural improvement. Verification is the only defense.
 - **Agent self-certification.** The author of the fix is the worst auditor of the fix. Always verify in a separate session with a different prompt.
 - **Opportunistic architecture drift.** New patterns introduced casually during unrelated work. Invariants are the long-term defense; tranche scoping is the short-term one.
+
+## What you check yourself
+
+You don't need to read the code to keep this loop honest. After each tranche, look at two things:
+
+- **The gap between `SHIPPED` and `VERIFIED`.** If the executor claims far more than the verifier confirms, the loop is catching real problems; if the two are always equal from the first tranche, ask whether verification is actually happening.
+- **The invariants file.** Read it. Each rule should be a sentence you understand, such as "UI components may not own persistence logic." If a rule makes no sense to you, ask for a plain-language version.
 
 ## When to stop the loop
 

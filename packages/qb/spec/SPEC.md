@@ -78,7 +78,7 @@ A minimal valid `context.qb.yaml`:
 
 ```yaml
 # context.qb 1.0 — example
-qb: 1.0
+qb: "1.0"
 project:
   name: example
   summary: A small example application.
@@ -89,7 +89,7 @@ tree:
 
 ## 6. Optional fields (v1.0)
 
-Implementations MAY include any of these. They are conventions, not exhaustive — extending the file with custom sections is permitted but not portable.
+Implementations MAY include any of these. The v1.0 schema does not allow top-level sections other than those in §5, this section and the reserved names in §10 (`additionalProperties: false`), so a file with a custom section fails validation.
 
 ### 6.1 `project.v`
 
@@ -176,7 +176,7 @@ A map of named concerns to file or document paths. Helps the agent answer "where
 ```yaml
 entry_points:
   rules: AGENTS.md
-  map: this file (context.qb)
+  map: context.qb.yaml (this file)
   decisions: docs/architecture/decisions/README.md
   api: packages/mcp-server/src/tools.ts
   operations: docs/operations/deployment-workflow.md
@@ -211,7 +211,7 @@ project_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
 - **Scope:** Operator-committed; the project owner decides whether to include this field.
 - **Deletable:** An operator who previously committed `project_id` may delete it at any time; the server stores `NULL` for subsequent events.
 - **Backfill:** Historical events remain under the per-machine identity; no retroactive correlation.
-- **See:** [ADR-0032](../../../docs/architecture/decisions/0032-identity-granularity-data-cooperative.md) for design rationale.
+- **See:** the project's architecture decision record on per-project identity (ADR-0032) for design rationale.
 
 ## 7. Authoring discipline
 
@@ -233,7 +233,7 @@ A reference JSON Schema is published at [`schema.json`](./schema.json). Implemen
 Minimal valid file:
 
 ```yaml
-qb: 1.0
+qb: "1.0"
 project:
   name: anything
   summary: short summary

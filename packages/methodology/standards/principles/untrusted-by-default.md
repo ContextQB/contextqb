@@ -2,7 +2,7 @@
 id: untrusted-by-default
 title: Untrusted by Default
 summary: Every input, model output, third-party response, and webpage is hostile until proven otherwise. Validate at the boundary, not in the middle.
-version: 0.1.1
+version: 0.1.2
 category: security
 audience:
   - novice-builder
@@ -40,6 +40,8 @@ related:
   - triage-your-secrets
   - trust-boundaries-are-architecture
   - understanding-llms
+  - machine-verifiable-substrate
+  - set-security-guardrails-for-your-agent
 anti_patterns:
   - User input is passed directly to database queries without validation.
   - API responses are trusted without checking status codes or schema.
@@ -85,13 +87,13 @@ You can claim this principle if you meet all of the following:
 
 1. **Server-side validation on all user input.** Client-side validation is UX; server-side validation is security. Every form field, query parameter, and request body is validated on the server.
 
-2. **Schema validation on external API responses.** Before you use data from a third party, confirm it has the structure you expect. An API that changes its response format should break validation, not corrupt your data.
+2. **Schema validation on external API responses.** Before you use data from a third party, confirm it has the structure you expect. An API that changes its response format should break validation, not corrupt your data. This is the same schema validation the verification pillar teaches ([Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate)) — one instrument serving both.
 
 3. **Signature verification on webhooks.** If a third party sends you a webhook, verify the signature. If there's no signature, that's a trust decision you need to make explicitly.
 
 4. **Sanitisation before rendering.** Any content that came from outside — user-generated content, AI output, API data — is sanitised before it's rendered in HTML. This is how you prevent XSS.
 
-5. **Review before execution.** If an agent generates code that modifies data, sends messages, or changes configuration, you (or an automated policy) review it before it executes.
+5. **Review before execution.** If an agent generates code that modifies data, sends messages, or changes configuration, you (or an automated policy) review it before it executes. For a coding agent, that automated policy is usually your tool's own approval and permission settings — something you turn on, not something you build ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
 
 ## Signals you're getting this wrong
 

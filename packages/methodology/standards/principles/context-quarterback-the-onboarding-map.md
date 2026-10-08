@@ -2,7 +2,7 @@
 id: context-quarterback-the-onboarding-map
 title: The Context Quarterback — Every Repo Needs a Boot Manifest
 summary: Every repository should ship a small, structured boot manifest — `context.qb.yaml` — that maps it for AI agents in as few tokens as possible. You are the context quarterback for your project. The file is the play-sheet you carry onto the field, and the backbone of the ContextQB method.
-version: 0.1.5
+version: 0.2.1
 category: documentation
 audience:
   - novice-builder
@@ -19,7 +19,7 @@ tags:
 anti_patterns:
   - Letting the agent rediscover the repo's shape on every session — paying token cost to scan READMEs, ADR folders, and source trees before any real work begins.
   - A README.md that tries to be both the human introduction and the agent's boot manifest. They have different jobs.
-  - Putting the map inside AGENTS.md. AGENTS.md is for rules; mixing rules with map makes both worse.
+  - Letting a growing map live inside AGENTS.md. A very small project can start with a short map section there; once the map outgrows a screen or changes on a different rhythm from the rules, move it into context.qb.yaml so rules and map each stay readable.
   - A map document that lives in many places (some in README, some in CONTRIBUTING, some in /docs) with no single entry point.
   - An auto-generated map that drifts silently from the source of truth. Stale maps are worse than no map — the agent's mental model is actively wrong.
   - Inlining content the map should reference. The map is an index, not an encyclopedia.
@@ -68,19 +68,18 @@ When you build with an AI agent, you are the quarterback. The agent runs the rou
 - What's happening right now (in-flight work)
 - Where to go for more (entry-point links)
 
-The file is the play-sheet — brand metaphor — and the boot manifest — technical role. The agent reads it first, every session, then drills into the deeper docs only when the play calls for it. Your job, as the quarterback, is to make sure the play-sheet matches reality before you snap the ball.
+The file is the play-sheet — brand metaphor — and the boot manifest — technical role. The agent reads it first, every session, then drills into the deeper docs only when the play calls for it. Agent tools do not look for this file on their own: the agent opens it, with its ordinary access to your workspace, because the first line of your `AGENTS.md` tells it to or because you ask. Your job, as the quarterback, is to make sure the play-sheet matches reality before you snap the ball.
 
 ## Why this matters
 
 Token economics are real. A coding agent that scans READMEs, ADR folders, and source trees before any work begins burns thousands of tokens before producing anything useful. `context.qb.yaml` is a one-time, small investment that pays for itself on the first turn.
 
-Controlled evaluations of the equivalent `AGENTS.md` standard (124-PR benchmark) found approximately:
+An independent evaluation of `AGENTS.md` files ([arXiv:2601.20404, version 2](https://arxiv.org/html/2601.20404v2)) ran one coding agent (GPT-5.2-Codex) on 124 pull requests across ten repositories, with and without the file. With it, the paper reports:
 
-- **16.6% lower median output-token generation**
-- **28.6% lower median wall-clock execution time**
-- **~10% lower mean total token usage**
+- **28.64% lower median wall-clock time**
+- **16.58% lower median output tokens**
 
-…and `AGENTS.md` only covers rules and commands. `context.qb` extends the same insight to navigation. The direction-of-effect is well-supported; the exact magnitude for `context.qb` specifically is an open empirical question (see `experiments/2026-05-context-qb-efficiency/`).
+That study measured `AGENTS.md`, one agent and those repositories — not `context.qb.yaml`, and not how people learning to build fare. `AGENTS.md` covers rules and commands; `context.qb` extends the same idea to navigation. The direction is plausible; whether a manifest saves anything in your project, and how much, is an open question. ContextQB's own efficiency experiment is designed but has not been run.
 
 ## The three artifacts that should exist together
 
@@ -98,13 +97,13 @@ The third row is whatever your project uses for in-flight state: a status docume
 
 - **Not the quarterback.** You are. The file is what the quarterback uses to keep the team aligned. Confusing the play-sheet with the play-caller is what produces stale maps and confidently wrong agents.
 - **Not the documentation itself.** It is the index. Real prose lives in `docs/`, ADRs, READMEs.
-- **Not a code map.** Code-relationship questions ("what calls this function?") belong to AST-based tools like Aider's repo-map. `context.qb.yaml` works at the workspace-and-decisions level.
+- **Not a code map.** Code-relationship questions ("what calls this function?") belong to the code search and repository-map features agent tools provide — see [how agentic tools search a codebase](contextqb://references/tools#codebase-retrieval). `context.qb.yaml` works at the workspace-and-decisions level.
 - **Not for humans first.** It is for agents. Humans will read it too — that's fine — but the optimisation is for token-efficient agent consumption, not pretty prose.
-- **Not a place for secrets.** Treat the file as a public artifact even when the repo is private. Anything in `context.qb.yaml` ends up in every agent's context window every session, and on most provider terms of service can be used for training.
+- **Not a place for secrets.** Treat the file as a public artifact even when the repo is private. Anything in `context.qb.yaml` ends up in every agent's context window every session, and may be retained or used to improve models under your provider's terms — which differ by provider and plan (see [whether providers train on what you send](contextqb://references/setup#provider-data-use)).
 
 ## How to write one
 
-See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) playbook for the step-by-step. The short version: have your agent draft the structural sections (`tree`, `routes`, `decisions`, `stack`) from the repository against the spec at [`@context-qb/spec`](../../../qb/spec/SPEC.md); write or carefully check the meaning-carrying parts yourself — `project.summary`, each `purpose` and `status`; keep it under ~2,000 tokens; validate it against the [published JSON Schema](https://github.com/ContextQB/contextqb/blob/main/format/schema.json); and update it whenever the shape of the repo changes.
+See the [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb) playbook for the step-by-step. The short version: have your agent draft the structural sections (`tree`, `routes`, `decisions`, `stack`) from the repository against the [published specification](https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md); write or carefully check the meaning-carrying parts yourself — `project.summary`, each `purpose` and `status`; keep it under ~2,000 tokens; validate it against the [published JSON Schema](https://github.com/ContextQB/contextqb/blob/main/format/schema.json); and update it whenever the shape of the repo changes.
 
 ## How to instruct an agent to enforce this
 
@@ -114,6 +113,5 @@ See the [`write-a-context-qb`](../../playbooks/playbooks/write-a-context-qb.md) 
 
 For format implementors, tool authors, and developers who need the technical details:
 
-- **[Format Explainer](../../../qb/docs/format-explainer.md)** — technical overview of the wire format, sections, versioning, and validation.
-- **[Authoring Guide](../../../qb/docs/authoring-guide.md)** — step-by-step checklist for writing a `context.qb.yaml`.
-- **[SPEC.md](../../../qb/spec/SPEC.md)** — the authoritative format specification.
+- **Format Explainer** — technical overview of the wire format, sections, versioning, and validation; and **Authoring Guide** — a compressed checklist for writing a `context.qb.yaml`. Both are technical companions kept in the ContextQB repository (`packages/qb/docs/`) and are not yet published on this site.
+- **[SPEC.md](https://github.com/ContextQB/contextqb/blob/main/format/SPEC.md)** — the authoritative format specification, published in the public repository.

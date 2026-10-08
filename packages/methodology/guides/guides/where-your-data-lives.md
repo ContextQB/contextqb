@@ -2,7 +2,7 @@
 id: where-your-data-lives
 title: Where Your Data Lives
 summary: "Data is not abstract. It lives somewhere: in a file, in a browser, in a local database, in cloud storage, or in a managed database someone else operates."
-version: 0.1.1
+version: 0.1.2
 audience:
   - novice-builder
   - founder
@@ -141,7 +141,7 @@ Poor fit:
 
 A local database stores structured data on one device.
 
-Examples include SQLite in a desktop app, SQLite in a mobile app, or IndexedDB in a browser. You do not need to know the details yet. The important point is that a local database is more organized than a pile of files, but still close to one user or one device.
+Examples include SQLite in a desktop app, SQLite in a mobile app, or IndexedDB in a browser — named here as examples of the category, not recommendations. You do not need to know the details yet. The important point is that a local database is more organized than a pile of files, but still close to one user or one device.
 
 Local databases are useful when the app needs to remember many related things but does not need real-time sharing with other users.
 
@@ -275,6 +275,8 @@ Before you choose a database vendor, write a small data map:
 | Uploaded video    | Trusted group or public | Object storage + database record | Large file plus access control                                      |
 
 You do not have to get this perfect. You do have to make it explicit.
+
+Once more than one person's data lives in the same place, add one check you can run yourself: ask the agent to show you the exact rule that stops user A from reading user B's records, and where it is enforced. "The screen doesn't show it" is not an answer; the rule has to live on the server or in the database. If the agent can't point to one, that is the next thing to build. The security stage teaches these server-side access rules in depth — start with [Trust Boundaries Are Architecture](contextqb://principles/trust-boundaries-are-architecture).
 
 The place where data lives is an architectural decision. Make it visible before the agent starts building around a guess.
 

@@ -2,7 +2,7 @@
 id: pre-launch-security
 title: Pre-Launch Security Audit
 summary: A condensed security checklist for launch day. Verify the essentials before going live — secrets secured, auth hardened, endpoints protected, and monitoring in place.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -51,7 +51,7 @@ tags:
 
 # Pre-Launch Security Audit
 
-This is a condensed security checklist for launch day. It's designed to be fast (30-60 minutes) and catch the critical issues that would be embarrassing or damaging if discovered after launch. It is NOT a replacement for a comprehensive security audit — do that first, then use this as a final gate.
+This is a condensed security checklist for launch day. It's designed to be fast — with an agent running the checks, about 30–60 minutes of your time (ContextQB's estimate) — and catch the critical issues that would be embarrassing or damaging if discovered after launch. It is NOT a replacement for a comprehensive security audit — do that first, then use this as a final gate.
 
 ## Use this as an agent instruction
 
@@ -64,7 +64,7 @@ This is a condensed security checklist for launch day. It's designed to be fast 
 > 3. Check launch-day readiness (monitoring, incident response)
 > 4. Produce a go/no-go decision with blockers
 >
-> Be efficient. Focus on launch blockers, not aspirational improvements.
+> Be efficient. Focus on launch blockers, not aspirational improvements. Read the project instructions and configuration first. Never copy a secret value into your report — name its location and kind.
 >
 > Test targets: quick tests that send unusual or repeated requests (rapid login attempts, deliberately triggered errors, guessed paths) run against staging or a local copy configured like production. Do not run them against production — including a production deployment that is not yet public — unless the operator gives separate, explicit authority for that test. Observation is fine on production: reading configuration, checking your own pages, headers, cookies and redirects, and single ordinary requests.
 
@@ -85,9 +85,9 @@ If you have no staging environment, run the active tests locally and record in t
 
 Run through each section. Mark each item:
 
-- ✅ **Pass** — Verified and acceptable
-- ⚠️ **Warning** — Concern but not a blocker
-- ❌ **Blocker** — Must fix before launch
+- **PASS** — Verified and acceptable
+- **WARNING** — Concern but not a blocker
+- **BLOCKER** — Must fix before launch
 
 ---
 
@@ -95,29 +95,25 @@ Run through each section. Mark each item:
 
 ### Checklist
 
-- [ ] **No secrets in code.** Grep codebase for API keys, passwords, tokens.
+- [ ] **No secrets in code.** A secret scanner finds no live keys, passwords or tokens in the code.
 - [ ] **No secrets in git history.** Check recent commits for accidental exposure.
 - [ ] **Production secrets are different from development.** Verify env separation.
 - [ ] **All production secrets are in the deployment platform.** Not in files.
-- [ ] **Critical secrets have been rotated recently.** Within last 90 days.
+- [ ] **Critical secrets are within their rotation interval.** The interval you chose for each kind of secret (see the [security defaults reference](contextqb://references/pricing#security-defaults)).
 - [ ] **You know how to rotate each secret if needed.** Document rotation path.
 
 ### Quick tests
 
-```bash
-# Search for potential secrets in code
-git grep -i "api_key\|secret\|password\|token" -- '*.ts' '*.tsx' '*.js'
+Run a dedicated secret scanner over the working tree and the git history ([kinds of scanner](contextqb://references/tools#security-scanners)), and confirm each match before calling it a blocker. A plain text search is a last resort: it misses most key formats. One check is simple enough to run by hand:
 
+```bash
 # Check for .env files that shouldn't be committed
 git ls-files | grep -i env
-
-# Check recent commits for potential leaks
-git log --oneline -20 -p | grep -i "key\|secret" | head -20
 ```
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -142,7 +138,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -154,7 +150,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 - [ ] **No debug endpoints in production.** /debug, /test, /dev, etc.
 - [ ] **No admin endpoints without auth.** /admin/\* routes protected.
-- [ ] **All webhooks verify signatures.** Stripe, Clerk, etc.
+- [ ] **All webhooks verify signatures.** Payment, auth and other provider webhooks (Stripe's, for example).
 - [ ] **Rate limiting on form endpoints.** Contact forms, search, etc.
 - [ ] **No source maps in production.** Check /\_next/static/ or equivalent.
 - [ ] **robots.txt doesn't expose sensitive paths.**
@@ -167,7 +163,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -190,7 +186,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -201,7 +197,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 ### Checklist
 
 - [ ] **Database access uses appropriate credentials.** Not service role everywhere.
-- [ ] **RLS is enabled on sensitive tables.** (If using Supabase/similar)
+- [ ] **RLS (row-level security) is enabled on sensitive tables.** (If your database supports it)
 - [ ] **No PII in logs.** Check logging configuration.
 - [ ] **HTTPS enforced.** No mixed content, redirects to HTTPS.
 
@@ -213,7 +209,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -223,8 +219,8 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Checklist
 
-- [ ] **Error monitoring is configured.** Sentry, LogRocket, etc.
-- [ ] **Alerts will reach someone.** Email, Slack, PagerDuty.
+- [ ] **Error monitoring is configured.** An error-tracking or monitoring service ([what common services do](contextqb://references/tools#managed-services)).
+- [ ] **Alerts will reach someone.** Email, a chat channel, or a paging service.
 - [ ] **You can see auth failures.** Login attempts, lockouts.
 - [ ] **You can see application errors.** 500s, crashes.
 - [ ] **You have a status page or health endpoint.**
@@ -236,7 +232,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -249,7 +245,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 - [ ] **You know how to take the site offline.** (If needed urgently)
 - [ ] **You know how to rotate each critical secret.** Document exists.
 - [ ] **You know how to invalidate all sessions.** Through auth provider.
-- [ ] **You have contact info for key services.** Stripe support, Clerk, etc.
+- [ ] **You have contact info for key services.** Support contacts for your payment, auth and hosting providers.
 - [ ] **Someone is on call.** Or at least checking email.
 
 ### Quick documentation
@@ -262,7 +258,7 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Result
 
-- Status: ✅ / ⚠️ / ❌
+- Status: PASS / WARNING / BLOCKER
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -272,33 +268,33 @@ git log --oneline -20 -p | grep -i "key\|secret" | head -20
 
 ### Summary
 
-| Section           | Status       |
-| ----------------- | ------------ |
-| Secrets           | ✅ / ⚠️ / ❌ |
-| Authentication    | ✅ / ⚠️ / ❌ |
-| Public Endpoints  | ✅ / ⚠️ / ❌ |
-| Error Handling    | ✅ / ⚠️ / ❌ |
-| Data Protection   | ✅ / ⚠️ / ❌ |
-| Monitoring        | ✅ / ⚠️ / ❌ |
-| Incident Response | ✅ / ⚠️ / ❌ |
+| Section           | Status                   |
+| ----------------- | ------------------------ |
+| Secrets           | PASS / WARNING / BLOCKER |
+| Authentication    | PASS / WARNING / BLOCKER |
+| Public Endpoints  | PASS / WARNING / BLOCKER |
+| Error Handling    | PASS / WARNING / BLOCKER |
+| Data Protection   | PASS / WARNING / BLOCKER |
+| Monitoring        | PASS / WARNING / BLOCKER |
+| Incident Response | PASS / WARNING / BLOCKER |
 
 ### Decision
 
-**❌ NO-GO** if any blocker exists.
+**NO-GO** if any blocker exists.
 
 Blockers that must be fixed:
 
 1. [Blocker 1]
 2. [Blocker 2]
 
-**⚠️ GO WITH CAUTION** if warnings but no blockers.
+**GO WITH CAUTION** if warnings but no blockers.
 
 Warnings to address post-launch:
 
 1. [Warning 1]
 2. [Warning 2]
 
-**✅ GO** if all sections pass.
+**GO** if all sections pass.
 
 ---
 

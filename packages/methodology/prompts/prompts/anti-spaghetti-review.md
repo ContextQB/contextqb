@@ -2,7 +2,7 @@
 id: anti-spaghetti-review
 title: Anti-Spaghetti Review Prompt
 summary: A targeted prompt that runs the ContextQB anti-spaghetti checklist over a feature or codebase and produces a structured diagnostic document.
-version: 0.1.1
+version: 0.2.0
 audience:
   - founder
   - developer
@@ -13,6 +13,7 @@ use_case: |
   When you want a focused diagnosis of structural decay — hidden coupling, ambiguous state ownership, ad hoc orchestration, brittle lifecycles — without a full architecture review.
 variables:
   - SCOPE_PATH
+  - OUTPUT_PATH
 expected_output: |
   A Markdown document that evaluates each of the eight anti-spaghetti signals against the target scope, with evidence and a prioritised remediation plan.
 quality_standard: |
@@ -31,7 +32,7 @@ tags:
 
 # Anti-Spaghetti Review Prompt
 
-This prompt is what you reach for when something feels wrong but you cannot yet name it.
+This prompt is what you reach for when something feels wrong but you cannot yet name it. Run it in a session that did not write the code under review — a fresh session, a second agent, or a person. `{{OUTPUT_PATH}}` is where the report should be saved, for example `docs/reviews/anti-spaghetti-review.md`.
 
 ## The prompt
 
@@ -62,6 +63,8 @@ After the eight sections, produce:
 - Prioritised remediation plan. Order the fixes by impact and risk, smallest viable changes first.
 
 Be specific. Quote code. Reference files. Do not write code. Do not give generic best-practice advice — only findings grounded in this codebase.
+
+Write the report to {{OUTPUT_PATH}} and do not change any other file. Then reply with the path and the verdict for each signal, one line each.
 ```
 
 ## How to read the output

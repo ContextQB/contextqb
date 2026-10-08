@@ -14,7 +14,7 @@ The format name is `context.qb` (the brand, ContextQB = Context Quarterback). Th
 
 ## Why the format mixes plain language with structured data
 
-The format is YAML 1.2 with intentional prose mixed in (top-of-file comment header explaining sections, free-text `summary` fields, multi-line descriptions). This is deliberate. Empirical work on agent context shows that **agents perform best with a mix of plain language and structured data** — pure structure is hard to interpret without a schema in hand, and pure prose costs tokens to scan. The combination gives the agent both the shape and the meaning in one read.
+The format is YAML 1.2 with intentional prose mixed in (top-of-file comment header explaining sections, free-text `summary` fields, multi-line descriptions). This is deliberate, and it is a design judgment rather than a measured result: **a mix of plain language and structured data** suits agents because pure structure is hard to interpret without a schema in hand, and pure prose costs tokens to scan. The combination gives the agent both the shape and the meaning in one read.
 
 The self-documenting comment header at the top of every `context.qb.yaml` means a model that has never seen the format before can still decode it from the first line.
 
@@ -38,7 +38,7 @@ The full specification lives at [`packages/qb/spec/SPEC.md`](../spec/SPEC.md) (p
 | [`nextjs-web-app.context.qb.yaml`](nextjs-web-app.context.qb.yaml)             | Single Next.js app deployed to a host      | A single app with `routes` and a short `tree`.                       |
 | [`cli-tool.context.qb.yaml`](cli-tool.context.qb.yaml)                         | Small CLI tool with one binary             | Shortest practical shape. No `routes`; the minimal viable file.      |
 | [`python-data-pipeline.context.qb.yaml`](python-data-pipeline.context.qb.yaml) | Python ETL / data pipeline                 | Demonstrates non-TypeScript stacks and structured `status` for runs. |
-| [`saas-monorepo.context.qb.yaml`](saas-monorepo.context.qb.yaml)               | Multi-app SaaS with shared packages        | Demonstrates `tree` with nested objects and per-package `purpose`.   |
+| [`saas-monorepo.context.qb.yaml`](saas-monorepo.context.qb.yaml)               | Multi-app SaaS with shared packages        | Nested `tree` objects, per-package `purpose`, a superseded decision. |
 | [`mcp-server-project.context.qb.yaml`](mcp-server-project.context.qb.yaml)     | Repository whose primary product is an MCP | Demonstrates `entry_points` aimed at agent installation, not humans. |
 
 ## Writing your own

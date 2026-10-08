@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -64,7 +64,17 @@ tags:
 
 # Application Security Baseline Audit
 
-This is a comprehensive security audit for applications built with agentic systems and deployed to managed services (Cloudflare, Vercel, Supabase, Clerk, etc.). It's designed to be run by an AI agent and produce a report a non-developer can understand and act on.
+This is a comprehensive security audit for applications built with agentic systems and deployed to managed services — hosting, authentication, database, storage and other providers ([what common services do](contextqb://references/tools#managed-services)). It's designed to be run by an AI agent and produce a report a non-developer can understand and act on.
+
+## Before you run it: what to give the agent
+
+The agent can read your code, but not your providers' dashboards. Without help, many checks come back UNKNOWN. Before the run, collect:
+
+- **Settings exports or screenshots** from your hosting, authentication, database and storage dashboards (security, session, access-rule and network settings).
+- **The names of your environment variables** — names only, never their values.
+- **Your attack-surface map** if you have one ([Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface)).
+
+Run the audit in a session that did not build the application: a fresh session, a second agent, or a person, given the project instructions and the code. A different model can add variety; it does not by itself make the audit independent.
 
 ## Use this as an agent instruction
 
@@ -78,6 +88,8 @@ This is a comprehensive security audit for applications built with agentic syste
 > 4. Produce prioritised, actionable findings
 >
 > You must operate like a security engineer conducting a real audit — skeptical, evidence-based, and focused on realistic exploitability.
+>
+> Start by reading the project instructions (`AGENTS.md` and anything it points to) and the relevant configuration. Then run the dependency, secret and code-security scanners the project has and you are permitted to run ([kinds of scanner](contextqb://references/tools#security-scanners)). Treat their output as leads to verify against the code, never as verdicts. Never copy a secret value into your report or your messages: name the file, line and kind of secret instead.
 
 ---
 
@@ -88,10 +100,10 @@ First, discover and document the actual architecture. Do NOT assume — infer fr
 Inspect:
 
 - **Framework and language** — What's the tech stack?
-- **Deployment** — Where is this deployed? (Cloudflare Workers, Vercel, etc.)
-- **Authentication** — How do users prove identity? (Clerk, Supabase Auth, custom)
-- **Database** — Where does data live? (Supabase, Cloudflare D1, etc.)
-- **Storage** — Where do files live? (R2, Supabase Storage, etc.)
+- **Deployment** — Where is this deployed? (which hosting provider or platform)
+- **Authentication** — How do users prove identity? (a hosted authentication provider, the database's built-in auth, or custom)
+- **Database** — Where does data live? (which database or data service)
+- **Storage** — Where do files live? (which object or file storage)
 - **Third-party services** — What external APIs does this call?
 - **AI integrations** — Are there LLM calls, agents, or AI features?
 - **Public endpoints** — What's reachable from the internet?
@@ -308,6 +320,9 @@ Produce a single Markdown document with these sections:
 - Explicitly identify security theatre or incomplete mitigations
 - Prioritise realistic exploitability over theoretical CVEs
 - Focus especially on authentication boundaries, secrets exposure, and AI trust
+- Treat scanner and search matches as leads; confirm each in the code before it becomes a finding
+- Never include a secret value in the report — identify it by location and kind
+- Do not run attacks. If a finding needs demonstrating, propose the test; run it only with the operator's approval and only against a local or test copy, never production
 
 You are performing a real security review, not writing a blog post.
 
