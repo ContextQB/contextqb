@@ -17,6 +17,8 @@ We use our own Mautic installation at `map.contextqb.com` to remember which Cont
 
 Tracking uses cookies and browser storage to recognize the same browser across visits. It records page paths and titles, visit times, referrer origin, browser/device information and the connection IP seen by Mautic. We do not send page query strings, URL fragments, signup form contents or full referrer URLs in website pageviews. We do not identify different people by a shared IP address.
 
+Mautic can also estimate an approximate country, region or city from the connection IP using a local MaxMind GeoLite2 database. This is an estimate, not your precise location. We download the database from MaxMind; individual visitor IPs are not sent to MaxMind for these lookups.
+
 If Mautic can associate your browser with an existing contact, for example after you follow a tracked email link, page visits can help us tailor future messages to your interests. Website tracking permission does not subscribe you to email. Email targeting must also respect your confirmed signup permission and unsubscribe, bounce and complaint status. We do not sell this information.
 
 Use **Tracking preferences** at the bottom of any page to allow or turn off tracking. Turning it off clears the website's Mautic browser identifiers and reloads the page without the tracker. It stops new website tracking; it does not erase previously stored records or cookies on the separate Mautic hostname. Do Not Track and Global Privacy Control signals prevent the website tracker from loading. Your preference is saved on the current website hostname; another browser or the `www` hostname can have a separate choice.
