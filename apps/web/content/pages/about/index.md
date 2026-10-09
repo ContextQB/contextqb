@@ -1,7 +1,8 @@
 ---
+meta_description: "Learn about ContextQB, a practical field guide for non-developers learning to direct AI agents, organize project context, and build working software."
 eyebrow: About
 headline: A practical school for building with AI agents.
-meta_title: About
+meta_title: "About ContextQB: Practical AI Building for Everyone"
 
 ---
 
@@ -34,4 +35,4 @@ ContextQB teaches the missing layer.
 
 ContextQB should become the practical training layer for the agentic coding era: helping people who are not traditional developers learn how to direct AI systems responsibly and build applications that can survive beyond the first exciting prototype.
 
-_AI can write code. Someone still has to think._
+_You bring the vision. Learn to call the plays._

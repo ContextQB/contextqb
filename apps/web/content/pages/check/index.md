@@ -197,11 +197,8 @@ closer_cta_examples_href: /playbooks/write-a-context-qb
 closer_cta_mcp_label: Pair with the MCP →
 closer_cta_mcp_href: /mcp
 
-meta_title: Check — keep your context.qb.yaml honest
-meta_description: >-
-  contextqb check is the drift detector for your project's context.qb.yaml.
-  It catches the moment your map stops matching your territory, so your AI
-  agent never reads a stale file.
+meta_title: "ContextQB Drift Detection for AI Project Context"
+meta_description: "Keep your AI agent’s project map accurate. ContextQB checks context.qb.yaml against your repository and flags drift in structure, stack and routes."
 
 
 ---

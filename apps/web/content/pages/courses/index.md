@@ -81,10 +81,8 @@ kickoff_body: >-
 kickoff_cta_label: Join the kickoff list →
 kickoff_cta_href: /kickoff
 
-meta_title: Courses
-meta_description: >-
-  Self-paced courses that teach the ContextQB methodology by building a real
-  application end to end with an AI coding agent.
+meta_title: "Upcoming AI Building Courses for Non-Developers"
+meta_description: "Explore upcoming ContextQB courses for building applications with AI agents. Start learning today with the free guides, playbooks and worked examples."
 
 
 ---

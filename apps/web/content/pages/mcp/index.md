@@ -5,10 +5,8 @@ subhead: >-
   Add the ContextQB MCP to any MCP-aware agent tool. Your agent gets access to
   every guide, briefing, principle, playbook, audit, prompt and reference table
   on this site, addressable by URI.
-meta_title: MCP
-meta_description: >-
-  Install the ContextQB MCP so your agent can pull guides, principles,
-  playbooks, audits, and prompts into the work by URI.
+meta_title: "ContextQB MCP: Guides and Playbooks for Your AI Agent"
+meta_description: "Connect your AI coding agent to ContextQB through MCP. Retrieve practical guides, principles, playbooks, audits and prompts inside your workflow."
 
 ---
 

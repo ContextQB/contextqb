@@ -99,10 +99,8 @@ mcp_cta_href: /mcp
 mcp_cta_secondary_label: See community insights →
 mcp_cta_secondary_href: /insights
 
-meta_title: ContextQB — Practical guidance for building with AI
-meta_description: >-
-  Practical guidance for non-developers building with AI. Learn to shape your
-  idea, guide an AI agent, and check what you build with ContextQB guides and playbooks.
+meta_title: "Learn to Build with AI Agents"
+meta_description: "Turn your ideas into working software with practical AI-building guides and playbooks. Learn to plan projects, direct AI agents, and check their work."
 
 
 ---

@@ -4,8 +4,8 @@ headline: Get the kickoff email.
 subhead: >-
   One note when the first ContextQB course seats open. No drip campaign, no
   upsells, no spam.
-meta_title: Kickoff
-meta_description: Sign up for one email when the first ContextQB course seats open. No drip campaigns, no upsells, no spam.
+meta_title: "ContextQB Course Launch Updates"
+meta_description: "Find out about upcoming ContextQB courses for learning to build with AI agents, and explore free guides and playbooks while you wait."
 
 ---
 

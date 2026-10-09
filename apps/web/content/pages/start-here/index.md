@@ -171,10 +171,8 @@ closer_body: >-
   Your first model will be a draft. The practice is learning how to refine it
   without losing what you have built. Pick a card above and take the next step.
 closer_footer: AI can write code. Someone still has to think.
-meta_title: Start here
-meta_description: >-
-  The ContextQB worldview in five minutes, plus the logical next step for
-  whatever you're trying to do.
+meta_title: "Start Building with AI: A Beginner Learning Path"
+meta_description: "New to building software with AI? Find your starting point, learn the essentials, and choose practical guides and playbooks for your first project."
 
 
 ---
