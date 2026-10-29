@@ -5,35 +5,35 @@ subhead: >-
   Learn how website tracking, email signups and aggregate project telemetry work.
   We do not read your code, store your project files, or sell personal data.
 meta_title: "ContextQB Privacy, Website Tracking and Telemetry"
-meta_description: "Choose website tracking preferences and learn how ContextQB handles email signups, Mautic page tracking and aggregate CLI and MCP telemetry."
+meta_description: "Choose website tracking preferences and learn how ContextQB handles email signups, website page tracking and aggregate CLI and MCP telemetry."
 
 ---
 
-ContextQB uses optional website tracking to understand your interests, email signup records to manage the messages you request, and separate aggregate telemetry to improve the methodology. This page explains those different uses and your choices.
+ContextQB uses website tracking to understand your interests, email signup records to manage the messages you request, and separate aggregate telemetry to improve the methodology. This page explains those different uses and your choices.
 
 ## Website tracking and your choice
 
-We use our own Mautic installation at `map.contextqb.com` to remember which ContextQB pages you visit **after you choose “Allow website tracking.”** Until you allow it, we do not load the website tracker. Declining does not prevent reading the site or signing up.
+We use our own website analytics to remember which ContextQB pages you visit. **Website tracking is on by default.** You can turn it off using the footer control and continue reading or signing up.
 
-Tracking uses cookies and browser storage to recognize the same browser across visits. It records page paths and titles, visit times, referrer origin, browser/device information and the connection IP seen by Mautic. We do not send page query strings, URL fragments, signup form contents or full referrer URLs in website pageviews. We do not identify different people by a shared IP address.
+Tracking uses cookies and browser storage to recognize the same browser across visits. It records page paths and titles, visit times, referrer origin, browser/device information and the connection IP seen by our analytics service. We do not send page query strings, URL fragments, signup form contents or full referrer URLs in website pageviews. We do not identify different people by a shared IP address.
 
-Mautic can also estimate an approximate country, region or city from the connection IP using a local MaxMind GeoLite2 database. This is an estimate, not your precise location. We download the database from MaxMind; individual visitor IPs are not sent to MaxMind for these lookups.
+Our analytics service can also estimate an approximate country, region or city from the connection IP using a local MaxMind GeoLite2 database. This is an estimate, not your precise location. We download the database from MaxMind; individual visitor IPs are not sent to MaxMind for these lookups.
 
-If Mautic can associate your browser with an existing contact, for example after you follow a tracked email link, page visits can help us tailor future messages to your interests. Website tracking permission does not subscribe you to email. Email targeting must also respect your confirmed signup permission and unsubscribe, bounce and complaint status. We do not sell this information.
+If our analytics service can associate your browser with an existing contact, for example after you follow a tracked email link, page visits can help us tailor future messages to your interests. Website tracking does not subscribe you to email. Email targeting must also respect your confirmed signup permission and unsubscribe, bounce and complaint status. We do not sell this information.
 
-Use **Tracking preferences** at the bottom of any page to allow or turn off tracking. Turning it off clears the website's Mautic browser identifiers and reloads the page without the tracker. It stops new website tracking; it does not erase previously stored records or cookies on the separate Mautic hostname. Do Not Track and Global Privacy Control signals prevent the website tracker from loading. Your preference is saved on the current website hostname; another browser or the `www` hostname can have a separate choice.
+Use **Turn off website tracking** in the footer to open the control and turn tracking off. Use **Tracking preferences** to turn it back on. Turning it off clears the website's tracking identifiers and reloads the page without the tracker. It stops new website tracking; it does not erase previously stored records or cookies on the separate analytics hostname. Do Not Track and Global Privacy Control signals prevent the website tracker from loading. Your preference is saved on the current website hostname; another browser or the `www` hostname can have a separate choice.
 
 ## Email signups and email tracking
 
-The kickoff form sends your address securely to Mautic to request signup. You receive a confirmation request, and only an explicit confirmation adds you to the confirmed kickoff list and sends the welcome email. The form does not pass website tracking cookies or your browser IP to the signup relay. You can sign up with website tracking off.
+The kickoff form sends your address securely to our signup service to request signup. You receive a confirmation request, and only an explicit confirmation adds you to the confirmed kickoff list and sends the welcome email. The form does not pass website tracking cookies or your browser IP to the signup relay. You can sign up with website tracking off.
 
-Mautic keeps the address, signup source, permission purpose/version, request and confirmation timestamps, delivery records and suppression preferences. The current permission is for the kickoff announcement; a page visit alone does not expand it. Email opens may be measured with a pixel, and ordinary email links may be tracked. The signed confirmation link is excluded from click tracking. Email clients can block images or fetch them automatically, so open counts do not prove a person read a message.
+Our signup service keeps the address, signup source, permission purpose/version, request and confirmation timestamps, delivery records and suppression preferences. The current permission is for the kickoff announcement; a page visit alone does not expand it. Email opens may be measured with a pixel, and ordinary email links may be tracked. The signed confirmation link is excluded from click tracking. Email clients can block images or fetch them automatically, so open counts do not prove a person read a message.
 
 Use the unsubscribe link in an email to stop further marketing messages, or contact `info@contextqb.com` about your preferences or records. Website tracking choices and email unsubscribe are separate. Stored contact and visit history currently has no automatic deletion schedule; deletion requests are handled separately, and encrypted backup copies expire under backup retention.
 
 ## Visiting the site or MCP server
 
-Our MCP server (`mcp.contextqb.com`) and website also use [Cloudflare Workers Analytics](https://developers.cloudflare.com/workers/observability/analytics-engine/). The following describes that aggregate infrastructure analytics, separately from optional Mautic website tracking.
+Our MCP server (`mcp.contextqb.com`) and website also use [Cloudflare Workers Analytics](https://developers.cloudflare.com/workers/observability/analytics-engine/). The following describes that aggregate infrastructure analytics, separately from website tracking.
 
 ### What Cloudflare analytics records
 
@@ -46,9 +46,9 @@ Our MCP server (`mcp.contextqb.com`) and website also use [Cloudflare Workers An
 
 - **Your IP address** — Cloudflare processes it at the edge but does not store or expose it to us
 - **Request body contents** — we don't see what you asked for
-- **Cookies or tracking identifiers** — this aggregate analytics layer does not use the Mautic identifiers described above
+- **Cookies or tracking identifiers** — this aggregate analytics layer does not use the website tracking identifiers described above
 
-This aggregate analytics layer does not provide individual visitor profiles. Its collection is separate from the optional website tracking choice.
+This aggregate analytics layer does not provide individual visitor profiles. Its collection is separate from the website tracking choice.
 
 ## Using the CLI
 
@@ -166,7 +166,7 @@ These guards mean that even if your project is in an unusual combination (for ex
 - **Cloudflare Analytics (Phase 1):** 90 days, then deleted
 - **CLI and MCP events (Phase 2/3):** Retained until you revoke, then immediately deleted
 - **Aggregated insights:** Retained indefinitely, but they contain no individual-level data
-- **Mautic contacts and visits:** No automatic deletion schedule is currently configured; request changes or deletion through `info@contextqb.com`. Protected backup copies expire under their separate retention.
+- **Signup contacts and website visits:** No automatic deletion schedule is currently configured; request changes or deletion through `info@contextqb.com`. Protected backup copies expire under their separate retention.
 
 ## Why we collect it
 
@@ -177,7 +177,7 @@ Aggregate usage data helps us:
 - Prioritize methodology improvements
 - Provide community insights based on project-level data (e.g., "70% of TypeScript projects use this pattern")
 
-The CLI/MCP cooperative data is not used to identify individuals or build marketing profiles. Optional Mautic website tracking can record interests for permitted email targeting, as described above. We do not sell either kind of data.
+The CLI/MCP cooperative data is not used to identify individuals or build marketing profiles. Website tracking can record interests for permitted email targeting, as described above. We do not sell either kind of data.
 
 ## Technical details
 
