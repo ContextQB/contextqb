@@ -61,7 +61,7 @@ Until the cooperative reaches 30 distinct projects for a given topic (per ADR-00
 
 ## Fastest setup
 
-The hosted server at `https://mcp.contextqb.com/mcp` requires no install. For install links and step-by-step checks, use [Install ContextQB](/install/). To configure by hand, add the configuration for your tool, restart it, and the corpus is available to your agent. These snippets carry no token; they give your agent every methodology tool. Each client's configuration format changes between versions — the [MCP client configuration reference](contextqb://references/setup#mcp-clients) records each one with the date and source it was checked against.
+The hosted server at `https://mcp.contextqb.com/mcp` requires no install. For install links and step-by-step checks, use [Install ContextQB](/install/). To configure by hand, add the configuration for your tool, restart it, and the corpus is available to your agent. These snippets carry no token; they give your agent every methodology tool. For app-specific settings, see the [MCP client configuration reference](contextqb://references/setup#mcp-clients).
 
 ### Cursor
 

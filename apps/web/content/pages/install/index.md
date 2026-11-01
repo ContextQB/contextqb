@@ -71,6 +71,10 @@ sources_heading: Your app's own instructions
 copy_label: Copy
 copied_label: Copied
 copy_failed_label: Copy didn't work. Select the text and copy it yourself.
-evidence_heading: How we checked these steps
+evidence_heading: Keeping this guide up to date
+maintenance_note: >-
+  Apps change, and we review these instructions periodically. If a step doesn't
+  work or looks out of date, [let us know](https://github.com/ContextQB/contextqb/issues/new?template=external-adopter-feedback.yml)
+  so we can help and update the guide.
 
 ---
