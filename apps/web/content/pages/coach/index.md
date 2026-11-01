@@ -2,10 +2,10 @@
 eyebrow: Coach — in development
 headline: ContextQB Coach
 subhead: >-
-  ContextQB Coach is a planned subscription application that will guide you
-  through the ContextQB curriculum inside your development environment. It is
-  intended to keep track of your learning progress and relevant project context
-  so the guidance stays connected to the work you are doing.
+  ContextQB Coach is a paid subscription app we're planning. It will guide you
+  through the ContextQB curriculum inside the app where you build, and keep
+  track of what you've learned and what you're working on, so each lesson fits
+  your actual project.
 status_label: "In development — subscriptions are not available yet."
 primary_cta_label: Connect the free ContextQB library
 primary_cta_href: /install/
@@ -16,19 +16,26 @@ meta_description: "ContextQB Coach is a planned subscription that will guide you
 
 ---
 
-## What Coach is meant to do
+## What Coach is planned to do
 
-These are **planned capabilities**. None of them is available today.
+Everything in this section is a **plan**. Coach doesn't exist yet, and you can't sign up for it or buy it.
 
-- **Know where you are in the curriculum.** Coach is intended to understand which guides, principles and playbooks you have worked through, and what comes next for you.
-- **Relate the next lesson to your project.** Rather than a fixed course order, it is meant to connect the next idea to the work in front of you.
-- **Carry your progress forward.** It is intended to remember your progress across sessions, so each one picks up where the last left off.
-- **Help you apply, check and reflect.** It is meant to help you put a lesson into practice, check the result against the ContextQB playbooks and audits, and reflect on what you learned.
+- **Know where you are.** Coach will keep track of the guides, principles and playbooks you've worked through, and suggest what to learn next.
+- **Fit lessons to your project.** Instead of a fixed course order, it will connect the next idea to the work in front of you.
+- **Remember your progress.** Each session will pick up where the last one left off.
+- **Help you use what you learn.** It will help you try a lesson on your project, check the result against ContextQB's playbooks and checklists, and look back on what worked.
 
-## What is not decided yet
+## Still to be decided
 
-Coach is still being designed. Which development environments it supports, what project context it can see and with what permission, how and where that information is stored and for how long, and how billing works are all future product decisions. Being "aware of your work" describes the goal, not a promise of continuous background monitoring.
+We're still designing Coach. These questions don't have answers yet:
 
-## What you can use today
+- Which AI apps and editors it will work with.
+- What it can see of your project, and how you'll give or withdraw permission.
+- Where your progress and project information will be stored, and for how long.
+- What it will cost and how billing will work.
 
-The ContextQB library is free and does not depend on Coach. [Connect it to your AI app](/install/) so your agent can retrieve guides, principles, playbooks and audits while you work, or [start the curriculum yourself](/start-here/). Coach is separate from ContextQB [Courses](/courses/) and from the optional [drift-detection CLI](/check/).
+When we say Coach will know about your work, we mean that is the goal. It doesn't mean Coach will watch everything you do in the background.
+
+## Use ContextQB today
+
+You don't need Coach to use ContextQB. The library is free: [connect it to your AI app](/install/) so your agent can look up guides, principles, playbooks and checklists while you work, or [start the curriculum yourself](/start-here/). Coach is separate from ContextQB [Courses](/courses/) and from the optional [drift-detection command-line tool](/check/).

@@ -119,24 +119,26 @@ fits_cards:
       Sessions stop opening with a stale snapshot.
 
 install_eyebrow: Get started
-install_heading: Install the CLI in your project.
+install_heading: Install the command-line tool in your project.
 install_lede: >-
-  `contextqb check` is published on npm as
-  [@context-qb/cli](https://www.npmjs.com/package/@context-qb/cli). It is
-  optional and separate from the free ContextQB library: you do not need it to
-  [connect your AI app](/install/). These steps work in any JavaScript
-  project; your project does not need anything from the ContextQB repository.
+  This is an optional extra for people who keep their project in a code folder
+  and are comfortable typing commands in a terminal. You don't need it to
+  [connect ContextQB to your AI app](/install/). The tool is published on npm as
+  [@context-qb/cli](https://www.npmjs.com/package/@context-qb/cli), and these
+  steps work in any JavaScript project; nothing from the ContextQB repository is
+  required.
 install_steps:
   - title: Check that Node.js 20 or newer is installed
     command: node --version
     body: >-
-      The CLI needs Node.js 20 or newer. Run the command in a terminal; if it
-      prints a lower version or nothing, install a current Node.js release
-      first.
+      The tool needs Node.js 20 or newer. Run the command in a terminal (the
+      text window where you type commands). If it prints a lower number, or an
+      error, install a current Node.js release first.
   - title: Give your project a `context.qb.yaml`
     body: >-
-      The check compares this file with your repository, so it needs one. No
-      file yet? Follow the
+      This short file describes your project for AI agents: its parts, where it
+      runs and the decisions you've made. The check compares it with your
+      project folder, so it needs one. No file yet? Follow the
       [write a context.qb playbook](/playbooks/write-a-context-qb) — it walks
       you through every section, and the
       [worked examples](https://github.com/ContextQB/contextqb/tree/main/format/examples)

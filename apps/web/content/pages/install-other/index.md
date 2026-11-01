@@ -2,14 +2,14 @@
 eyebrow: "Install · Other apps"
 headline: Connect ContextQB to another AI app.
 subhead: >-
-  Use your app's own setup for remote MCP servers with the ContextQB server
-  address.
+  Most AI apps that support MCP can connect to ContextQB with the address on
+  this page.
 meta_title: Install ContextQB in Another MCP App
 meta_description: "Connect the free ContextQB MCP library to any AI app that supports remote MCP servers over Streamable HTTP. No token required."
 troubleshooting: |-
-  - If your app only supports local (stdio) servers, check its documentation for remote server support.
-  - If your app asks for a JSON configuration, use the format its documentation shows; formats differ between apps. The [MCP page](/mcp/) has examples for several apps.
+  - **Your app only lists "local" or "stdio" servers.** It may not support remote (online) MCP servers yet. Check its documentation.
+  - **Your app asks for a block of settings text (JSON).** Use the exact format your app's documentation shows; it differs between apps. The [MCP page](/mcp/) has examples for several apps.
 
 ---
 
-Most AI development apps that support MCP can add a remote server. Use your app's documentation for the exact menus or file, and the server details on this page.
+Look for an option in your app called something like **Add MCP server** or **Add remote server**. Use your app's documentation for the exact menus. You'll need the name and address shown on this page. There's nothing to sign in to.
