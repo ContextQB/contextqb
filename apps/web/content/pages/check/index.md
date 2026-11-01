@@ -104,7 +104,7 @@ fits_heading: Where the check belongs.
 fits_cards:
   - title: On your laptop
     body: >-
-      Run `pnpm check:qb` before every commit. It takes under three seconds.
+      Run `contextqb check` before every commit. It takes under three seconds.
       If your map is honest, you commit. If it's not, you know exactly what
       to fix.
   - title: In your CI
@@ -119,36 +119,83 @@ fits_cards:
       Sessions stop opening with a stale snapshot.
 
 install_eyebrow: Get started
-install_heading: Run it in your ContextQB-shaped repo.
+install_heading: Install the CLI in your project.
 install_lede: >-
-  The detector runs from this repository today. Use it in a ContextQB-shaped
-  checkout to keep the map honest while you build.
+  `contextqb check` is published on npm as
+  [@context-qb/cli](https://www.npmjs.com/package/@context-qb/cli). It is
+  optional and separate from the free ContextQB library: you do not need it to
+  [connect your AI app](/install/). These steps work in any JavaScript
+  project; your project does not need anything from the ContextQB repository.
 install_steps:
-  - title: Make sure your repo has a `context.qb.yaml`
+  - title: Check that Node.js 20 or newer is installed
+    command: node --version
     body: >-
-      No file yet? Follow the
+      The CLI needs Node.js 20 or newer. Run the command in a terminal; if it
+      prints a lower version or nothing, install a current Node.js release
+      first.
+  - title: Give your project a `context.qb.yaml`
+    body: >-
+      The check compares this file with your repository, so it needs one. No
+      file yet? Follow the
       [write a context.qb playbook](/playbooks/write-a-context-qb) — it walks
-      you through every section. The
+      you through every section, and the
       [worked examples](https://github.com/ContextQB/contextqb/tree/main/format/examples)
-      cover monorepos, Next.js apps, MCP servers, CLIs, and Python pipelines —
-      copy the closest one. Most repos need fewer than 100 lines. Already have
-      a repo with a stale qb? Follow
-      [retrofit drift detection](/playbooks/retrofit-drift-detection) instead.
+      cover monorepos, Next.js apps, MCP servers, CLIs, and Python pipelines.
+      There is no generator command; you write the file once and the check
+      keeps it honest. Already have a stale one? Follow
+      [retrofit drift detection](/playbooks/retrofit-drift-detection).
+  - title: Know what the first run does
+    command: |-
+      # macOS / Linux (bash, zsh)
+      export CONTEXTQB_NO_PROVISION=true
+
+      # Windows PowerShell
+      $env:CONTEXTQB_NO_PROVISION = "true"
+    body: >-
+      Outside CI, the first `contextqb` command you run on a computer
+      automatically registers a free membership and stores its token on that
+      computer, and `contextqb check` sends a telemetry event by default.
+      `--no-telemetry` skips the check event for that run but does **not**
+      skip registration. To skip registration, set `CONTEXTQB_NO_PROVISION=true`
+      in your shell before running the CLI, as shown above. Details and the
+      other opt-outs are on [Privacy and telemetry](/privacy/telemetry/).
+  - title: Install the package
+    command: |-
+      # npm
+      npm install --save-dev @context-qb/cli
+
+      # pnpm
+      pnpm add -D @context-qb/cli
+    body: >-
+      Run this from your project's root. Installing the package does not run
+      anything; registration happens only when you first run a `contextqb`
+      command.
   - title: Run the check
+    command: |-
+      # npm
+      npx contextqb check
+
+      # pnpm
+      pnpm exec contextqb check
+
+      # skip the telemetry event for this run
+      npx contextqb check --no-telemetry
     body: >-
-      `pnpm check:qb` runs in under three seconds. Exit code 0 means clean;
-      exit code 1 means drift; exit code 2 means the file is missing or
-      malformed.
-  - title: Wire it into your pipeline
+      The check looks for `context.qb.yaml` in the current folder or its
+      parents (or use `--file <path>`). Exit code 0 means clean; 1 means drift;
+      2 means the file is missing or malformed.
+  - title: Wire it into your workflow
+    command: |-
+      # package.json
+      "scripts": { "check:qb": "contextqb check" }
     body: >-
-      The repo already chains `check:qb` into `pnpm validate`, which runs
-      `validate:content`, `validate:qb`, and `check:qb` together. Run
-      `pnpm validate` before every commit, or wire it into a CI job that
-      runs on every pull request. For the full greenfield walkthrough, follow
+      Add a script like this, then run it before commits or in a CI job on
+      every pull request. CI environments are detected automatically and do
+      not register a membership. For the full greenfield walkthrough, follow
       [set up drift detection on day one](/playbooks/set-up-drift-detection).
 
 firstrun_eyebrow: Membership
-firstrun_heading: What happens on first run.
+firstrun_heading: After the first run.
 firstrun_paragraphs:
   - >-
     The first time you run a `contextqb` command on your machine (outside CI,
@@ -162,10 +209,15 @@ firstrun_paragraphs:
     [Privacy & Telemetry](/privacy/telemetry).
 firstrun_verify_label: Confirm the token landed
 firstrun_verify_command: contextqb membership status
-firstrun_setup_label: Hand the token to your agent
-firstrun_setup_command: "contextqb mcp setup --client cursor   # or --client claude"
+firstrun_setup_label: "Advanced: print an MCP config that includes your token"
+firstrun_setup_command: "contextqb mcp setup --client cursor   # or --client claude (Claude Desktop)"
 firstrun_postscript: >-
-  Both commands are documented in detail on [the MCP page](/mcp).
+  `contextqb mcp setup` only prints a configuration snippet with your
+  membership token for the community insight tools; it does not install
+  anything, and like any `contextqb` command it can register a membership on
+  first use. The public library needs no token: use
+  [Install ContextQB](/install/) instead. Both commands are covered on
+  [the MCP page](/mcp/).
 
 json_eyebrow: For your CI scripts
 json_heading: A stable JSON contract for the pipeline.

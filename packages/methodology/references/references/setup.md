@@ -2,7 +2,7 @@
 id: setup
 title: Setup, compatibility and controls
 summary: Neutral, dated facts about exact commands, file locations, configuration shapes and safety controls — which instruction files each agent reads, how permissions and planning work, MCP client configuration, CI and git setup, platform secrets and provider policies. No recommendation.
-version: 0.1.1
+version: 0.1.3
 audience:
   - novice-builder
   - founder
@@ -703,12 +703,12 @@ entries:
     limits: Anonymous configurations only; they give access to the public methodology tools. Token-bearing configurations come only from the contextqb mcp setup command. Shapes follow each client's documentation on the check date and were not run against the live clients; the one exception is the Cursor fact for ContextQB's own setup output, which records what ContextQB emits rather than a documented vendor shape. Antigravity and the Devin Local agent were not checked.
     facts:
       - subject: Claude Code
-        value: Remote servers are added with claude mcp add --transport http; in .mcp.json and other JSON configuration the type field is http (streamable-http is accepted as an alias). The SSE transport is deprecated in favour of HTTP.
+        value: Remote servers are added with claude mcp add --transport http; in .mcp.json and other JSON configuration the type field is http (streamable-http is accepted as an alias). The SSE transport is deprecated in favour of HTTP. The command writes to local scope (the current project, for you only) unless --scope project or --scope user is given; --scope user makes the server available in every project.
         applies_to: Claude Code MCP documentation
         evidence: [claude-code-mcp, contextqb-mcp-page]
         snippet:
           language: shell
-          text: claude mcp add --transport http contextqb https://mcp.contextqb.com/mcp
+          text: claude mcp add --transport http --scope user contextqb https://mcp.contextqb.com/mcp
       - subject: Claude Desktop — local configuration file
         value: Local (stdio) servers are configured in claude_desktop_config.json under mcpServers, at ~/Library/Application Support/Claude/ on macOS and %APPDATA%\Claude\ on Windows. Remote servers can be added natively as Custom Connectors in Claude's settings, or through the third-party mcp-remote bridge, which runs as a local stdio server.
         applies_to: MCP documentation (connect to local and remote servers); mcp-remote 0.14.3 README
@@ -787,12 +787,16 @@ entries:
                 }
               }
             }
+      - subject: VS Code — Copilot and Local chat harnesses
+        value: VS Code chat sessions run in a harness chosen under Session Target. Workspace and user-profile mcp.json files (VS Code format) serve Local sessions; Copilot harness sessions read the portable format (workspace .mcp.json, or ~/.copilot/mcp-config.json when COPILOT_HOME is unset), and VS Code forwards eligible VS Code-format servers except those needing interactive input. When VS Code shows a customization migration notice, Migrate moves selected MCP servers to the Copilot destination; Migrate with Agent is a guided chat migration that uses Copilot credits. Copilot harness tools are managed under Chat Open Customizations > Tools; Local sessions use Configure Tools in the chat input.
+        applies_to: VS Code MCP configuration, migration and tools documentation (checked against VS Code 1.141.0)
+        evidence: [vscode-mcp-configuration, vscode-migrate-customizations, vscode-tools]
     evidence:
       - id: claude-code-mcp
         url: "https://code.claude.com/docs/en/mcp"
-        checked_on: "2026-10-07"
+        checked_on: "2026-10-31"
         source_kind: vendor-docs
-        locator: "Connect Claude Code to tools via MCP > Option 1 Add a remote HTTP server; Option 2 Add a remote SSE server (deprecated)"
+        locator: "Connect Claude Code to tools via MCP > Option 1 Add a remote HTTP server; Option 2 Add a remote SSE server (deprecated); MCP installation scopes"
       - id: contextqb-mcp-page
         url: "https://contextqb.com/mcp/"
         checked_on: "2026-10-07"
@@ -828,6 +832,21 @@ entries:
         checked_on: "2026-10-07"
         source_kind: specification
         locator: "Connect to remote MCP Servers > What are Custom Connectors?; Connecting to a Remote MCP Server"
+      - id: vscode-mcp-configuration
+        url: "https://code.visualstudio.com/docs/agents/reference/mcp-configuration"
+        checked_on: "2026-10-31"
+        source_kind: vendor-docs
+        locator: "MCP configuration reference > Configuration file"
+      - id: vscode-migrate-customizations
+        url: "https://code.visualstudio.com/docs/agent-customization/migrate-customizations"
+        checked_on: "2026-10-31"
+        source_kind: vendor-docs
+        locator: "Migrate customizations to the Copilot harness > Open the migration list; Frequently asked questions"
+      - id: vscode-tools
+        url: "https://code.visualstudio.com/docs/agents/run/tools"
+        checked_on: "2026-10-31"
+        source_kind: vendor-docs
+        locator: "Use tools > Manage available tools"
       - id: vscode-mcp
         url: "https://code.visualstudio.com/docs/copilot/customization/mcp-servers"
         checked_on: "2026-10-07"

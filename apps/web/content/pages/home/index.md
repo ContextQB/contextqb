@@ -6,10 +6,12 @@ subhead: >-
   ContextQB teaches you how to direct AI agents, turn your knowledge into working
   products, and develop the skills to keep building as technology evolves.
 
-primary_cta_label: Start Building with AI
-primary_cta_href: /start-here
-secondary_cta_label: Explore the Playbooks
-secondary_cta_href: /playbooks
+primary_cta_label: Install ContextQB
+primary_cta_href: /install/
+secondary_cta_label: Install ContextQB CLI
+secondary_cta_href: /check/#install
+tertiary_cta_label: Learn what ContextQB does
+tertiary_cta_href: /start-here/
 
 problem_heading: The ability to build is becoming everyone's advantage.
 problem_paragraphs:
@@ -98,6 +100,8 @@ mcp_cta_label: Connect your agent →
 mcp_cta_href: /mcp
 mcp_cta_secondary_label: See community insights →
 mcp_cta_secondary_href: /insights
+coach_link_label: Coach — in development
+coach_link_href: /coach/
 
 meta_title: "Learn to Build with AI Agents"
 meta_description: "Turn your ideas into working software with practical AI-building guides and playbooks. Learn to plan projects, direct AI agents, and check their work."

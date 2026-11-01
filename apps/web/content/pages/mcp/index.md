@@ -10,6 +10,10 @@ meta_description: "Connect your AI coding agent to ContextQB through MCP. Retrie
 
 ---
 
+## New to MCP?
+
+[Install ContextQB](/install/) walks you through connecting the free library to the app you use — Cursor, VS Code, Claude Code, Codex, OpenCode, Antigravity, Zed or another app — and through checking that your agent can call it. No account or token is needed. The rest of this page is the reference: what the server exposes and the configuration formats for setting it up by hand.
+
 ## What it exposes
 
 The MCP server gives your agent two useful things: readable resources and tools
@@ -57,7 +61,7 @@ Until the cooperative reaches 30 distinct projects for a given topic (per ADR-00
 
 ## Fastest setup
 
-The hosted server at `https://mcp.contextqb.com/mcp` requires no install. Add the configuration for your tool, restart it, and the corpus is available to your agent. These snippets carry no token; they give your agent every methodology tool. Each client's configuration format changes between versions — the [MCP client configuration reference](contextqb://references/setup#mcp-clients) records each one with the date and source it was checked against.
+The hosted server at `https://mcp.contextqb.com/mcp` requires no install. For install links and step-by-step checks, use [Install ContextQB](/install/). To configure by hand, add the configuration for your tool, restart it, and the corpus is available to your agent. These snippets carry no token; they give your agent every methodology tool. Each client's configuration format changes between versions — the [MCP client configuration reference](contextqb://references/setup#mcp-clients) records each one with the date and source it was checked against.
 
 ### Cursor
 
@@ -74,7 +78,7 @@ Add to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
 }
 ```
 
-This is the shape `contextqb mcp setup --client cursor` prints. Cursor's own documentation shows remote servers with `url` (and optional `headers`) and documents `type` only for local command servers; the reference entry records that documented shape.
+This is the shape `contextqb mcp setup --client cursor` prints. Cursor's own documentation shows remote servers with `url` (and optional `headers`) and documents `type` only for local command servers; the reference entry records that documented shape. The [Cursor install page](/install/cursor/) offers Cursor's install link, which uses the documented shape without `type`.
 
 ### Claude Desktop
 
@@ -95,11 +99,13 @@ This runs the community `mcp-remote` bridge through `npx`, which downloads its l
 
 ### Claude Code
 
-Run in your project:
+Run in any terminal:
 
 ```bash
-claude mcp add --transport http contextqb https://mcp.contextqb.com/mcp
+claude mcp add --transport http --scope user contextqb https://mcp.contextqb.com/mcp
 ```
+
+`--scope user` makes ContextQB available in every project. Without it, Claude Code adds the server to the current project only, for you (local scope). See the [Claude Code install page](/install/claude-code/) for checking it works.
 
 ### Devin Desktop (formerly Windsurf) — Cascade agent
 
@@ -132,7 +138,7 @@ Add to `.vscode/mcp.json` in your workspace:
 }
 ```
 
-VS Code also reads a portable `.mcp.json` at the workspace root, which uses a top-level `mcpServers` object, and prefers that destination for new servers.
+VS Code also reads a portable `.mcp.json` at the workspace root, which uses a top-level `mcpServers` object, and prefers that destination for new servers. The [VS Code install page](/install/vscode/) offers VS Code's install link and the **MCP: Add Server** steps.
 
 ### Other tools
 
