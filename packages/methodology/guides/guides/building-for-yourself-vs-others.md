@@ -2,7 +2,7 @@
 id: building-for-yourself-vs-others
 title: Building for Yourself vs. Building for Others
 summary: "The first user decision is not technical. It is social: is this just for you, for a trusted group, or for the public?"
-version: 0.3.1
+version: 0.4.0
 audience:
   - novice-builder
   - founder
@@ -149,7 +149,11 @@ A just-me app can become a trusted-group app. A trusted-group app can become pub
 
 ## Do not build for a tier you are not ready to support
 
-If you are founding a product, separate its eventual audience from the target of today's exercise. A local experiment with invented notes can help you learn, but it does not make a future team product safe to share. Name the first real users and one behavior they need; record what you have observed about that need and what you are assuming. Include any private information their workflow would introduce.
+If you are founding a product, keep two audiences apart: the people the product is eventually for, and whoever the version in front of you actually serves. A practice project filled with made-up data can teach you a lot, but it does not make a future team product safe to share. Start from what you actually have:
+
+- **Only an idea, no project yet.** Write three lines: the first real users, one behavior they need, and which part of that need you have actually seen (a conversation, a chore you repeat every week) versus what you are assuming. Add any private information their work would bring into the app. Those lines are the starting point for [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app).
+- **A prototype or practice project.** Name the tier it serves today (usually just you) and the tier you intend. Using the table above, write down what the intended tier adds that the prototype does not handle yet.
+- **Something people already use.** Its tier is set by who depends on it now, not by your plans for it. Check that tier's column in the table before adding anything.
 
 For example, “a teammate can reopen the request they submitted” gives you something to check. “Everyone needs a better dashboard” is still an assumption. Keep the useful result narrow while preserving the responsibilities of the people who will actually use it.
 

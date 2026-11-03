@@ -2,7 +2,7 @@
 id: ai-integration-security
 title: AI Integration Security Audit
 summary: A focused audit of every AI/LLM integration in the application — prompt injection surface, tool execution, autonomous loops, data leakage, cross-session contamination.
-version: 0.2.1
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -62,24 +62,43 @@ This is the focused security audit for the AI surface of an application. Run it 
 
 Designed to be executed by an AI agent against your codebase. The output is a Markdown report a non-developer can read and act on.
 
-## Use this as an agent instruction
+## Before you run it: what you prepare
 
-> You are performing a focused security audit of the AI / LLM / agent integrations in this application.
->
-> Your task is NOT generic AI security advice. Your task is to:
->
-> 1. Inventory every AI integration in the codebase
-> 2. Analyse each for prompt injection surface, tool execution risk, and data leakage
-> 3. Look specifically for cross-session contamination and autonomous-loop risks
-> 4. Produce prioritised, actionable findings
->
-> Operate like a security engineer who specialises in agentic systems. Be skeptical of trust assumptions, especially the assumption that AI output is "just suggestions."
->
-> Start by reading the project instructions and configuration. Never copy an API key or other secret value into your report — name the variable and where it is used. Do not run injection attempts against anything; if a demonstration would help, write it and run it only against a local or test copy I have authorized.
+The agent can read your code and configuration. It cannot see your model provider's account settings, your logs or the live app. Collect and attach:
 
----
+- **The AI features you know about.** A short list — for example "chat assistant on the help page; nightly summary job" — helps the agent check that its inventory is complete. If you have the AI surface document from [Review Your AI Integration](contextqb://playbooks/review-your-ai-integration), attach it.
+- **Provider data settings.** A screenshot or note of each model provider account's data-retention and training settings. The agent cannot see your account; without this, the data-use check is UNKNOWN.
+- **Your MCP access policy,** if the application exposes or connects to MCP servers: which tools and resources are meant to be public and which are protected. If you have none written down, say so; the audit will record it as a missing decision rather than guess.
+- **Whether demonstrations are allowed.** The instruction forbids injection attempts against anything. If you want a demonstration, name a local or test copy the agent may use; otherwise it writes the demonstration without running it.
 
-## Phase 1 — AI integration inventory
+Run it in a session that did not build the AI features.
+
+## The agent instruction
+
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
+
+**START OF AGENT INSTRUCTION — AI Integration Security Audit.** Everything from this line to the END line is one instruction.
+
+### Your role and limits
+
+You are performing a focused security audit of the AI / LLM / agent integrations in this application.
+
+Your task is NOT generic AI security advice. Your task is to:
+
+1. Inventory every AI integration in the codebase
+2. Analyse each for prompt injection surface, tool execution risk, and data leakage
+3. Look specifically for cross-session contamination and autonomous-loop risks
+4. Produce prioritised, actionable findings
+
+Operate like a security engineer who specialises in agentic systems. Be skeptical of trust assumptions, especially the assumption that AI output is "just suggestions."
+
+Start by reading the project instructions and configuration. Never copy an API key or other secret value into your report — name the variable and where it is used. Do not run injection attempts against anything; if a demonstration would help, write it and run it only against a local or test copy I have authorized.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (the AI features I know about, provider data settings, any MCP access policy, and any local or test copy I have authorized). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Phase 1 — AI integration inventory
 
 First, find every place an LLM is called. Do NOT assume — search the codebase for:
 
@@ -100,13 +119,11 @@ For each, document:
 
 If the list is shorter than you expected, search harder. AI integrations are easy to miss in larger codebases.
 
----
-
-## Phase 2 — Per-integration analysis
+### Phase 2 — Per-integration analysis
 
 For EACH integration, produce a section with:
 
-### Inputs
+#### Inputs
 
 What feeds the prompt? Identify each source and its trust level:
 
@@ -117,7 +134,7 @@ What feeds the prompt? Identify each source and its trust level:
 - Conversation history (mixed — could be poisoned by earlier turns)
 - Third-party content (untrusted — scraped pages, webhook payloads, API responses)
 
-### Outputs
+#### Outputs
 
 Where do outputs go? For each destination, name the risk:
 
@@ -127,7 +144,7 @@ Where do outputs go? For each destination, name the risk:
 - Triggers an action (deploy, send, charge, delete) — unauthorised action risk
 - Just displayed — misinformation risk
 
-### Tools and capabilities
+#### Tools and capabilities
 
 If the integration is an agent (calls tools), list every tool with its blast radius:
 
@@ -135,7 +152,7 @@ If the integration is an agent (calls tools), list every tool with its blast rad
 | ---- | ------------ | -------------------- |
 | ...  | ...          | ...                  |
 
-### Data access
+#### Data access
 
 What data does the integration see — beyond what it strictly needs?
 
@@ -144,7 +161,7 @@ What data does the integration see — beyond what it strictly needs?
 - Secrets / tokens / API keys?
 - Internal documents not meant for external eyes?
 
-### Untrusted-input paths
+#### Untrusted-input paths
 
 Trace every path from an untrusted source to the model. For each path, ask:
 
@@ -153,9 +170,7 @@ Trace every path from an untrusted source to the model. For each path, ask:
 - Can this input cause the model to leak data the user shouldn't see?
 - Can this input trigger a destructive action without user intent?
 
----
-
-## Phase 3 — Prompt injection surface
+### Phase 3 — Prompt injection surface
 
 Specifically inventory prompt injection vectors. Common ones:
 
@@ -174,19 +189,17 @@ For each vector that exists in the system, document:
 - What an attacker could achieve via this path
 - What (if anything) currently mitigates it
 
----
-
-## Phase 4 — Tool execution analysis
+### Phase 4 — Tool execution analysis
 
 For each agent with tool access, examine:
 
-### Auto-execute vs. confirm
+#### Auto-execute vs. confirm
 
 Which tools auto-execute? Which require user confirmation?
 
 Any **destructive** tool (delete, deploy, charge, send, drop) on auto-execute is a finding.
 
-### Tool authorization
+#### Tool authorization
 
 When the model decides to call a tool, what authorizes that call?
 
@@ -197,11 +210,11 @@ When the model decides to call a tool, what authorizes that call?
 
 "Just the model's decision" is common in MCP setups and is a high-severity finding.
 
-### MCP access policy
+#### MCP access policy
 
-For each MCP server the application exposes or connects to, find its written access policy: which resources and tools are intentionally public and read-only (these may be open to anonymous callers), and which data or actions are protected (these need authentication and authorization — for remote servers, the protocol's authorization where the server supports it; see the [transports and authorization reference](contextqb://references/setup#mcp-transports-auth)). Then compare what is actually reachable with that policy. If no policy is written, do not infer the intended access from what the code currently allows — that would treat the implementation as its own specification. Record the missing intent as a finding, mark the access decision UNKNOWN, and ask the operator.
+For each MCP server the application exposes or connects to, find its written access policy: which resources and tools are intentionally public and read-only (these may be open to anonymous callers), and which data or actions are protected (these need authentication and authorization — for remote servers, the protocol's authorization where the server supports it; see the [transports and authorization reference](contextqb://references/setup#mcp-transports-auth)). Then compare what is actually reachable with that policy. If no policy is written, do not infer the intended access from what the code currently allows — that would treat the implementation as its own specification. Record the missing intent as a finding, mark the access decision UNKNOWN, and ask me.
 
-### Recursion / autonomous loops
+#### Recursion / autonomous loops
 
 If the agent can chain tool calls, can it:
 
@@ -211,7 +224,7 @@ If the agent can chain tool calls, can it:
 
 Identify any code path where an autonomous loop can keep going after touching something dangerous.
 
-### Tool over-scope
+#### Tool over-scope
 
 For each tool, ask: "Does it have access narrower than 'whatever the host process can do'?"
 
@@ -221,42 +234,38 @@ For each tool, ask: "Does it have access narrower than 'whatever the host proces
 
 Each "broader than necessary" finding gets a remediation suggestion (sandbox, allow-list, scoped credentials).
 
----
-
-## Phase 5 — Data leakage analysis
+### Phase 5 — Data leakage analysis
 
 Look for places AI integration data leaks where it shouldn't:
 
-### Logs and telemetry
+#### Logs and telemetry
 
 - Are user prompts logged in plain text?
 - Are tool arguments logged with sensitive data?
 - Are model responses logged with PII?
 - Are these logs accessible to engineers without redaction?
 
-### Embeddings and vector stores
+#### Embeddings and vector stores
 
 - What's in your vector store?
 - Are different users' embeddings co-mingled in a single namespace?
 - Can a query for one user return embeddings derived from another user's content?
 - Are embeddings deletable when a user requests deletion (GDPR / SOC2)?
 
-### Memory and context retention
+#### Memory and context retention
 
 - Does the model have persistent memory across sessions?
 - Is that memory scoped per-user, or shared?
 - Can a memory written in one session influence another user's session?
 - Can users see what's in their memory?
 
-### Third-party model providers
+#### Third-party model providers
 
 - What data leaves the system when you call the provider?
 - Does the provider train on, or retain, what you send? Defaults differ by provider and plan — check the dated [provider data use reference](contextqb://references/setup#provider-data-use) and the account's own settings.
 - Is the API key scoped to only this project?
 
----
-
-## Phase 6 — Cross-session contamination analysis
+### Phase 6 — Cross-session contamination analysis
 
 This is the AI-specific cousin of insecure-direct-object-reference. Specifically check:
 
@@ -267,9 +276,7 @@ This is the AI-specific cousin of insecure-direct-object-reference. Specifically
 
 If any of these are possible, the system has a cross-session contamination surface. Treat it as high-severity by default.
 
----
-
-## Phase 7 — Adversarial review
+### Phase 7 — Adversarial review
 
 Now think like an attacker who specifically targets AI systems. Ask:
 
@@ -285,9 +292,7 @@ Document:
 - **Highest-impact attack paths**
 - **What I would attack first**
 
----
-
-## Phase 8 — Severity classification
+### Phase 8 — Severity classification
 
 Use the same rubric as the [Application Security Baseline Audit](contextqb://audits/application-security-baseline):
 
@@ -296,9 +301,7 @@ Use the same rubric as the [Application Security Baseline Audit](contextqb://aud
 - **Medium** — non-sensitive information disclosure, missing rate limiting on AI endpoints, logged secrets in non-public logs
 - **Low** — best-practice violations with low impact
 
----
-
-## Phase 9 — Output format
+### Phase 9 — Output format
 
 Produce a single Markdown document with these sections:
 
@@ -316,9 +319,7 @@ Produce a single Markdown document with these sections:
 12. **What I Would Attack First** — honest adversarial answer
 13. **Remediation Roadmap** — prioritised action list
 
----
-
-## Important rules for the auditor
+### Important rules for the auditor
 
 - Do NOT treat "the AI just suggests" as zero-trust. Suggestions become actions when users approve reflexively.
 - Do NOT skip small integrations. An autocomplete that calls the LLM with user input is a real surface.
@@ -327,9 +328,11 @@ Produce a single Markdown document with these sections:
 - Treat retrieval and memory as input sources, not as trusted context.
 - Prioritise realistic exploitability over theoretical risks (e.g., "this integration is reachable by anonymous users and can call a destructive tool" beats "this model could in principle hallucinate").
 
----
+**END OF AGENT INSTRUCTION — AI Integration Security Audit.** Evidence the person attached may follow below this line.
 
-## How to consume the output
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section.
 
 1. **Critical findings:** stop and address before the next deploy. No exceptions.
 2. **High-risk findings:** scheduled within the week. Add to the next sprint or the equivalent.

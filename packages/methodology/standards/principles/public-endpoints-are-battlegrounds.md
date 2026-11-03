@@ -2,7 +2,7 @@
 id: public-endpoints-are-battlegrounds
 title: Public Endpoints Are Battlegrounds
 summary: Every URL, API route, and webhook exposed to the internet is under constant attack. Assume they are being scanned, probed, and abused soon after going live.
-version: 0.1.2
+version: 0.1.3
 category: security
 audience:
   - novice-builder
@@ -75,13 +75,13 @@ When you build with an AI agent, public endpoints become more dangerous in sever
 
 4. **Agents generate debug endpoints.** When troubleshooting, an agent might create a `/debug` or `/test` endpoint to inspect state. If that endpoint is not removed before deployment, it becomes an information disclosure vulnerability.
 
-5. **Agents optimise for function, not defense.** The default AI implementation makes the feature work. It does not add rate limiting, CORS policies, or abuse detection unless you ask.
+5. **Agents optimise for function, not defense.** The default AI implementation makes the feature work. It does not add rate limiting, CORS policies, or abuse detection unless you ask. A CORS (cross-origin resource sharing) policy tells web browsers which other websites' pages may read responses from your API. It protects your signed-in visitors: if the policy lets any website read responses that use the visitor's login, a malicious page they open in another tab could read their data from your API. CORS is not authentication. Scripts and scanners outside a browser ignore it, so each endpoint still needs appropriate access controls on the server: sign-in and permission checks for protected actions, and a documented reason for any endpoint that is public on purpose.
 
 ## Minimum acceptable posture
 
 You can claim this principle if you meet all of the following:
 
-1. **Every endpoint has explicit authentication or a documented exception.** Unauthenticated endpoints (public marketing pages, health checks, public APIs) are explicitly listed and justified. There are no "accidentally public" endpoints. This can be checked mechanically: have the agent list every route next to the middleware or auth check that covers it, and search for debug or test routes.
+1. **Every endpoint has explicit authentication or a documented exception.** Unauthenticated endpoints (public marketing pages, health checks, public APIs) are explicitly listed and justified. There are no "accidentally public" endpoints. This can be checked mechanically: have the agent list every route next to the middleware or auth check that covers it, and search for debug or test routes. (Middleware is shared code that runs before a request reaches its route, often the sign-in check. A route with no check listed beside it may be one anyone on the internet can call.)
 
 2. **Rate limiting is applied to all endpoints.** At minimum: authentication endpoints (login, password reset), form submissions, file uploads, and any endpoint that writes data. Use stricter limits on sensitive operations.
 

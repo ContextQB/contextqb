@@ -2,7 +2,7 @@
 id: security-drift-is-the-real-threat
 title: Security Drift Is the Real Threat
 summary: Most breaches come from changes that bypassed earlier protections, not from never having protections. A passing audit on Tuesday is not a passing audit on Friday. Continuous drift detection beats one-time hardening.
-version: 0.1.4
+version: 0.1.6
 category: security
 audience:
   - novice-builder
@@ -52,9 +52,9 @@ agent_instructions:
 
 Security drift is the gap between the protections you think your system has and the protections it actually has, right now. The gap opens slowly, one change at a time:
 
-- A new route added without the middleware everything else uses
+- A new route (a page or action address) added without the middleware everything else uses. Middleware is shared code that runs before each request reaches its route, for example to check that the visitor is signed in. Without it, anyone with the address can use the new route.
 - An "internal" service that quietly became reachable from the internet
-- A secret rotated everywhere except one forgotten config file
+- A secret (a password or API key the app uses) rotated, meaning replaced with a new one, everywhere except one forgotten config file or environment variable (a setting the app reads from where it runs, outside the code). Either that part breaks when the old key is revoked, or the old key is kept working for it and stays usable by anyone who copied it.
 - A feature flag that disabled rate limiting "temporarily" and never got turned back on
 - An agent capability added for one task and never revoked
 - A third-party integration added without anyone updating the trust map
@@ -108,7 +108,7 @@ You can claim this principle if all of the following hold:
 
 **Documentation as Architecture** — A declared security shape is documentation in the load-bearing sense: the doc and the system disagreeing is a bug. This principle says the disagreement is a security bug specifically.
 
-**Machine-Verifiable Substrate** — The whole reason `context.qb.yaml` and the drift detector exist. This principle is the security generalisation of the drift detection thesis: declare shape, check mechanically, fail loudly. The eventual `security:` section in `context.qb.yaml` is exactly the substrate this principle calls for.
+**Machine-Verifiable Substrate** — Declare the shape, check it mechanically, fail loudly. This principle applies that idea to security. ContextQB's optional `contextqb check` command applies it to project _structure_: it compares your project map (`context.qb.yaml`) with the repository's parts, deploy settings and decision records. It does not check security. A `security:` section for the project map is planned but does not exist yet (status in the [context.qb validation reference](contextqb://references/setup#context-qb-validation)). Until then, your declared security shape lives in a document you maintain, and you or your agent review the system against it. [Detect Security Drift](contextqb://playbooks/detect-security-drift) and the [Security Regression audit](contextqb://audits/security-regression) are the workflows for that review.
 
 **Failure Modes** — Drift is a failure mode of the security posture itself. Naming it as one is what lets you design for it (continuous verification, declared shape) rather than hope it doesn't happen.
 

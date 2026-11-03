@@ -2,7 +2,7 @@
 id: how-the-parts-of-your-app-work-together
 title: How the Parts of Your App Work Together
 summary: Follow one user action through your application so you can question an agent's design and decide where information belongs.
-version: 0.1.5
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -36,9 +36,11 @@ tags:
 
 You want to build something useful for customers or your team. Before choosing a collection of technologies, describe one thing someone should be able to do. If that is still unclear, start with [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app); if you have not chosen where people use it, read [Choosing Your Application Channel](contextqb://guides/choosing-your-application-channel).
 
-For this guide, use the small research notebook described in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). A person enters a source title and a note, saves them and comes back later to read them. The example is deliberately small enough to follow; the same questions apply to a team's request tracker or a customer's booking.
+This guide follows one invented example. Maya is a fictional first-time founder who is talking to bakery owners to decide which of their problems her business should solve. Her notes from those conversations are scattered, and when she sits down to decide she can't find what a particular owner told her. She wants a small personal **research notebook**: she types a source title (which conversation or article it was) and her own note about what she learned, saves them, and comes back later to read them when she is deciding. She is the only user, on her own computer.
 
-Ask what has to happen between pressing Save and seeing the saved note tomorrow. A button changing color cannot do that job by itself.
+Nothing here has been built, and you don't need to build it. The example is small enough to follow from end to end. [Directing Your First Feature](contextqb://guides/directing-your-first-feature) later writes it up as a full brief. The same questions apply to a team's request tracker or a customer's booking.
+
+Ask what has to happen between Maya pressing Save and seeing that entry tomorrow. A button changing color cannot do that job by itself.
 
 ## Name the jobs before naming the tools
 
@@ -72,13 +74,13 @@ A local application can use a different arrangement. A command-line tool takes i
 
 A web app can also store information inside the browser on one device. Ask which site address, browser and profile hold the records, and what clears them. For example, browser `localStorage` survives ordinary sessions but private-session data is cleared when the last private tab closes, as [MDN explains](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Reopening tests need the same agreed storage context. Browser storage can also be removed by the user or by the browser itself; [MDN describes these storage policies](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria). Treat it as a single copy unless a separate, usable recovery copy has actually been made.
 
-Ask the agent to name where each job actually runs. If it proposes an outside service, ask what the service does, what information leaves your device and why this feature needs it. A diagram with five boxes is not evidence that you need five hosted services.
+Maya's notebook could be built in any of these three ways: a hosted web app, a local program writing a file, or a web page keeping entries in her browser. This guide does not assume one, and the choice changes where her entries live and what could lose them. Ask the agent to name where each job actually runs. If it proposes an outside service, ask what the service does, what information leaves your device and why this feature needs it. A diagram with five boxes is not evidence that you need five hosted services.
 
 ## Separate the draft from the saved record
 
 Before Save, the text the person is typing is a draft. After a confirmed save, the stored record is the reference for what was saved. The interface can display that record without becoming a competing authority over it. On reopening, the application must read from storage rather than depend on yesterday's open screen.
 
-This distinction is [State Ownership](contextqb://principles/state-ownership): deciding which part is responsible for each piece of information. In the notebook, the unsaved form and the saved record have different jobs. A displayed note count can be calculated from the records; a separate manually updated total would need to be kept in agreement with them.
+This distinction is [State Ownership](contextqb://principles/state-ownership): deciding which part is responsible for each piece of information. In Maya's notebook, the unsaved form and the saved record have different jobs. A displayed note count can be calculated from the records; a separate manually updated total would need to be kept in agreement with them.
 
 The save coordinator owns the sequence, not every piece of data. It arranges validation, storage and the response. [Orchestration](contextqb://principles/orchestration) explains that responsibility. The diagram should let you point to both the owner of the saved information and the owner of the action that changes it.
 
@@ -89,7 +91,7 @@ Imagine the agent offers these designs:
 - **Proposal A:** Save adds the note to the screen's current list and shows “Saved.” Closing the app discards the list.
 - **Proposal B:** Save writes the note to the chosen storage and reports success after that operation succeeds. Reopening loads the saved records; a failed save leaves the draft available.
 
-For the notebook's promise, Proposal A is incomplete even if the screen looks right. Proposal B names the needed path, but it still needs implementation and checks. Ask how the agent will demonstrate that the stored values are read back after reopening; repeating “the data is persistent” does not demonstrate it.
+Maya's promise is that she can find the entry again when she decides, so Proposal A is incomplete even if the screen looks right. Proposal B names the needed path, but it still needs implementation and checks. Ask how the agent will demonstrate that the stored values are read back after reopening; repeating “the data is persistent” does not demonstrate it.
 
 For your own application, answer this before asking the agent: which information must still exist tomorrow, and what should the person see if saving fails? Your answer defines a requirement the design has to meet.
 
@@ -105,4 +107,4 @@ Check the explanation against your intent. If you have no code yet, it is a prop
 
 Save the flow in your existing project brief or architecture note. It should name the information that lasts, its owner, the coordinator and what the person sees when the action fails. Do not create a second record if that explanation already has a home.
 
-Without asking the agent to answer first, explain what changes if your notebook becomes a tool for a team. Shared records and who may change them now need decisions; adding a login screen alone does not answer those questions. Then continue to [Directing Your First Feature](contextqb://guides/directing-your-first-feature) to turn one agreed behavior into bounded work.
+Without asking the agent to answer first, explain what would change if a second person needed the same records. In the example, Maya's future cofounder might want to add and read entries too. In your own product, a colleague or customer might need access to the same records. Shared records and who may change them now need decisions; adding a login screen alone does not answer those questions. Then continue to [Directing Your First Feature](contextqb://guides/directing-your-first-feature) to turn one agreed behavior into bounded work.

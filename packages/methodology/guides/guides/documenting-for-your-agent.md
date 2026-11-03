@@ -2,7 +2,7 @@
 id: documenting-for-your-agent
 title: Documenting for Your Agent
 summary: Documentation in agentic dev isn't paperwork for a future hire — it's how you keep your current agent on the architecture you've chosen. This guide is the operator's plain-language introduction to the documentation discipline ContextQB depends on.
-version: 0.2.1
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -27,11 +27,12 @@ related:
   - the-mental-model-of-your-app
   - write-a-context-qb
 next_steps:
-  - Open the project you're working on and identify which documents your agent actually reads.
+  - If you already have a project, open it and identify which documents your agent actually reads.
   - Write or update your `AGENTS.md` so the next session starts from your project's rules, not from guesses.
   - Write or update your `context.qb.yaml` so the agent can boot from one file.
   - Pick one decision you've made this week and write a one-page ADR for it.
   - Before creating your next document, run the three filename smell tests from `documentation-file-naming`.
+  - Once at least one feature works, run this guide's one-prompt test on it.
 
 ---
 
@@ -121,11 +122,17 @@ Each step is small. Each one prevents the next bad-naming cycle. The discipline 
 
 ## The one test you can run today
 
-Pick a feature you have shipped recently. Open a fresh agent session — no conversation history, just a blank prompt. (Your tool may still load `AGENTS.md` and any notes it saved; that is part of what you're testing.) Ask the agent:
+This test needs a project with at least one feature that already works, and that you know well enough to judge an explanation of it. Where you are decides what to do now:
 
-> Read this repository and tell me how it is structured, what its main conventions are, and what the most important architectural decisions have been. For each claim, quote the exact lines you are relying on and name the file they come from.
+- **Only an idea so far.** There is nothing for the agent to read yet. Start with [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app) to turn the idea into a working brief, then set up the day-one minimum above.
+- **Setup files, but no working feature yet.** Set up or finish the day-one minimum above, and come back to this test once your first feature works. Until then, the agent would have nothing real to explain, and you would have no true answer to check it against.
+- **At least one working feature.** Run the test below.
 
-Then read the answer, and check a few of the quotes against the files. A fluent paraphrase can hide a wrong answer; an exact quote you can verify can't. Three things can happen:
+Pick one working feature that you know well, such as "save a draft" or "export the monthly report". It doesn't need to be recent. You know how it really works, which makes it the easiest part of the answer to check. Open a fresh agent session — no conversation history, just a blank prompt. (Your tool may still load `AGENTS.md` and any notes it saved; that is part of what you're testing.) Ask the agent, replacing the bracketed part with your feature:
+
+> Read this repository and tell me how it is structured, what its main conventions are, and what the most important architectural decisions have been. Then explain how [the feature I picked] works: which files implement it, which of those conventions it follows, and which recorded decision, if any, it depends on. For each claim, quote the exact lines you are relying on and name the file they come from.
+
+Then read the answer. Start with the feature: a wrong account of something you built is the quickest gap to spot. Check a few of the other quotes against the files too. A fluent paraphrase can hide a wrong answer; an exact quote you can verify can't. Three things can happen:
 
 1. **The agent quotes your actual documentation and gives a correct answer.** Your documentation system is working. Keep it healthy as the project grows.
 2. **The agent invents a plausible-sounding but wrong answer.** Your documentation system has a gap. The specific things the agent got wrong are the documents that need to exist or need to be more findable.

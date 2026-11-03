@@ -5,7 +5,7 @@ summary: >-
   A field guide to the models you'll work with. Each LLM has a working style you
   learn over time: strengths, costs, recurring quirks, and failure modes you can
   plan around.
-version: 0.3.1
+version: 0.3.2
 audience:
   - novice-builder
   - founder
@@ -28,7 +28,7 @@ related:
 next_steps:
   - Pick one model and use it for a week before forming opinions.
   - If your tool has a reasoning-effort setting, try raising it on a hard task before you switch models.
-  - Set a billing alert at your provider's dashboard.
+  - If you pay per token with your own API key, set a spending limit or billing alert in that provider's console. On a coding tool's subscription plan alone, check the plan's usage limits and any extra-usage charges instead.
   - Note which kinds of tasks feel easy vs. forced — that's where you'll learn what each model is good at.
 
 ---
@@ -94,7 +94,9 @@ A few practical shapes to internalise:
 
 You don't need to memorise specific prices — they change. Current list prices, including caching, are in the dated [model API prices reference](contextqb://references/pricing#model-api); check the date and the provider's own page before you budget. What you need is the rough ratio, so you can match the model to the task. Don't use the top-tier model to format a CSV. Don't use the small model to design your data model.
 
-**Two habits make this safe:**
+**Which plan are you on?** On a _pay-per-token_ plan you connect your own API key or provider account and are billed for every token you use. On a coding tool's _subscription_ plan, model use is included up to the plan's limits. If you only use a subscription plan, the two habits below don't apply yet: check the plan's own usage limits and whether it charges for extra use, and come back here before you add your own key.
+
+**Two habits make a pay-per-token plan safe:**
 
 1. Before you start a pay-per-token plan, set a monthly spending limit in the provider's console, and check whether it is a _hard limit_ that stops requests or only an _alert_ that emails you while spending continues. Providers and plans differ ([where each console's limits are](contextqb://references/setup#provider-console)). If only alerts are available, set one well below the amount you could afford to lose, act on it the day it arrives, and keep agent sessions short until you know your usage. Choose an amount you could lose without regret. (ContextQB's rough starting estimate for a solo learner is about $50 a month — an estimate, not a price.)
 2. Watch a long agent task complete and look at the cost in the dashboard. Once a week is enough. You'll quickly develop intuition for "that was a cheap prompt" vs "that one was a hundred times more expensive".

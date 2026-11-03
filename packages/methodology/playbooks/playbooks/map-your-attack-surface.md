@@ -2,7 +2,7 @@
 id: map-your-attack-surface
 title: Map Your Attack Surface
 summary: Walk through your application and produce a structured inventory of every public surface, every secret, every agent capability, and every third-party trust.
-version: 0.3.2
+version: 0.4.0
 problem: |
   You can't defend what you can't see. Most security failures happen on surfaces the builder didn't know existed — a public endpoint they forgot, a secret they didn't track, a third-party integration that silently gained access.
 when_to_use: |
@@ -81,6 +81,21 @@ You'll need:
 
 If you have a `context.qb.yaml`, pull it up — it'll speed up the discovery.
 
+## The example in the tables
+
+Each step below shows a short filled-in table so you can see what a finished entry looks like. The rows describe **QuoteKit**, an invented app. They are not findings about your app, and they are not a list of services or features you need.
+
+Dana runs QuoteKit, with help from Bob, a part-time contractor who set up billing. It is a small paid web app that helps freelance designers turn a client's brief into a priced quote. Its features explain the rows you will see:
+
+- Customers create an account and sign in with an email and password, with their Google account, or with a sign-in link sent by email. Dana uses a hosted sign-in service (Clerk) rather than building login herself.
+- Customers pay a monthly subscription. A payment processor (Stripe) handles the cards and calls QuoteKit's webhook address (a URL it calls to report events) when a payment succeeds or fails.
+- Accounts, quotes and uploaded brief files live in a hosted database with file storage (Supabase).
+- An AI quote drafter writes quote text by sending the customer's brief to an AI model provider (OpenAI). A separate support bot answers questions from QuoteKit's help articles.
+- A few partner tools fetch finished quotes through a small API, using API keys that QuoteKit issues to them.
+- The app runs on a hosting platform (Vercel), whose settings hold the production secret keys.
+
+Clerk, Stripe, Supabase, OpenAI and Vercel are real services used as recognizable examples, not recommendations. What each kind of service does is in the dated [managed services reference](contextqb://references/tools#managed-services). In your own inventory, list the features and services your app actually has, and mark a surface not applicable, with a reason, when your app doesn't have it. [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) and [Harden Your Authentication](contextqb://playbooks/harden-your-authentication) continue with the same invented app.
+
 ## Steps
 
 ### Step 1 — List your public surfaces
@@ -97,11 +112,12 @@ Look for:
 
 For each public surface, write down:
 
-| Surface    | URL/Path             | What it does   | Protected by           | Notes                  |
-| ---------- | -------------------- | -------------- | ---------------------- | ---------------------- |
-| Homepage   | /                    | Marketing page | Nothing                | Public by design       |
-| API health | /api/health          | Status check   | Nothing                | Should this be public? |
-| Webhook    | /api/webhooks/stripe | Payment events | Signature verification | Check signature logic  |
+| Surface     | URL/Path             | What it does          | Protected by           | Notes                  |
+| ----------- | -------------------- | --------------------- | ---------------------- | ---------------------- |
+| Homepage    | /                    | Marketing page        | Nothing                | Public by design       |
+| API health  | /api/health          | Status check          | Nothing                | Should this be public? |
+| Webhook     | /api/webhooks/stripe | Payment events        | Signature verification | Check signature logic  |
+| Partner API | /api/v1/quotes       | Partners fetch quotes | Partner API key        | Should keys expire?    |
 
 **Tip for non-developers:** Ask your agent: "List every route in this project that doesn't require authentication. For each, tell me what it does and whether it accepts user input."
 
@@ -119,13 +135,17 @@ Look for:
 - Session cookies and JWTs
 - API keys for machine access
 
+A few of these terms decide what you write down. A **magic link** is a sign-in link sent by email; an **OTP** (one-time passcode) is a short code sent by email or text, or shown in an app, that works once. **OAuth** lets people sign in with an account they already have elsewhere, such as Google. After sign-in, the app remembers the person with a **session cookie** or a **JWT** (JSON Web Token): a signed token the browser sends with each request. Anyone who holds a valid one is treated as that person until it expires or is revoked, which is why its duration matters. **MFA** (multi-factor authentication) asks for a second proof, such as a code from an authenticator app, in addition to the password, so a stolen password alone is not enough.
+
 For each, write down:
 
-| Surface        | What it does   | Provider | Session duration | MFA?     | Notes                   |
-| -------------- | -------------- | -------- | ---------------- | -------- | ----------------------- |
-| Sign in        | User login     | Clerk    | 7 days           | Optional | Should MFA be required? |
-| Password reset | Recovery flow  | Clerk    | 1 hour link      | N/A      | Link expiry is good     |
-| API key        | Machine access | Custom   | Never expires    | N/A      | Should these rotate?    |
+| Surface         | What it does     | Provider | Session duration | MFA?      | Notes                   |
+| --------------- | ---------------- | -------- | ---------------- | --------- | ----------------------- |
+| Sign in         | User login       | Clerk    | 7 days           | Optional  | Should MFA be required? |
+| Google sign-in  | Login via Google | Clerk    | 7 days           | At Google | Scopes: email, profile  |
+| Magic link      | Emailed sign-in  | Clerk    | 10 minute link   | N/A       | Single use              |
+| Password reset  | Recovery flow    | Clerk    | 1 hour link      | N/A       | Link expiry is good     |
+| Partner API key | Machine access   | Custom   | Never expires    | N/A       | Should these rotate?    |
 
 ### Step 3 — List your agent capabilities
 
@@ -148,14 +168,13 @@ If your application has AI features (chatbots, assistants, etc.):
 
 For each agent, write down:
 
-| Agent             | Context         | Can read                      | Can write | Can execute           | Restrictions        |
-| ----------------- | --------------- | ----------------------------- | --------- | --------------------- | ------------------- |
-| Your coding agent | Dev environment | All files                     | All files | Shell (with approval) | None formal         |
-| Support bot       | Production      | User messages, knowledge base | Nothing   | N/A                   | Read-only by design |
+| Agent               | Context         | Can read                      | Can write                    | Can execute           | Restrictions               |
+| ------------------- | --------------- | ----------------------------- | ---------------------------- | --------------------- | -------------------------- |
+| Dana's coding agent | Dev environment | All files                     | All files                    | Shell (with approval) | None formal                |
+| Quote drafter       | Production      | The brief a customer submits  | Draft text shown to customer | N/A                   | Cannot save or send quotes |
+| Support bot         | Production      | User messages, knowledge base | Nothing                      | N/A                   | Read-only by design        |
 
 **Tip:** If your agent has no documented restrictions, that's a finding. Write it down. The fix has two layers: the tool's own permission, approval and sandbox settings, which enforce limits ([what each tool offers](contextqb://references/setup#agent-permissions)), and the security block in your `AGENTS.md`, which explains your intent ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
-
-The tables in Steps 1–6 are a worked example for a fictional app; the service names in them are real examples, not recommendations. What each kind of service does is in the dated [managed services reference](contextqb://references/tools#managed-services).
 
 ### Step 4 — Inventory your secrets
 
@@ -170,14 +189,14 @@ Look for:
 - Webhook signing secrets
 - Service account credentials
 
-For each secret, write down:
+For each secret, write down the summary below. This is a first pass; [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) holds the full inventory schema and works through these same QuoteKit keys in detail.
 
-| Secret name       | Provider | Blast radius         | Rotation path      | Last rotated | Notes    |
-| ----------------- | -------- | -------------------- | ------------------ | ------------ | -------- |
-| CLERK_SECRET_KEY  | Clerk    | Full auth compromise | Clerk dashboard    | Unknown      | Critical |
-| STRIPE_SECRET_KEY | Stripe   | Payment access       | Stripe dashboard   | Unknown      | Critical |
-| DATABASE_URL      | Supabase | Full data access     | Supabase dashboard | Never        | Critical |
-| OPENAI_API_KEY    | OpenAI   | Billing exposure     | OpenAI dashboard   | Unknown      | Medium   |
+| Secret name       | Provider | Owner      | Blast radius         | Rotation path      | Last rotated | Notes    |
+| ----------------- | -------- | ---------- | -------------------- | ------------------ | ------------ | -------- |
+| CLERK_SECRET_KEY  | Clerk    | Dana       | Full auth compromise | Clerk dashboard    | Never        | Critical |
+| STRIPE_SECRET_KEY | Stripe   | Bob        | Payment access       | Stripe dashboard   | Never        | Critical |
+| DATABASE_URL      | Supabase | None named | Full data access     | Supabase dashboard | Never        | Critical |
+| OPENAI_API_KEY    | OpenAI   | Unknown    | Billing abuse        | OpenAI dashboard   | Unknown      | High     |
 
 **Blast radius** = "If this leaks, what's the worst that happens?" Be honest.
 
@@ -199,11 +218,13 @@ Look for:
 
 For each, write down:
 
-| Service | What it does   | What it can access    | What we trust it with | Fallback if compromised    |
-| ------- | -------------- | --------------------- | --------------------- | -------------------------- |
-| Clerk   | Authentication | User emails, sessions | User identity         | None — critical dependency |
-| Stripe  | Payments       | Customer payment data | Billing               | None — critical dependency |
-| OpenAI  | AI features    | User prompts          | Conversation content  | Could switch providers     |
+| Service  | What it does              | What it can access                   | What we trust it with         | Fallback if compromised         |
+| -------- | ------------------------- | ------------------------------------ | ----------------------------- | ------------------------------- |
+| Clerk    | Authentication            | User emails, sessions                | User identity                 | None — critical dependency      |
+| Stripe   | Payments                  | Customer payment data                | Billing                       | None — critical dependency      |
+| Supabase | Database and file storage | Accounts, quotes, uploaded briefs    | All stored customer data      | None — critical dependency      |
+| OpenAI   | AI features               | Briefs and drafts sent to it         | Brief content                 | Could switch providers          |
+| Vercel   | Hosting                   | Running app code, production secrets | Serving the app, holding keys | Redeploy elsewhere, rotate keys |
 
 ### Step 6 — Identify data surfaces
 
@@ -221,11 +242,13 @@ Look for:
 
 For each, write down:
 
-| Data store       | What's in it     | Sensitivity | Encrypted?         | Access control | Backup?          |
-| ---------------- | ---------------- | ----------- | ------------------ | -------------- | ---------------- |
-| Users table      | Email, name, ID  | High        | At rest (Supabase) | RLS enabled    | Supabase auto    |
-| Uploads bucket   | User files       | Medium      | At rest            | RLS enabled    | No               |
-| Application logs | Requests, errors | Medium      | No                 | Admin only     | 30 day retention |
+| Data store       | What's in it         | Sensitivity | Encrypted?         | Access control | Backup?          |
+| ---------------- | -------------------- | ----------- | ------------------ | -------------- | ---------------- |
+| Users table      | Email, name, ID      | High        | At rest (Supabase) | RLS enabled    | Supabase auto    |
+| Uploads bucket   | Uploaded brief files | Medium      | At rest            | RLS enabled    | No               |
+| Application logs | Requests, errors     | Medium      | No                 | Admin only     | 30 day retention |
+
+**RLS** (row-level security) is a database rule that limits which rows, or stored files, each signed-in user can read or change. In QuoteKit it is what stops one customer from reading another customer's quotes, even if a page's code forgets to check. "RLS enabled" alone is not proof: the rules themselves have to say the right thing. Your agent can read them if they are kept in the project's files; otherwise you copy them from the database dashboard for the agent to review.
 
 ### Step 7 — Prioritise by risk
 

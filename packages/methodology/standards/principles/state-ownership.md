@@ -2,7 +2,7 @@
 id: state-ownership
 title: State Ownership
 summary: For every piece of state, name a single owner. Derived state should be derived, not duplicated.
-version: 0.1.4
+version: 0.2.1
 category: state
 audience:
   - novice-builder
@@ -68,7 +68,23 @@ State is where AI-generated applications fail most often. The visible symptom is
 
 If you cannot, the state has no owner. That is the bug, even if the immediate symptom is something else.
 
+**State** here means any information the app holds while it runs: the entries on screen, the text being typed, whether a panel is open. Its **owner** is the one part of the app responsible for the current value. Its **source** is where that value comes from: a saved file, a server, or the person's typing.
+
+## What it looks like from the outside
+
+You don't need to read code to spot a state-ownership problem. Here is an invented example. Maya, a fictional founder, keeps a small research notebook app: each entry is a source she has read plus her note about it. A later version lets her correct an entry's title. She opens an entry, changes "Bakery call, March 4" to "Bakery owner call, March 4", and presses Save. The edit screen shows the new title. The list of entries beside it still shows the old one until she closes and reopens the app.
+
+- **Visible symptom:** two parts of the same screen disagree about one value.
+- **What went wrong:** the list and the edit screen each kept their own copy of the entries. Saving updated the edit screen's copy and the saved file, but nothing told the list. Each part acted as if it owned the entries, so in practice nobody did.
+- **The fix:** give the entries one owner, a single part of the app that loads them, saves them and hands the current values to every screen that shows them. After a save, the list and the edit screen both read the new title from that owner. If a screen holds a copy for speed, it is borrowed from the owner and refreshed when the owner changes; no screen updates its own copy independently.
+
+**A question you can ask your agent:** "Where does an entry's title live while the app is running, and which screens read it from there? If I change it on one screen, what makes every other screen show the new value?"
+
+A responsive answer names **one** owner: a file or module in the app's code that is responsible for the current entries (not the saved data file itself). It says where that owner gets the value from (its source, such as the saved file), lists the screens that read from it, and explains the mechanism that brings a change to every screen. Answers like "they're kept in sync," "it refreshes on reload," or a list of several places holding copies haven't established that yet. Copies can be fine when one owner hands them out and refreshes them, as the categories below show. So treat these answers as incomplete, not as proof of a bug, and ask a follow-up: "Which one piece of code owns the current entries, what is its source, and what exactly updates the other copies after a save?" If the agent can't name one owner, ask it to propose one.
+
 ## Categories of state
+
+The rest of this page is reference depth for you and your agent: the kinds of state an app holds and who should own each.
 
 This is a different question from [where your data lives](contextqb://guides/where-your-data-lives). That guide decides where the truth is stored; this table decides who owns each copy of it while the app is running.
 

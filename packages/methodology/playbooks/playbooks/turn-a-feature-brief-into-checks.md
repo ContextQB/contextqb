@@ -2,7 +2,7 @@
 id: turn-a-feature-brief-into-checks
 title: Turn a Feature Brief Into Checks
 summary: Translate an agreed user outcome into specific checks, then connect the results to the decision to accept the feature.
-version: 0.1.3
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -43,7 +43,9 @@ Start with a bounded brief from [Plan a Feature Before Letting the Agent Code](c
 
 For each important acceptance criterion, describe the starting situation, action and expected result. Use a real intended task with synthetic data. Resolve ambiguity with the person responsible for the product before asking the code to decide it.
 
-For the notebook's [worked brief](contextqb://guides/directing-your-first-feature), one example is: start with a disposable empty notebook, save a specified title and note, close and reopen the app using the same storage location, and read back the accepted values. Another is: enter a note containing only spaces; saving is refused and the draft remains available for correction.
+If you do not have a brief of your own yet, practise with an invented one. Maya, a fictional first-time founder, is talking to owners of small independent bakeries to decide which of their problems to solve. She wants a personal research notebook in which each entry keeps one source, such as a conversation, with her note about what she learned, so the evidence is there when she decides. Its first feature: save a title and note, reopen the app and find them; refuse blank input; never show success when saving fails. Read the complete brief, with its sample values and exclusions, in the “The worked project” section of [Directing Your First Feature](contextqb://guides/directing-your-first-feature). Nothing is built, and you do not need to build it to write these examples.
+
+For that brief, one example is: start with a disposable empty notebook, save a specified title and note, close and reopen the app using the same storage location, and read back the accepted values. Another is: enter a note containing only spaces; saving is refused and the draft remains available for correction.
 
 Include a normal case and a meaningful failure or invalid-input case where relevant. Do not add a ceremonial number of cases. If a criterion still says “works properly,” replace it with something a person or test could observe.
 
@@ -83,7 +85,7 @@ Run the project's existing mechanical checks as well. [Machine-Verifiable Substr
 
 ## Step 5 — Demonstrate that a check can catch a mistake
 
-For this learning exercise, require one controlled demonstration. You can use the deliberately flawed note rule in [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software), a reproduced defect, or an explicitly approved temporary change in a disposable test copy.
+For this learning exercise, require one controlled demonstration. You can use the worked exercise in [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software): a deliberately flawed rule that accepts a note of only spaces, with a test whose wrong expectation lets it pass. It is a teaching specimen, not a rule to adopt. Alternatively, use a reproduced defect or an explicitly approved temporary change in a disposable test copy.
 
 Show that the correct expectation fails against the faulty implementation for the intended reason, then passes after the correction. If a temporary defect is introduced, restore the intended code, inspect the final difference and rerun the affected checks before continuing. Never perform this exercise against production or real user data.
 

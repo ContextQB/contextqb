@@ -2,7 +2,7 @@
 id: trust-boundaries-are-architecture
 title: Trust Boundaries Are Architecture
 summary: Drawing trust boundaries is a design act, not a documentation act. "Public/authenticated", "owner/admin", "user/agent", "self/third-party" — each must be named and located in the code before they can be defended.
-version: 0.1.3
+version: 0.1.4
 category: security
 audience:
   - novice-builder
@@ -72,7 +72,7 @@ Trust boundaries are architecture because they decide the shape of your code. Wh
 
 Agents collapse boundaries by default. The model sees the codebase as one giant text blob, and it will happily move data from a public surface into an admin surface without noticing the move. Two failure patterns dominate:
 
-1. **Inherited protections that don't actually carry over.** The agent adds a new route. The old routes had middleware. The agent doesn't add the middleware to the new route. Nothing breaks visibly; the new route is just quietly public.
+1. **Inherited protections that don't actually carry over.** The agent adds a new route (a new page address or action address, such as `/api/notes/export`). The old routes ran through middleware: shared code that runs before a request reaches its route and, in this case, checks that the visitor is signed in. The agent doesn't add the middleware to the new route. Nothing breaks visibly; the new route is just quietly public. Anyone who finds the address can use it, for example to download another person's private notes, without signing in.
 
 2. **Cross-boundary copy-paste.** The agent generates a handler by copying a similar one from another part of the codebase. The original was on the `owner` side of a `user / owner` boundary; the new one is on the `user` side. The check the original relied on doesn't exist on the new side.
 
@@ -100,7 +100,7 @@ You can claim this principle if all of the following hold:
 
 - **Auth checks are scattered.** `if (req.user.role !== "admin")` appears in twelve different files. Every new route is a chance to forget the check.
 
-- **A typo in an env var disables auth.** If renaming a config key silently makes a protected route public, the boundary is fragile by construction.
+- **A typo in an env var disables auth.** An environment variable ("env var") is a setting the app reads from the place it runs, outside the code, such as a secret key or a switch like `REQUIRE_LOGIN=true`. If the code treats a missing or misspelled setting as "sign-in not required", one typo in the hosting settings opens a protected page to anyone. If renaming a config key silently makes a protected route public, the boundary is fragile by construction. The contrast is a check that "fails closed": when the setting is missing, it refuses to start or refuses the request instead of letting everyone in.
 
 - **Third-party data flows directly into your domain.** A payment provider's webhook payload (a Stripe webhook, for example) becomes a `Subscription` object with no transformation step in between.
 

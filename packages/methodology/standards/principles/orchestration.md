@@ -2,7 +2,7 @@
 id: orchestration
 title: Orchestration
 summary: Every system needs explicit control flow. Decide what coordinates what, and put the coordinator somewhere obvious.
-version: 0.1.3
+version: 0.2.0
 category: orchestration
 audience:
   - novice-builder
@@ -57,7 +57,26 @@ When that "something" is implicit — scattered across effects, callbacks, and e
 
 **Name the orchestrator. Put it somewhere obvious.**
 
-For a feature, that might be a single page component, a custom hook, or a state machine. For a backend workflow, it might be a single service. For a multi-step user flow, it might be an explicit state machine.
+The **orchestrator** is the one place in the code that decides what happens next, in what order, and what to do when a step fails.
+
+## What it looks like from the outside
+
+You can notice missing orchestration without reading code. Here is an invented example. Maya, a fictional founder, uses a small research notebook app to save each source she reads with her note about it. Pressing **Save** involves several steps that must happen in order:
+
+1. Check that the title and note aren't blank.
+2. Write the entry to storage.
+3. Only after the write succeeds, show "Saved" and clear the form.
+4. If the write fails, keep her draft on screen and say it was not saved, so she can try again.
+
+- **Visible symptom:** one day the app says "Saved" and clears the form, but after she reopens the app the entry isn't there, and her draft is gone.
+- **What went wrong:** nothing was in charge of the order. The button's code showed "Saved" and cleared the form as soon as it was pressed, while a separate piece of code did the write. When the write failed, nobody was responsible for telling her or keeping the draft.
+- **The fix:** one named coordinator for saving runs the steps in order and decides what happens on each outcome. The form asks it to save and shows whatever it reports.
+
+**A question you can ask your agent:** "When I press Save, what happens, step by step, and which one file or function decides that order? What happens if writing the entry fails?"
+
+A responsive answer gives a numbered sequence, names **one** coordinator, and says that on failure the draft stays and the message says it wasn't saved. Be wary of answers like "the form handles it," "it just saves," steps spread across several files with no single one in charge, or "it depends on timing." Ask the agent to propose where one coordinator should live.
+
+The technical choices below are reference depth for you and your agent. For a feature, the orchestrator might be a single page component, a custom hook, or a state machine. For a backend workflow, it might be a single service. For a multi-step user flow, it might be an explicit state machine.
 
 ## Centralised vs. distributed orchestration
 

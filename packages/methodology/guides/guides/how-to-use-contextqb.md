@@ -2,7 +2,7 @@
 id: how-to-use-contextqb
 title: How to Use ContextQB
 summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it offers, how to use it with your project, and where to start.
-version: 0.4.2
+version: 0.4.3
 intro: |
   A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
@@ -172,14 +172,14 @@ That is enough for day one. You do not need to install every tool, read every pl
 
 ## Continue from a working feature
 
-Let the next product decision choose the next lesson. You can return to these routes as the application grows:
+This section is for when you have one feature that works: it does the one job you defined, and you have checked it yourself. Let the next product decision choose the next lesson. Each route below says when it applies, and you can return to them as the application grows:
 
-- **Make the feature dependable.** Use [Designing Your App's Data](contextqb://guides/designing-your-apps-data), [Making Your App Usable](contextqb://guides/making-your-app-usable) and [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data) to examine saved work, the actual task and access. Protection begins with the first data decision, before exposure.
-- **Connect another service when needed.** [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) and [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) cover missing, repeated and late results. A local tool can continue without an outside service.
-- **Prepare and release.** [Where Your App Runs](contextqb://guides/where-your-app-runs) starts with a disposable delivery rehearsal. Before anyone relies on the result, work through [Preparing for Real Users](contextqb://guides/preparing-for-real-users) and then [Launching for Your First Users](contextqb://guides/launching-for-your-first-users), using the linked procedures and evidence for your project.
-- **Keep improving it.** [Changing Software Without Losing Control](contextqb://guides/changing-software-without-losing-control) helps you choose a maintenance change or a justified deferral. [Operating a Small App](contextqb://guides/operating-a-small-app) supplies the continuing health, cost and feedback routine.
+- **Make the feature dependable — once it saves something a person would be upset to lose, or someone besides you will use it.** Use [Designing Your App's Data](contextqb://guides/designing-your-apps-data), [Making Your App Usable](contextqb://guides/making-your-app-usable) and [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data) to examine saved work, the actual task and access. Protection begins with the first data decision, before anyone else's data is exposed, not after launch.
+- **Connect another service — only if your feature needs one,** such as payments, email, an AI model or another app's data. [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) and [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) cover missing, repeated and late results. A local tool that works without an outside service can skip this route.
+- **Prepare and release — when you want the app to run somewhere other than where you built it, or for other people.** [Where Your App Runs](contextqb://guides/where-your-app-runs) starts with a disposable delivery rehearsal: a practice run where you package the app, run it in a separate place you can throw away with made-up data, and check that the right version starts and works. Nothing real depends on it, so a failure costs nothing. Before anyone relies on the result, work through [Preparing for Real Users](contextqb://guides/preparing-for-real-users) and then [Launching for Your First Users](contextqb://guides/launching-for-your-first-users), using the linked procedures and evidence for your project.
+- **Keep improving it — once people, including you, rely on it.** [Changing Software Without Losing Control](contextqb://guides/changing-software-without-losing-control) helps you choose a maintenance change or a justified deferral. [Operating a Small App](contextqb://guides/operating-a-small-app) supplies the continuing health, cost and feedback routine.
 
-Reading a stage does not establish readiness for the next one. Use the lesson's output to explain your decision and show what you checked. Apply conditional work before your particular project depends on it; stage numbers organize the library, not permission to postpone an important protection.
+Reading a lesson does not make your project ready for the next step; what you checked does. Use the lesson's output to explain your decision and show what you checked. Some work is **conditional**: it applies only if your project has the feature that needs it, such as accounts, other people's data, payments or an outside service. When it applies, do it before your project depends on that feature. The library's collection pages group lessons into numbered stages to organize reading; a later stage number is never permission to postpone an important protection.
 
 ## The main habit
 

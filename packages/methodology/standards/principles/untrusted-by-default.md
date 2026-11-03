@@ -2,7 +2,7 @@
 id: untrusted-by-default
 title: Untrusted by Default
 summary: Every input, model output, third-party response, and webpage is hostile until proven otherwise. Validate at the boundary, not in the middle.
-version: 0.1.2
+version: 0.1.3
 category: security
 audience:
   - novice-builder
@@ -87,11 +87,11 @@ You can claim this principle if you meet all of the following:
 
 1. **Server-side validation on all user input.** Client-side validation is UX; server-side validation is security. Every form field, query parameter, and request body is validated on the server.
 
-2. **Schema validation on external API responses.** Before you use data from a third party, confirm it has the structure you expect. An API that changes its response format should break validation, not corrupt your data. This is the same schema validation the verification pillar teaches ([Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate)) — one instrument serving both.
+2. **Schema validation on external API responses.** Before you use data from a third party, confirm it has the structure you expect. An API that changes its response format should break validation, not corrupt your data. Schema validation means checking each response against a written description of the expected fields and types (for example, `amount` is present and is a number). It is the same check [Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate) uses to let a machine confirm that work matches its declared shape, so one instrument serves both security and verification.
 
 3. **Signature verification on webhooks.** If a third party sends you a webhook, verify the signature. If there's no signature, that's a trust decision you need to make explicitly.
 
-4. **Sanitisation before rendering.** Any content that came from outside — user-generated content, AI output, API data — is sanitised before it's rendered in HTML. This is how you prevent XSS.
+4. **Sanitisation before rendering.** Any content that came from outside — user-generated content, AI output, API data — is sanitised before it's rendered in HTML. This is how you prevent XSS (cross-site scripting). In XSS, text from outside contains hidden script, and your page displays it as part of the page instead of as plain text. The script then runs in other visitors' browsers as if your site had sent it, and can act with their signed-in session, for example reading their data or changing their settings. Escaping makes the browser show that text as text; sanitising removes the dangerous parts when some formatting has to be kept.
 
 5. **Review before execution.** If an agent generates code that modifies data, sends messages, or changes configuration, you (or an automated policy) review it before it executes. For a coding agent, that automated policy is usually your tool's own approval and permission settings — something you turn on, not something you build ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
 

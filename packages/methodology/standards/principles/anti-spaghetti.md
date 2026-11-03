@@ -2,7 +2,7 @@
 id: anti-spaghetti
 title: Anti-Spaghetti Development
 summary: Concrete checklist for identifying spaghetti code — the hidden coupling, ad hoc orchestration, and brittle lifecycle assumptions that AI assistants generate by default.
-version: 0.1.4
+version: 0.2.0
 category: diagnosis
 audience:
   - novice-builder
@@ -105,4 +105,14 @@ Your own check needs no code: for signal 1, ask the agent to "walk me through, s
 
 ## How to ask an agent to use this checklist
 
-> For each item in the ContextQB anti-spaghetti checklist, evaluate the target module. Quote the relevant code. State whether the signal is present, partly present, or absent. End with a prioritised list of refactors, smallest first.
+The agent needs two things: the checklist itself and a clearly named target. Do not assume it already knows "the ContextQB checklist" — an agent without the library may invent one.
+
+- **Supply the checklist.** Use one of these routes:
+  - copy the eight numbered signals from "The detection checklist" above, with their questions, and paste them under the request below; or
+  - use the [Anti-Spaghetti Review Prompt](contextqb://prompts/anti-spaghetti-review), a ready-to-copy request that already contains all eight signals and asks for a saved report; or
+  - if your agent is connected to the ContextQB MCP server, tell it to fetch the checklist with the `get_anti_spaghetti_checklist` tool before it starts.
+- **Name the target.** Replace `[target]` with the folder or files to review, for example `src/checkout/` or `src/checkout/cart.ts and src/checkout/payment.ts`. The agent may read other files to follow how the target is used, but it evaluates only the target.
+
+If you chose the Anti-Spaghetti Review Prompt, use it instead of the request below. Otherwise, copy this request and add the checklist by pasting it underneath or by telling the agent to fetch it:
+
+> Evaluate [target] against the eight anti-spaghetti signals in the checklist I have supplied below (or fetched, if I told you to use the ContextQB MCP). Do not substitute a checklist of your own. For each signal, quote the relevant code with its file and line, and state whether the signal is present, partly present, or absent. Read other files only to understand how the target is used. End with a prioritised list of refactors, smallest first. Do not change any code.

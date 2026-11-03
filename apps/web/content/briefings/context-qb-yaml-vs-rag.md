@@ -2,7 +2,7 @@
 id: context-qb-yaml-vs-rag
 title: context.qb.yaml vs. RAG
 summary: Both put information into the agent's context window, but they put very different kinds of information there. A manifest is a hand-curated map of the project's shape. RAG is automatic search over the project's content, sometimes through an index the tool builds. They complement each other; they don't compete.
-version: 0.2.2
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -39,7 +39,7 @@ A manifest answers questions like:
 - _Which workspaces exist?_
 - _What ADRs are in play?_
 - _What's the deploy target?_
-- _What's the current status of the course platform?_
+- _What's the current status of each app?_
 
 — questions about structure, decisions, and current state.
 
@@ -57,7 +57,7 @@ RAG — here meaning any code search an agent tool runs for you: a semantic inde
 | ------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | **Who creates it**              | You and your agent, deliberately                                              | The agent tool, automatically                                                                                   |
 | **What's in it**                | Structured metadata (project, stack, tree, routes, decisions, status)         | Your code, searched directly or through embeddings of file chunks, a text index or a map, depending on the tool |
-| **Granularity**                 | High-level: "the methodology lives in `packages/methodology/`"                | Fine-grained: "lines 42–67 of `src/api/webhooks.ts`"                                                            |
+| **Granularity**                 | High-level: "the API server lives in `apps/api/`"                             | Fine-grained: "lines 42–67 of `src/api/webhooks.ts`"                                                            |
 | **Size**                        | ~500–2,000 tokens for a typical repo (the format's own guidance)              | Whatever the tool searches; a few hundred to a few thousand tokens retrieved per query                          |
 | **When it enters context**      | Read at session start; re-read when needed after compaction or a lost context | Queried on demand; chunks drop into context just-in-time                                                        |
 | **Where it lives**              | Committed to the repo at `/context.qb.yaml`                                   | Any index is managed by the tool, not in git                                                                    |
@@ -77,24 +77,35 @@ They're complementary. A well-set-up agent session uses both:
 
 ## A concrete example
 
-This example uses ContextQB's own repository as it was laid out when this briefing was written; the paths and ADR are real there, not a template for yours.
+The project below is **fictional**, invented for this comparison. Both versions of the story use the same project, the same files and the same request; the only difference is whether the agent read the map first.
 
-The agent is asked: _"Add rate limiting to the kickoff signup endpoint."_
+**The project.** Sam runs Plot Planner, a small service that lets members of community gardens join a waitlist for a growing plot. The repository has two apps that are deployed separately:
+
+- `apps/site` — the public website, including the `/waitlist` page and its form.
+- `apps/api` — a separate server that handles every `/api/...` request, including `POST /api/waitlist`, the endpoint the form sends each signup to.
+
+Sam's team once decided, and recorded in `docs/decisions/0004-rate-limiting.md`, that request limits live in one shared piece of server code, `apps/api/src/middleware/rate-limit.ts`, so every endpoint is limited the same way. Plot Planner's `context.qb.yaml` lists the two apps, which app owns each route, that decision record and the deploy target for each app.
+
+**The request.** Bots have been flooding the waitlist with fake signups. Sam asks the agent: _"Add rate limiting to the waitlist signup endpoint."_
 
 **Without `context.qb.yaml`, with RAG only:**
 
-- Agent searches the code for "kickoff" and "signup."
-- Finds chunks from `kickoff/page.tsx`, `kickoff-form.tsx`, maybe `api/enroll-free/route.ts`.
-- Doesn't know that `/api/enroll-free` lives in `apps/courses`, not `apps/web`.
-- Doesn't know there's an ADR about rate-limiting strategy.
-- Makes a confident, plausible, **wrong-shaped** change.
+- The agent searches the code for "waitlist" and "signup."
+- The strongest matches are `apps/site/app/waitlist/page.tsx` and `apps/site/components/waitlist-form.tsx`, because those files mention the waitlist most. `apps/api/src/routes/waitlist.ts` may appear further down the results.
+- The retrieved chunks do not show that `POST /api/waitlist` is served by `apps/api`, a different deployment, or that a decision says where limits belong. The agent could have found both by searching further for the route and for decision records, but it stops here and infers that the form is the place to change.
+- The agent adds a limit to the form in `apps/site`: it disables the button after a few submissions. The change looks reasonable and the page behaves as described.
+- **The mistake:** the bots never use the form. They send requests straight to `POST /api/waitlist`, which is still unlimited. The change is confident, plausible and **wrong-shaped**: it protects the page, not the endpoint, and it ignores the shared middleware the team agreed on.
 
 **With `context.qb.yaml`, with RAG:**
 
-- Agent boots reading the manifest. Sees that `apps/web` handles `/signup` and `apps/api` handles `/api/orders`. Sees that ADR-0004 governs signups in this example project. Sees the deploy target.
-- Reads that ADR file from the repository.
-- Searches for the specific endpoint with the right scope.
-- Makes a change that respects the architecture.
+- The agent reads the manifest at the start of the session. It sees that `apps/site` owns the `/waitlist` page, that `apps/api` owns `POST /api/waitlist` and that decision 0004 governs rate limiting.
+- It reads `docs/decisions/0004-rate-limiting.md` from the repository.
+- It searches only inside `apps/api` and finds the route file and the shared middleware.
+- It applies the shared limit to `POST /api/waitlist`, so every request is limited, whether it comes from the form or from a script.
+
+**What the map supplied.** The missing fact was _which app serves the endpoint, and where this project puts limits_. Search is not blind to structure: a careful search for the route and for decision records could have turned up both facts. In this story, though, the chunks it returned were about the page and form, and they did not establish which app receives the signup requests or where this project's limits belong. The agent filled that gap with a guess. The map states those facts up front, before any search, so the agent does not have to infer them from whichever chunks rank highest. Without that fact, the agent fixed the part a person sees. With it, the agent fixed the part an attacker uses.
+
+To try this on your own project, pick one endpoint and ask your agent, before any change: "Which app or folder serves this endpoint, and is there a recorded decision that affects how it should change?" If it has to guess, that fact belongs in your map.
 
 ## Why this matters for the methodology
 

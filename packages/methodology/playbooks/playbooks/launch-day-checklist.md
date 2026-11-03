@@ -2,7 +2,7 @@
 id: launch-day-checklist
 title: Run a Launch Day Checklist
 summary: The going-live procedure — pre-flight verification, the deploy itself, live smoke checks, monitoring watch, and a recovery path you have actually tested. Launch is a stage, not a vibe.
-version: 0.2.2
+version: 0.2.3
 problem: |
   First launches fail in predictable ways: something passed locally but was never checked in production, an environment variable is missing, nobody is watching when the first real user hits an error, and when it goes wrong there is no practised way back. The fix is not courage — it is a checklist run in order.
 when_to_use: |
@@ -98,7 +98,7 @@ In the live environment, with your own hands (then with an agent re-checking), w
 
 - [ ] The intended version loads at its actual URL or installed location.
 - [ ] Sign-up and sign-in work end to end if accounts are part of this release; otherwise record the actual access boundary and why the account check is not applicable.
-- [ ] The one thing your app exists to do — the core flow — works with controlled records appropriate to that target. For a single-owner local notebook, use a real note the owner intends to keep; made-up records need a supported removal method. If writing is checked only against a copy, label that limit and leave the actual target's write check pending. Any real messages, charges or other consequential effects require their own authority.
+- [ ] The one thing your app exists to do — the core flow — works with controlled records appropriate to that target. For a single-owner local tool, the owner can use a real record they intend to keep. For example, if a founder's personal research notebook on her own computer is the approved release, she saves a real note about a conversation she has had. In a product with other records, use an equivalent genuine action the owner wants anyway, such as a real booking for themselves. Made-up records left in live data need a supported removal method. If writing is checked only against a copy, label that limit and leave the actual target's write check pending. Any real messages, charges or other consequential effects require their own authority.
 - [ ] Every applicable new public endpoint responds as intended (see [`public-endpoint-exposure`](contextqb://audits/public-endpoint-exposure) if you have not run it).
 - [ ] Errors render as your designed error state, not a stack trace.
 
@@ -146,4 +146,4 @@ That instruction — verify, don't improvise — is the whole launch-day posture
 - [ ] The recovery plan is written and rehearsed; any recovery action and its results are recorded.
 - [ ] A same-day post-launch note exists.
 
-You are launched when the watch ends cleanly. Carry the handoff into [Operating a Small App](contextqb://guides/operating-a-small-app). Stage 9 includes [`operations-baseline`](contextqb://audits/operations-baseline) and the drift-detection cadence you already have.
+You are launched when the watch ends cleanly. Carry the handoff into [Operating a Small App](contextqb://guides/operating-a-small-app), which covers keeping the product running once launch day is over. That routine includes the [`operations-baseline`](contextqb://audits/operations-baseline) audit and the drift-detection cadence you already have.

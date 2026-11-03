@@ -2,7 +2,7 @@
 id: security-critical-code-review
 title: Security-Critical Code Review
 summary: A code review prompt specifically for security-sensitive changes — authentication, authorization, secrets handling, input validation, and data access.
-version: 0.2.0
+version: 0.3.2
 audience:
   - novice-builder
   - founder
@@ -12,14 +12,14 @@ audience:
 journey_stage: 5
 journey_rank: 10
 use_case: |
-  When reviewing code that touches authentication, authorization, secrets, user input handling, data access, or any security-relevant area. Use before merging PRs that modify these critical paths.
+  When reviewing code that touches authentication, authorization, secrets, user input handling, data access, or any security-relevant area. Use before accepting a change to these critical paths: before merging its pull request or, without pull requests, before keeping the commit and deploying it.
 variables:
   - SCOPE_PATH
   - CHANGE_DESCRIPTION
 expected_output: |
-  A structured security review of the code changes with pass/fail verdicts on critical checks, specific vulnerabilities identified, and a merge recommendation.
+  A structured security review of the code changes with pass/fail verdicts on critical checks, specific vulnerabilities identified, and a recommendation on whether to accept (merge) the change.
 quality_standard: |
-  Every finding must reference specific lines of code. Generic advice is not acceptable. The review must produce a clear merge/block recommendation with justification.
+  Every finding must reference specific lines of code. Generic advice is not acceptable. The review must produce a clear approve/request-changes/block recommendation with justification.
 related:
   - ai-integration-security
   - ai-output-is-untrusted-code
@@ -40,14 +40,21 @@ tags:
 
 This prompt is for reviewing code that touches security-sensitive areas. It's more focused than [Think Like an Attacker](contextqb://prompts/think-like-an-attacker) — instead of broad adversarial thinking, it runs a specific checklist for common security mistakes in critical code paths.
 
-Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access. Run it in a session that did not write the change — a fresh session, a second agent, or a person — given the change and what it was meant to do. A different model can add variety; it does not by itself make the review independent. Fill `{{CHANGE_DESCRIPTION}}` with what the change is meant to do, or "none".
+Use it when reviewing changes to authentication, authorization, secrets handling, input validation, or data access. Run it in a session that did not write the change — a fresh session, a second agent, or a person — given the change and what it was meant to do. A different model can add variety; it does not by itself make the review independent.
+
+**Fill in the two values before you paste.** Replace each `{{…}}` placeholder, including the braces:
+
+- `{{SCOPE_PATH}}` — the change to review, named so the reviewer can find exactly it. Either list the files the change touched, for example `app/api/orders/[id]/route.ts, lib/auth/session.ts`, or, if you use git, name the change itself, for example "the uncommitted changes in this repository" or "the commits on branch `order-access` that are not on `main`". The reviewer may read surrounding code to understand the change, but it judges the change.
+- `{{CHANGE_DESCRIPTION}}` — one or two sentences on what the change is meant to do, or "none". For example: "Lets a signed-in customer view the details of their own past orders."
 
 Some agentic tools and code hosts can run a review automatically on changes that match a rule — for example, changes touching authentication, secrets or data-access code. If yours can, this prompt is a good one to configure that way, provided the reviewer is not the agent that wrote the change. Pasting it by hand works everywhere.
 
 ## The prompt
 
 ```text
-You are performing a security-focused code review of the following changes: {{SCOPE_PATH}}
+You are performing a security-focused code review of the following change (a list of files, or a named set of changes): {{SCOPE_PATH}}
+
+Review this change. You may read surrounding code to understand what it affects; mention pre-existing problems outside the change separately, and do not count them toward the verdict unless the change makes them worse.
 
 Change description (or "none"): {{CHANGE_DESCRIPTION}}
 
@@ -131,18 +138,23 @@ Based on your review, provide:
 
 ## When to use this
 
-- Before merging any PR that modifies authentication or login code
-- Before merging any PR that changes authorization or access control
-- Before merging any PR that handles secrets or API keys
-- Before merging any PR that processes user input (forms, APIs, file uploads)
-- Before merging any PR that accesses sensitive data
-- When agent-generated code touches any of the above
+Run it after the change is written and before you accept it into the version you use or deploy. If you use pull requests (PRs), that is before merging. If you commit directly without PRs, it is before you keep the commit as your working version and before you deploy it. Use it for changes that:
+
+- modify authentication or login code
+- change authorization or access control
+- handle secrets or API keys
+- process user input (forms, APIs, file uploads)
+- access sensitive data
+
+This includes agent-generated code that touches any of the above.
 
 ## What to do with the output
 
-1. **BLOCK** — Do not merge. Fix the critical issue first.
-2. **REQUEST CHANGES** — Address the listed issues, then re-review. If you decide to merge now and fix later, record each requested change as an item in your outstanding-items register (see [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5) with an owner, so it is not lost.
-3. **APPROVE** — Safe to merge.
+In the prompt, "merge" means accepting the change. If you don't use PRs, read each verdict as applying to keeping, deploying or building on the commit.
+
+1. **BLOCK** — Do not merge. Without PRs, don't deploy the change or build further work on it; fix the critical issue first, or undo the change.
+2. **REQUEST CHANGES** — Address the listed issues, then re-review. If you decide to accept it now and fix later, record each requested change as an item in your outstanding-items register (see [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5) with an owner, so it is not lost.
+3. **APPROVE** — This security review found no blocking issue within its scope, so security is no longer a reason to hold the change back. It does not certify the whole change or release as safe, and it does not authorize deployment by itself. Whether to merge (or, without PRs, keep and deploy the commit) remains the owner's decision, after your project's other applicable checks, such as tests and functional review.
 
 If confidence is "Low," consider requesting a second review or doing manual testing.
 

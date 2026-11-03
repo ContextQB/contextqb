@@ -2,7 +2,7 @@
 id: documentation-file-naming
 title: Documentation File Naming
 summary: A documentation filename describes a responsibility. If you can only imagine one instance of the file ever existing, you have named a category, not a file. The same rule that governs code filenames governs doc filenames — with one small list of conventional exceptions.
-version: 0.2.1
+version: 0.3.0
 category: naming
 audience:
   - novice-builder
@@ -119,4 +119,12 @@ This costs seconds at creation time and never has to be paid again.
 
 ## How to ask an agent to enforce this
 
-> When proposing a filename for a new documentation file, first apply the three smell tests from `documentation-file-naming`: (1) the "the" test, (2) the collision test, (3) the standalone-listing test. Show your reasoning for each. Only suggest the filename if all three tests pass, or if the file is one of the recognised conventional UPPERCASE singletons (README, LICENSE, CHANGELOG, CONTRIBUTING, AGENTS, CODE_OF_CONDUCT, SECURITY).
+The request below carries the three tests in its own words, so it works in any agent session, including one that has never seen this page. You can paste it once, or put it in your `AGENTS.md` so it applies to every session.
+
+> When proposing a filename for a new documentation file, first apply these three smell tests and show your reasoning for each:
+>
+> 1. **The "the" test.** Say the filename aloud with "the" in front. If it names a kind of document ("the PUNCHLIST") rather than one specific document ("the qb-cli-v1 punchlist"), it fails.
+> 2. **The collision test.** Imagine a second document of the same kind arriving in six months. If the name would then be ambiguous or need a suffix, it fails.
+> 3. **The standalone-listing test.** Imagine the filename shown alone in a search result, with no folder around it. If a reader could not tell what the document is, it fails.
+>
+> Use descriptive kebab-case names, for example `external-accounts-setup.md` or `2026-05-checkout-incident.md`. Only suggest a filename if all three tests pass, or if the file is one of the recognised conventional UPPERCASE files: README, LICENSE, CHANGELOG, CONTRIBUTING, AGENTS, CODE_OF_CONDUCT, SECURITY. If a test fails, propose two or three alternatives and pick the one that passes all three.

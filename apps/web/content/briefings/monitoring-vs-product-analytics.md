@@ -2,7 +2,7 @@
 id: monitoring-vs-product-analytics
 title: Monitoring vs. Product Analytics
 summary: Separate evidence that an application is working from evidence that people find it useful, and check whether either signal can be trusted.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 7
 journey_rank: 20
@@ -21,7 +21,9 @@ tags: [monitoring, operations]
 
 **Monitoring** helps you answer whether the system is working and whether a failure needs attention. **Product analytics** helps you understand patterns of use. Neither, by itself, establishes that the product solves an important problem.
 
-For the notebook, an observed save failure is an operational signal. A pattern of people returning to find earlier notes may inform a product question. A count of button clicks cannot establish either that the notes were saved or that finding them helped someone.
+Take one invented example. Maya is a fictional first-time founder. She uses a small research notebook to save notes from conversations with bakery owners, so she can find that evidence again when she decides which problem her business should solve. The notebook is useful only if entries are saved reliably and if finding them actually helps that decision. Suppose, as an illustration, that a hosted version is also used by a few other founders.
+
+A save failure, whether someone reports it or an error log records it, is an operational signal: the notebook broke its basic promise. A pattern of people returning to find earlier notes just before a decision may inform a product question: is finding evidence the part they value? A count of button clicks cannot establish either that the notes were saved or that finding them helped someone.
 
 ## Choose the question before the measurement
 
@@ -29,7 +31,7 @@ A **log** records events; a **metric** summarizes a measurement over time; a **p
 
 Start with the task: could a person save and reopen a note? A healthy server process leaves that question partly unanswered. [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) connects a task failure to a signal and a response.
 
-For usefulness, combine usage evidence with an actual task observation or conversation. [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) gives you a way to investigate why a pattern occurs. A personal tool can begin with your own honest use record without adding remote tracking.
+For usefulness, combine usage evidence with an actual task observation or conversation. [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) gives you a way to investigate why a pattern occurs. A personal tool can begin with your own honest use record without adding remote tracking. If Maya were the only user, a note each time she looked something up, and whether it helped, would tell her more than a chart.
 
 ## Treat missing data as a question
 

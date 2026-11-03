@@ -2,7 +2,7 @@
 id: plan-data-retention-and-deletion
 title: Plan Data Retention and Deletion
 summary: Decide why information is kept, where its copies go and how to test the promises you make about deletion and export.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -39,17 +39,23 @@ Keeping information is a product decision. Decide what the task needs, how long 
 
 Start with [Designing Your App's Data](contextqb://guides/designing-your-apps-data) and [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data). Use this procedure before real information accumulates, even if the first plan is short.
 
+## The example on this page
+
+The steps use one invented tool. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She keeps a personal research notebook on her own computer, used only by her: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Her notes name real people and businesses, so where copies of them end up matters. The notebook's first version only saves entries and shows them again. It has no delete button, attachments, accounts or remote copies; its data sits in local storage, plus any backup or export copies she makes. Nothing is built, and you do not need to build it.
+
+Deletion and attachments appear below as proposed later capabilities, to show the decisions they would require before anyone promises them.
+
 ## Step 1 — Follow the information and its copies
 
 List what you collect, its purpose and where it goes. Include the main storage, uploaded files, exports, logs, backups, analytics and any outside service receiving it. A log is a record of application events; it can accidentally become a second store of private input.
 
 Ask the agent to distinguish locations found in code or service settings from locations it merely expects. Mark unknowns for investigation. Credentials belong in their protected store, not in this inventory's example values.
 
-For the single-user notebook, the first inventory might contain the local storage location, either a file or browser storage, and any export the owner downloads. Browser storage is not itself a backup; plan an export or another supported recovery copy before relying on the records, and include its retention in the inventory. Accounts, analytics and remote copies are conditional additions, not prerequisites for a serious application.
+For Maya's single-user notebook, the first inventory might contain the local storage location, either a file or browser storage, and any export the owner downloads. Browser storage is not itself a backup; plan an export or another supported recovery copy before relying on the records, and include its retention in the inventory. Accounts, analytics and remote copies are conditional additions, not prerequisites for a serious application.
 
 ## Step 2 — Make one decision for each kind of information
 
-Record these fields in the project's existing data or feature notes:
+Record these fields in the project's existing data or feature notes. If the project has none yet, create one short note where it keeps its documentation, for example `docs/data-retention.md`; no new documentation structure is needed:
 
 ```text
 Information and purpose:
@@ -64,7 +70,7 @@ How the promised behavior will be checked:
 
 **Retention** means how long information is kept. Choose a period or event you can justify and enforce. “Forever, just in case” is an unanswered decision. So is an arbitrary number of days copied from another product.
 
-For the practice notebook, an illustrative decision is to keep a note until its owner deletes it. The learner must still decide whether deletion is immediate, has an undo period or moves the note into a visible trash area. State which behavior is implemented before describing it to users.
+For Maya's first version, which has no delete action, the honest description is that entries stay in local storage, and in any backups and exports, until she removes them herself. If she adds deletion later, an illustrative decision is to keep an entry until she deletes it. She must still decide whether deletion is immediate, has an undo period or moves the entry into a visible trash area. State which behavior is implemented before describing it to users.
 
 ## Step 3 — Specify the complete promise
 

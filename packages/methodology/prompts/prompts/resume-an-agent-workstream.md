@@ -2,7 +2,7 @@
 id: resume-an-agent-workstream
 title: Resume an Agent Workstream From a Handoff
 summary: A reusable instruction for beginning a fresh session from the current workstream record, approved scope, review, and reconciled handoff.
-version: 0.3.0
+version: 0.4.0
 audience:
   - founder
   - operator
@@ -39,16 +39,23 @@ tags:
 
 **You get:** a short reconciliation report before any new work begins. It covers what is authorized, what is verified, what is stale, and the next authorized action.
 
-Tools differ in what they remember between sessions and what survives compaction ([what agents keep](contextqb://references/setup#agent-memory)). This prompt treats that memory as a hint: the record and the actual files are the authority.
+Tools differ in what they remember between sessions and what survives compaction ([what agents keep](contextqb://references/setup#agent-memory)). **Compaction** is what many tools do when a long conversation fills the agent's working memory: they replace older messages with a summary, which can drop or blur details. This prompt treats that memory as a hint: the record and the actual files are the authority.
+
+**New to workstreams?** This prompt is one step of [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), which defines the record and roles. Its worked example, a fictional file-organizer trial at the end of that page, includes a resumption that catches a stale handoff. The words you need here:
+
+- A **checkpoint** is the reconciled "where things stand" section a session writes before stopping.
+- A **handoff** tells the next session what to read, check and do. It can be that checkpoint section or a separate dated file. It is a snapshot, so newer record entries outrank it.
+- The **record keeper** is the one writer of the record's current summary. A session that is not the keeper reports discrepancies instead of editing the summary.
+- The **boot map** is the set of files every new session reads first: usually `AGENTS.md` and your project map, `context.qb.yaml`.
 
 For a long workstream, you can run the [Workstream Record Audit](contextqb://audits/audit-a-workstream-record) first and read only its verdict and blockers before resuming.
 
 **Fill in:**
 
-- `{{WORKSTREAM_RECORD}}`: the record's path, or "find it from the boot map".
-- `{{APPROVED_SCOPE}}`: the active scope.
+- `{{WORKSTREAM_RECORD}}`: the record's path, for example `docs/workstreams/notebook-search.md`, or "find it from the boot map".
+- `{{APPROVED_SCOPE}}`: the active scope (the agreement for the current piece of work) and its revision, or the record section where it lives.
 - `{{LATEST_REVIEW}}`: the latest review entry or file, or "none".
-- `{{HANDOFF}}`: the handoff file, or "none — use the record's checkpoint section".
+- `{{HANDOFF}}`: the handoff file, for example `docs/handoffs/2026-03-03-notebook-search.md`, or "none — use the record's checkpoint section".
 
 ```text
 Read the project instructions and boot map first, then:
@@ -63,7 +70,7 @@ Reconcile those records with the actual state. Check, and report what you find:
 - in a code project: the current branch, the latest commit (HEAD), and any uncommitted or untracked changes;
 - the files, outputs, and saved revisions the records mention;
 - running jobs or processes, and any background, scheduled, or cloud agent runs: still running, finished, or failed;
-- the drift check, if the project uses one.
+- the project-map check (for example `contextqb check`), if the project uses one.
 
 A handoff is a snapshot: entries in the record that are newer than the handoff, and newer operator decisions, supersede it. Your tool's memory and any earlier summary of this work, including a compaction summary, are not authority: where they disagree with the record or the actual files, the record and the files win. Where the record and the actual files disagree with each other, do not silently trust either, least of all a stale record; report the disagreement.
 

@@ -2,7 +2,7 @@
 id: triage-your-secrets
 title: Triage Your Secrets
 summary: Walk through your project and produce a complete inventory of every secret — API keys, tokens, passwords, certificates — with owner, scope, rotation status, and risk level.
-version: 0.2.0
+version: 0.3.0
 problem: |
   Secrets drift. Keys get created and forgotten. Tokens never rotate. Production credentials end up in development. When a breach happens, you cannot revoke what you cannot find.
 when_to_use: |
@@ -26,6 +26,7 @@ tags:
   - security
 related:
   - detect-security-drift
+  - harden-your-authentication
   - map-your-attack-surface
   - pre-launch-security
   - respond-to-a-suspected-compromise
@@ -68,7 +69,7 @@ This is the one definition of the inventory; the [Secrets & Credentials audit](c
 | **Rotation path** | Where you go to replace it, and what must be updated afterwards                |
 | **Blast radius**  | What a leak would allow, and its severity                                      |
 
-**Who does what.** Ask the agent to draft Steps 1, 2 and 4 — the references in code, where each value is stored, and what each key can reach — using the scanner from the [Secrets & Credentials audit](contextqb://audits/secrets-and-credentials). You supply what only you can see or judge: owners, created and rotated dates from the dashboards, and the blast-radius calls. Never paste a secret's value into the conversation or the inventory.
+**Who does what.** Ask the agent to draft Steps 1, 2 and 4 — the references in code, where each value is stored, and what each key can reach — using the scanner from the [Secrets & Credentials audit](contextqb://audits/secrets-and-credentials). You supply what only you can see or judge: owners, created and rotated dates from the dashboards, and the blast-radius calls. The agent works from what it can read in the repository: code, configuration and templates such as `.env.example`. Which variable names exist in your local `.env` files and in a hosting platform's or provider's settings is yours to check and pass on as a list of names, unless you have given the agent supported access to those settings. Never paste a secret's value into the conversation or the inventory.
 
 ## Before you start
 
@@ -82,6 +83,21 @@ You'll need access to:
 - Your agent tools' configuration: MCP client configuration files, agent memory or notes files, and tool settings, which can hold API keys or tokens
 
 Have your `context.qb.yaml` open if you have one — it may list dependencies that have secrets.
+
+## The example in the tables
+
+The filled-in tables below follow one invented app, **QuoteKit**, through every step, so you can watch the same four selected keys move from a raw list to a finished inventory. The people, dates, email addresses and file names are fictional. The rows are not findings about your project and not a list of services you need; your inventory lists your own app's keys.
+
+Dana runs QuoteKit, a small paid web app that helps freelance designers turn a client's brief into a priced quote. Bob, a part-time contractor, set up its billing. The tables follow four of its production secrets, chosen because each comes from a different feature:
+
+- `CLERK_SECRET_KEY` — QuoteKit uses a hosted sign-in service (Clerk) for customer accounts, and its server uses this key to look up and manage users.
+- `STRIPE_SECRET_KEY` — customers pay a monthly subscription through a payment processor (Stripe). This is the live key, which can move real money.
+- `DATABASE_URL` — accounts and quotes live in a hosted database (Supabase). This connection string contains the database password.
+- `OPENAI_API_KEY` — an AI feature drafts quote text through an AI model provider (OpenAI), billed to whoever owns the key.
+
+The app runs on a hosting platform (Vercel), and production values are kept in its environment-variable settings. Dana also keeps a `.env.local` file on her laptop for running the app while developing. These are real services used as recognizable examples, not recommendations; [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) introduces the rest of QuoteKit.
+
+The tables are an excerpt, not every secret QuoteKit has. A real inventory would also list, for example, the Stripe webhook signing secret that verifies payment events and the partner API keys QuoteKit issues, each with its own row in the same schema. The tables show production keys. QuoteKit's development copy uses Stripe's separate test-mode key, which cannot move real money; a full inventory gives it its own row with the same name and **Environment** set to development. Step 1 also finds one reference with no secret behind it, and Step 2 explains it.
 
 ## Steps
 
@@ -99,13 +115,13 @@ Look in:
 
 Create a raw list:
 
-| Variable name     | Where referenced | Appears to be       |
-| ----------------- | ---------------- | ------------------- |
-| CLERK_SECRET_KEY  | auth.ts          | Auth provider key   |
-| DATABASE_URL      | prisma.schema    | Database connection |
-| STRIPE_SECRET_KEY | billing.ts       | Payment key         |
-| OPENAI_API_KEY    | chat.ts          | AI provider key     |
-| ...               | ...              | ...                 |
+| Variable name     | Where referenced | Appears to be                   |
+| ----------------- | ---------------- | ------------------------------- |
+| CLERK_SECRET_KEY  | auth.ts          | Auth provider key               |
+| DATABASE_URL      | db.ts            | Database connection             |
+| STRIPE_SECRET_KEY | billing.ts       | Payment key                     |
+| OPENAI_API_KEY    | draft-quote.ts   | AI provider key                 |
+| OLD_API_KEY       | legacy-export.ts | Unknown — an old export feature |
 
 **Tip for non-developers:** Ask your agent: "Search this codebase for all uses of `process.env` or environment variables. List each variable name and where it's used."
 
@@ -123,14 +139,17 @@ Check:
 
 Record:
 
-| Variable name     | Stored in           | Actual secret exists? |
-| ----------------- | ------------------- | --------------------- |
-| CLERK_SECRET_KEY  | Cloudflare + Vercel | Yes                   |
-| DATABASE_URL      | Supabase dashboard  | Yes                   |
-| STRIPE_SECRET_KEY | Cloudflare + Vercel | Yes                   |
-| OLD_API_KEY       | Referenced in code  | No — dead reference   |
+| Variable name     | Stored in                            | Actual secret exists? |
+| ----------------- | ------------------------------------ | --------------------- |
+| CLERK_SECRET_KEY  | Vercel settings + Dana's .env.local  | Yes                   |
+| DATABASE_URL      | Vercel settings (issued by Supabase) | Yes                   |
+| STRIPE_SECRET_KEY | Vercel settings                      | Yes                   |
+| OPENAI_API_KEY    | Vercel settings                      | Yes                   |
+| OLD_API_KEY       | Nowhere — only referenced in code    | No — dead reference   |
 
 If you find references to secrets that don't exist, that's a finding. If you find secrets that have no references, that's also a finding.
+
+Two QuoteKit findings appear here. `OLD_API_KEY` belongs to an export feature that was switched off; no value exists anywhere, so it is a dead reference. It has no secret to own, scope or rotate, so it drops out of Steps 3–7 and returns in Step 8 as "remove from codebase". And Dana's `.env.local` holds a copy of the **production** Clerk key, rather than a separate development key; Step 4 records what that means.
 
 ### Step 3 — Identify the owner of each secret
 
@@ -140,27 +159,27 @@ For each secret, name who is responsible:
 - **Managed by:** Who rotates it or revokes it?
 - **Contact:** If this breaks at 2am, who do we call?
 
-The tables in Steps 1–7 are a worked example for a fictional project; the people, dates and service names are illustrative.
+| Secret            | Created by                            | Managed by | Contact          |
+| ----------------- | ------------------------------------- | ---------- | ---------------- |
+| CLERK_SECRET_KEY  | Dana, in the Clerk dashboard          | Dana       | dana@example.com |
+| DATABASE_URL      | Supabase, automatically               | None named | —                |
+| STRIPE_SECRET_KEY | Bob, in the Stripe dashboard          | Bob        | bob@example.com  |
+| OPENAI_API_KEY    | Unknown — made for an early prototype | Unknown    | Unknown          |
 
-| Secret            | Created by      | Managed by     | Contact           |
-| ----------------- | --------------- | -------------- | ----------------- |
-| CLERK_SECRET_KEY  | Clerk dashboard | Alice (ops)    | alice@company.com |
-| DATABASE_URL      | Supabase        | Auto-generated | Supabase support  |
-| STRIPE_SECRET_KEY | Bob (finance)   | Bob            | bob@company.com   |
-| OPENAI_API_KEY    | Unknown         | Unknown        | ???               |
-
-**If you cannot identify an owner, that's a critical finding.** Orphan secrets are the most dangerous kind.
+**If you cannot identify an owner, that's a critical finding.** Orphan secrets are the most dangerous kind. QuoteKit has two: nobody remembers which account created the AI key, and the database connection string was generated automatically when Dana created the project, so no person is named to change it. Generated automatically does not mean owned.
 
 ### Step 4 — Document scope and permissions
 
 For each secret, understand what it grants access to:
 
-| Secret            | Provider | Scope                | Permissions                 |
-| ----------------- | -------- | -------------------- | --------------------------- |
-| CLERK_SECRET_KEY  | Clerk    | All auth operations  | Full (read/write users)     |
-| DATABASE_URL      | Supabase | Production database  | Full database access        |
-| STRIPE_SECRET_KEY | Stripe   | Live mode            | Charges, refunds, customers |
-| OPENAI_API_KEY    | OpenAI   | Organisation account | All models, billing         |
+| Secret            | Provider | Scope                                      | Permissions                 |
+| ----------------- | -------- | ------------------------------------------ | --------------------------- |
+| CLERK_SECRET_KEY  | Clerk    | Production users; also used in development | Full (read/write users)     |
+| DATABASE_URL      | Supabase | Production database                        | Full database access        |
+| STRIPE_SECRET_KEY | Stripe   | Live mode                                  | Charges, refunds, customers |
+| OPENAI_API_KEY    | OpenAI   | Organisation account                       | All models, billing         |
+
+The Clerk row records the Step 2 finding: because the production key sits in Dana's `.env.local`, anything running on her laptop, including a coding agent that can read that file, can read and change real customer accounts.
 
 Check if the scope is too broad:
 
@@ -177,12 +196,12 @@ For each secret, determine:
 - Is there a rotation schedule?
 - How would you rotate it if needed?
 
-| Secret            | Created  | Last rotated            | Schedule | Rotation steps                           |
-| ----------------- | -------- | ----------------------- | -------- | ---------------------------------------- |
-| CLERK_SECRET_KEY  | Jan 2024 | Never                   | None     | Roll in Clerk dashboard, update all envs |
-| DATABASE_URL      | Mar 2024 | N/A (connection pooler) | N/A      | Change password in Supabase, update envs |
-| STRIPE_SECRET_KEY | Feb 2024 | Never                   | None     | Roll in Stripe, update all envs          |
-| OPENAI_API_KEY    | Unknown  | Unknown                 | None     | Create new key, update envs, delete old  |
+| Secret            | Created  | Last rotated | Schedule | Rotation steps                           |
+| ----------------- | -------- | ------------ | -------- | ---------------------------------------- |
+| CLERK_SECRET_KEY  | Jan 2024 | Never        | None     | Roll in Clerk dashboard, update all envs |
+| DATABASE_URL      | Mar 2024 | Never        | None     | Change password in Supabase, update envs |
+| STRIPE_SECRET_KEY | Feb 2024 | Never        | None     | Roll in Stripe, update all envs          |
+| OPENAI_API_KEY    | Unknown  | Unknown      | None     | Create new key, update envs, delete old  |
 
 **If "last rotated" is "never" or "unknown" for a long-lived secret, or it is past the interval you chose for it, that's a finding.** Standards set no single interval — a secret's lifetime depends on what it does (see the [security defaults reference](contextqb://references/pricing#security-defaults)).
 
@@ -193,7 +212,7 @@ For each secret, describe what happens if it leaks:
 | Secret            | Blast radius                                                                  | Severity |
 | ----------------- | ----------------------------------------------------------------------------- | -------- |
 | CLERK_SECRET_KEY  | Full auth compromise — attacker can impersonate any user, access all accounts | Critical |
-| DATABASE_URL      | Full data breach — all user data, orders, everything                          | Critical |
+| DATABASE_URL      | Full data breach — all accounts, quotes, everything                           | Critical |
 | STRIPE_SECRET_KEY | Financial damage — attacker can issue refunds, read customer data             | Critical |
 | OPENAI_API_KEY    | Billing abuse — attacker runs up charges, potentially accesses usage history  | High     |
 
@@ -206,14 +225,14 @@ Severity levels:
 
 ### Step 7 — Compile the inventory
 
-Bring it all together in a single document:
+Bring it all together in a single document. Your inventory file keeps every field from the schema above for each secret; the summary below shows only some of QuoteKit's columns so it fits on the page. Every value matches the earlier steps.
 
-| Secret            | Stored in  | Owner   | Scope         | Created  | Last rotated | Blast radius          | Severity |
-| ----------------- | ---------- | ------- | ------------- | -------- | ------------ | --------------------- | -------- |
-| CLERK_SECRET_KEY  | Cloudflare | Alice   | Full auth     | Jan 2024 | Never        | Full account takeover | Critical |
-| DATABASE_URL      | Supabase   | (auto)  | Production DB | Mar 2024 | N/A          | Full data breach      | Critical |
-| STRIPE_SECRET_KEY | Cloudflare | Bob     | Live payments | Feb 2024 | Never        | Financial access      | Critical |
-| OPENAI_API_KEY    | Vercel     | Unknown | Org account   | Unknown  | Unknown      | Billing abuse         | High     |
+| Secret            | Stored in                   | Owner      | Scope               | Created  | Last rotated | Blast radius          | Severity |
+| ----------------- | --------------------------- | ---------- | ------------------- | -------- | ------------ | --------------------- | -------- |
+| CLERK_SECRET_KEY  | Vercel + Dana's .env.local  | Dana       | Full auth; also dev | Jan 2024 | Never        | Full account takeover | Critical |
+| DATABASE_URL      | Vercel (issued by Supabase) | None named | Production DB       | Mar 2024 | Never        | Full data breach      | Critical |
+| STRIPE_SECRET_KEY | Vercel                      | Bob        | Live payments       | Feb 2024 | Never        | Financial access      | Critical |
+| OPENAI_API_KEY    | Vercel                      | Unknown    | Org account         | Unknown  | Unknown      | Billing abuse         | High     |
 
 ### Step 8 — Generate action items
 
@@ -227,6 +246,8 @@ For each finding, create an action:
 6. **Dead reference:** Remove from codebase
 
 Prioritise by severity. Critical secrets with no owner or unknown age are your top priority.
+
+For QuoteKit, that list would read: name an owner for `DATABASE_URL` and find or replace the owner of `OPENAI_API_KEY`; create a separate development Clerk key and remove the production one from `.env.local`; schedule rotation for the three never-rotated keys and rotate the AI key now, since its age is unknown; and remove `OLD_API_KEY` from `legacy-export.ts`. It is an illustration of how findings become actions, not a list of steps for your project. Your agent can make the code change; changes inside a provider's dashboard are yours, and the rotation steps in Step 5 say what must be updated afterwards so the app keeps working.
 
 ## Common mistakes
 

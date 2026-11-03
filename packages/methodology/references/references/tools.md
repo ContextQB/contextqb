@@ -2,7 +2,7 @@
 id: tools
 title: Tools and agent environments
 summary: Neutral, dated facts about the tools that lessons name as examples of a role — agentic coding tools, code search, verifiers, scanners, secrets managers, managed services, SDKs and git hosting and clients. Each row says what the tool is according to its own documentation. No ranking and no recommendation.
-version: 0.1.0
+version: 0.1.1
 audience:
   - novice-builder
   - founder
@@ -257,8 +257,8 @@ entries:
         value: Agent uses Instant Grep, an exact-match and regex search that builds and queries its index on your machine; Cursor states it does not upload file paths or code to build a search index and does not store embeddings of your codebase for search. Agent can also spawn an Explore subagent in its own context window.
         applies_to: Cursor search documentation
         evidence: [cursor-search]
-      - subject: GitHub Copilot in VS Code — #codebase
-        value: The semantic search tool, referenced as #codebase, finds code by meaning and requires a workspace index that Copilot maintains automatically; text search, grep and file search work alongside it, and grep works without an index.
+      - subject: "GitHub Copilot in VS Code — #codebase"
+        value: "The semantic search tool, referenced as #codebase, finds code by meaning and requires a workspace index that Copilot maintains automatically; text search, grep and file search work alongside it, and grep works without an index."
         applies_to: VS Code workspace context documentation
         evidence: [vscode-workspace-context]
     evidence:

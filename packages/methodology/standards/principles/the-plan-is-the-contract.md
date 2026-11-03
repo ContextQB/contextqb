@@ -1,8 +1,8 @@
 ---
 id: the-plan-is-the-contract
 title: The Plan Is the Contract
-summary: A plan that nobody verifies against is fiction. When an agent executes a plan, the plan is the contract — every tranche of work is checked against it, divergences are deliberate amendments, and "done" means the plan's own sections say so.
-version: 0.1.3
+summary: A plan that nobody verifies against is fiction. When an agent executes a plan, the plan is the contract — each batch of work (a tranche) is checked against it, divergences are deliberate amendments, and "done" means the plan's own sections say so.
+version: 0.2.0
 category: orchestration
 audience:
   - novice-builder
@@ -51,7 +51,7 @@ related:
 
 ## What it is
 
-In agentic development, a feature plan is not a prelude to the work. It _is_ the work's governance. The plan names the goal, the surfaces that may change, the state ownership, the orchestration point, the edge cases, and — just as important — what is out of scope. Once approved, those sections are the definition of done.
+In agentic development, a feature plan is not a prelude to the work. It _is_ the work's governance: the record that says what is approved, what may change and how you will know it is done. The plan names the goal, the surfaces that may change, the state ownership, the orchestration point, the edge cases, and — just as important — what is out of scope. Once approved, those sections are the definition of done.
 
 The contract has three properties:
 
@@ -73,7 +73,9 @@ None of these are malice. They are what a fast, confident generator does in the 
 
 ## The rule in practice
 
-**Verification walks the plan, not the vibes.** After every tranche of work, in a fresh session, walk the plan's sections against the actual code:
+Larger work is built in **tranches**: bounded batches, each small enough to check on its own. For a notebook feature, saving and reopening might be the first tranche and error handling the second.
+
+**Verification walks the plan, not the vibes.** After every tranche, in a fresh session, walk the plan's sections against the actual code:
 
 - The goal: can a user actually do the thing, end to end?
 - The surfaces: did anything change outside the named files?
@@ -84,11 +86,15 @@ None of these are malice. They are what a fast, confident generator does in the 
 
 The gap between what was claimed and what was found is the contract working. Close the gap before the next tranche begins.
 
-"A fresh session" means a verifier that did not produce the work — a new session, a subagent, a separate review tool or a person — given the plan, the governance record and the actual artifacts. The executor's report is a claim to test, not evidence. A different model can add variety; it does not by itself make verification independent. The [feature build loop](contextqb://playbooks/feature-build-loop) describes these governed-loop mechanics in full.
+"A fresh session" means a verifier that did not produce the work — a new session, a subagent, a separate review tool or a person — given the plan, the governance record (the plan together with its running log of what was built, checked and changed) and the actual artifacts. The executor's report is a claim to test, not evidence. A different model can add variety; it does not by itself make verification independent. The [feature build loop](contextqb://playbooks/feature-build-loop) describes these governed-loop mechanics in full.
 
 ## The amendment is honest, the drift is not
 
-Plans are wrong sometimes. The executor discovers the client lifecycle can't survive the redirect; in a React framework, for example, the hook has to become a server action. This is normal and good — it is the plan doing its job of forcing the real constraint into the open.
+Plans are wrong sometimes. Here is a small invented case. Maya, a fictional founder, approved a plan for a personal research notebook that keeps each source she reads with her own note about it. The plan's goal: a saved entry is still there after she closes and reopens the app. Its storage line: saved entries are kept in the browser's own storage. At the first check, entries she had saved were gone after she closed and reopened the browser. The cause was a setting. Her browser clears site data whenever it closes, for privacy, and she wants to keep it that way. The storage line could no longer deliver the plan's own goal.
+
+This is normal and good — it is the plan doing its job of forcing the real constraint into the open. The executor stopped and reported the contradiction instead of quietly storing the data somewhere else. The plan was revised on the record: the old storage line was struck through, the new line keeps entries in one file, `notebook.json`, in a folder Maya chooses, and the log says why. Maya approved the revised plan before building resumed. Anyone who reads the plan later can tell what was planned, what was found and what was decided. The [feature build loop](contextqb://playbooks/feature-build-loop) shows that record in full.
+
+In code-heavy work the same thing happens with technical constraints. For example, the plan puts a step in one part of the app and the framework turns out to require it somewhere else. The response is the same.
 
 The move is: stop, revise the affected sections on the record (strike through the old line; log the reason), re-approve, resume. The move that kills projects is silently rolling forward — then the plan describes a system that was never built, and every future session reads fiction as truth.
 

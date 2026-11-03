@@ -2,7 +2,7 @@
 id: ai-output-is-untrusted-code
 title: AI Output Is Untrusted Code
 summary: When an agent generates code that runs (tool calls, file edits, shell commands, API requests), treat it like input from the public internet. Constrain it, validate it, and never execute it without intent.
-version: 0.1.2
+version: 0.1.4
 category: security
 audience:
   - novice-builder
@@ -65,7 +65,7 @@ Three forces converge to make this principle load-bearing:
 
 3. **Trust transfers by mistake.** A user who has watched an agent succeed ten times in a row starts approving the eleventh without reading it. This is a well-studied human pattern; it's also exactly the moment something destructive ships.
 
-The combined effect is that agentic systems make it trivial to execute untrusted code at the speed of conversation. Without a deliberate boundary, every prompt is a `curl | bash` against your codebase.
+The combined effect is that agentic systems make it trivial to execute untrusted code at the speed of conversation. Without a deliberate boundary, every prompt is a `curl | bash` against your codebase. That command downloads a script from a web address and runs it immediately on your machine, with your permissions, before anyone has read it. Whatever the script does, such as deleting files, changing settings or sending your keys somewhere, happens at once. An agent in approve-everything mode works the same way on your project: what it generates runs before you have seen it.
 
 ## Minimum acceptable posture
 
@@ -73,9 +73,9 @@ You can claim this principle if all of the following hold:
 
 1. **No auto-execute for destructive operations.** Anything that deletes, deploys, sends, charges, or mutates external state requires explicit human (or automated policy) approval. "Read this file" can auto-execute; "remove this file" cannot. This is a setting in your agent tool, not a habit to remember ([Set Security Guardrails for Your Agent](contextqb://playbooks/set-security-guardrails-for-your-agent)).
 
-2. **Generated code that mutates external state is reviewed before merge.** Even if the agent wrote it, a human or a CI gate reads it before it lands in main. Agent-generated diffs are not exempt from review.
+2. **Generated code that mutates external state is reviewed before it is accepted.** Even if the agent wrote it, a human or an automated check (a CI gate) reads it before it becomes the version you use or deploy. With pull requests, that means before merge, before it lands in main. If you commit directly without pull requests, review it before you keep the commit as your working version, and before you deploy it or run it against real data. If the review finds a blocking problem, the change stops at that same point until it is fixed. Agent-generated diffs are not exempt from review.
 
-3. **Secrets are not in the agent's reach during normal operation.** The agent does not have ambient access to `.env`, the production database, or your cloud account. If it needs them for a specific task, the access is scoped, time-bound, and named.
+3. **Secrets are not in the agent's reach during normal operation.** The agent does not have ambient access to `.env` (the local file where an app's secret keys and environment settings are often kept), the production database, or your cloud account. If it needs them for a specific task, the access is scoped, time-bound, and named.
 
 4. **The agent's tool list is enumerable.** You can name every tool the agent can call and what each one does — the tool's permission settings and its list of connected MCP servers are where to look. "Whatever the IDE supports" is not an answer.
 
@@ -83,7 +83,7 @@ You can claim this principle if all of the following hold:
 
 ## Signals you're getting this wrong
 
-- **You've stopped reading the diffs.** The agent ships PRs faster than you read them, and "looks fine" has become the rubric.
+- **You've stopped reading the diffs.** The agent produces changes (pull requests or commits) faster than you read them, and "looks fine" has become the rubric.
 
 - **Shell access is "for convenience."** No one can articulate which specific commands the agent actually needs.
 

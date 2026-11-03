@@ -2,7 +2,7 @@
 id: release-readiness
 title: Release Readiness Audit
 summary: Assess whether the evidence supports a specific application version, audience and release scope, without turning the audit into deployment authority.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 7
 journey_rank: 50
@@ -62,9 +62,11 @@ The [Pre-Launch Security Audit](contextqb://audits/pre-launch-security) owns the
 
 ## Worked assessment: a convincing package, incomplete evidence
 
-This is a **fictional no-go assessment**, continuing the local notebook delivery map in [Where Your App Runs](contextqb://guides/where-your-app-runs). Identifiers and results below are invented for teaching; they are not a receipt for an implemented app:
+This is a **fictional no-go assessment**. Maya is an invented first-time founder deciding which problem her business should solve for small independent bakeries. She wants a personal research notebook program on her own computer: each entry keeps one source, such as a conversation with a bakery owner, with her note about what it showed, all in one local data file used only by her. An agent has built a candidate package, and she asks whether she can start relying on it for her real notes, which she could not recreate if lost.
 
-1. **Candidate and intended audience:** package `notebook-candidate-1`, described as built from source `example-rev-1`; one owner using local files. The rehearsal folder is named, but no installed-version evidence is supplied. Team sharing and accounts are excluded.
+Before the review, some things are known: the package exists, the record says a build and unit checks passed, and a practice backup-and-recovery exercise on a two-record file has been done. Others are unknown: whether the installed package itself saves and reopens entries, how its data file is protected, and whether a failed save reaches her. The assessment sorts those facts into the seven sections. Identifiers and results are invented for teaching; they are not a receipt for an implemented app. The linked lessons give procedural detail if you want it; you do not need them to follow the assessment.
+
+1. **Candidate and intended audience:** package `notebook-candidate-1` (an illustrative label for this candidate), described as built from source `example-rev-1`; one owner using local files. The rehearsal folder is named, but no installed-version evidence is supplied. Team sharing and accounts are excluded.
 2. **Evidence for critical tasks:** the fictional record says build and unit checks passed. Saving and reopening through the installed candidate is marked not run. Unit checks cannot close that gap.
 3. **Usability, accessibility and performance:** code review of labels is supplied; keyboard use, a real task attempt and representative-file timing are not run. Needed evidence must match the owner's intended device and task.
 4. **Protection and data handling:** the intended local-only scope is recorded. Storage permissions and whether diagnostic output contains note text remain unknown. No-account is a reason to exclude sign-in tests, not the file-access check.

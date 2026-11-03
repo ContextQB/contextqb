@@ -2,7 +2,7 @@
 id: making-your-app-usable
 title: Making Your App Usable
 summary: Sketch the task, handle the states around it and inspect whether the intended person can complete it, including with different access needs.
-version: 0.1.3
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -30,7 +30,9 @@ tags:
 
 ## Sketch the useful path
 
-Use the brief in [Directing Your First Feature](contextqb://guides/directing-your-first-feature), or your own equivalent. Draw the few steps the person needs: enter a source title and note, save, see the saved entry, return later. Paper is enough. Put the main task where someone can find it and name controls for their actions: “Save note” says more than “Submit.”
+This guide uses one invented example. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. After each conversation with a bakery owner, she wants to save which conversation it was and her note about what she learned, so she can find that evidence when she decides. The tool she has in mind is a small personal research notebook. Its first feature is written up in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). Use that brief or your own equivalent; you don't need to build the notebook.
+
+Draw the few steps the person needs. For Maya: enter a source title and note, save, see the saved entry, return later. Paper is enough. Put the main task where someone can find it and name controls for their actions: “Save note” says more than “Submit.”
 
 Ask what the person needs to know at each step. A note field can have a visible label and a short explanation such as “What do you want to remember about this source?” Decide which information is required and explain why when the reason is not obvious.
 
@@ -55,15 +57,35 @@ W3C's [Easy Checks](https://www.w3.org/WAI/test-evaluate/preliminary/) is a prac
 
 Record what was tried, the device or browser, the result and what remains untested. A command-line or desktop tool needs its own interaction checks; do not force a web checklist onto a different channel.
 
-## Separate structure from experience
+## Judge one screen the way a person meets it
 
-The [UI Architecture Audit](contextqb://audits/ui-architecture) examines how interface code is organized. It can reveal duplicated state or a workflow with no clear coordinator. [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) asks whether someone can use the result. Both can uncover problems; neither substitutes for the other.
+Here is a first version of Maya's notebook page, described as she would meet it rather than as code. It is deliberately imperfect so you can practise spotting problems.
 
-The worked example below is for Stage 4, once you have a first interaction. You can return to it then; for a first pass, continue to “Take the next step in your project” below. You do not need to learn the code syntax to begin: ask the reviewer to connect every finding to the task and show its evidence.
+- The page shows a “Source title” box with a visible label. Below it is a larger box showing only the grey word “Note” inside it. When she starts typing, that word disappears, and nothing on the screen says what the box is for any more.
+- If she presses **Save note** with one box empty, the message reads “Add a title and note.” It doesn't say which box needs attention.
+- After a successful save, the boxes clear, a message says “Saved.” and the entry appears in a list below the form.
 
-## Worked example: an ordinary web notebook
+Judge it as a person would. Would someone new know what to write in the second box? After an error, can they tell what to fix? Does “Saved.” match what they can see in the list? Placeholder text is not a dependable label: it disappears while someone types, and assistive technologies such as screen readers do not handle it consistently. A person who can't see the screen, or who looks away and back, may lose track of what the box is for. These are usability and accessibility judgements. You can make them without reading code, and the fixes are product decisions: a visible label for the note box, and an error message that names the box to correct.
 
-These are the **complete illustrative files for this small review target**, not files in your application. They omit many capabilities a delivered product would need, including export or backup. If you choose to try them, ask the agent to propose a temporary local web server and its shutdown steps; module scripts need to be served through HTTP rather than opened directly from a file, as [MDN documents](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules). The snippets provide evidence for a filled structural audit; no browser run or user session is claimed here.
+Some questions can only be answered by watching. Ask someone to keep a made-up source and their thought about it for later, then observe without helping. Do they understand the note box? Do they recognize success? Can they find the entry after closing and reopening? [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) explains how to run that session and contains a clearly labelled fictional observation record for practice. Replace it with your actual observations when you run your own session. Nothing on this page claims anyone has used this screen; keyboard operation, focus visibility, zoom and narrow-screen behavior still need running checks.
+
+## Take the next step in your project
+
+Leave with a task sketch, the states it must handle and a short list of observable checks. Use [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) to connect automated checks with human use. Before accepting a polished screen, choose one failure or access need and ask the agent to demonstrate what happens. That question keeps the design connected to the person who needs the result.
+
+That completes the main lesson. The rest of this page is optional depth for when you want to know how the interface's code is organized.
+
+## Optional depth: review how the interface code is organized
+
+Usability asks whether a person can complete the task. A structural review asks a different question: is the code behind the screen organized so it can be trusted and changed? The [UI Architecture Audit](contextqb://audits/ui-architecture) is ContextQB's procedure for that review. It produces a report with ten sections, from a summary through to a now/next/later plan. It can reveal duplicated state or a workflow with no clear coordinator. It cannot tell you whether anyone understands the screen. [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) answers that. Neither substitutes for the other.
+
+Use this section once you have a first working screen and an agent has produced, or is about to produce, a structural review of it. You do not need to learn the code syntax: ask the reviewer to connect every finding to the task and show its evidence.
+
+### The review target: the code behind that screen
+
+The page described above can be built in many ways. This version keeps Maya's entries in the browser's own storage (`localStorage`) on one device. That is one possible design, chosen here because three short files can show it; the first-feature brief leaves the storage choice to the agent. In this design, entries exist only in that browser profile, for that site address, on that device. Clearing the browser's site data removes them. The page also has no export, so there is no copy anywhere else. That missing capability would need to be added before anyone relied on it for real notes.
+
+These are the **complete illustrative files for this small review target**, not files in your application, and not a pattern to copy. They are deliberately flawed so the review has real findings, and they omit many capabilities a delivered product would need, including export or backup. If you choose to try them, ask the agent to propose a temporary local web server and its shutdown steps; module scripts need to be served through HTTP rather than opened directly from a file, as [MDN documents](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules). The snippets provide evidence for a filled structural audit; no browser run or user session is claimed here.
 
 `index.html` supplies the page and controls:
 
@@ -140,7 +162,7 @@ The catch covers more than the storage call. If writing succeeds and a later ste
 
 ### Filled structural audit
 
-This follows all ten sections required by the UI audit. Every finding below is **read in code**, scoped only to these three snippets. In a real review, use actual project paths and inspect the complete target.
+This report follows the ten sections the UI Architecture Audit asks for. Every finding below is **read in code**, scoped only to these three snippets. In a real review, use actual project paths and inspect the complete target.
 
 1. **Executive summary.**
    - The save path has one coordinator, `notebook-page.js`.
@@ -174,12 +196,6 @@ This follows all ten sections required by the UI audit. Every finding below is *
 9. **Recommendations.** First, handle storage-read failure and validate loaded records so a broken load is visible (high impact, bounded change). Next, separate write failure from later rendering failure and confirm with a check that the draft survives a failed write (high impact, needs failure checks). Then define one-tab use or handle concurrent edits deliberately (scope decision; prevents lost notes). Defer framework or theme infrastructure without a demonstrated need.
 10. **Now / next / later plan.** Now: agree loaded-data rules; add a read-failure path; check failed-save draft retention. Next: distinguish post-write display errors; test reopening; document the one-tab limitation or implement its agreed alternative. Later: revisit module boundaries as features grow; introduce extension points only for a concrete use; repeat structural review after that change.
 
-### Usability and accessibility contrast
+### What the structural review did not tell you
 
-The structure report leaves other questions open. Reading `index.html` shows the Note field has only a placeholder; add a persistent visible label associated with that control. The generic input error does not identify which value needs attention. These are code-based findings. Keyboard operation, focus visibility, zoom and narrow-screen behavior still need running checks; record those results when you run the agreed test target.
-
-For a real user task, ask someone to keep a supplied source and their thought for later. Observe whether they understand the note field, recognize success and find the entry after reopening. The companion [user-journey playbook](contextqb://playbooks/check-a-user-journey-with-a-person) contains a clearly labelled fictional observation record to practice that distinction. Replace it with actual observations when you run your own session.
-
-## Take the next step in your project
-
-Leave with a task sketch, the states it must handle and a short list of observable checks. Use [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) to connect automated checks with human use. Before accepting a polished screen, choose one failure or access need and ask the agent to demonstrate what happens. That question keeps the design connected to the person who needs the result.
+None of the ten sections above mentions the problems you judged earlier. The code does confirm them: in `index.html` the note `<textarea>` has only a placeholder and no associated `<label>`, and the submit handler shows one generic message for either missing value. These are code-based findings about usability, not structural ones. Keyboard operation, focus visibility, zoom and narrow-screen behavior still need running checks, and whether a person understands the screen still needs observation. Record those results when you run the agreed test target.

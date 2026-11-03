@@ -2,7 +2,7 @@
 id: protecting-users-and-their-data
 title: Protecting Users and Their Data
 summary: Identify what needs protection, who should have access and which evidence you need before trusting the implementation.
-version: 0.1.2
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 2
 journey_rank: 40
@@ -31,15 +31,22 @@ tags: [security, getting-started]
 
 ## Start with what you hold
 
-Use [Building for Yourself vs. Building for Others](contextqb://guides/building-for-yourself-vs-others) to name the intended users, then [Where Your Data Lives](contextqb://guides/where-your-data-lives) to locate the information. A source title may be public while a note about it contains a customer's plans. Do not assume that every field in the same record has the same sensitivity.
+Use [Building for Yourself vs. Building for Others](contextqb://guides/building-for-yourself-vs-others) to name the intended users, then [Where Your Data Lives](contextqb://guides/where-your-data-lives) to locate the information.
+
+Take one invented example. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. After each conversation with a bakery owner, she saves an entry in a small personal research notebook on her own computer: which conversation it was and her note about what she learned. Nothing is built; the example shows how protection decisions change with the design. A source title such as “Bakery owner call, March 4” reveals little. Her note may record what a named owner said about their business's troubles, which the owner may have shared in confidence. Do not assume that every field in the same record has the same sensitivity.
 
 An **asset** is something worth protecting: records, access credentials, availability or a person's work. An **actor** is a person or system interacting with it. A **trust boundary** is a point where information or an action crosses between different levels of trust. A browser request reaching a server is one example; an agent receiving access to local files is another.
 
-Write three sentences for your feature: what someone could lose, who should be able to do what, and what must not happen. For a shared notebook, one may be “A member can read their team's notes but cannot retrieve another team's private notes.” That is specific enough to guide a check.
+Write three sentences for your feature: what someone could lose, who should be able to do what, and what must not happen. The answers depend on the design, so compare two versions of Maya's notebook.
+
+- **Her first version: one person, one device.** She could lose a month of evidence she can't recreate. Only Maya should read or change entries. Her notes about named businesses must not leave her computer unless she chooses to share them. There are no other users, so the boundaries are her device, its files and any exports or backups. Accounts would add nothing here.
+- **An illustrative future shared version.** Imagine Maya and a cofounder use a hosted version that other founding teams use too. This version is only a comparison, not something she needs to build. Entries now travel to a server and sit in storage that several teams' records share. Several people sign in, so the application itself must keep one team's notes from another. A useful rule becomes: “A member can read their team's notes but cannot retrieve another team's private notes.” That is specific enough to guide a check.
+
+The second version needs protections the first does not, because more people and a shared server now sit between Maya and her notes. Decide which version you are building before deciding what to protect.
 
 ## Collect only information that serves the task
 
-The local notebook can teach saving without collecting a phone number or uploading a contact list. Ask why every field and outside service is needed. Fewer unnecessary copies mean fewer places to secure, explain and eventually remove information.
+Maya's notebook needs a source title and a note. It has no reason to collect owners' phone numbers or upload her contact list. Ask why every field and outside service is needed. Fewer unnecessary copies mean fewer places to secure, explain and eventually remove information.
 
 Security concerns protection from unauthorized access, unwanted changes and disruption. Privacy also concerns why information is collected and how it is used or shared. An encrypted database can still contain information the product had no reason to collect. MDN's [security and privacy curriculum](https://developer.mozilla.org/en-US/curriculum/extensions/security-and-privacy/) treats both as part of responsible application design.
 
@@ -59,7 +66,7 @@ Apply [Set Security Guardrails for Your Agent](contextqb://playbooks/set-securit
 
 ## Read a finding as a claim that needs evidence
 
-Imagine a report says, “Another member can read a private note.” Ask which target was inspected, which identities and records were used, what was observed, and what remains unknown. A code pattern can justify concern; a controlled test may establish a specific path. Neither justifies unapproved probing of a live service.
+Imagine a report about the shared version says, “Another member can read a private note.” Ask which target was inspected, which identities and records were used, what was observed, and what remains unknown. A code pattern can justify concern; a controlled test may establish a specific path. Neither justifies unapproved probing of a live service.
 
 Keep the record identifier and expected permission in the report, using synthetic examples. Do not copy the sensitive note itself to prove exposure. Ask for a correction and a check demonstrating the intended boundary on the authorized test target.
 

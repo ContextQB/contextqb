@@ -2,7 +2,7 @@
 id: start-an-agent-workstream
 title: Start an Agent Workstream
 summary: A reusable instruction for turning an operator’s objective into a documented workstream and a proposed bounded assignment.
-version: 0.3.0
+version: 0.4.0
 audience:
   - founder
   - operator
@@ -24,6 +24,7 @@ related:
   - run-an-agent-workstream
   - set-up-a-documentation-system
   - the-plan-is-the-contract
+  - update-an-agent-workstream
 tags:
   - agents
   - documentation
@@ -37,11 +38,18 @@ tags:
 
 **You get:** one workstream record and a proposed first scope for you to approve or revise. Nothing is built yet.
 
+**New to workstreams?** This prompt is the first step of [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), which defines the record and the roles named below. A complete fictional example, a file-organizer trial, is at the end of that page. The words you need here:
+
+- A **workstream record** is one file that tracks the objective, what is approved, what happened and what comes next. The agent creates it; you read it.
+- A **scope** is the agreement for one bounded piece of work: what it will produce, what may change and how you will check it. The agent proposes one; only your reply approves it.
+- You are the **accountable operator**: the person who approves scopes and accepts results. The **record keeper** is the one writer of the record's current summary. Usually that is your main agent session, so you can leave it out of a first record.
+- The **boot map** is the set of files every new session reads first: usually `AGENTS.md` and your project map, `context.qb.yaml`.
+
 **Fill in:**
 
-- `{{OBJECTIVE}}`: what you want, in your own words.
-- `{{PROJECT_INSTRUCTIONS}}`: the files every session reads first, such as `AGENTS.md` and `context.qb.yaml`, or your project's equivalent. If your tool already loads them at the start of a session ([which tools load which files](contextqb://references/setup#agents-md-support)), write "already loaded"; the agent should still read anything they point to.
-- `{{EXISTING_RECORDS}}`: any related scope, plan, or workstream record, or "none".
+- `{{OBJECTIVE}}`: what you want, in your own words. For example: "Add search to my research notebook so I can find a source by a word in its note."
+- `{{PROJECT_INSTRUCTIONS}}`: the boot-map files, such as `AGENTS.md` and `context.qb.yaml`, or your project's equivalent. If your tool already loads them at the start of a session ([which tools load which files](contextqb://references/setup#agents-md-support)), write "already loaded"; the agent should still read anything they point to.
+- `{{EXISTING_RECORDS}}`: any related scope, plan, or workstream record, such as `docs/scopes/notebook-search.md`, or "none". If you are not sure whether one exists, write "none that I know of"; the prompt tells the agent to look for one before creating a new record.
 
 ```text
 Objective: {{OBJECTIVE}}

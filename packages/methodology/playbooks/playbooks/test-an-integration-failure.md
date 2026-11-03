@@ -2,7 +2,7 @@
 id: test-an-integration-failure
 title: Test an Integration Failure
 summary: Exercise missing, malformed, repeated and late integration results on an isolated target, then inspect saved state, outside effects and what the user sees.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 4
 journey_rank: 80
@@ -32,6 +32,12 @@ You want evidence for the moment when one system finishes and another loses the 
 
 Start with the contract from [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) and the method in [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks). If your project has no integration, continue along its relevant path; do not add a service just to do this exercise.
 
+## The worked example
+
+The steps use one invented case. Maya is a fictional first-time founder who keeps a personal research notebook on her own computer: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Imagine a later, optional feature: she chooses one saved note and asks the notebook to send a copy to an outside archive service, so that evidence also exists somewhere other than her laptop. The archive service is fictional too. Nothing is built, and you do not need to build either; a local stand-in plays the service.
+
+Success means the service confirms it holds exactly one copy of that note and returns the copy's archive ID, which the notebook saves beside the note. The local note stays the original either way. The risk this playbook tests is a retry. If the service made the copy but its reply was lost, sending “create a copy” again could produce a second copy. The fictional contract, including what the service is assumed to guarantee, is set out in the “Worked contract: an optional notebook archive” section of [Connecting Services Reliably](contextqb://guides/connecting-services-reliably). This page tests that contract; it adds no guarantees of its own.
+
 ## Step 1 — Choose an isolated target
 
 Name the operation, application revision, test data and exact boundary to replace. A **fixture** is a controlled input; a **test double** is a substitute for a real dependency. [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) explains what these can and cannot establish.
@@ -44,7 +50,7 @@ Use the real application's connector and decision logic against the double when 
 
 For each case, record the starting state, injected result, expected local state, expected outside-effect count and expected user message. Count actual effects recorded by the stand-in, not merely requests: a timeout can happen after the effect. Specify the allowed attempts and which cases must stop immediately.
 
-The archive exercise from the guide has these explicit assumptions:
+For the archive example, each case starts from this single archive request. It describes one action, so it is not the two-record practice file used for recovery:
 
 ```json
 {
@@ -54,6 +60,10 @@ The archive exercise from the guide has these explicit assumptions:
   "note": "Keep  two spaces"
 }
 ```
+
+- **`operationId`** names one intended user action: Maya choosing, once, to archive this note. Every retry of that same action reuses this ID with exactly the same input, so the service can recognize a repeat instead of making another copy. A new decision to archive would get a new ID.
+- **`noteId`** identifies which saved note is being archived; **`title`** and **`note`** are the source title and note text being sent.
+- **The note text deliberately contains two spaces** between “Keep” and “two”. If any step trims or collapses spacing, the archived text no longer matches the original exactly, so the comparison catches unwanted text changes as well as missing or duplicate copies.
 
 The stand-in keeps a record across simulated client restarts. It creates one archive for a new operation ID, returns that same archive for identical retries, and rejects the same ID with different input. It can create the archive and then lose the response. Its event fixtures have an event ID, archive ID, integer revision and status; the fictional contract guarantees increasing revisions for that archive. State these assumptions in the report, because real services need their own verification.
 

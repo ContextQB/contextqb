@@ -2,7 +2,7 @@
 id: set-up-agents-md
 title: Set Up AGENTS.md for Your Project
 summary: How to author the single most leverage-positive file in an agentic codebase — the project-level operating instructions that every agent should read first.
-version: 0.2.1
+version: 0.3.0
 problem: |
   Without AGENTS.md, every agent session starts from guesses. Whatever the tool remembers on its own is partial; the agent invents the architecture, guesses at naming, and produces inconsistent output session to session. The cost is paid continuously.
 when_to_use: |
@@ -123,7 +123,14 @@ A stale AGENTS.md is worse than no AGENTS.md, because the agent acts on it confi
 
 ## How to instruct an agent to write one
 
-> Generate an AGENTS.md for this repository following the ContextQB set-up-agents-md playbook. Use the seven-section template, and leave the security boundaries section as a marked draft for me to decide. Be specific to this project — do not produce generic best-practice advice. Reference real file paths and real package names. End with a "Further reading" section pointing to existing documentation in the repo. If the repository has a context.qb.yaml, keep the opening line that tells agents to read it.
+The agent cannot follow this playbook unless it can see it. Supply the template one of two ways:
+
+- **Without the ContextQB MCP (works with any agent):** copy the whole seven-section template from "What goes in it" above — everything in the template block, from the `# AGENTS.md` line to the end of its "Further reading" list — and paste it directly under the request below.
+- **With the ContextQB MCP connected:** tell the agent to fetch the `set-up-agents-md` playbook from the MCP server first and use its template.
+
+Then copy this request:
+
+> Generate an AGENTS.md for this repository using the seven-section template I have pasted below this message (or fetched from the ContextQB MCP, if I said so). Do not invent a different structure. Leave the security boundaries section as a marked draft for me to decide. Be specific to this project — do not produce generic best-practice advice. Reference real file paths and real package names. End with a "Further reading" section pointing to existing documentation in the repo. If the repository has a context.qb.yaml, keep the opening line that tells agents to read it.
 
 After it returns, edit it. Some sections will be wrong; some will be vague. The agent's draft is a starting point, not the final word. You are the source of truth for your project's structure; AGENTS.md is your dictation of that truth. Never accept the security boundaries or the "must not" list without reading every line yourself — they are your decisions, not the agent's.
 

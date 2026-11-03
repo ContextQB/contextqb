@@ -2,7 +2,7 @@
 id: product-engineering-alignment
 title: Product-to-Engineering Alignment
 summary: Code abstractions should mirror product abstractions. The product is the source of truth for vocabulary.
-version: 0.1.2
+version: 0.2.0
 category: alignment
 audience:
   - novice-builder
@@ -53,7 +53,13 @@ This sounds obvious. In practice, it breaks constantly — especially when agent
 
 **Code abstractions should mirror product abstractions.**
 
-You own this vocabulary, even if you never read the code. The buckets of information you named in your brief — the entities in [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app) — are the product vocabulary. Give the agent that list, and ask it to use those words.
+You own this vocabulary, even if you never read the code. It is the list of things your app keeps track of (ContextQB calls them **entities**) and the actions people take on them, named the way your users would say them. Where that list comes from depends on what you have:
+
+- **You have written an app brief** — the short, plain-language description of who the app is for and what it does, as in [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app). Its entity list is your product vocabulary.
+- **You have no brief yet.** Write the list now; it takes a few minutes and needs no code. Name the five to ten things your users talk about and the main actions they take. For a small team task tracker that might be: workspace, task, member; create, assign, archive.
+- **Code already exists.** Ask the agent to list the name the code uses for each item on your list, and look for mismatches like the ones in the worked example below.
+
+Give the agent that list, and ask it to use those words.
 
 - Use the same nouns. If product says "project," code says `project`, not `container` or `workspace`.
 - Use the same verbs. If the product action is "archive," the function is `archiveProject`, not `softDeleteProject` or `deactivateProject`.

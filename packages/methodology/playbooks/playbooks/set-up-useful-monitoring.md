@@ -2,7 +2,7 @@
 id: set-up-useful-monitoring
 title: Set Up Useful Monitoring
 summary: Connect one important failure to a trustworthy signal, a person who sees it and a useful response, then exercise that path safely.
-version: 0.1.3
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 7
 journey_rank: 30
@@ -38,7 +38,9 @@ Read [Monitoring vs. Product Analytics](contextqb://briefings/monitoring-vs-prod
 
 ## Step 1 — Start with the failed task
 
-For the notebook, “a person cannot save a note” is a useful starting condition. A server being reachable does not show that writing succeeds. Specify the result you need to notice, how quickly you need to notice it and what a responsible person can do.
+This page uses one invented example. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Its critical job is saving an entry so that the evidence is there when she decides what business to build. She cannot repeat a conversation, so a save that fails without her noticing loses evidence. Nothing is built, and you do not need to build it.
+
+For the notebook, then, “a person cannot save a note” is a useful starting condition. A server being reachable does not show that writing succeeds. Specify the result you need to notice, how quickly you need to notice it and what a responsible person can do.
 
 Match the signal to the product. A local tool may show a clear error while preserving the draft and keep a reviewable operation log. A command-line tool can return a failure exit status, the signal other programs inspect to tell whether it succeeded. An unattended job needs evidence that it ran at all, as well as a record of failures when it runs.
 
@@ -52,7 +54,7 @@ Record the expected update interval and a way to recognize missing or stale obse
 
 ## Step 3 — Name the recipient and response
 
-For each actionable condition, name where it appears, who reads it and the first action. Include enough context to distinguish the affected environment and task. “Error occurred” is less useful than “Test notebook save failed on notebook-candidate-1; inspect the write-permission result.”
+For each actionable condition, name where it appears, who reads it and the first action. Include enough context to distinguish the affected environment and task. “Error occurred” is less useful than “Test notebook save failed on notebook-candidate-1; inspect the write-permission result.” Here `notebook-candidate-1` is an illustrative label for the version under test, so the reader knows which build failed and in which setup.
 
 Choose when repeated events should be grouped and when escalation is necessary. **Escalation** means involving someone with the access or expertise needed to act. Avoid sending a notification for every harmless event, but do not suppress a repeated failure merely to quiet the channel. Record how a recovered condition will be recognized.
 
@@ -74,6 +76,6 @@ Keep command output or manual observations tied to the revision and target. A si
 
 ## Step 5 — Keep a usable operating entry
 
-Leave the signal, limits, recipient, first action, recovery condition and latest exercise evidence together in the existing operating record. Mark anything not executed as not run. Recheck after a material change to detection, delivery, ownership or the underlying task.
+Leave the signal, limits, recipient, first action, recovery condition and latest exercise evidence together in the existing operating record. If the project has no operating record yet, create one short note where it keeps its documentation, for example `docs/operations.md`; no new documentation structure is needed. Mark anything not executed as not run. Recheck after a material change to detection, delivery, ownership or the underlying task.
 
 Use [Operations Baseline Audit](contextqb://audits/operations-baseline) to review the arrangement and [Respond to an Outage](contextqb://playbooks/respond-to-an-outage) when the signal indicates an ordinary service failure. You are ready to rely on the signal when you can follow an observed failure through to a person and an appropriate action, or explain precisely which link still needs work.

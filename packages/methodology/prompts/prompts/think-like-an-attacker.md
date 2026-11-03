@@ -2,7 +2,7 @@
 id: think-like-an-attacker
 title: Think Like an Attacker
 summary: A reusable framing prompt for any code review — if you were attacking this, where would you start and what would you target?
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -37,12 +37,19 @@ tags:
 
 This prompt forces adversarial thinking on any code review. Instead of asking "does this work?" it asks "how would I break this?"
 
-Use it when you're reviewing agent-generated code, merging a feature, or just want a security sanity check. Paste it into a session that did not write the code — a fresh session, a second agent, or a person. A different model can add variety; it does not by itself make the review independent. Fill `{{CONTEXT}}` with anything the reviewer should know, or "none".
+Use it when you're reviewing agent-generated code, before accepting a feature, or when you just want a security sanity check. Paste it into a session that did not write the code — a fresh session, a second agent, or a person. A different model can add variety; it does not by itself make the review independent.
+
+**Fill in the two values before you paste.** Replace each `{{…}}` placeholder, including the braces:
+
+- `{{SCOPE_PATH}}` — the folder or files to examine. For example `app/api/users/` for a group of endpoints, or `app/api/users/update.ts, app/profile/page.tsx` for the code that saves and shows a profile. Pick the code that handles the input or data you are worried about; the agent may read other files to follow where that input goes, but it reports attacks whose entry point is in the scope.
+- `{{CONTEXT}}` — anything the reviewer cannot see in the code, or "none". For example: "Anyone can sign up. Profile bios are shown publicly. This is the production app's code, not a demo."
 
 ## The prompt
 
 ```text
-You are reviewing the following code with an attacker's mindset: {{SCOPE_PATH}}
+You are reviewing the following code with an attacker's mindset (a folder or list of files): {{SCOPE_PATH}}
+
+Report attacks whose entry point is in this scope. You may read other files to follow where its input or data goes; note anything risky outside the scope separately at the end.
 
 Additional context (or "none"): {{CONTEXT}}
 
@@ -100,7 +107,9 @@ Do not attack anything. Where a finding would be clearer with a demonstration, w
 
 ## When to use this
 
-- Before merging any feature that handles authentication, payments, or sensitive data
+Run it after the change is written and before you accept it into the version you use or deploy. If you use pull requests, that is before merging. If you commit directly without pull requests, it is before you keep the commit as your working version and before you deploy it.
+
+- Before accepting any feature that handles authentication, payments, or sensitive data
 - When reviewing agent-generated code that touches security-relevant areas
 - After a "quick fix" that might have unintended consequences
 - When something feels off but you can't articulate why
@@ -108,7 +117,7 @@ Do not attack anything. Where a finding would be clearer with a demonstration, w
 
 ## What to do with the output
 
-1. **Critical or High severity findings** — Do not merge until addressed
+1. **Critical or High severity findings** — Do not accept the change until addressed: don't merge it, or, without pull requests, don't deploy it or build further work on it
 2. **Medium severity findings** — Fix before next release
 3. **Low severity findings** — Track and fix opportunistically
 

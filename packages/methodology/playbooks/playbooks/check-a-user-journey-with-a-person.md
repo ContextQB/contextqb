@@ -2,7 +2,7 @@
 id: check-a-user-journey-with-a-person
 title: Check a User Journey With a Person
 summary: Watch someone attempt a meaningful task, separate what happened from your explanation and choose one improvement supported by the observation.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -38,7 +38,9 @@ Use [Making Your App Usable](contextqb://guides/making-your-app-usable) to prepa
 
 ## Step 1 — Choose one meaningful task
 
-State the person's goal in their terms. For the notebook: “You want to keep this source and your thought about it so you can find them later.” Supply a made-up source and note. Avoid “click Save, then reopen the page”: that teaches the route you need to observe.
+State the person's goal in their terms. The examples on this page use one invented tool: a personal research notebook for Maya, a fictional founder who is talking to bakery owners to decide which problem her business should solve. Each entry keeps one source, such as a conversation, with her note about what it showed, so she can find that evidence when deciding. Imagine a test version of its first feature exists: save an entry and find it again after reopening. Nothing is built, and you do not need to build it.
+
+For that notebook, the task could be: “You want to keep this source and your thought about it so you can find them later.” Supply a made-up source and note. A suitable participant would be someone who also gathers evidence from conversations, such as another founder doing customer interviews. Avoid “click Save, then reopen the page”: that teaches the route you need to observe.
 
 Decide what would count as completion and which uncertainty matters. Can the person find where to start? Recognize a successful save? Recover from a blank note? Choose a task the test version can actually support and record its revision.
 

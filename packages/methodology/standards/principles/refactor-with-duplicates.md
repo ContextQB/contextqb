@@ -1,8 +1,8 @@
 ---
 id: refactor-with-duplicates
 title: Refactor With Duplicates, Not Overwrites
-summary: When changing what existing code does, build the new thing next to the old thing and migrate deliberately — never let an agent overwrite working behaviour in place. The duplicate is the safety net; deletion is the last step, not the first.
-version: 0.2.1
+summary: When changing how existing code works, build the new version next to the old one and switch the places in your code that use it over one at a time — never let an agent overwrite working behaviour in place. The duplicate is the safety net; deletion is the last step, not the first.
+version: 0.3.0
 category: maintainability
 audience:
   - novice-builder
@@ -18,7 +18,7 @@ tags:
   - agent-friendly
 anti_patterns:
   - An agent rewrites a working file in place and the old behaviour is gone before anyone verified the new one.
-  - '"Clean-up" that deletes the old path before the new path has a single real user.'
+  - '"Clean-up" that deletes the old path before any part of the code actually runs on the new one.'
   - A refactor and a behaviour change land in the same commit, so neither can be reviewed or reverted independently.
   - The duplicate ships to production permanently because nobody scheduled the deletion.
 agent_instructions:
@@ -43,7 +43,9 @@ related:
 
 # Refactor With Duplicates, Not Overwrites
 
-**Plain language:** When you change how working code works, don't let anyone — especially an agent — erase the old version before the new one is proven. Build the new thing next to the old thing. Move users over one at a time. Delete the old thing last.
+**Plain language:** When you change how working code works, don't let anyone — especially an agent — erase the old version before the new one is proven. Build the new thing next to the old thing. Switch the places in your code that use it over to the new version one at a time. Delete the old thing last.
+
+The things being moved are parts of the code, not people. A **call site** is one place in the code that uses the module — for example, the checkout page calling the billing calculation. Moving people gradually onto a new behaviour is a different technique (a feature flag or staged rollout), covered below under "What this is not."
 
 ## What it is
 
@@ -52,7 +54,7 @@ A refactor changes the shape of code while keeping its behaviour. The dangerous 
 The sequence is always the same four steps:
 
 1. **Duplicate.** Create the new module next to the old one. Nothing breaks, because nothing moved.
-2. **Migrate.** Move call sites one at a time. The system works after every single step.
+2. **Migrate.** Switch call sites — the places that use the old module — to the new one, one at a time. The system works after every single step.
 3. **Verify.** The new path proves itself against real use — tests, verifiers, actual traffic.
 4. **Delete.** The old implementation goes away last, and its deletion is a separate, reviewable change.
 
@@ -75,14 +77,14 @@ Duplicates turn an agent's rewrite impulse into a safe sequence. The old code st
 Concretely:
 
 - New module next to old: `billing/calculate.ts` alongside `billing/calculate-legacy.ts` — never an in-place rewrite of the working one.
-- One call site migrates, gets verified, then the next. "Migrate all twelve call sites at once" is an overwrite wearing a costume.
+- Suppose twelve places in the code call the billing calculation: the checkout page, the invoice email, the monthly report and so on. One call site — say, the monthly report — switches to `billing/calculate.ts`, gets verified, then the next. Every customer still gets billed by whichever version that part of the code calls. "Migrate all twelve call sites at once" is an overwrite wearing a costume.
 - The deletion commit says "delete" and nothing else. If the deletion also changes behaviour, it was two changes pretending to be one.
 - If the duplicate is still there in a month, that is a finding, not a norm — duplicates are scaffolding, and scaffolding has a removal date.
 
 ## What this is not
 
 - **Not "never delete code."** Deletion is the goal. It just happens last, on evidence, not first, on hope.
-- **Not feature flags.** Flags gate _behaviour_ for users. Duplicates gate _implementations_ for builders. A flag that never comes out is the same smell as a duplicate that never gets deleted.
+- **Not feature flags or a staged rollout to people.** A flag or staged rollout decides which _people_ see a new behaviour — 10% of customers this week, everyone next week. Duplicates decide which _parts of the code_ use a new implementation, and the behaviour is meant to stay the same for everyone. You can combine them, but they answer different questions. A flag that never comes out is the same smell as a duplicate that never gets deleted.
 - **Not an excuse for permanent branching.** Two live implementations is a transitional state. The rule names the transition; it does not license the accumulation.
 
 ## Signals you're getting this wrong
@@ -101,7 +103,7 @@ You can claim this principle if all of the following hold:
 3. **Call sites migrate incrementally.** Each migration is small enough to revert on its own.
 4. **Duplicates carry an expiry.** Each has a named owner and a deletion condition ("delete when checkout-flow runs on the new path for a week"), recorded where it will be seen — if you keep a workstream record, as an item in its outstanding-items register ([Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), Step 5), not in someone's memory.
 
-The verify step is cheaper than it used to be: ask the agent for characterization tests of the old implementation, then run both implementations against the same inputs and compare. Matching results are evidence you can read. (This principle is about code. Documents are not duplicated and deleted; they follow the archive policy in the _Append, Don't Overwrite_ principle.)
+The verify step is cheaper than it used to be: ask the agent for characterization tests of the old implementation — tests that record what the old code currently does for a set of inputs, right or wrong, so you can tell whether the new code does the same — then run both implementations against the same inputs and compare. Matching results are evidence you can read. (This principle is about code. Documents are not duplicated and deleted; they follow the archive policy in the _Append, Don't Overwrite_ principle.)
 
 Use [Changing Software Without Losing Control](contextqb://guides/changing-software-without-losing-control) to compare current behavior with the promise you intend to preserve. Run side-effecting paths against isolated test targets; comparing two versions must not create two live writes, messages or charges. A discovered old defect belongs in a separate, explicit behavior decision.
 

@@ -2,7 +2,7 @@
 id: where-your-data-lives
 title: Where Your Data Lives
 summary: "Data is not abstract. It lives somewhere: in a file, in a browser, in a local database, in cloud storage, or in a managed database someone else operates."
-version: 0.1.4
+version: 0.1.5
 audience:
   - novice-builder
   - founder
@@ -280,7 +280,7 @@ Before you choose a database vendor, write a small data map:
 
 You do not have to get this perfect. You do have to make it explicit.
 
-Once more than one person's data lives in the same place, add one check you can run yourself: ask the agent to show you the exact rule that stops user A from reading user B's records, and where it is enforced. "The screen doesn't show it" is not an answer; the rule has to live on the server or in the database. If the agent can't point to one, that is the next thing to build. The security stage teaches these server-side access rules in depth — start with [Trust Boundaries Are Architecture](contextqb://principles/trust-boundaries-are-architecture).
+Once more than one person's data lives in the same place, add one check you can run yourself: ask the agent to show you the exact rule that stops user A from reading user B's records, and where it is enforced. "The screen doesn't show it" is not an answer; the rule has to live on the server or in the database. If the agent can't point to one, that is the next thing to build, before anyone else's data goes into that shared place. To learn how these server-side access rules work and how to check them, start with [Trust Boundaries Are Architecture](contextqb://principles/trust-boundaries-are-architecture), then [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data).
 
 The place where data lives is an architectural decision. Make it visible before the agent starts building around a guess.
 

@@ -2,7 +2,7 @@
 id: extension-ui-audit
 title: Extension UI Architecture Audit Prompt
 summary: A long-form structural review prompt for a browser extension UI — focused on the system, not on isolated bugs.
-version: 0.2.0
+version: 0.3.0
 audience:
   - founder
   - developer
@@ -10,11 +10,11 @@ audience:
 journey_stage: 4
 journey_rank: 10
 use_case: |
-  When a browser extension has grown organically across menus, sidebars, content scripts, and settings — and you need a structural assessment, not a bug list.
+  When a browser extension has grown organically across surfaces such as menus, a sidebar, content scripts and settings — and you need a structural assessment, not a bug list.
 variables:
   - REPO_PATH
 expected_output: |
-  A Markdown document evaluating the extension's UI across all surfaces — popup, sidebar, content scripts, options, background — covering menu structure, sidebar orchestration, state ownership, multi-tab robustness, platform constraints, settings system, the interactions of each in-page feature the project lists, and extensibility for future views and metrics.
+  A Markdown document evaluating the extension's UI across every surface it has — for example popup, sidebar, content scripts, options, background — covering menu structure, sidebar orchestration (or why it does not apply), state ownership, modularity, multi-tab robustness, platform constraints, settings system, the interactions of each in-page feature the project lists, and extensibility for planned views and metrics (or why none apply).
 quality_standard: |
   The audit must avoid focusing on isolated bugs. It must surface structural patterns that allow bugs to recur. Every finding must reference specific files.
 related:
@@ -33,12 +33,12 @@ tags:
 
 # Extension UI Architecture Audit Prompt
 
-This prompt is the long-form companion to the [`extension-architecture`](contextqb://audits/extension-architecture) audit template, with the same sections plus a modularity section. It is intended to be pasted into an agent verbatim. Fill in `{{REPO_PATH}}`; the agent takes the extension's feature list from your `AGENTS.md` or project summary, so the report covers the features your extension actually has. Platform specifics such as storage limits and background lifecycle change between browser versions; the dated [browser extension platform reference](contextqb://references/setup#browser-extension-platform) records the current facts ContextQB has checked.
+This prompt is the long-form companion to the [`extension-architecture`](contextqb://audits/extension-architecture) audit template, with the same sections plus a modularity section. It is intended to be pasted into an agent verbatim. Fill in `{{REPO_PATH}}`; the agent takes the extension's feature list from your `AGENTS.md` or project summary, so the report covers the features your extension actually has. Sections 4 (sidebar) and 11 (future views and metrics) apply only if your extension has a sidebar or you have planned views or metrics; otherwise the agent marks them not applicable and says what it checked. Platform specifics such as storage limits and background lifecycle change between browser versions; the dated [browser extension platform reference](contextqb://references/setup#browser-extension-platform) records the current facts ContextQB has checked.
 
 ## The prompt
 
 ```text
-You are a senior front-end architect performing a structural review of this browser extension's UI for a non-developer product owner. Read carefully across all surfaces — popup, sidebar, content scripts, options page, background script.
+You are a senior front-end architect performing a structural review of this browser extension's UI for a non-developer product owner. Read carefully across every surface it has — for example popup, sidebar, content scripts, options page, background script. Some sections below apply only when the extension has the thing they examine; when one does not apply, write "Not applicable", say what you checked in the code to establish that, and do not invent findings.
 
 Repository path: {{REPO_PATH}}
 
@@ -52,7 +52,7 @@ Produce a Markdown document with these sections, in order:
 
 3. Menu and navigation structure. How does the user navigate? Is the navigation model consistent across surfaces? Where does the active view live?
 
-4. Sidebar orchestration. Which file coordinates the sidebar's view selection, data loading, and interaction state? Is it a single owner, or is it distributed?
+4. Sidebar orchestration (if the extension has a sidebar or side panel). Which file coordinates the sidebar's view selection, data loading, and interaction state? Is it a single owner, or is it distributed? If there is no sidebar, write "Not applicable — no sidebar" and name what you checked (for example the manifest and any code that injects a panel); view coordination on the other surfaces belongs in section 3.
 
 5. State management across surfaces. Produce a table of shared state values with columns: name, kind (server / durable / shared-transient / local), owner, source, consumers, sync mechanism (messaging / storage / signals), drift risk.
 
@@ -66,7 +66,7 @@ Produce a Markdown document with these sections, in order:
 
 10. Feature interactions. Take the list of in-page features from the project's AGENTS.md or summary; if there is none, list the features you find and ask me to confirm the list before writing this section. Give each feature its own short subsection: where its state lives (optimistic and confirmed, if it changes data on a server), which file orchestrates it, and how it handles errors, retries and conflicts. Do not add subsections for features the extension does not have.
 
-11. Future views and metrics. Where would future analytics, scoped views, or per-feature metrics plug in? Are extension points ready, or would they require a refactor first?
+11. Future views and metrics (if any are planned). Take any planned views, analytics or per-feature metrics from the project's AGENTS.md, summary or roadmap. For each, say where it would plug in and whether extension points are ready or would require a refactor first. If none are planned, write "Not applicable — none planned", say where you looked, and do not propose analytics or metrics the project has not asked for. In either case, say in one or two sentences whether adding another view would mean editing the files that own the existing views.
 
 12. Anti-spaghetti scan. For each of the eight signals — unclear data flow, repeated logic, mixed concerns, unpredictable side effects, state updated from too many places, hidden dependencies, fragile lifecycle assumptions, features bolted on rather than integrated — mark present / partly present / absent, with evidence.
 

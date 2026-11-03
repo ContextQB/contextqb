@@ -2,7 +2,7 @@
 id: repo-cleanup
 title: Clean Up an Existing Repo
 summary: A staged process for taking a sprawling AI-generated repo and turning it into something a human and an agent can both work with sanely.
-version: 0.2.0
+version: 0.3.1
 problem: |
   AI-assisted projects drift toward sprawl: huge files, unclear boundaries, dumping grounds, and inconsistent naming. At some point the cost of any new feature exceeds the cost of cleaning up first.
 when_to_use: |
@@ -20,6 +20,7 @@ audience:
 journey_stage: 6
 journey_rank: 10
 related:
+  - anti-spaghetti-review
   - new-project-foundation
   - repo-readiness
   - retrofit-drift-detection
@@ -46,9 +47,12 @@ This is a survival playbook. Do not "rewrite from scratch" — that path almost 
 
 ## Pass 1 — Diagnosis (read-only)
 
-Ask an agent to produce a diagnosis without any code changes:
+Ask an agent to produce a diagnosis without any code changes. The agent needs the eight anti-spaghetti signals in front of it; do not assume it knows them. Supply them in one of two ways:
 
-> Audit this repository against the ContextQB anti-spaghetti checklist. For each of the eight signals, evaluate whether it is present, partly present, or absent. Quote specific files and line numbers. Then produce a prioritised list of the five highest-impact, lowest-risk cleanups.
+- **Easiest:** use the [Anti-Spaghetti Review Prompt](contextqb://prompts/anti-spaghetti-review) as the diagnosis request. It already lists all eight signals. Set its scope to `.` (the whole repository) and its output path to the diagnosis file named below, then add the last sentence of the request below so the result ends with the five cleanups.
+- **Or:** copy the eight numbered signals from "The detection checklist" in the [anti-spaghetti principle](contextqb://principles/anti-spaghetti) and paste them under this request:
+
+> Audit this whole repository against the eight anti-spaghetti signals I have pasted below. Use only those signals; do not substitute a checklist of your own. For each signal, evaluate whether it is present, partly present, or absent. Quote specific files and line numbers. Do not change any code. Then produce a prioritised list of the five highest-impact, lowest-risk cleanups.
 
 Save the result as `docs/cleanup/YYYY-MM-DD-diagnosis.md` — dated, like the other process documents in a ContextQB documentation system. If the cleanup will take several sessions, track it as a workstream with the diagnosis as its first record.
 
@@ -90,7 +94,12 @@ Use a dead-code detector for your language (a tool that lists unreferenced expor
 
 Passes 2, 3, 5 and 6 are agent work, done in small batches. For each batch:
 
-> Apply pass \[N] of the cleanup plan to this directory only: **\[path]**, on a branch. Make the smallest set of changes that completes the pass. Run the project's tests and verifiers before and after, and report each command with its exit status; if they were not green before you started, stop and tell me. After your changes, summarise what moved, what was renamed, and what you intentionally left for a later pass.
+Naming a pass does not tell the agent what the pass does: the agent cannot see this playbook or your plan unless you give them to it. Before you paste:
+
+- Replace `[N]` with the pass number and name, for example "pass 3 (dumping grounds)", and `[path]` with one folder from the batch you chose, for example `src/billing/`.
+- Under the request, attach or paste the cleanup plan you approved (the diagnosis file and the batches you chose) **and** the instructions for the selected pass, copied from its section in this playbook — for pass 3, the three steps under "Pass 3 — Dumping grounds". If your agent is connected to the ContextQB MCP server, you can instead tell it to retrieve the `repo-cleanup` playbook and use that pass's section; the approved plan is yours and must still be attached.
+
+> Apply pass \[N] of the cleanup plan to this directory only: **\[path]**, on a branch. Use only the cleanup plan I have attached below and the pass instructions I attached (or told you to retrieve from the ContextQB MCP `repo-cleanup` playbook); if either is missing, stop and ask me for it instead of guessing what the pass involves. Make the smallest set of changes that completes the pass. Run the project's tests and verifiers before and after, and report each command with its exit status; if they were not green before you started, stop and tell me. After your changes, summarise what moved, what was renamed, and what you intentionally left for a later pass.
 
 Do not skip the summary. The summary is how you keep the agent honest. Merge the branch only when the tests are green and the summary matches the diff; for anything larger than a rename, ask a fresh session to review the batch first.
 

@@ -2,7 +2,7 @@
 id: run-an-agent-workstream
 title: Run an Agent Workstream
 summary: Define, operate, review, and close a documented flow of work between an operator and agents.
-version: 0.5.4
+version: 0.5.5
 problem: |
   An agent can complete an assignment while the objective remains unclear, unverified, or unfinished. Without a durable workstream record, authority, evidence, discoveries, and next actions disappear into chat history or competing notes.
 when_to_use: |
@@ -63,6 +63,8 @@ A **workstream** is a continuing flow of work between an operator and agents tow
 The record should answer, at any moment:
 
 > What are we trying to achieve, what work is authorized, what happened, what evidence exists, what decisions are open, and what happens next?
+
+**Prefer to see one first?** The end of this page has a complete fictional example, "Worked example: a first file-organizer trial." One person tests a file organizer on 20 copied files with one agent tool. Its record shows an approved scope, a failed review, a correction, a stale handoff, a fresh review and acceptance. Reading it before the steps gives each term below a concrete instance.
 
 ## When to use this, and when not
 

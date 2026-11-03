@@ -2,7 +2,7 @@
 id: launching-for-your-first-users
 title: Launching for Your First Users
 summary: Choose a first audience, explain the promise and limits, and stay responsible for the result through the launch watch and handoff.
-version: 0.1.2
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 8
 journey_rank: 0
@@ -29,7 +29,7 @@ tags: [launch, getting-started]
 
 Start with the decision from [Preparing for Real Users](contextqb://guides/preparing-for-real-users) and the findings from [Release Readiness Audit](contextqb://audits/release-readiness). Name the version, audience and supported task. Keep the first audience small enough that you can respond to what you learn, while still including people with the need you intend to serve.
 
-For the local notebook, launch may mean moving from disposable practice notes to your own real work. For a team product, it may mean inviting a few colleagues under agreed access rules. A small audience reduces exposure; it does not remove the obligation to protect their information or tell them about limits.
+What launch means depends on the product. Take one invented example: Maya, a fictional first-time founder, wants a small research notebook on her own computer for the evidence she gathers from conversations with bakery owners while deciding what business to start. If that notebook had actually been built and had passed its readiness decision, launching it would mean Maya starting to keep her real research notes in it instead of disposable practice entries. She would be its only user, but from that moment she depends on it. Nothing here is built, and you do not need to build it. For a team product, launch may mean inviting a few colleagues under agreed access rules; for a booking tool, letting a handful of regular customers book through it. A small audience reduces exposure; it does not remove the obligation to protect their information or tell them about limits.
 
 ## Explain the promise in ordinary language
 
@@ -47,7 +47,7 @@ Use [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) t
 
 [Run a Launch Day Checklist](contextqb://playbooks/launch-day-checklist) owns the pre-flight, delivery, live checks and watch sequence. Give the agent the approved release record and ask it to work only within that authority. Keep unrelated cleanup and feature work outside the launch change.
 
-As [Deploying vs. Launching](contextqb://briefings/deploying-vs-launching) explains, a successful deployment is only one piece of evidence. Verify the intended task on the actual delivered version. Use owned test identities and controlled records where applicable; do not casually create charges, send messages or change someone else's work as a smoke check. A **smoke check** is a small, immediate check that the important path still works in the target. For a single-owner local notebook, save a real note you intend to keep or check writing against a copy first. Made-up records in the working notebook need an agreed, supported removal method; a check against a copy is evidence about that copy, not the live write path.
+As [Deploying vs. Launching](contextqb://briefings/deploying-vs-launching) explains, a successful deployment is only one piece of evidence. Verify the intended task on the actual delivered version. Use owned test identities and controlled records where applicable; do not casually create charges, send messages or change someone else's work as a smoke check. A **smoke check** is a small, immediate check that the important path still works in the target. For a single-owner local tool that is the actual approved release, such as Maya's notebook in the example above, the owner can save a real record they intend to keep, or check writing against a copy first. In a product without notes, the equivalent is one genuine action the owner wants anyway, such as a real booking for themselves, rather than a fake record left in live data. Made-up records in the working data need an agreed, supported removal method; a check against a copy is evidence about that copy, not the live write path.
 
 ## Decide from what you observe
 

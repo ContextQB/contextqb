@@ -2,7 +2,7 @@
 id: append-dont-overwrite
 title: Append, Don't Overwrite
 summary: Documentation is append-only at three scales — archive whole files, strike through revised lines, and supersede rather than edit ADRs. Agents reading a doc see both the current state and the reasoning trail that produced it.
-version: 0.2.0
+version: 0.3.0
 category: documentation
 audience:
   - novice-builder
@@ -46,13 +46,26 @@ Documentation drifts silently when changes overwrite their predecessors. An agen
 
 The fix is simple: **treat documentation as append-only**. At three different scales, the same rule applies.
 
+## The records this applies to
+
+This page is about the working records you and your agent steer by. ContextQB calls them **governance documents**: records that say what work is approved, what its boundaries are and where it stands. The common ones are:
+
+- a **scope**, the agreed plan for one bounded piece of work, written before the work starts ([Scope vs. Punchlist](contextqb://briefings/scope-vs-punchlist) compares it with a punchlist);
+- a **handoff**, notes that let a fresh session pick up where the last one stopped;
+- a **punchlist**, the final list of defects before something counts as done;
+- a **workstream record**, if you keep one, which tracks a larger objective across several scopes and sessions.
+
+An **ADR** (architecture decision record) is a short file recording one structural decision and why it was made. A **load-bearing line** is a line the work is steered by: a goal, a boundary, a risk, a storage decision, a version target.
+
+The examples below follow one small invented change. Maya, a fictional founder, is building a personal research notebook that saves each source she reads together with her own note about it. Her plan said saved entries would be kept in the browser's own storage. At the first check, entries she had saved were gone after she closed and reopened the browser. Her browser clears site data whenever it closes, a privacy setting she wants to keep. So she approved a new plan: keep entries in one file, `notebook.json`, in a folder she chooses. The old decision, the new evidence, the new decision and the reason are all worth keeping where the next session will see them.
+
 ## The three scales
 
-| Scale        | Rule                            | Example                                                                                 |
-| ------------ | ------------------------------- | --------------------------------------------------------------------------------------- |
-| **File**     | Archive, don't delete           | A reviewed, accepted, closed scope moves to `docs/archive/scopes/`, not to `/dev/null`. |
-| **Line**     | Strike through, don't overwrite | `~~Risk #5: Backward compat~~ Removed — we're the only consumer pre-launch.`            |
-| **Decision** | Supersede, don't edit           | ADR-0010 is superseded by ADR-0011; ADR-0010 stays exactly as it was when accepted.     |
+| Scale        | Rule                            | Example                                                                                                                                |
+| ------------ | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **File**     | Archive, don't delete           | A reviewed, accepted, closed scope moves to `docs/archive/scopes/`, not to `/dev/null`.                                                |
+| **Line**     | Strike through, don't overwrite | `~~Entries are kept in browser storage.~~ Entries are kept in notebook.json — the browser clears site data on close.`                  |
+| **Decision** | Supersede, don't edit           | ADR-0003 "Keep entries in browser storage" is superseded by ADR-0004 "Keep entries in a local file"; ADR-0003 stays exactly as it was. |
 
 All three preserve the trail. An agent (or a future human) can see what the document said at an earlier point and what changed it.
 
@@ -87,7 +100,7 @@ The body of the file stays verbatim. Archive is a move, not an edit.
 
 ### Why not delete?
 
-- **Agents can still reference it.** A code comment that says "per scope 0018 Tranche C" continues to resolve after the scope is archived.
+- **Agents can still reference it.** A code comment or another document that cites the scope, such as `see docs/scopes/notebook-storage.md`, can still be followed after the scope is archived: the archive header records the original path, so a search for that filename finds the archived copy.
 - **Post-mortems need the trail.** When something breaks, the archived governance docs show what was planned and what actually shipped.
 - **Onboarding uses finished examples.** A new contributor reading a finished scope learns how governance docs are structured.
 
@@ -108,19 +121,31 @@ Git already keeps every old version of a file. The reason to keep the old wordin
 So when you revise a load-bearing line in an active governance doc that the agent will keep re-reading — a scope, a plan, a punchlist — preserve the original using strikethrough:
 
 ```markdown
-~~Version target: v1.1.0 (additive minor).~~
-Version target: v2.0.0 (honest major — we're the only consumer pre-launch).
+~~Storage: saved entries are kept in the browser's own storage.~~
+Storage: saved entries are kept in `notebook.json`, in a folder Maya chooses.
+(Changed 2026-03-10: the browser clears site data on close. Approved by Maya.)
 ```
+
+An agent reading Maya's plan now sees both lines. It knows browser storage was tried and rejected, and why, so it won't quietly move the entries back.
 
 The canonical markdown form is `~~old text~~ new text`. Strikethrough is part of GitHub-flavoured Markdown rather than core Markdown, so it renders on GitHub and in most documentation tools that follow that flavour; where it doesn't render, the `~~` markers still show. Agents recognise `~~` as strikethrough; the original wording stays in context.
 
-For anything else — a line that isn't load-bearing, or a document the agent won't re-read — a one-line entry in the revision history table is cheaper and keeps the body clean.
+For anything else — a line that isn't load-bearing, or a document the agent won't re-read — a one-line entry in the document's **revision history table** is cheaper and keeps the body clean. That table is a short log near the top of the document, with one Date / Event row per change:
+
+```markdown
+| Date       | Event                                                                     |
+| ---------- | ------------------------------------------------------------------------- |
+| 2026-03-10 | Storage line revised (browser storage → notebook.json). Approved by Maya. |
+| 2026-03-12 | Tranche 1 moved from SHIPPED to VERIFIED after a fresh review.            |
+```
+
+A **tranche** is one bounded batch of a plan's work. `SHIPPED` means the agent that did the batch says it is done; `VERIFIED` means a separate check agreed.
 
 ### When to use strikethrough
 
 | Use strikethrough                       | Use the revision history table instead                                  |
 | --------------------------------------- | ----------------------------------------------------------------------- |
-| Decisions revised mid-flight            | Pure status flips (`T1 PENDING` → `T1 SHIPPED`)                         |
+| Decisions revised mid-flight            | Pure status flips (`Tranche 1 PENDING` → `Tranche 1 SHIPPED`)           |
 | Risks retired or added                  | Typo fixes                                                              |
 | Scope statements re-bounded             | Style or grammar edits                                                  |
 | Items moved in or out of "Out of scope" | Anywhere strikethrough accumulation would make the paragraph unreadable |
@@ -157,14 +182,16 @@ When the docs preserve the trail — via archive, strikethrough, and supersessio
 ## Anti-patterns in detail
 
 - **Deleting a finished scope.** The scope is gone. Any code comment that referenced it now points at nothing. Future contributors cannot see what was planned.
-- **Overwriting a load-bearing line.** A PR changes the scope's goal from "A" to "B." The reviewer cannot tell whether this was a deliberate pivot or a silent rewrite.
+- **Overwriting a load-bearing line.** A change, whether a pull request (PR) or a direct commit, rewrites the scope's goal from "A" to "B." The reviewer cannot tell whether this was a deliberate pivot or a silent rewrite.
 - **Editing an accepted ADR.** The ADR now says something different from what it said when the decision was made. Anyone who read the original is now misaligned.
 - **"Cleaning up" governance docs by removing content.** The doc is shorter. The trail is gone. The next incident cannot be debugged.
 - **Strikethrough soup.** A line with five overlapping strikethroughs is unreadable. Demote to the revision history table.
 
 ## How to enforce this
 
-> Before merging a PR that modifies or removes a governance doc:
+Run this check when a change is accepted into the version you and your agent work from. If you use pull requests, that is before merging. If you commit directly without them, it is before you keep the commit as your current version: before you deploy it or start the next session from it. If a check fails, the change waits at that same point until it is fixed.
+
+> Before accepting a change that modifies or removes a governance doc (merging its PR, or keeping a direct commit):
 >
 > 1. If the doc is being deleted, stop. Move it to `docs/archive/<category>/` with an archive header.
 > 2. If a scope is being archived, confirm its review, acceptance, and obligation disposition are recorded. A delivery claim alone does not qualify it.

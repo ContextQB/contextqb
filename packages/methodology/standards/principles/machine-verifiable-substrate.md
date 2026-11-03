@@ -2,7 +2,7 @@
 id: machine-verifiable-substrate
 title: Machine-Verifiable Substrate
 summary: Agents are generators; verifiers are what keep them honest. Every architectural choice that gives you a mechanical verifier tightens the feedback loop and reduces silent drift.
-version: 0.3.0
+version: 0.3.1
 category: structure
 audience:
   - novice-builder
@@ -175,7 +175,7 @@ In a permissive substrate, you are the verifier. Every line the agent writes mus
 
 Not every context justifies a strict substrate:
 
-- **Notebooks and exploratory analysis** — the goal is iteration speed, not production durability.
+- **Exploratory programming notebooks and analysis** — tools such as Jupyter, where you run small blocks of code ("cells") one at a time to explore data and see results immediately. (These are code notebooks, not a note-taking app.) The goal is iteration speed, not production durability.
 - **One-off scripts** — if it runs once and is discarded, verification overhead may exceed value.
 
 Even here, consider partial strictness: type hints in Python cost little and catch much.

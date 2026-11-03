@@ -2,7 +2,7 @@
 id: operating-a-small-app
 title: Operating a Small App
 summary: Establish a manageable routine for health, recovery, costs and feedback so people can keep relying on the product after launch.
-version: 0.2.1
+version: 0.3.0
 audience: [novice-builder, founder, operator]
 journey_stage: 9
 journey_rank: 0
@@ -29,6 +29,12 @@ tags: [operations, monitoring]
 
 **Plain language:** After launch, the product still needs someone to notice trouble, protect saved work and choose the next change. You can keep this routine small. Name the important checks, who reads them and what happens when a check fails.
 
+## The example on this page
+
+The routine is illustrated with one invented case. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She keeps a small personal research notebook program on her own computer: each entry holds one source, usually a conversation with a bakery owner, with her note about what it showed, and all entries live in one local data file. Suppose the notebook has been built and launched in the simplest sense: Maya now keeps her real research notes in it, and she is both its only user and its operator. Her evidence would be hard to recreate, so its file, backups and program version are what she has to look after.
+
+Nothing here is built, and you do not need to build it. The main scenario is that local-file version. One section later considers a different, made-up hosted version, only to show how usage bills work; the local notebook never becomes that version.
+
 ## Begin with the release handoff
 
 Bring forward the delivered version, audience, known limitations and watch results from [Launching for Your First Users](contextqb://guides/launching-for-your-first-users). Name the owner of the application and each outside service or scheduled job it depends on. A **scheduled job** is work configured to run at particular times, such as a daily backup.
@@ -53,7 +59,7 @@ Record the billed unit, included allowance, measured usage, reporting delay, war
 
 ### Worked cost decision
 
-This is an **invented, redacted-style scenario**, using made-up dollar amounts rather than vendor prices. It is an optional hosted variant for cost reasoning; the local notebook does not need these services. Account identifiers and credentials have no place in the record:
+This is an **invented, redacted-style scenario**, using made-up dollar amounts rather than vendor prices. It is an optional alternative used only for cost reasoning: imagine the same notebook had instead been built as a hosted web app, with a hosting plan and a storage service billed per request. Maya's local-file notebook has no hosting or storage bill; only the coding-tool subscription would apply to her. Account identifiers and credentials have no place in the record:
 
 ```text
 Coding-tool subscription: $20 per month, no overage in this scenario
@@ -77,12 +83,12 @@ Before your first long coding session, [Choosing Your IDE and LLM](contextqb://g
 
 ## Worked first-month record
 
-Every event below is **simulated**, not an observation of a launched notebook. The hosting-cost item is the optional branch above. Use this record to practice decisions, then replace it with evidence from your own product:
+Every event below is **simulated**, not an observation of a launched notebook. Weeks 1, 2 and 4 follow Maya's local-file notebook; week 3 belongs to the optional hosted alternative above. Use this record to practice decisions, then replace it with evidence from your own product:
 
-- **Week 1 — ordinary use.** The fictional owner records five save-and-reopen attempts with expected values. That supports those attempts, not all future behavior. They schedule a check of backup freshness and the failed-save reporting path.
-- **Week 2 — a broken task.** A new version displays an empty list while saved records remain present. The owner freezes unrelated changes and follows the tabletop in [Respond to an Outage](contextqb://playbooks/respond-to-an-outage). They preserve the data rather than restore an older backup reflexively.
-- **Week 3 — a cost surprise.** In the hosted branch, the hosting bill projects $70 instead of $30 because three attempts are being billed per operation. Adding the separate $20 coding-tool subscription gives $90 instead of $50 in total. The owner checks the retry evidence and chooses a bounded correction rather than treating the $40 hosting alert as a cap.
-- **Week 4 — feedback and maintenance.** A fictional user asks for “folders” to find an earlier note. The owner investigates the task through [Review Feedback and Plan the Next Change](contextqb://playbooks/review-feedback-and-plan-the-next-change). A cosmetic code reorganization is deferred because it does not address the observed obstacle; the retry correction gets a defined success check.
+- **Week 1 — ordinary use.** Maya records five save-and-reopen attempts with expected values. That supports those attempts, not all future behavior. She schedules a check of backup freshness and the failed-save reporting path.
+- **Week 2 — a broken task.** A new version of the program displays an empty list while the saved entries remain present in her data file. Maya freezes unrelated changes and follows [Respond to an Outage](contextqb://playbooks/respond-to-an-outage). That playbook works through this same situation as a tabletop exercise: a discussion of supplied facts and choices on paper, not a real incident. She preserves the data rather than restoring an older backup reflexively.
+- **Week 3 — a cost surprise.** In the hosted alternative, the hosting bill projects $70 instead of $30 because three attempts are being billed per operation. Adding the separate $20 coding-tool subscription gives $90 instead of $50 in total. The owner checks the retry evidence and chooses a bounded correction rather than treating the $40 hosting alert as a cap.
+- **Week 4 — feedback and maintenance.** Struggling to find an earlier entry among many similar titles, Maya writes in her operating notes that she wants “folders”. She investigates the task through [Review Feedback and Plan the Next Change](contextqb://playbooks/review-feedback-and-plan-the-next-change). A cosmetic code reorganization is deferred because it does not address the observed obstacle. In the hosted alternative, the retry correction gets a defined success check.
 
 Each entry should distinguish observation, interpretation, decision, owner and next check. A missing job result is unknown until investigated; it is not a zero-error result. Keep the record beside the existing project notes rather than inventing a new administration system.
 

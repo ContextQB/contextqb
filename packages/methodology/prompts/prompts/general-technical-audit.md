@@ -2,7 +2,7 @@
 id: general-technical-audit
 title: General Technical Audit Prompt
 summary: A comprehensive application audit covering architecture, data, scalability, reliability, infrastructure, security, code quality, and product alignment.
-version: 0.2.1
+version: 0.3.0
 audience:
   - founder
   - developer
@@ -36,18 +36,24 @@ tags:
 
 Use this when you want one broad document covering an application end to end — typically when you face a decision such as whether to invest, hire or refactor. When your question is only the shape of the code, the [architecture review](contextqb://playbooks/architecture-review) is narrower and faster.
 
-**How it works.** The agent writes the full report to a file and replies with only the path, the executive summary and the top five findings. You read that short reply first, then open the report for the detail. `{{OUTPUT_PATH}}` is where the report should be saved, for example `docs/reviews/technical-audit.md`.
+**How it works.** The agent writes the full report to a file and replies with only the path, the executive summary and the top five findings. You read that short reply first, then open the report for the detail.
+
+**Fill in the three values before you paste.** Replace each `{{…}}` placeholder, including the braces, with your own text:
+
+- `{{PRODUCT_SUMMARY}}` — two to four plain sentences: what the product does, who uses it, the decision this audit should inform, and anything the audit should leave out. For example: "A booking tool that lets independent dog groomers take appointments and send reminder texts. About 40 groomers use it. I am deciding whether to hire a developer now or refactor first. The old admin prototype in `legacy/` is out of scope." The agent uses this to judge whether the code fits the product; without it, "product-engineering alignment" is guesswork.
+- `{{REPO_PATH}}` — the folder to audit. Use `.` for the whole repository the agent has open, or a subfolder such as `apps/booking` if only one app matters. The agent may read outside it only to follow how that code is used, and lists anything important it did not review.
+- `{{OUTPUT_PATH}}` — where the report should be saved, for example `docs/reviews/technical-audit.md`.
 
 ## The prompt
 
 ```text
 You are a senior technical advisor performing a comprehensive audit of this application for a non-technical decision-maker.
 
-Product summary: {{PRODUCT_SUMMARY}}
-Repository path: {{REPO_PATH}}
+Product summary (what it does, who uses it, the decision this informs, what is out of scope): {{PRODUCT_SUMMARY}}
+Folder to audit: {{REPO_PATH}}
 Save the report to: {{OUTPUT_PATH}}
 
-Read the codebase carefully. If you are permitted to run commands, run the project's verifier commands (type check, lint, tests, build) and start the application against a local or test copy — never production data or live services — and record each command and its result. If you are not permitted, say which checks you could not run. Produce a Markdown document with these sections, in order:
+Audit the code in the folder above. Read files outside it only to understand how that code is used, and list anything important you did not review. Read the codebase carefully. If you are permitted to run commands, run the project's verifier commands (type check, lint, tests, build) and start the application against a local or test copy — never production data or live services — and record each command and its result. If you are not permitted, say which checks you could not run. Produce a Markdown document with these sections, in order:
 
 1. Executive summary. 5–7 bullets in plain language. Lead with the most important thing.
 

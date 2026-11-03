@@ -2,7 +2,7 @@
 id: update-a-dependency-safely
 title: Update a Dependency Safely
 summary: Investigate one software dependency update, check the behavior and compatibility it affects and record a justified adoption or deferral.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 6
 journey_rank: 40
@@ -64,7 +64,9 @@ Run the applicable checks and build, then exercise the behavior that uses the de
 
 ## Worked decision: a successful install with a broken import
 
-This is an **invented update exercise** for a later notebook that imports saved entries. `notebook-importer` is a fictional package name, not a package to find or install. All versions and the advisory below are teaching assumptions:
+This is an **invented update exercise**. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Imagine a later version of that notebook that can import entries from a file, for example ones she exported earlier, and that relies on a package for reading those files. Nothing is built, and you do not need to build it. `notebook-importer` is a fictional package name, not a package to find or install. All versions and the advisory below are teaching assumptions.
+
+The controlled input is one made-up entry. Its note deliberately contains two spaces between “Keep” and “two”: an import must keep the text exactly, so a version that trims or collapses spacing fails the comparison even when it does not lose the whole note.
 
 ```text
 Current: notebook-importer 1.2.0; imports title and note fields.
@@ -86,4 +88,4 @@ To practice locally, have the agent create two tiny stand-ins: one preserves the
 
 Use a fresh reviewer through [Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) to inspect the actual change, notices and evidence. Decide whether to adopt, correct, mitigate and defer, or investigate further. Record any unknown that matters to the exposed task.
 
-Keep the before/after versions, reason, changed files, checks, recovery limits, decision, owner and follow-up in the existing project record. Set a review date or concrete trigger for a deferral, especially a security or end-of-support issue. [Operating a Small App](contextqb://guides/operating-a-small-app) owns the recurring maintenance routine. A tested update candidate still follows the project's release process before users receive it.
+Keep the before/after versions, reason, changed files, checks, recovery limits, decision, owner and follow-up in the existing project record. If the project has no such record yet, create one short note where it keeps its documentation, for example `docs/dependency-updates.md`; no new documentation structure is needed. Set a review date or concrete trigger for a deferral, especially a security or end-of-support issue. [Operating a Small App](contextqb://guides/operating-a-small-app) owns the recurring maintenance routine. A tested update candidate still follows the project's release process before users receive it.

@@ -2,7 +2,7 @@
 id: programming-language-selection
 title: Programming Language Selection
 summary: The language is the agent's substrate. A typed, compiled language gives the agent a build-time gate; a permissive language puts every error in production.
-version: 0.2.0
+version: 0.2.1
 category: structure
 audience:
   - novice-builder
@@ -117,11 +117,11 @@ def double_value(data: Record) -> int:
     return data["value"] * 2
 ```
 
-### Notebooks and exploration
+### Exploratory programming notebooks
 
 **Acceptable: Untyped Python or Julia.**
 
-The goal is iteration speed. Type annotations are optional but still helpful for complex cells.
+This means code notebooks such as Jupyter, not a note-taking app: you run small blocks of code ("cells") one at a time to explore data and look at each result. The goal is iteration speed. Type annotations are optional but still helpful for complex cells.
 
 ## When to choose a permissive language
 

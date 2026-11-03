@@ -2,7 +2,7 @@
 id: change-stored-data-safely
 title: Change Stored Data Safely
 summary: Rehearse a change to saved information, check old and new application versions and choose a recovery path before touching valuable records.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -44,7 +44,11 @@ Start with [Designing Your App's Data](contextqb://guides/designing-your-apps-da
 
 Write down the old format, proposed format and reason. Identify existing records that need a decision: missing values, unusually long text, duplicate identifiers and related files. Use representative made-up examples first. Any use of real records needs an appropriate handling plan and authorization.
 
-For the notebook, imagine renaming `note` to `body`. The names change; the researcher's words must remain exactly the same. Adding a required date is a different problem: an older note may have no known creation date. Ask the owner what “unknown” means instead of inventing a date that looks factual.
+This playbook's example uses one invented tool. Maya, a fictional first-time founder deciding which problem to solve for small independent bakeries, keeps a personal research notebook on her own computer. Each saved entry pairs one source, such as a conversation with a bakery owner, with her note about what she learned; the text of that note is stored in a field called `note`. After a month, those entries are evidence she cannot recreate, so any change must keep her words intact. Nothing is built, and you do not need to build it.
+
+Suppose Maya plans a later version in which a note becomes its own record attached to a source, because one conversation often produced several observations. Before that larger change, she wants the text field to have a name that still makes sense when it no longer sits beside the source title, so she renames `note` to `body`: the note's own text. That is one possible product reason; a rename made only for tidiness rarely justifies a migration. The names change; her words must remain exactly the same. The worked change below rehearses only this rename, not the later design.
+
+Adding a required date is a different problem: an older note may have no known creation date. Ask the owner what “unknown” means instead of inventing a date that looks factual.
 
 Turn those promises into expected results with [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks).
 
@@ -64,7 +68,9 @@ Name the stop conditions: unexpected format, missing source values, record misma
 
 ## Worked change: preserve the note before removing its old field
 
-Use the two-record version-1 file in [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery), in a new disposable copy. These are the illustrative rules for two application versions:
+This exercise uses the one canonical practice file for Maya's notebook: the two-record version-1 JSON shown under “Worked rehearsal: a stopped local file” in [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery). For this practice exercise you do not need to run that rehearsal first; a change to real records still needs the recovery evidence from Step 3. Copy the file's entire contents, unchanged, into a new disposable directory as your version-1 input: `schemaVersion: 1`, both records and their exact text. The checks below compare the migrated values with that original, so a retyped or shortened copy could hide a lost or altered note. Never point the exercise at real data.
+
+These are the illustrative rules for two application versions:
 
 - **Old reader:** reads text only from `note`.
 - **Transition reader:** reads `body` when present, otherwise reads `note`.

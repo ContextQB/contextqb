@@ -2,7 +2,7 @@
 id: update-an-agent-workstream
 title: Update an Agent Workstream After a Pass
 summary: A reusable instruction for recording what an agent delivered, what was checked, what was discovered, and what should happen next.
-version: 0.3.0
+version: 0.4.1
 audience:
   - founder
   - operator
@@ -27,6 +27,7 @@ related:
   - resume-an-agent-workstream
   - review-an-agent-workstream
   - run-an-agent-workstream
+  - start-an-agent-workstream
   - work-with-agents-through-documentation
 tags:
   - agents
@@ -41,14 +42,18 @@ tags:
 
 **You get:** a dated pass entry, a refreshed current state, and classified outstanding items. Claims and evidence are kept apart.
 
+**New to workstreams?** This prompt is one step of [Run an Agent Workstream](contextqb://playbooks/run-an-agent-workstream), which defines the record, the roles and the terms used below. Its worked example, a fictional file-organizer trial at the end of that page, shows finished pass entries. A **pass** is one round of work under an approved scope (the agreement for one bounded piece of work). The **record keeper** is the one writer of the record's current summary, usually your main agent session.
+
 **Fill in:**
 
-- `{{WORKSTREAM_RECORD}}`: the record's path.
-- `{{APPROVED_SCOPE}}`: the scope and revision this pass worked under.
+- `{{WORKSTREAM_RECORD}}`: the record's path, for example `docs/workstreams/notebook-search.md`. No record yet? Run [Start an Agent Workstream](contextqb://prompts/start-an-agent-workstream) first.
+- `{{APPROVED_SCOPE}}`: the scope this pass worked under and its revision, which says which version of the agreement applies. For example "S1 revision 2", or "the Current authority section of the record" if the scope lives there.
 - `{{DELIVERED_OUTPUT}}`: what was produced and where.
-- `{{EVIDENCE}}`: the checks run and their results — the exact commands (type check, lint, tests, build) with their exit status, the drift-check result if your project uses one, and outputs you can open yourself (a file, a page, a report). Anything not run is labelled UNVERIFIED.
-- `{{REVIEW_RECORD}}`: the review entry or file, or "awaiting review".
+- `{{EVIDENCE}}`: the checks run and their results — the exact commands (type check, lint, tests, build) with their exit status, the result of the optional project-map check (`contextqb check`) if your project uses it, and outputs you can open yourself (a file, a page, a report). Anything not run is labelled UNVERIFIED.
+- `{{REVIEW_RECORD}}`: the review entry or file written by a reviewer that did not do the work ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) produces one), or "awaiting review".
 - `{{OPERATOR_DECISIONS}}`: your own replies or directions since the last update, with dates, or "none". Approvals already in the record carry forward.
+
+**Reading the result.** Each pass entry ends with a **disposition**, the decision about the delivered work: accepted; corrected (fixed inside the existing agreement, so no new approval is needed); rolled forward (unfinished work carried into the next pass); proposed (an idea outside the agreement, waiting for you); deferred; rejected; or blocked (waiting on a missing input, access, condition or decision). Acceptance and proposed items need your decision. A blocked item should name what is missing, who supplies it and the condition for resuming. It needs you only when that missing piece is yours to give, such as your access, input or decision. Corrections, roll-forwards and blocked work that stays inside the approved scope proceed under the approval you already gave once the named condition is met.
 
 The agent that did the work may fill `{{DELIVERED_OUTPUT}}`, `{{EVIDENCE}}` and its own self-checks from its session. `{{OPERATOR_DECISIONS}}` must come from you: the agent cannot supply your approvals, decisions, or acceptance.
 

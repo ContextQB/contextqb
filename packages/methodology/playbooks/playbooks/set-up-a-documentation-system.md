@@ -2,7 +2,7 @@
 id: set-up-a-documentation-system
 title: Set Up a Documentation System for Your Project
 summary: Scaffold the small, deliberate set of documentation surfaces your project needs from day one — sized for an operator with one agent today, ready to grow into a team-sized doc system later without restructuring.
-version: 0.2.1
+version: 0.3.0
 problem: |
   Without an intentional documentation system, every project drifts into one of two failure modes: a sprawling "docs/" folder no one reads, or no documentation at all. Both leave the agent reinventing the project on every prompt. The cost is paid in every session, not at some far-off handoff.
 when_to_use: |
@@ -73,14 +73,14 @@ These four are the day-one minimum for any project that will be touched by agent
 | Surface                | Path                           | Purpose                                                                                           |
 | ---------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------- |
 | `AGENTS.md`            | Repo root                      | Current operating instructions. See [`set-up-agents-md`](contextqb://playbooks/set-up-agents-md). |
-| `context.qb.yaml`      | Repo root                      | Boot manifest. See [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb).              |
+| `context.qb.yaml`      | Repo root                      | Project map. See [`write-a-context-qb`](contextqb://playbooks/write-a-context-qb).                |
 | ADRs                   | `docs/architecture/decisions/` | Append-only structural decisions. See [`write-an-adr`](contextqb://playbooks/write-an-adr).       |
 | Architecture overviews | `docs/architecture/`           | Short "what does this look like today?" docs, one per area.                                       |
 
 Concrete first files — the same footprint the foundation playbook creates:
 
 - `AGENTS.md` — the seven-section template, under 500 lines.
-- `context.qb.yaml` — workspace tree, routes, decisions, status, entry points.
+- `context.qb.yaml` — the project map a new session reads first: workspace tree, routes, decisions, status, entry points.
 - `docs/product/overview.md` — the one-page "what is this, who is it for" you wrote first.
 - `docs/architecture/stack.md` — the language and stack decision (the output of the choose-a-language-stack playbook). This is your first architecture overview.
 - `docs/architecture/decisions/0001-<your-first-decision>.md` — the first real ADR, even if it just records "use this language and framework."
@@ -91,7 +91,7 @@ That is the entire day-one footprint. Naming rules and the orchestration note ca
 
 ## The process surfaces (add each when its first document arrives)
 
-These are the surfaces that show up the moment work is underway. The trap is to write the first instance wherever is handy, at which point the operator names the file `PUNCHLIST.md` or `HANDOFF.md` and starts the bad-naming cycle.
+These are the surfaces that show up the moment work is underway. The trap is to write the first instance wherever is handy, at which point someone names the file `PUNCHLIST.md` or `HANDOFF.md` and starts the bad-naming cycle.
 
 The fix is not to create every directory on day one. It is to know the list below, and when the first document of a kind is about to be written, create its directory with a one-line `README.md` naming the pattern first. The first real document then has a name pattern waiting for it.
 
@@ -106,9 +106,9 @@ The fix is not to create every directory on day one. It is to know the list belo
 | Archive      | `docs/archive/`      | Day one (policy README only); populated when the first scope or handoff finishes.     | One subfolder per archived category (`scopes/`, `handoffs/`, …), created on first use. Files keep their names. |
 | Changelog    | `<package>/`         | First version you want to record (often v1.0.0).                                      | `CHANGELOG.md` (Keep a Changelog format).                                                                      |
 
-**Terminology note:** A _scope_ is the pre-build contract (goal, surfaces, risks, tranches). A _punchlist_ is the end-of-build remediation list. Most governance docs are scopes; true punchlists are rare. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) for the full vocabulary.
+**Terminology note:** A _scope_ is the pre-build contract: the goal, what may change, the risks and, for larger work, its _tranches_ — the bounded batches it will be built in, each checked before the next starts. A _punchlist_ is the end-of-build remediation list. Scopes, workstream records, handoffs and punchlists are often called _governance documents_: working records that say what is approved and where the work stands. Most of them are scopes; true punchlists are rare. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) for the full vocabulary and a worked example of a changed plan.
 
-A **workstream** is the continuing flow of work toward an objective. Its record coordinates the objective, deliverables, approved scopes, pass history, evidence, decisions, and next action. A scope is one bounded assignment inside that flow; a handoff is a continuity record for moving it between sessions. Use [`run-an-agent-workstream`](contextqb://playbooks/run-an-agent-workstream) when the work needs that continuity, and register the record in your boot map so the next session finds it. The workstream record points to architecture docs, ADRs, and specialized loops; it does not replace them.
+A **workstream** is the continuing flow of work toward an objective. Its record coordinates the objective, deliverables, approved scopes, pass history, evidence, decisions, and next action. A scope is one bounded assignment inside that flow; a handoff is a continuity record for moving it between sessions. Use [`run-an-agent-workstream`](contextqb://playbooks/run-an-agent-workstream) when the work needs that continuity. Add one line pointing to the record in `AGENTS.md` or the project map (`context.qb.yaml`), the files every session reads first, so the next session finds it. The workstream record points to architecture docs, ADRs, and specialized loops; it does not replace them.
 
 You do not need to create any of these on day one except the archive policy. When the moment for one arrives, set it up before writing the first document inside it — never the other way around. `docs/archive/` is the exception: its `README.md` exists from day one so the policy is visible from the start; its subfolders appear with the first archived document. A `punchlists/` directory, like `workstreams/`, appears only if you ever need one.
 
@@ -119,7 +119,7 @@ Four rules. All small, all cheap to enforce:
 1. **Set up the directory before the first instance.** When you realise a new kind of document is about to be written for the first time, pause and create the directory with its `README.md` first. This takes two minutes and prevents the `PUNCHLIST.md` problem.
 2. **Document the naming pattern in the directory's `README.md`.** Even one line is enough: "Files in this directory are named `<pattern>`. See [`documentation-file-naming`](contextqb://principles/documentation-file-naming)." The second contributor (human or agent) does not have to guess.
 3. **Update docs in the same change that triggers the update.** Not a separate sprint, not a "TODO: update docs." If the structural decision changes, the ADR (or AGENTS.md, or context.qb.yaml) changes with it.
-4. **Archive finished governance docs; never delete them.** When a scope has been reviewed and accepted, and its remaining obligations are resolved or transferred, or when a handoff is consumed, move it to `docs/archive/<category>/`. An executor's delivery claim (`SHIPPED`) alone is not enough. This preserves references and post-mortem trails. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
+4. **Archive finished governance docs; never delete them.** When a scope has been reviewed and accepted, and its remaining obligations are resolved or transferred, or when a handoff is consumed, move it to `docs/archive/<category>/`. The agent that did the work saying it is finished (marking it `SHIPPED`) is not enough on its own: a review of the actual work, and your acceptance, come first. This preserves references and post-mortem trails. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite).
 
 ## Copy-pasteable scaffold
 

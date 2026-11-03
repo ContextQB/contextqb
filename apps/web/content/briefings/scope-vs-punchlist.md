@@ -1,8 +1,8 @@
 ---
 id: scope-vs-punchlist
 title: Scope vs. Punchlist
-summary: A scope is the contract you write before the build; a punchlist is the remediation list you write at the end of one. Most governance documents are scopes; true punchlists are rare. Naming yours correctly is what keeps the archive navigable.
-version: 0.2.0
+summary: A scope is the contract you write before the build; a punchlist is the remediation list you write at the end of one. Most working records that steer a build are scopes; true punchlists are rare. Naming yours correctly is what keeps the archive navigable.
+version: 0.3.0
 audience:
   - operator
   - developer
@@ -51,6 +51,8 @@ A pre-build remediation list is a contradiction. A post-build plan is a scope fo
 | **Lifetime**     | Lives and is updated through the build          | Burns down to zero, then is archived           |
 | **Failure mode** | Missing → the agent invents the boundaries      | Missing → "done" means "nobody looked closely" |
 
+A small software example. The scope for a notebook feature, written first, says: save a source and a note about it; both are still there after the app is reopened; a blank note is rejected with an explanation; no search yet. Near the end, when the feature mostly works, its punchlist holds two items: the blank-note message says "Invalid input" instead of what to fix, and the Save button can't be reached with the keyboard. Each item is small, and you can check that it is fixed.
+
 ## Why the naming matters
 
 In an agentic project, these documents are load-bearing: agents read them to decide what to do next. A file named `PUNCHLIST.md` that actually contains a pre-build plan misleads every future reader — human or agent — about which part of the timeline they're in. The [documentation-file-naming](contextqb://principles/documentation-file-naming) principle exists because the second document of any kind always arrives; the name has to survive that arrival.
@@ -58,7 +60,7 @@ In an agentic project, these documents are load-bearing: agents read them to dec
 ContextQB's convention (one reasonable choice, not a requirement):
 
 - Scopes live in `docs/scopes/`, named `NNNN-<slug>.md` when they implement an ADR or `<descriptive-slug>.md` otherwise.
-- Punchlists are rare and usually live embedded in the scope's tranche history until they outgrow it — see [Append, Don't Overwrite](contextqb://principles/append-dont-overwrite) for how finished ones archive.
+- Punchlists are rare. The last few defects usually sit inside the scope itself, in its running log of work batches, until the list outgrows it. (That log is the scope's _tranche history_: one entry per bounded batch of work, recording what was built, what the check found and what was left over.) See [Append, Don't Overwrite](contextqb://principles/append-dont-overwrite) for how finished ones archive.
 
 ## The deeper reason
 

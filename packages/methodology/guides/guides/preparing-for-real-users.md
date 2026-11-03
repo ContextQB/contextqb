@@ -2,7 +2,7 @@
 id: preparing-for-real-users
 title: Preparing for Real Users
 summary: Gather evidence for the task, audience and operating conditions you intend to support, then make an honest release decision.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 7
 journey_rank: 0
@@ -28,9 +28,15 @@ tags: [launch, testing]
 
 **Plain language:** Before people depend on your app, make the promise specific and collect evidence that it can keep that promise. A useful first release can be narrow. You should know what works, what remains limited and who will respond if something goes wrong.
 
+## The example on this page
+
+The reasoning below is illustrated with one invented case. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She learns mostly from conversations with bakery owners, and wants a small research notebook program on her own computer: each entry keeps one source with her note about what it showed, stored in one local file, used only by her. Her research notes name real people and businesses, and she cannot repeat the conversations. Suppose an agent has built a candidate version of that notebook and she must decide whether to start relying on it for her real notes.
+
+Nothing here is built, and you do not need to build it. Where the notebook appears, it shows how one product's promise selects its evidence. The checks named for it are examples, not a universal test list. Ask the same questions about your own product's main task.
+
 ## Define the intended use
 
-Write one sentence naming the audience, task and scope. “The owner can keep and reopen personal research notes on one computer” creates different obligations from “A team can share private notes across devices.” Keep the scope consistent with the version you have actually checked.
+Write one sentence naming the audience, task and scope. Maya's could be “The owner can keep and reopen personal research notes on one computer.” That creates different obligations from “A team can share private notes across devices.” Keep the scope consistent with the version you have actually checked.
 
 Use [Where Your App Runs](contextqb://guides/where-your-app-runs) to identify the release target. Include the source and artifact identifiers, settings, data format and who can reach it. A private pilot limits the audience; it does not make loss of their work unimportant. [Deploying vs. Launching](contextqb://briefings/deploying-vs-launching) separates rehearsal from the decision to invite that reliance.
 
@@ -64,6 +70,6 @@ List the services and jobs the app depends on, any quotas or usage charges, and 
 
 Put the scope, evidence links, known limitations, recovery, support and watch arrangements in one release record. Ask a fresh agent session that did not implement the candidate, or another suitably qualified reviewer, to run [Release Readiness Audit](contextqb://audits/release-readiness) against that record and the actual candidate.
 
-Choose go, no-go or a deliberately smaller scope supported by the evidence. For example, a tested local notebook can remain local while team access is unfinished. Making a scope smaller is honest only when the remaining promise still works and users understand it.
+Choose go, no-go or a deliberately smaller scope supported by the evidence. For example, a tested single-owner notebook can be released for Maya alone while sharing remains a later idea. Making a scope smaller is honest only when the remaining promise still works and users understand it.
 
 Before deciding, explain the strongest evidence for the core task and the most consequential unresolved gap. Those two answers are more useful than “the agent says everything passed.”

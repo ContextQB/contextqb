@@ -2,7 +2,7 @@
 id: security-regression
 title: Security Regression Audit
 summary: A change-focused security audit comparing current state against a prior baseline. Identifies what changed, what degraded, and whether new risks were introduced by recent work.
-version: 0.2.1
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -54,37 +54,47 @@ tags:
 
 This audit compares current security posture against a documented baseline to identify what changed and whether those changes introduced risk. It's the operational companion to [Application Security Baseline](contextqb://audits/application-security-baseline) — run that first to establish your baseline, then run this periodically to catch drift.
 
-## Use this as an agent instruction
+## Before you run it: what you prepare
 
-> You are performing a security regression audit.
->
-> Your task is NOT to re-audit everything from scratch. Your task is to:
->
-> 1. Compare current state against the provided baseline
-> 2. Identify what is NEW (endpoints, integrations, capabilities)
-> 3. Identify what is REMOVED (protections, middleware, checks)
-> 4. Identify what CHANGED (configuration, scope, permissions)
-> 5. Assess each change for security impact
->
-> Focus on delta, not absolute state. The baseline already passed review.
->
-> Start by reading the project instructions and configuration. Then compute the mechanical diff between the baseline revision and now — routes, middleware, environment-variable names, dependency manifests, MCP and agent configuration — and only then judge each change. Treat scanner and search matches as leads to confirm. Never copy a secret value into your report.
+- **The baseline.** You need something to compare against. The shared baseline is the dated inventory from [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) — the same one [Detect Security Drift](contextqb://playbooks/detect-security-drift) uses — together with the git tag, commit or date it describes. A prior [Application Security Baseline](contextqb://audits/application-security-baseline) report or another documented security review can add detail. Your `context.qb.yaml` from that point helps with structure, but it records no security state. If you don't have a baseline, stop and run the baseline audit first: you cannot detect regression without a reference point.
+- **Current dashboard settings.** Auth provider, CORS and rate-limit settings configured outside the code: attach current exports or screenshots so the agent can compare them with the baseline, or those rows come back UNKNOWN.
+- **What it may run.** Say whether the agent may run the project's dependency vulnerability scanner.
 
----
+## The agent instruction
 
-## Prerequisites
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
 
-You need a baseline to compare against. The shared baseline is the dated inventory from [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) — the same one [Detect Security Drift](contextqb://playbooks/detect-security-drift) uses — together with the git tag, commit or date it describes. A prior [Application Security Baseline](contextqb://audits/application-security-baseline) report or another documented security review can add detail. Your `context.qb.yaml` from that point helps with structure, but it records no security state.
+**START OF AGENT INSTRUCTION — Security Regression Audit.** Everything from this line to the END line is one instruction.
 
-If you don't have a baseline, stop and run the baseline audit first. You cannot detect regression without a reference point.
+### Your role and limits
 
----
+You are performing a security regression audit.
 
-## Phase 1 — Baseline Establishment
+Your task is NOT to re-audit everything from scratch. Your task is to:
+
+1. Compare current state against the provided baseline
+2. Identify what is NEW (endpoints, integrations, capabilities)
+3. Identify what is REMOVED (protections, middleware, checks)
+4. Identify what CHANGED (configuration, scope, permissions)
+5. Assess each change for security impact
+
+Focus on delta, not absolute state. The baseline already passed review.
+
+Start by reading the project instructions and configuration. Then compute the mechanical diff between the baseline revision and now — routes, middleware, environment-variable names, dependency manifests, MCP and agent configuration — and only then judge each change. Treat scanner and search matches as leads to confirm. Never copy a secret value into your report.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (the baseline and the revision it describes, current settings exports, and which scanners you may run). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Baseline required
+
+Compare against the baseline I attached: normally a dated attack-surface inventory, or a prior security audit or review, with the git tag, commit or date it describes. A `context.qb.yaml` from that point is supporting structural evidence only; it records no security state. If I have not attached a baseline, stop and tell me. Do not reconstruct one from memory or from the current code: you cannot detect a regression without a reference point.
+
+### Phase 1 — Baseline Establishment
 
 Document what you're comparing against.
 
-### Baseline metadata
+#### Baseline metadata
 
 | Field                    | Value                                                                                                                                                                             |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -95,7 +105,7 @@ Document what you're comparing against.
 | Baseline revision        | (tag or commit the baseline describes)                                                                                                                                            |
 | Deployers since baseline | (who or what shipped changes — people, agents, automated jobs)                                                                                                                    |
 
-### Baseline summary
+#### Baseline summary
 
 From the baseline, extract:
 
@@ -105,27 +115,25 @@ From the baseline, extract:
 - Third-party integrations: X
 - AI/agent capabilities: X
 
----
-
-## Phase 2 — New Attack Surfaces
+### Phase 2 — New Attack Surfaces
 
 Identify everything that exists now but didn't exist in the baseline.
 
-### New endpoints
+#### New endpoints
 
 | Endpoint       | Purpose         | Auth required? | In baseline? | Risk assessment           |
 | -------------- | --------------- | -------------- | ------------ | ------------------------- |
 | /api/v2/export | Data export     | Yes            | No — new     | High — data exfil vector  |
 | /webhooks/new  | New integration | No             | No — new     | Medium — verify signature |
 
-### New integrations
+#### New integrations
 
 | Integration          | Purpose  | Data access | In baseline? | Risk assessment      |
 | -------------------- | -------- | ----------- | ------------ | -------------------- |
 | Analytics SDK        | Tracking | Page views  | No — new     | Low — verify no PII  |
 | New payment provider | Payments | Financial   | No — new     | High — verify config |
 
-### New agent capabilities
+#### New agent capabilities
 
 | Agent/AI feature | Capability         | In baseline? | Risk assessment             |
 | ---------------- | ------------------ | ------------ | --------------------------- |
@@ -138,13 +146,11 @@ For each new surface, answer:
 - Does it follow existing security patterns?
 - Is it documented?
 
----
-
-## Phase 3 — Removed Protections
+### Phase 3 — Removed Protections
 
 Identify protections that existed in the baseline but are now missing.
 
-### Removed middleware/checks
+#### Removed middleware/checks
 
 Search for:
 
@@ -159,7 +165,7 @@ Search for:
 | Rate limiting    | /api/search   | Commented out               | Medium — abuse vector  |
 | Input validation | /api/submit   | Simplified (missing checks) | High — injection risk  |
 
-### Removed configuration
+#### Removed configuration
 
 Check:
 
@@ -173,13 +179,11 @@ Check:
 | CORS allowed origins | example.com only | \* (all) | High — request forgery |
 | Rate limit threshold | 10/min           | 100/min  | Medium — more abuse    |
 
----
-
-## Phase 4 — Configuration Drift
+### Phase 4 — Configuration Drift
 
 Identify settings that changed (not added or removed, but modified).
 
-### Auth configuration
+#### Auth configuration
 
 | Setting                 | Baseline   | Current     | Intentional?    |
 | ----------------------- | ---------- | ----------- | --------------- |
@@ -187,7 +191,7 @@ Identify settings that changed (not added or removed, but modified).
 | MFA required for admins | Yes        | Yes         | N/A — no change |
 | Failed login lockout    | 5 attempts | 10 attempts | ?               |
 
-### Secrets changes
+#### Secrets changes
 
 | Secret            | Baseline status | Current status | Change                   |
 | ----------------- | --------------- | -------------- | ------------------------ |
@@ -195,69 +199,63 @@ Identify settings that changed (not added or removed, but modified).
 | NEW_SERVICE_KEY   | N/A             | Exists         | New — verify management  |
 | OLD_SERVICE_KEY   | Exists          | Missing        | Removed — verify revoked |
 
-### Permission scope changes
+#### Permission scope changes
 
 | Credential/Permission | Baseline scope | Current scope | Change      |
 | --------------------- | -------------- | ------------- | ----------- |
 | Database role         | read-only      | read-write    | Elevated ⚠️ |
 | API key scope         | analytics only | full access   | Elevated ⚠️ |
 
----
-
-## Phase 5 — Dependency Changes
+### Phase 5 — Dependency Changes
 
 New dependencies can introduce vulnerabilities. Run the project's dependency vulnerability scanner if you are permitted to ([kinds of scanner](contextqb://references/tools#security-scanners)), and record the command and its result.
 
-### New dependencies
+#### New dependencies
 
 | Dependency  | Version | Purpose   | Known vulnerabilities?                           |
 | ----------- | ------- | --------- | ------------------------------------------------ |
 | new-package | 1.0.0   | Feature X | Check with your dependency vulnerability scanner |
 
-### Upgraded dependencies
+#### Upgraded dependencies
 
 | Dependency | Baseline version | Current version | Security notes                    |
 | ---------- | ---------------- | --------------- | --------------------------------- |
 | framework  | 2.0              | 3.0             | Breaking changes? Security fixes? |
 
-### Removed dependencies
+#### Removed dependencies
 
 | Dependency   | Baseline version | Why removed? | Replacement?    |
 | ------------ | ---------------- | ------------ | --------------- |
 | old-auth-lib | 1.0              | Deprecated   | Replaced with X |
 
----
-
-## Phase 6 — Agent/AI Capability Changes
+### Phase 6 — Agent/AI Capability Changes
 
 If the application uses AI/agents, check for capability drift.
 
-### Agent permission changes
+#### Agent permission changes
 
 | Agent     | Baseline capability | Current capability   | Change assessment |
 | --------- | ------------------- | -------------------- | ----------------- |
 | Dev agent | Read workspace      | Read + write + shell | Elevated ⚠️       |
 | User AI   | Read knowledge base | Read KB + user data  | Elevated ⚠️       |
 
-### New AI integrations
+#### New AI integrations
 
 - New model providers added?
 - New tool capabilities granted?
 - New data sources accessible to AI?
 
-### Prompt/guardrail changes
+#### Prompt/guardrail changes
 
 - System prompts modified?
 - Safety guidelines changed?
 - Output validation modified?
 
----
-
-## Phase 7 — Regression Classification
+### Phase 7 — Regression Classification
 
 Categorize each change:
 
-### Regressions (security got worse)
+#### Regressions (security got worse)
 
 | Finding                   | Category           | Impact   | Remediation        |
 | ------------------------- | ------------------ | -------- | ------------------ |
@@ -265,25 +263,23 @@ Categorize each change:
 | Rate limiting disabled    | Removed protection | Medium   | Re-enable          |
 | Session lifetime extended | Config drift       | Medium   | Review and justify |
 
-### Acceptable evolution (change is fine)
+#### Acceptable evolution (change is fine)
 
 | Finding              | Category    | Why acceptable           |
 | -------------------- | ----------- | ------------------------ |
 | New endpoint /api/v2 | New surface | Auth properly configured |
 | New dependency       | Dependency  | No known vulnerabilities |
 
-### Needs review (unclear if regression)
+#### Needs review (unclear if regression)
 
 | Finding            | Question                    | Who decides                    |
 | ------------------ | --------------------------- | ------------------------------ |
 | MFA now optional   | Was this intentional?       | You (accountable operator)     |
 | New OAuth provider | Was this security reviewed? | You, or the reviewer you named |
 
----
+### Phase 8 — Severity Classification
 
-## Phase 8 — Severity Classification
-
-### Critical regressions
+#### Critical regressions
 
 - Authentication bypass introduced
 - Authorization check removed
@@ -292,7 +288,7 @@ Categorize each change:
 
 Action: Fix before any other work. Consider reverting changes.
 
-### High-risk regressions
+#### High-risk regressions
 
 - Rate limiting disabled
 - Input validation weakened
@@ -301,7 +297,7 @@ Action: Fix before any other work. Consider reverting changes.
 
 Action: Fix this sprint. Do not ship more features until addressed.
 
-### Medium-risk regressions
+#### Medium-risk regressions
 
 - Configuration drift without clear justification
 - New surfaces without security review
@@ -309,9 +305,7 @@ Action: Fix this sprint. Do not ship more features until addressed.
 
 Action: Fix this cycle. Track as tech debt if not immediate.
 
----
-
-## Phase 9 — Output Format
+### Phase 9 — Output Format
 
 Produce a Markdown document with:
 
@@ -339,9 +333,7 @@ Produce a Markdown document with:
 
 10. **Remediation Roadmap** — Prioritised actions
 
----
-
-## Important rules for the auditor
+### Important rules for the auditor
 
 - Do NOT re-audit everything — focus on changes
 - Do NOT assume changes were reviewed — verify
@@ -351,9 +343,11 @@ Produce a Markdown document with:
 - Compare line-by-line when possible, not just at summary level
 - "Who decides" is the accountable operator unless the project names a team; do not invent roles
 
----
+**END OF AGENT INSTRUCTION — Security Regression Audit.** Evidence the person attached may follow below this line.
 
-## How to consume the output
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section.
 
 1. **Revert or fix critical regressions immediately.**
 2. **Investigate "unclear" changes** — was this intentional?

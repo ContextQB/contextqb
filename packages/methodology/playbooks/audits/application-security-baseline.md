@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.3.1
+version: 0.4.0
 audience:
   - novice-builder
   - founder
@@ -70,34 +70,43 @@ This is a comprehensive security audit for applications built with agentic syste
 
 If you are preparing your first security review, begin with [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data). Bring the data inventory and promises from [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion). Tailor this managed-services audit to the actual product: distinguish applicable checks, justified exclusions and unknowns. An audit report is evidence for a decision, not a guarantee of security or a determination of legal compliance.
 
-## Before you run it: what to give the agent
+## Before you run it: what you prepare
 
-The agent can read your code, but not your providers' dashboards. Without help, many checks come back UNKNOWN. Before the run, collect:
+The agent can read your code and configuration. It cannot see your providers' dashboards, your browser or your live site. Without help, many checks come back UNKNOWN. Before the run, collect these and attach them after the instruction:
 
 - **Settings exports or screenshots** from your hosting, authentication, database and storage dashboards (security, session, access-rule and network settings).
 - **The names of your environment variables** — names only, never their values.
 - **Your attack-surface map** if you have one ([Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface)).
+- **What it may run.** Say which of the project's scanners the agent is permitted to run. The instruction forbids attacks: the agent may propose a test, but it runs one only with your approval and only against a local or test copy, never production. Nothing on this page authorizes testing a live system.
 
 Run the audit in a session that did not build the application: a fresh session, a second agent, or a person, given the project instructions and the code. A different model can add variety; it does not by itself make the audit independent.
 
-## Use this as an agent instruction
+## The agent instruction
 
-> You are performing a professional security audit of this application.
->
-> Your task is NOT to provide generic security advice. Your task is to:
->
-> 1. Discover the actual architecture by inspecting code and configuration
-> 2. Identify all realistic attack surfaces specific to THIS application
-> 3. Audit each surface systematically
-> 4. Produce prioritised, actionable findings
->
-> You must operate like a security engineer conducting a real audit — skeptical, evidence-based, and focused on realistic exploitability.
->
-> Start by reading the project instructions (`AGENTS.md` and anything it points to) and the relevant configuration. Then run the dependency, secret and code-security scanners the project has and you are permitted to run ([kinds of scanner](contextqb://references/tools#security-scanners)). Treat their output as leads to verify against the code, never as verdicts. Never copy a secret value into your report or your messages: name the file, line and kind of secret instead.
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
 
----
+**START OF AGENT INSTRUCTION — Application Security Baseline Audit.** Everything from this line to the END line is one instruction.
 
-## Phase 1 — Architecture Discovery
+### Your role and limits
+
+You are performing a professional security audit of this application.
+
+Your task is NOT to provide generic security advice. Your task is to:
+
+1. Discover the actual architecture by inspecting code and configuration
+2. Identify all realistic attack surfaces specific to THIS application
+3. Audit each surface systematically
+4. Produce prioritised, actionable findings
+
+You must operate like a security engineer conducting a real audit — skeptical, evidence-based, and focused on realistic exploitability.
+
+Start by reading the project instructions (`AGENTS.md` and anything it points to) and the relevant configuration. Then run the dependency, secret and code-security scanners the project has and you are permitted to run ([kinds of scanner](contextqb://references/tools#security-scanners)). Treat their output as leads to verify against the code, never as verdicts. Never copy a secret value into your report or your messages: name the file, line and kind of secret instead.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (settings exports or screenshots, environment-variable names, an attack-surface map). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Phase 1 — Architecture Discovery
 
 First, discover and document the actual architecture. Do NOT assume — infer from code and configuration.
 
@@ -121,13 +130,11 @@ Document the trust boundaries:
 
 Produce a **Threat Model Summary** before proceeding.
 
----
-
-## Phase 2 — Attack Surface Inventory
+### Phase 2 — Attack Surface Inventory
 
 Generate a tailored attack surface inventory for THIS application. Do NOT just copy OWASP — adapt to what actually exists here.
 
-### Authentication surfaces
+#### Authentication surfaces
 
 - Sign-in and sign-up flows
 - Password reset and account recovery
@@ -136,7 +143,7 @@ Generate a tailored attack surface inventory for THIS application. Do NOT just c
 - API keys and service tokens
 - Admin access paths
 
-### Public endpoints
+#### Public endpoints
 
 - Every route that doesn't require authentication
 - Every route that accepts untrusted input
@@ -144,7 +151,7 @@ Generate a tailored attack surface inventory for THIS application. Do NOT just c
 - File upload endpoints
 - Search and query endpoints
 
-### AI and agent surfaces
+#### AI and agent surfaces
 
 - Every LLM or AI API call
 - What data does the AI see?
@@ -152,14 +159,14 @@ Generate a tailored attack surface inventory for THIS application. Do NOT just c
 - Where can user input influence AI behaviour?
 - Does AI output get executed, rendered, or stored?
 
-### Data surfaces
+#### Data surfaces
 
 - Database tables with sensitive data
 - File storage with user content
 - Logs that might contain PII
 - Analytics and telemetry
 
-### Third-party surfaces
+#### Third-party surfaces
 
 - Every external API this application calls
 - What credentials does each require?
@@ -172,9 +179,7 @@ For each surface, document:
 - How it could realistically be attacked
 - Current protections (if any)
 
----
-
-## Phase 3 — Systematic Audit
+### Phase 3 — Systematic Audit
 
 Now audit each surface. For each, determine:
 
@@ -183,7 +188,7 @@ Now audit each surface. For each, determine:
 - **PARTIAL** — Some protections exist but incomplete
 - **UNKNOWN** — Cannot verify without more information
 
-### Authentication checklist
+#### Authentication checklist
 
 - [ ] Password reset links expire appropriately
 - [ ] Session tokens are httpOnly, secure, sameSite
@@ -192,7 +197,7 @@ Now audit each surface. For each, determine:
 - [ ] OAuth scopes are minimal
 - [ ] API keys have appropriate expiration
 
-### Input validation checklist
+#### Input validation checklist
 
 - [ ] All user input is validated server-side
 - [ ] File uploads are validated (type, size, content)
@@ -200,7 +205,7 @@ Now audit each surface. For each, determine:
 - [ ] No raw user input is rendered in HTML
 - [ ] Webhook payloads are signature-verified
 
-### AI security checklist
+#### AI security checklist
 
 - [ ] AI does not have access to secrets
 - [ ] AI output is validated before execution
@@ -208,7 +213,7 @@ Now audit each surface. For each, determine:
 - [ ] AI cannot access other users' data
 - [ ] Logging does not capture sensitive prompts
 
-### Data handling checklist
+#### Data handling checklist
 
 - [ ] Sensitive data is encrypted at rest
 - [ ] Database access uses least-privilege credentials
@@ -229,9 +234,7 @@ For every **UNKNOWN**:
 - Explain what information is missing
 - Suggest how to verify
 
----
-
-## Phase 4 — Adversarial Review
+### Phase 4 — Adversarial Review
 
 Now think like an attacker. Ask:
 
@@ -248,13 +251,11 @@ Document:
 - **Highest-impact attack paths** — What causes the most damage if exploited
 - **What I would attack first** — The single most promising target
 
----
-
-## Phase 5 — Severity Classification
+### Phase 5 — Severity Classification
 
 Classify each finding:
 
-### Critical
+#### Critical
 
 - Authentication bypass
 - Full database access
@@ -264,7 +265,7 @@ Classify each finding:
 
 Action: Fix immediately. Do not deploy new features until resolved.
 
-### High
+#### High
 
 - Partial data exposure
 - Privilege escalation (user → admin)
@@ -273,7 +274,7 @@ Action: Fix immediately. Do not deploy new features until resolved.
 
 Action: Fix this week. Prioritise over feature work.
 
-### Medium
+#### Medium
 
 - Information disclosure (non-sensitive)
 - Rate limiting gaps
@@ -282,7 +283,7 @@ Action: Fix this week. Prioritise over feature work.
 
 Action: Fix this month. Include in regular maintenance.
 
-### Low
+#### Low
 
 - Cosmetic security issues
 - Best-practice violations with low impact
@@ -290,9 +291,7 @@ Action: Fix this month. Include in regular maintenance.
 
 Action: Track and fix opportunistically.
 
----
-
-## Phase 6 — Output Format
+### Phase 6 — Output Format
 
 Produce a single Markdown document with these sections:
 
@@ -311,9 +310,7 @@ Produce a single Markdown document with these sections:
 13. **What I Would Attack First** — Honest adversarial perspective
 14. **Remediation Roadmap** — Prioritised action list
 
----
-
-## Important rules for the auditor
+### Important rules for the auditor
 
 - Do NOT provide shallow generic security advice
 - Do NOT assume protections exist without evidence
@@ -326,13 +323,15 @@ Produce a single Markdown document with these sections:
 - Focus especially on authentication boundaries, secrets exposure, and AI trust
 - Treat scanner and search matches as leads; confirm each in the code before it becomes a finding
 - Never include a secret value in the report — identify it by location and kind
-- Do not run attacks. If a finding needs demonstrating, propose the test; run it only with the operator's approval and only against a local or test copy, never production
+- Do not run attacks. If a finding needs demonstrating, propose the test; run it only with my approval and only against a local or test copy, never production
 
 You are performing a real security review, not writing a blog post.
 
----
+**END OF AGENT INSTRUCTION — Application Security Baseline Audit.** Evidence the person attached may follow below this line.
 
-## How to consume the output
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section.
 
 After receiving the audit report:
 

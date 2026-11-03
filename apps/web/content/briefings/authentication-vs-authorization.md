@@ -2,7 +2,7 @@
 id: authentication-vs-authorization
 title: Authentication vs. Authorization
 summary: Distinguish proving identity from permission to act on a particular record, and test the boundary your product promises.
-version: 0.1.2
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 2
 journey_rank: 50
@@ -19,7 +19,11 @@ tags: [security, authentication]
 
 ## A signed-in person can still be the wrong person
 
-Imagine a later shared version of the notebook from [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data). Alice and Bob each have private notes. Bob is a legitimate user, but that does not give him permission to read Alice's note.
+Start with a tool that has no accounts. Maya, a fictional first-time founder, keeps notes from conversations with bakery owners in a small personal research notebook on her own computer while she decides what her business should solve. Only she uses it. Signing in to her computer is the only identity check, and there are no other users' records for the notebook to keep apart.
+
+Now imagine an illustrative later version, not something you need to build. The notebook becomes a hosted service, and several founders each use it for their own research. Their entries now sit together in one storage system on a server. That shared storage is why this example needs a second version: when different people's records live in the same place, the application itself must decide whose records each request may touch. [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data) compares the two versions more fully.
+
+Alice and Bob are two founders using that hosted version, each with private notes. Bob is a legitimate user, but that does not give him permission to read Alice's note.
 
 Hiding Alice's note from Bob's screen is useful presentation. The trusted part of the system handling a read, change or deletion must also enforce permission. A server should not accept a claimed owner from an editable browser field as proof of identity. OWASP's [authorization guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) recommends checking permissions on every request and applying enforcement in the right location.
 

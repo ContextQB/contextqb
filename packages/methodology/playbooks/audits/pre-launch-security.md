@@ -2,7 +2,7 @@
 id: pre-launch-security
 title: Pre-Launch Security Audit
 summary: A condensed security checklist for launch day. Verify the essentials before going live — secrets secured, auth hardened, endpoints protected, and monitoring in place.
-version: 0.4.2
+version: 0.5.0
 audience:
   - novice-builder
   - founder
@@ -20,6 +20,7 @@ required_sections:
   - Authentication verification
   - Public endpoint verification
   - Error handling verification
+  - Data protection verification
   - Monitoring verification
   - Incident response readiness
   - Launch decision
@@ -57,35 +58,53 @@ This is a condensed security checklist for launch day. It's designed to be fast 
 
 Start with [Preparing for Real Users](contextqb://guides/preparing-for-real-users). This is the security gate within the broader [Release Readiness Audit](contextqb://audits/release-readiness); it does not replace task, usability, recovery or operational evidence. Apply checks to the actual architecture. A no-account local tool can mark sign-in and public-endpoint checks not applicable with reasons, while retaining its file, device and data protections.
 
-## Use this as an agent instruction
+## Before you run it: what you prepare
 
-> You are performing a pre-launch security verification.
->
-> Your task is NOT to do a comprehensive audit. Your task is to:
->
-> 1. Verify critical security controls are in place
-> 2. Confirm no obvious mistakes are going to production
-> 3. Check launch-day readiness (monitoring, incident response)
-> 4. Produce a go/no-go decision with blockers
->
-> Be efficient. Focus on launch blockers, not aspirational improvements. Read the project instructions and configuration first. Never copy a secret value into your report — name its location and kind.
->
-> Test targets: quick tests that send unusual or repeated requests (rapid login attempts, deliberately triggered errors, guessed paths) run against staging or a local copy configured like production. Do not run them against production — including a production deployment that is not yet public — unless the operator gives separate, explicit authority for that test. Observation is fine on production: reading configuration, checking your own pages, headers, cookies and redirects, and single ordinary requests.
+Several launch checks need a dashboard, a browser or a monitoring tool. The agent can read code and configuration only, so do these yourself or attach the evidence; anything missing comes back UNKNOWN, and a critical unknown means no-go.
 
----
+- **Auth provider settings.** An export or screenshot of brute-force, lockout, session and MFA settings.
+- **Browser checks on the release you will launch.** Whether the sign-in cookie shows HttpOnly, Secure and SameSite in your browser's developer tools; whether source maps appear in its Sources panel; whether `http://` redirects to `https://`.
+- **Monitoring.** Whether a test error reached your monitoring tool, and who receives alerts.
+- **Incident contacts.** Who is on call and where each critical secret is rotated.
+- **The test target.** Name the staging environment or local copy configured like production where active quick tests may run, or say there is none.
 
-## Where to run the quick tests
+## The agent instruction
+
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
+
+**START OF AGENT INSTRUCTION — Pre-Launch Security Audit.** Everything from this line to the END line is one instruction.
+
+### Your role and limits
+
+You are performing a pre-launch security verification.
+
+Your task is NOT to do a comprehensive audit. Your task is to:
+
+1. Verify critical security controls are in place
+2. Confirm no obvious mistakes are going to production
+3. Check launch-day readiness (monitoring, incident response)
+4. Produce a go/no-go decision with blockers
+
+Be efficient. Focus on launch blockers, not aspirational improvements. Read the project instructions and configuration first. Never copy a secret value into your report — name its location and kind.
+
+Test targets: quick tests that send unusual or repeated requests (rapid login attempts, deliberately triggered errors, guessed paths) run against staging or a local copy configured like production. Do not run them against production — including a production deployment that is not yet public — unless whoever owns production gives separate, explicit authority for that test. Observation is fine on production: reading configuration, checking pages, headers, cookies and redirects, and single ordinary requests — and only if I have given you a way to reach it.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (dashboard exports, browser and monitoring checks I made, incident contacts, and the test target I named). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Where to run the quick tests
+
+Some quick tests below need a browser, a dashboard or a monitoring tool. Use the results I attached. If I did not attach one, mark the item UNKNOWN and write the exact check for me to do; do not assume it passed.
 
 The quick tests below are of two kinds:
 
-- **Observation** — inspecting cookies in your browser's developer tools, viewing pages, one request to a path or a nonexistent route, checking the HTTP-to-HTTPS redirect, reading dashboards and `robots.txt`. Safe on production.
+- **Observation** — inspecting cookies in a browser's developer tools, viewing pages, one request to a path or a nonexistent route, checking the HTTP-to-HTTPS redirect, reading dashboards and `robots.txt`. Safe on production. Browser and dashboard checks are usually done by me; use my results.
 - **Active tests** — rapid repeated login attempts, deliberately causing server errors, scripted sweeps of guessed paths. Run these on staging or a local copy with production-like configuration, using test accounts. Against production they can lock out real accounts, trip a provider's abuse protection or page someone; they need separate authority from whoever owns production.
 
 If you have no staging environment, run the active tests locally and record in the result which environment you tested.
 
----
-
-## Launch Readiness Checklist
+### Launch Readiness Checklist
 
 Run through each section. Mark each item:
 
@@ -95,11 +114,9 @@ Run through each section. Mark each item:
 - **UNKNOWN** — Evidence is missing or the check was not run; a critical unknown blocks launch. An unknown is critical when the check would be a BLOCKER if it failed.
 - **NOT APPLICABLE** — This product has no such surface; give the reason and what change would make it applicable
 
----
+### Section 1 — Secrets Verification
 
-## Section 1 — Secrets Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **No secrets in code.** A secret scanner finds no live keys, passwords or tokens in the code.
 - [ ] **No secrets in git history.** Check recent commits for accidental exposure.
@@ -108,7 +125,7 @@ Run through each section. Mark each item:
 - [ ] **Critical secrets are within their rotation interval.** The interval you chose for each kind of secret (see the [security defaults reference](contextqb://references/pricing#security-defaults)).
 - [ ] **You know how to rotate each secret if needed.** Document rotation path.
 
-### Quick tests
+#### Quick tests
 
 Run a dedicated secret scanner over the working tree and the git history ([kinds of scanner](contextqb://references/tools#security-scanners)), and confirm each match before calling it a blocker. A plain text search is a last resort: it misses most key formats. One check is simple enough to run by hand:
 
@@ -117,17 +134,15 @@ Run a dedicated secret scanner over the working tree and the git history ([kinds
 git ls-files | grep -i env
 ```
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 2 — Authentication Verification
 
-## Section 2 — Authentication Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **Brute-force protection is enabled.** Rate limiting on login.
 - [ ] **Account lockout is configured.** After N failed attempts.
@@ -136,23 +151,21 @@ git ls-files | grep -i env
 - [ ] **Password reset is secure.** Links expire, single-use.
 - [ ] **Session cookies have security flags.** HttpOnly, Secure, SameSite.
 
-### Quick tests
+#### Quick tests
 
 - On staging or a local copy, with a test account: try 10+ rapid failed logins — does rate limiting kick in? (Active test.)
 - Inspect cookies in browser DevTools — are security flags present?
 - Check auth provider dashboard for settings.
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 3 — Public Endpoint Verification
 
-## Section 3 — Public Endpoint Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **No debug endpoints in production.** /debug, /test, /dev, etc.
 - [ ] **No admin endpoints without auth.** /admin/\* routes protected.
@@ -161,69 +174,63 @@ git ls-files | grep -i env
 - [ ] **No source maps in production.** Check /\_next/static/ or equivalent.
 - [ ] **robots.txt doesn't expose sensitive paths.**
 
-### Quick tests
+#### Quick tests
 
 - Request /debug, /test and /admin once each without signing in. (Observation; a scripted sweep of many guessed paths is an active test.)
 - Check browser DevTools → Sources for source maps.
 - Review robots.txt for internal paths.
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 4 — Error Handling Verification
 
-## Section 4 — Error Handling Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **Production errors don't show stack traces.** Custom error page.
 - [ ] **API errors return generic messages.** Not internal details.
 - [ ] **404s don't leak private route existence.** Consistent response.
 - [ ] **No environment variables in error output.**
 
-### Quick tests
+#### Quick tests
 
 - On staging or a local copy, trigger a 500 error — what do users see? (Active test.)
 - Request a nonexistent API route — does response leak info?
 - Trigger a validation error — is the message appropriate?
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 5 — Data Protection Verification
 
-## Section 5 — Data Protection Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **Database access uses appropriate credentials.** Not service role everywhere.
 - [ ] **RLS (row-level security) is enabled on sensitive tables.** (If your database supports it)
 - [ ] **No PII in logs.** Check logging configuration.
 - [ ] **HTTPS enforced.** No mixed content, redirects to HTTPS.
 
-### Quick tests
+#### Quick tests
 
 - Review database roles and permissions.
 - Check log output for email addresses, passwords, tokens.
 - Try accessing site via HTTP — does it redirect?
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 6 — Monitoring Verification
 
-## Section 6 — Monitoring Verification
-
-### Checklist
+#### Checklist
 
 - [ ] **Error monitoring is configured.** An error-tracking or monitoring service ([what common services do](contextqb://references/tools#managed-services)).
 - [ ] **Alerts will reach someone.** Email, a chat channel, or a paging service.
@@ -231,22 +238,20 @@ git ls-files | grep -i env
 - [ ] **You can see application errors.** 500s, crashes.
 - [ ] **You have a status page or health endpoint.**
 
-### Quick tests
+#### Quick tests
 
 - Send a test error from staging (or your monitoring tool's test-event feature) — does it appear in monitoring?
 - Who gets alerted? Is someone actually watching?
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Section 7 — Incident Response Readiness
 
-## Section 7 — Incident Response Readiness
-
-### Checklist
+#### Checklist
 
 - [ ] **You know how to take the site offline.** (If needed urgently)
 - [ ] **You know how to rotate each critical secret.** Document exists.
@@ -254,7 +259,7 @@ git ls-files | grep -i env
 - [ ] **You have contact info for key services.** Support contacts for your payment, auth and hosting providers.
 - [ ] **Someone is on call.** Or at least checking email.
 
-### Quick documentation
+#### Quick documentation
 
 | Scenario           | Action                | Who    |
 | ------------------ | --------------------- | ------ |
@@ -262,17 +267,15 @@ git ls-files | grep -i env
 | Auth compromise    | Invalidate at [where] | [name] |
 | Need to go offline | [how]                 | [name] |
 
-### Result
+#### Result
 
 - Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
----
+### Launch Decision
 
-## Launch Decision
-
-### Summary
+#### Summary
 
 | Section           | Status                                              |
 | ----------------- | --------------------------------------------------- |
@@ -284,7 +287,7 @@ git ls-files | grep -i env
 | Monitoring        | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
 | Incident Response | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
 
-### Decision
+#### Decision
 
 **NO-GO** if any blocker or critical unknown exists.
 
@@ -302,7 +305,27 @@ Warnings to address post-launch:
 
 **GO** if all applicable sections have sufficient passing evidence, exclusions are justified and no blocker or critical unknown remains. This is a recommendation for the owner, not deployment authority.
 
----
+### Output format
+
+Produce a single Markdown document with these sections, in order:
+
+1. **Launch Readiness Checklist** — the summary table above, filled in
+2. **Secrets Verification** — Section 1 results
+3. **Authentication Verification** — Section 2 results
+4. **Public Endpoint Verification** — Section 3 results
+5. **Error Handling Verification** — Section 4 results
+6. **Data Protection Verification** — Section 5 results
+7. **Monitoring Verification** — Section 6 results
+8. **Incident Response Readiness** — Section 7 results
+9. **Launch Decision** — NO-GO, GO WITH CAUTION or GO, with blockers, warnings and every UNKNOWN that affects the decision
+
+For each section, give its status, blockers and warnings, which environment any quick test ran against, and the evidence behind each result. This is not a penetration test: do not attempt one.
+
+**END OF AGENT INSTRUCTION — Pre-Launch Security Audit.** Evidence the person attached may follow below this line.
+
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section. Before launch, an unknown on a check that would block launch if it failed is treated as a blocker until it is resolved.
 
 ## What this audit does NOT cover
 

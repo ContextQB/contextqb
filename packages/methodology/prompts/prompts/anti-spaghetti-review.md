@@ -2,7 +2,7 @@
 id: anti-spaghetti-review
 title: Anti-Spaghetti Review Prompt
 summary: A targeted prompt that runs the ContextQB anti-spaghetti checklist over a feature or codebase and produces a structured diagnostic document.
-version: 0.2.1
+version: 0.3.0
 audience:
   - founder
   - developer
@@ -24,6 +24,7 @@ related:
   - modularity
   - orchestration
   - refactor-planning
+  - repo-cleanup
   - state-ownership
 tags:
   - audit
@@ -33,14 +34,21 @@ tags:
 
 # Anti-Spaghetti Review Prompt
 
-This prompt is what you reach for when something feels wrong but you cannot yet name it. Run it in a session that did not write the code under review — a fresh session, a second agent, or a person. `{{OUTPUT_PATH}}` is where the report should be saved, for example `docs/reviews/anti-spaghetti-review.md`.
+This prompt is what you reach for when something feels wrong but you cannot yet name it. Run it in a session that did not write the code under review — a fresh session, a second agent, or a person. The prompt is self-contained: it carries all eight signals, so the agent does not need access to ContextQB.
+
+**Fill in the two values before you paste.** Replace each `{{…}}` placeholder, including the braces:
+
+- `{{SCOPE_PATH}}` — the folder or files to review: the part of the code that feels wrong. For example `src/checkout/` for a whole feature folder, or `src/checkout/cart.ts, src/checkout/payment.ts` for two files. Use `.` only when you want the whole repository reviewed; a smaller scope gives sharper evidence. The agent may read other files to follow how the scope is used, but it reports only on the scope.
+- `{{OUTPUT_PATH}}` — where the report should be saved, for example `docs/reviews/anti-spaghetti-review.md`.
 
 ## The prompt
 
 ```text
-You are performing an anti-spaghetti review of the following scope: {{SCOPE_PATH}}.
+You are performing an anti-spaghetti review of the following scope (a folder or list of files): {{SCOPE_PATH}}.
 
-For each of the eight ContextQB anti-spaghetti signals, produce a section in your output with:
+Evaluate only this scope. You may read other files to understand how it is used; mention problems outside it only in a short "Outside the scope" note at the end of the report.
+
+For each of the eight anti-spaghetti signals listed below, produce a section in your output with:
 - Signal name.
 - Verdict: PRESENT / PARTLY PRESENT / ABSENT.
 - Evidence: quoted code with file paths and line numbers (or a stated absence).

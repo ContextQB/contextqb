@@ -2,7 +2,7 @@
 id: secrets-and-credentials
 title: Secrets & Credentials Audit
 summary: A focused security audit of secrets management — inventory all credentials, assess blast radius, check rotation status, and identify exposure risks.
-version: 0.2.2
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -52,32 +52,47 @@ tags:
 
 This audit produces a complete inventory of all secrets in your application and assesses them for exposure risk, rotation status, and proper management. It's designed for applications built with managed services — hosting, authentication, database, payment, AI and email providers — where secrets often accumulate without formal tracking.
 
-**Before you run it.** Give the agent the names of the environment variables set in each dashboard (names only, never values) and tell it which scanners it may run. The audit discovers and reports; it does not rotate, revoke or delete anything. Run it in a session that did not set the secrets up.
+## Before you run it: what you prepare
 
-## Use this as an agent instruction
+- **Environment-variable names from each dashboard.** List the names set in each hosting platform and service — names only, never values. The agent cannot see dashboards; any service you leave out is reported UNKNOWN.
+- **Which scanners it may run.** Say whether the agent may run a secret scanner over the working tree and the git history.
+- **What only you know.** Whether any key has been pasted into a chat, an email, a shared document or a screenshot. The agent cannot search those places; tell it what you know, or those checks come back UNKNOWN.
+- **The audit only reports.** It does not rotate, revoke or delete anything; you decide what to do with the results.
 
-> You are performing a professional security audit focused on secrets and credentials.
->
-> Your task is NOT to give generic advice about secrets. Your task is to:
->
-> 1. Discover ALL secrets this application uses
-> 2. Assess each secret's blast radius (what happens if it leaks)
-> 3. Verify rotation status and ownership
-> 4. Identify hardcoded secrets, exposed secrets, and management gaps
->
-> You must produce an actionable inventory, not a lecture on best practices.
->
-> Start by reading the project instructions and configuration. Then, if you are permitted, run a dedicated secret scanner over the working tree and the full git history ([kinds of scanner](contextqb://references/tools#security-scanners)); its output is your discovery baseline, and every match is a lead to confirm, not a finding by itself. Never copy a secret value into your report or messages — identify each secret by name, file and line, and kind. Do not rotate, revoke or delete anything.
->
-> Keep secret values out of your own transcript too: anything a command prints becomes part of this session's context and logs. Run the scanner in a mode that redacts or masks matched values, and read its findings as locations and kinds, not values. If you have to fall back to searching the history yourself, print only metadata — commit, file and line — with any matched text masked, and never print raw diffs that may contain secrets. To confirm a match, check its shape and location without displaying the full value.
+Run it in a session that did not set the secrets up.
 
----
+## The agent instruction
 
-## Phase 1 — Secrets Discovery
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
+
+**START OF AGENT INSTRUCTION — Secrets & Credentials Audit.** Everything from this line to the END line is one instruction.
+
+### Your role and limits
+
+You are performing a professional security audit focused on secrets and credentials.
+
+Your task is NOT to give generic advice about secrets. Your task is to:
+
+1. Discover ALL secrets this application uses
+2. Assess each secret's blast radius (what happens if it leaks)
+3. Verify rotation status and ownership
+4. Identify hardcoded secrets, exposed secrets, and management gaps
+
+You must produce an actionable inventory, not a lecture on best practices.
+
+Start by reading the project instructions and configuration. Then, if you are permitted, run a dedicated secret scanner over the working tree and the full git history ([kinds of scanner](contextqb://references/tools#security-scanners)); its output is your discovery baseline, and every match is a lead to confirm, not a finding by itself. Never copy a secret value into your report or messages — identify each secret by name, file and line, and kind. Do not rotate, revoke or delete anything.
+
+Keep secret values out of your own transcript too: anything a command prints becomes part of this session's context and logs. Run the scanner in a mode that redacts or masks matched values, and read its findings as locations and kinds, not values. If you have to fall back to searching the history yourself, print only metadata — commit, file and line — with any matched text masked, and never print raw diffs that may contain secrets. To confirm a match, check its shape and location without displaying the full value.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (environment-variable names per service, which scanners you may run, and anything I know about secrets shared outside the repository). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Phase 1 — Secrets Discovery
 
 Find every secret in the system. Be thorough — secrets hide in unexpected places.
 
-### Source code scan
+#### Source code scan
 
 Search for:
 
@@ -96,7 +111,7 @@ Bearer / Authorization      (API tokens in code or fixtures)
 -----BEGIN                  (private keys and certificates)
 ```
 
-### Configuration files
+#### Configuration files
 
 Check:
 
@@ -106,19 +121,19 @@ Check:
 - Database config files
 - CI/CD configs (GitHub Actions, etc.)
 
-### Deployment platforms
+#### Deployment platforms
 
-Each hosting platform and service keeps its own environment-variable or secret settings. You cannot see dashboards: list the names the operator gave you, and mark any service whose list you do not have as UNKNOWN.
+Each hosting platform and service keeps its own environment-variable or secret settings. You cannot see dashboards: list the names I gave you, and mark any service whose list you do not have as UNKNOWN.
 
-### Agent tooling
+#### Agent tooling
 
-The operator's own agent tools hold secrets too. Check, by file name and location only:
+The agent tools I use hold secrets too. Check, by file name and location only:
 
 - MCP client configuration files that contain tokens or API keys
 - Agent memory or notes files that may have captured a key from a past session
 - Agent tool settings and local credential files the agent can read
 
-### Third-party integrations
+#### Third-party integrations
 
 For each external service the app uses, identify:
 
@@ -126,21 +141,17 @@ For each external service the app uses, identify:
 - Where are those credentials stored?
 - What permissions does each credential grant?
 
----
+### Phase 2 — Inventory Documentation
 
-## Phase 2 — Inventory Documentation
-
-Record every secret you discovered in the inventory schema defined once in [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) ("The inventory schema"): name, purpose, provider, type, scope, environment, where it is stored, owner, created, last rotated, rotation path, and blast radius. Never record the secret's value — only its name and where it lives. Where a field cannot be determined from what you can see (for example a creation date that only a dashboard shows), write UNKNOWN and list it for the operator.
+Record every secret you discovered in the inventory schema defined once in [Triage Your Secrets](contextqb://playbooks/triage-your-secrets) ("The inventory schema"): name, purpose, provider, type, scope, environment, where it is stored, owner, created, last rotated, rotation path, and blast radius. Never record the secret's value — only its name and where it lives. Where a field cannot be determined from what you can see (for example a creation date that only a dashboard shows), write UNKNOWN and list it for me.
 
 Produce a complete inventory table.
 
----
-
-## Phase 3 — Blast Radius Assessment
+### Phase 3 — Blast Radius Assessment
 
 For each secret, assess the impact of exposure:
 
-### Blast radius categories
+#### Blast radius categories
 
 **Critical** — Full compromise
 
@@ -174,33 +185,31 @@ For each secret, document:
 - Specific worst-case scenario if leaked
 - Whether existing access controls limit the damage
 
----
-
-## Phase 4 — Exposure Assessment
+### Phase 4 — Exposure Assessment
 
 Check for active exposure risks:
 
-### Hardcoded secrets
+#### Hardcoded secrets
 
 - [ ] No secrets appear literally in source code
 - [ ] No secrets appear in comments
 - [ ] No secrets appear in example files
 - [ ] No secrets appear in test fixtures
 
-### Version control exposure
+#### Version control exposure
 
 - [ ] No secrets in current repo files
 - [ ] No secrets in git history (the secret scanner's history scan, with redacted output; as a last resort only, a search of `git log -p` that prints commit, file and line with matches masked — never the raw diff — and misses most key formats)
 - [ ] `.env` files are in `.gitignore`
 - [ ] No committed `.env.local` or similar
 
-### Log exposure
+#### Log exposure
 
 - [ ] Secrets are not logged by the application
 - [ ] Error messages don't include credentials
 - [ ] Debug endpoints don't expose environment variables
 
-### Third-party exposure
+#### Third-party exposure
 
 - [ ] Secrets are not shared in Slack/Discord/email
 - [ ] Secrets are not in shared documents
@@ -213,9 +222,7 @@ For each exposure found, document:
 - Time window of exposure
 - Remediation status (rotated? removed?)
 
----
-
-## Phase 5 — Rotation Status Assessment
+### Phase 5 — Rotation Status Assessment
 
 Check rotation hygiene:
 
@@ -235,35 +242,31 @@ For each secret that needs rotation:
 - What's the rotation procedure?
 - Who can perform the rotation?
 
----
-
-## Phase 6 — Storage Security Assessment
+### Phase 6 — Storage Security Assessment
 
 Check how secrets are stored:
 
-### Environment variables
+#### Environment variables
 
 - [ ] Secrets are in deployment platform settings (not code)
 - [ ] Development secrets are separate from production
 - [ ] Secrets are not echoed in build logs
 
-### Secrets managers (if used)
+#### Secrets managers (if used)
 
 - [ ] Access is restricted by role
 - [ ] Audit logging is enabled
 - [ ] Secrets are encrypted at rest
 
-### Application access
+#### Application access
 
 - [ ] Application uses least-privilege credentials
 - [ ] Different secrets for different environments
 - [ ] Service account keys are scoped appropriately
 
----
+### Phase 7 — Severity Classification
 
-## Phase 7 — Severity Classification
-
-### Critical findings
+#### Critical findings
 
 Immediate action required:
 
@@ -273,7 +276,7 @@ Immediate action required:
 - Production secrets used in development
 - Orphan secrets with no known owner
 
-### High-risk findings
+#### High-risk findings
 
 Action this week:
 
@@ -282,7 +285,7 @@ Action this week:
 - Single secret shared across environments
 - No documented rotation path
 
-### Medium-risk findings
+#### Medium-risk findings
 
 Action this month:
 
@@ -291,9 +294,7 @@ Action this month:
 - Incomplete inventory
 - Manual rotation only (no automation path)
 
----
-
-## Phase 8 — Output Format
+### Phase 8 — Output Format
 
 Produce a Markdown document with:
 
@@ -319,9 +320,7 @@ Produce a Markdown document with:
 
 9. **Remediation Roadmap** — Prioritised action list
 
----
-
-## Important rules for the auditor
+### Important rules for the auditor
 
 - Do NOT assume secrets are managed just because a secrets manager exists
 - Do NOT skip version control history scanning
@@ -332,9 +331,11 @@ Produce a Markdown document with:
 - For every "unknown" (owner, rotation date, etc.), flag it as a finding
 - Prioritise by blast radius first, then exposure risk
 
----
+**END OF AGENT INSTRUCTION — Secrets & Credentials Audit.** Evidence the person attached may follow below this line.
 
-## How to consume the output
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section. For secrets, an unknown owner or rotation date is itself a finding: someone has to take responsibility for it.
 
 After receiving the audit report:
 

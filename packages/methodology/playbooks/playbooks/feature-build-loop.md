@@ -2,7 +2,7 @@
 id: feature-build-loop
 title: Run a Feature Build Loop From an Approved Plan
 summary: A planner-executor loop that turns the seven-section feature brief from the feature-planning playbook into shipped code, with each section verified against the actual implementation before the next tranche begins.
-version: 0.3.1
+version: 0.4.1
 problem: |
   An approved feature plan does not ship itself. Letting an agent execute the plan top-to-bottom in one session reproduces every failure mode the plan was supposed to prevent — the agent picks the easiest place to put each line, edge cases get acknowledged but not handled, and "done" means "the agent said so."
 when_to_use: |
@@ -52,7 +52,7 @@ tags:
 
 # Run a Feature Build Loop From an Approved Plan
 
-The feature brief and tranche log govern this loop's implementation details. When the work extends beyond code or beyond this loop, the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method shows one way to keep the wider objective, relationships, decisions, and continuity in a shared record.
+The feature brief and its tranche log govern this loop's implementation details. A **tranche** is one bounded batch of the plan's work: built, then checked against the plan before the next batch begins. The **tranche log** is a running record at the bottom of the brief of what each batch built, what the check found and what changed. When the work extends beyond code or beyond this loop, the [agent workstream](contextqb://playbooks/run-an-agent-workstream) method shows one way to keep the wider objective, relationships, decisions, and continuity in a shared record.
 
 This playbook is the executor for the artifact produced by [`feature-planning`](contextqb://playbooks/feature-planning). The plan defines the contract; this loop ships against the contract without letting the agent invent architecture along the way.
 
@@ -76,7 +76,7 @@ Use the loop when any of these is true:
 - it introduces a new state owner;
 - it touches several surfaces.
 
-Otherwise, take the small-change path: plan → build → one independent review ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream)) → your own use of the feature. That keeps the contract and the independent check without the tranche machinery.
+Otherwise, take the small-change path: plan → build → one independent review ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream)) → your own use of the feature. That keeps the contract and the independent check without the tranche machinery. Accept the change into the version you use or deploy only after that review passes. "When the loop is done", near the end of this page, explains what accepting means with and without pull requests.
 
 ## The shape of the loop
 
@@ -109,7 +109,7 @@ This section is the one shared description of how a governed loop works. The [ar
 
 What matters is separation of _role and context_, not separate app windows. In a tool with subagents or parallel lanes ([which tools describe them](contextqb://references/tools#agentic-ides)), the planner can run in your main session, hand each tranche to an executor subagent or lane, and have a fresh session or subagent verify. If you run planning, execution and verification in the same context, the loop collapses into single-shot execution.
 
-**Independence.** A verifier counts as independent only when it did not produce the work and is given the plan (or audit), the governance record and the actual artifacts. The executor's completion report is a claim for the verifier to test, not evidence. A different model can add variety to verification; it does not by itself make it independent. [Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) is a ready-made independent-review prompt.
+**Independence.** A verifier counts as independent only when it did not produce the work and is given the plan (or audit), the governance record (the status-tracked brief and its tranche log, described below) and the actual artifacts. The executor's completion report is a claim for the verifier to test, not evidence. A different model can add variety to verification; it does not by itself make it independent. [Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream) is a ready-made independent-review prompt.
 
 **`SHIPPED` versus `VERIFIED`.** `SHIPPED` means the executor claims the item is done. `VERIFIED` means a verifier checked the actual code and evidence and agrees. Only the planner (as verifier) moves items to `VERIFIED`. The gap between the two counts is the loop working.
 
@@ -188,14 +188,43 @@ For the failure-mode taxonomy that informs walks 4–6 in particular, see [`fail
 
 ## Plan revisions — when reality contradicts the plan
 
-This is the one step the build loop has that the hardening loop does not. The feature plan can be wrong. You will discover this during execution — usually at walk 4 or walk 5, when the executor reports "I had to put state on the server because the client lifecycle does not survive the redirect" or "the orchestrator can't be a hook, it has to be a server action."
+This is the one step the build loop has that the hardening loop does not. The feature plan can be wrong. You will discover this during execution, usually at walk 1, 4 or 5, when the executor reports that the goal can't be met as planned, or that a piece of state or the coordinator can't live where the plan put it.
 
 When this happens:
 
 1. **Stop.** Do not silently roll forward. Silent roll-forward turns the plan into a fiction — and a fiction is worse than no plan, because future agents will read it as truth.
-2. **Return to feature-planning.** Revise the affected sections of the brief. Strike through revised lines (`~~old~~ new`) for substantive changes; promote noisy lines to the revision history table. Mark the change in the tranche history log with the rationale.
+2. **Return to feature-planning.** Revise the affected sections of the brief. Strike through revised lines (`~~old~~ new`) for substantive changes. If one line has been revised several times, move its history to a short revision history table near the top of the brief, one Date / Event row per change. Mark the change in the tranche history log with the rationale.
 3. **Re-approve.** "Implement revised plan as written" — the contract is amendable, but only deliberately.
 4. **Resume the loop** with the revised brief as the new input.
+
+### A small revision record
+
+This invented example shows what the record looks like. Maya, a fictional founder, is building a personal research notebook: she saves each source she reads together with her own note about it. The brief's goal is that a saved entry is still there after she closes and reopens the app. Its state plan kept entries in the browser's own storage.
+
+During tranche 1's goal walk, saved entries disappeared after the browser was closed and reopened. The executor had reported the cause as a plan-reality contradiction: Maya's browser clears site data whenever it closes, a privacy setting she wants to keep. Browser storage could not meet the goal on her machine. The planner stopped, revised the state plan on the record and asked Maya to re-approve:
+
+```markdown
+## 4. State plan — IN PROGRESS (revised 2026-03-10; re-approved)
+
+~~Saved entries are stored in the browser's own storage on Maya's laptop.~~
+Saved entries are stored in one file, `notebook.json`, in a folder Maya chooses.
+That file is the source of truth for saved entries.
+Owner: one storage module in the app's code reads the file when the app opens
+and writes it on each save; no other code reads or writes the file directly.
+
+## Tranche history log
+
+### Tranche 1 — verification, 2026-03-10
+
+- Goal walk: FAIL. Two entries saved; browser closed and reopened; list empty.
+- Cause: the browser clears site data on close (Maya's privacy setting; she keeps it).
+- Plan revision: state plan's storage changed from browser storage to `notebook.json`,
+  because the goal is entries that survive reopening and the old plan cannot meet it.
+- Approval: Maya, 2026-03-10, planning chat: "Implement revised plan as written."
+- Rolled forward: move storage to the file; repeat the goal walk.
+```
+
+Someone who has never read code can tell from this record what was planned, what was found, what was decided and who approved it. The state plan keeps two things apart: where saved entries are stored (the source of truth) and which code is responsible for reading and writing them (the owner), as [State Ownership](contextqb://principles/state-ownership) distinguishes. The old line stays visible, so a later session won't restore browser storage from an outdated note.
 
 Without this step, the loop devolves into rationalization: every divergence becomes a discovery, every shortcut becomes a feature. Plan revision is what keeps the brief honest as the source of truth.
 
@@ -203,7 +232,7 @@ Without this step, the loop devolves into rationalization: every divergence beco
 
 Hardening extracts _invariants_ — universal architectural rules. Feature-build extracts _feature contracts_ — the public surface this specific feature now exposes that future agent sessions must not silently break.
 
-Examples of real feature contracts:
+The examples below come from a different invented project: an online shop's checkout feature, introduced here only to show what feature contracts look like. The file and function names are illustrative.
 
 - The orchestrator at `apps/web/src/app/checkout/orchestrate.ts` is the single entry point to the checkout flow. Other surfaces invoke it; they do not duplicate its logic.
 - Cart state is owned by the server cookie; the client only reads. Never write cart state from the client.
@@ -378,7 +407,9 @@ The loop has done its job when:
 - The "Out of scope" walk reports `CLEAN`.
 - All feature contracts are written down in the appropriate location.
 
-At that point the feature ships. The plan, with its tranche history log, becomes the post-hoc record of how the feature was built — useful as a reference for the next person (human or agent) who has to extend it.
+At that point you can accept the feature: let it become the version you use or deploy. If you use pull requests, accepting means merging. If you commit straight to your main line, it means keeping those commits as your current version and deploying or relying on it. Until every walk is clean, the change waits. A walk that finds a blocking gap stops acceptance at that same point, whichever way you work.
+
+The plan, with its tranche history log, becomes the post-hoc record of how the feature was built — useful as a reference for the next person (human or agent) who has to extend it.
 
 ## What this is, in one sentence
 

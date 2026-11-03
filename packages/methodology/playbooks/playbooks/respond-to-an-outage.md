@@ -2,7 +2,7 @@
 id: respond-to-an-outage
 title: Respond to an Outage
 summary: Establish what is failing, limit the impact under the right authority and verify the useful task has recovered before closing the incident.
-version: 0.1.2
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 9
 journey_rank: 20
@@ -64,9 +64,17 @@ Record restored behavior, remaining restrictions and the watch needed before clo
 
 ## Worked tabletop: missing display, intact notes
 
-This is a **fictional exercise**. Read each fact before choosing an action; nothing here authorizes changing a real system:
+This is a **fictional exercise**. A **tabletop** means talking through supplied facts and decisions on paper; no system is touched. Nothing here authorizes changing a real system.
 
-1. At 09:10 local time (record the zone), the owner opens a newly delivered notebook version and sees no entries. They pause further updates and record the candidate identifier.
+The example is an invented local-file notebook. Maya, a fictional first-time founder, keeps her research notes from conversations with bakery owners in one data file on her own computer. A notebook program she installs herself reads and writes that file. These facts set the starting state for the discussion:
+
+- The data file holds three entries: two older ones and one newer one saved this week.
+- The most recent backup was taken before the newer entry was saved, so it contains only the two older entries.
+- The previously installed program version is still available, and returning to it has been rehearsed. Whether it can read the current data is established in fact 2; compatible code here means a version that reads the current data correctly.
+
+They are supplied for this exercise; you do not need to have run any earlier exercise or built the notebook. Read each fact below before choosing an action:
+
+1. At 09:10 local time (record the zone), the owner, Maya, opens a newly delivered notebook version and sees no entries. They pause further updates and record the candidate identifier.
 2. Read-only inspection finds the two original records and a newer third record intact. The stored format is unchanged. A test copy shows that the previous application version reads all three; its recovery procedure has been rehearsed.
 3. The available backup contains only the original two records. Restoring it over the working data would discard the newer third record, and does not address the demonstrated display problem. The owner rejects that action.
 4. Under the exercise's assumed authorization, the owner chooses the rehearsed compatible code rollback, preserving the data. In a real incident, the actual action still needs its own execution record.

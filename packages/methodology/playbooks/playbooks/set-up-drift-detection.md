@@ -2,7 +2,7 @@
 id: set-up-drift-detection
 title: Set Up Drift Detection on Day One
 summary: Wire the contextqb drift detector into your repo from the moment you author your first context.qb.yaml, so the map can never drift away from the territory unnoticed.
-version: 0.3.2
+version: 0.3.3
 problem: |
   A context.qb.yaml is only useful if it stays honest as the repo changes. Without a drift detector wired into your loop, every map becomes a stale map within a month, and your agent silently reads the wrong file. Setting it up on day one costs five minutes; setting it up later means triaging accumulated drift first.
 when_to_use: |
@@ -60,6 +60,7 @@ No `context.qb.yaml` yet? Start with [`write-a-context-qb`](contextqb://playbook
 Read this before your first run, because the first run is when the choice matters:
 
 - **Every `contextqb` command registers on first use.** The first time any command runs on your machine (outside CI), the CLI registers with ContextQB and stores a membership token locally. There is no separate opt-in step.
+- **What registering is for.** Registration makes this machine a member of ContextQB's data cooperative: projects contribute anonymized counts from their maps, and members can read the aggregate patterns on the [community insights page](https://contextqb.com/insights) (which languages projects declare, how many parts, routes and decision records their maps list, how often drift checks pass, where projects deploy). Patterns are shown only for groups of at least 30 projects. Your token lets you read them; your project only counts toward them if its `context.qb.yaml` includes a `project_id` and you run checks with CLI 2.3.0 or newer. The value is a comparison with what other projects did, not advice about what your project should do. The drift check works the same whether or not you register, so choose based on whether that comparison is worth the event described next.
 - **Only the drift check sends a telemetry event.** When a registered machine runs the check (`contextqb` or `contextqb check`), it sends one event after printing the results: CLI version, subcommand, event kind, adapter coverage, counts and finding codes. It does not include file contents, file paths, secrets or project names. The other commands (`membership`, `mcp setup`, `insights`, `upgrade`) do not send this event.
 - **`--no-telemetry` skips that event for one run.** It does not stop first-use registration.
 - **To run without registering at all,** set `CONTEXTQB_NO_PROVISION=true` for the run:
@@ -199,7 +200,7 @@ The versions in this recipe were checked in October 2026 (last verified 2026-10)
 
 ## What happens on first run
 
-On the first run of any `contextqb` command, outside CI and unless you have opted out, the CLI registers this machine and stores a membership token locally. With that token, drift checks send the telemetry event described in Step 1, and the token-gated community insight tools become available to you.
+On the first run of any `contextqb` command, outside CI and unless you have opted out, the CLI registers this machine and stores a membership token locally. With that token, drift checks send the telemetry event described in Step 1, and the token-gated community insight tools become available to you: the [insights page](https://contextqb.com/insights) and the community tools in the ContextQB MCP server. Step 1 explains what they show and when your project counts toward them.
 
 You can inspect or opt out at any time. `revoke` deletes your membership data and records a lasting opt-out on this machine:
 

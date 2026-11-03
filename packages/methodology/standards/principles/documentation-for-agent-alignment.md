@@ -2,7 +2,7 @@
 id: documentation-for-agent-alignment
 title: Documentation for Agent Alignment
 summary: In agentic development, the primary audience for your documentation is your current agent and your current self — not a future team. Docs are how you keep the agent on the architecture you've chosen, every prompt, every session.
-version: 0.2.1
+version: 0.2.3
 category: documentation
 audience:
   - novice-builder
@@ -80,7 +80,7 @@ Before writing a doc, or when wondering whether an existing one is worth keeping
 1. **Will my agent read this in the next session?** If no, why does it exist? Either make it the kind of document the agent reads, or, if it no longer describes the project, move it to your archive under your project's archive policy (the _Append, Don't Overwrite_ principle describes it) so it stops being read as current without losing the history. Your tool's own memory notes are a different matter: if your tool keeps them, read what it saved now and then, promote the true facts into a project document, and correct or delete the wrong notes in the tool.
 2. **If my agent does not read this, will it reinvent the contents?** If yes, the doc is load-bearing. If no, it is decoration.
 3. **Is this aspirational or actual?** A doc describing a future state the project is not yet in is worse than no doc. The agent reads it as truth and builds toward a target you did not choose.
-4. **Is this short enough to live directly in a prompt, or is it referenced from the boot manifest?** Either is fine; uncertainty between the two is not.
+4. **Is this short enough to live directly in a prompt, or is it referenced from the project map?** The project map is a short file, such as `context.qb.yaml`, that a new session reads first to learn what the project contains and which documents to open. Either is fine; uncertainty between the two is not.
 5. **Will I actually link my agent to this, or will I assume it is "in the project somewhere?"** Documentation that is never in the context window does not exist for the agent.
 
 If any answer is uncomfortable, the document is mis-shaped.
@@ -91,7 +91,7 @@ A document written for both "future engineer" and "current agent" usually serves
 
 The cleanest discipline is to pick the primary audience per document and then ask whether the secondary audience needs anything different. Most of the time, the answer is "no — they will read this fine even though it was not written for them." Occasionally the answer is "they need a different document," and that is the moment to split.
 
-The four documentation surfaces in [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) — `AGENTS.md`, `context.qb.yaml`, ADRs, and architecture overviews — are all agent-primary. Each has a human-secondary value as a bonus, not as a design goal. The operator-facing guides (this content type) are operator-primary, with agent-secondary value at coaching time.
+The four documentation surfaces in [`documentation-as-architecture`](contextqb://principles/documentation-as-architecture) — `AGENTS.md`, `context.qb.yaml`, ADRs, and architecture overviews — are all agent-primary. Each has a human-secondary value as a bonus, not as a design goal. Learning guides written for the operator, the person directing the agent (ContextQB's guides are one example), are the reverse: operator-primary, with agent-secondary value when an agent reads one to help you work through a task.
 
 ## The "I'll document later" tax
 
@@ -109,7 +109,7 @@ The economic frame: in traditional dev, documentation is amortised over hires. I
 
 ## The growth path
 
-Operator-only today is fine. The agent is your only collaborator. Documentation focuses on keeping that collaboration on-architecture.
+Operator-only today is fine. The **operator** is the person directing the work: you decide what the agent does and whether to accept the result. If you are the only person on the project, the agent is your only collaborator. Documentation focuses on keeping that collaboration on-architecture.
 
 Operator + small team next quarter is also fine. The same documentation now serves a second purpose: orienting the new humans. The order matters — the docs were written for the agent first, and the humans benefit from clarity that was forced by writing for an audience with no reliable memory of its own.
 
@@ -117,6 +117,6 @@ The teams that arrive at the team-stage with no documentation discipline find th
 
 ## How to ask an agent to enforce this
 
-> First, list the files you actually loaded at the start of this session, and say how each one got there (loaded by your tool, pointed to by another file, or read because I asked). Then, for every documentation file in this repository, evaluate it against the five questions: (1) will my agent read this in the next session? (2) if my agent does not read this, will it reinvent the contents? (3) is this aspirational or actual? (4) is this short enough to live in a prompt, or is it referenced from the boot manifest? (5) will I actually link my agent to this? For each file, give a brief verdict and the next action — keep, shorten, split, archive (under this project's archive policy), or rewrite for a clearer audience. Do not rewrite anything yet; produce the verdict list first.
+> First, list the files you actually loaded at the start of this session, and say how each one got there (loaded by your tool, pointed to by another file, or read because I asked). Then, for every documentation file in this repository, evaluate it against the five questions: (1) will my agent read this in the next session? (2) if my agent does not read this, will it reinvent the contents? (3) is this aspirational or actual? (4) is this short enough to live in a prompt, or is it referenced from the project map (context.qb.yaml or this project's equivalent)? (5) will I actually link my agent to this? For each file, give a brief verdict and the next action — keep, shorten, split, archive (under this project's archive policy), or rewrite for a clearer audience. Do not rewrite anything yet; produce the verdict list first.
 
 To see the result from the agent's side, run the fresh-session test in [Documenting for Your Agent](contextqb://guides/documenting-for-your-agent).

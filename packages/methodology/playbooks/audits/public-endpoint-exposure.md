@@ -2,7 +2,7 @@
 id: public-endpoint-exposure
 title: Public Endpoint Exposure Audit
 summary: A focused security audit of every URL reachable from the internet — routes, APIs, webhooks, and static assets. Verify each is intentionally public with appropriate protection.
-version: 0.3.1
+version: 0.4.0
 audience:
   - novice-builder
   - founder
@@ -54,24 +54,40 @@ tags:
 
 This audit inventories every URL reachable from the internet and verifies each is intentionally exposed with appropriate protection. It's designed for applications deployed to managed platforms where "public by default" is common.
 
-## Use this as an agent instruction
+## Before you run it: what you prepare
 
-> You are performing a professional security audit focused on public endpoint exposure.
->
-> Your task is NOT to explain web security concepts. Your task is to:
->
-> 1. Discover EVERY URL that is reachable without authentication
-> 2. Verify each endpoint is intentionally public
-> 3. Assess protection status (rate limiting, validation)
-> 4. Identify debug, test, or admin endpoints that should not be public
->
-> You must produce a complete inventory with evidence, not a checklist of best practices.
->
-> Test targets: run active tests — request bursts, injection strings, guessed paths or subdomains, attempts to bypass authentication — only against a local, disposable or staging target that the operator names. Against production, observe only: read code and configuration, and make the ordinary single requests any visitor could make. Do not run active tests against production unless the operator who owns it gives separate, explicit authority for that test. If you are unsure which environment a URL belongs to, ask before sending anything.
+- **Your domains.** List every domain and subdomain you know of, and say which is production, which is staging or a preview, and which you no longer use.
+- **The test target.** Name the local copy, disposable deployment or staging environment where active tests may run, or say there is none. The instruction's test-target rule explains the difference between observation (safe on production) and active testing (never on production without separate authority from whoever owns it). If you name no target, the agent observes and writes the active tests without running them.
+- **Anything the code does not show.** Platform routing rules, firewall or rate-limit settings configured in a dashboard: attach an export or screenshot, or those checks come back UNKNOWN.
 
----
+Run it in a session that did not build the endpoints.
 
-## Before you test: choose the target
+## The agent instruction
+
+Everything between the **START** and **END** lines below is the instruction for the agent: its role, limits, every phase and checklist, the report format and the auditor's rules. Copy all of it, including the START and END lines, into one message. Put the evidence you collected underneath, after the END line. The sections outside those two lines are for you, not the agent.
+
+**START OF AGENT INSTRUCTION — Public Endpoint Exposure Audit.** Everything from this line to the END line is one instruction.
+
+### Your role and limits
+
+You are performing a professional security audit focused on public endpoint exposure.
+
+Your task is NOT to explain web security concepts. Your task is to:
+
+1. Discover EVERY URL that is reachable without authentication
+2. Verify each endpoint is intentionally public
+3. Assess protection status (rate limiting, validation)
+4. Identify debug, test, or admin endpoints that should not be public
+
+You must produce a complete inventory with evidence, not a checklist of best practices.
+
+Test targets: run active tests — request bursts, injection strings, guessed paths or subdomains, attempts to bypass authentication — only against a local, disposable or staging target that I name. Against production, observe only: read code and configuration, and make the ordinary single requests any visitor could make, only to the domains I listed. Do not run active tests against production unless whoever owns it gives separate, explicit authority for that test. If you are unsure which environment a URL belongs to, ask before sending anything.
+
+### Evidence you may use
+
+Work only from the code and configuration in this repository and the evidence I attach to this message (my list of domains, the test target I named, and any dashboard exports). You have no access to provider dashboards, accounts, browsers, monitoring tools or live systems unless I have given it to you explicitly in this session; do not try to obtain it. When a check depends on evidence you do not have, mark it UNKNOWN, say exactly what evidence would settle it and who can get it (usually me, from a dashboard or a browser), and move on. Never mark a check as passing without evidence. Do not send requests to any live system except as this instruction expressly allows. Where a table below already has example rows, they show the format only; they are not findings about this application. Replace them with what you find.
+
+### Test-target rule: observation and active testing
 
 Most of this audit is reading: code, configuration, route files and DNS records. Some phases also send requests. Those requests fall into two kinds, and they belong in different places.
 
@@ -82,13 +98,11 @@ Most of this audit is reading: code, configuration, route files and DNS records.
 
 Why the line matters: active tests can lock real users out, fill a database with junk, trigger emails or charges, page whoever is on call, or breach a hosting provider's terms. A staging environment that matches production's configuration gives you the same answer without those risks. If you have no staging environment, run the active phases against a local copy and say so in the report.
 
----
-
-## Phase 1 — Public Endpoint Discovery
+### Phase 1 — Public Endpoint Discovery
 
 Find every URL reachable from the internet.
 
-### Route scanning
+#### Route scanning
 
 Search the codebase for:
 
@@ -108,11 +122,11 @@ For each route, determine:
 
 Filter to public-only (Auth required = No).
 
-### Framework-specific discovery
+#### Framework-specific discovery
 
 Every framework and hosting platform declares routes in its own places — route folders, configuration files, platform routing rules, middleware files. Read the project's instructions and configuration first, then find where its framework and platform declare routes; the dated [framework route discovery reference](contextqb://references/setup#framework-route-discovery) lists the conventions for the frameworks and platforms ContextQB has checked. For each declared route, check whether the handler or middleware actually enforces authentication. A search match is a lead; confirm it in the code.
 
-### Subdomain discovery
+#### Subdomain discovery
 
 Check for:
 
@@ -123,13 +137,11 @@ Check for:
 
 Tools: start with DNS records and certificate transparency logs (observation); a subdomain-enumeration tool that reads those public sources is also observation. Trying guessed subdomain names is active testing: do it only for domains you own, and only with the same authority as the other active tests.
 
----
-
-## Phase 2 — Webhook Inventory
+### Phase 2 — Webhook Inventory
 
 Webhooks are often overlooked public endpoints.
 
-### Find all webhooks
+#### Find all webhooks
 
 Search for:
 
@@ -137,7 +149,7 @@ Search for:
 - Routes that accept POST from third parties
 - Payment, authentication, code-hosting or other provider webhooks
 
-### Webhook audit
+#### Webhook audit
 
 For each webhook (the rows below are examples):
 
@@ -147,7 +159,7 @@ For each webhook (the rows below are examples):
 | /api/webhooks/clerk  | Clerk            | ?                   | ?                 |
 | /api/webhooks/github | GitHub           | ?                   | ?                 |
 
-### Webhook verification checklist
+#### Webhook verification checklist
 
 - [ ] Signature is verified before processing
 - [ ] Signature verification uses the correct secret
@@ -155,13 +167,11 @@ For each webhook (the rows below are examples):
 - [ ] Replay attacks are prevented (timestamp checking)
 - [ ] Failed verification is logged but not detailed to caller
 
----
-
-## Phase 3 — Static Asset Review
+### Phase 3 — Static Asset Review
 
 Public files can leak information.
 
-### Inventory public files
+#### Inventory public files
 
 Check:
 
@@ -170,7 +180,7 @@ Check:
 - Source maps (should not be public in production)
 - Configuration files accidentally exposed
 
-### Information disclosure
+#### Information disclosure
 
 Look for:
 
@@ -181,13 +191,11 @@ Look for:
 - [ ] No backup files (.bak, .old, .swp)
 - [ ] No version control files (.git exposed)
 
----
-
-## Phase 4 — Rate Limiting Assessment
+### Phase 4 — Rate Limiting Assessment
 
 Every public endpoint should have rate limiting.
 
-### Rate limit inventory
+#### Rate limit inventory
 
 For each public endpoint:
 
@@ -197,9 +205,9 @@ For each public endpoint:
 | /api/search  | ?             | ?     | ?           |
 | /api/health  | ?             | ?     | ?           |
 
-### Rate limit testing
+#### Rate limit testing
 
-Active testing — run against a local, disposable or staging target (see "Before you test"). For production, check the rate-limit configuration and code instead.
+Active testing — run against a local, disposable or staging target (see the test-target rule above). For production, check the rate-limit configuration and code instead.
 
 For each endpoint accepting input:
 
@@ -207,7 +215,7 @@ For each endpoint accepting input:
 2. Check if any limiting occurs
 3. Check response behavior (429? Degraded? Nothing?)
 
-### Priority endpoints
+#### Priority endpoints
 
 These MUST have rate limiting:
 
@@ -217,13 +225,11 @@ These MUST have rate limiting:
 - Any endpoint that writes to database
 - File upload endpoints
 
----
-
-## Phase 5 — Input Validation Assessment
+### Phase 5 — Input Validation Assessment
 
 Every public endpoint accepting input must validate it.
 
-### Input inventory
+#### Input inventory
 
 For each endpoint that accepts user input:
 
@@ -233,7 +239,7 @@ For each endpoint that accepts user input:
 | /api/search  | Query params | Length limit | ?            |
 | /api/upload  | File         | Type + size  | ?            |
 
-### Validation testing
+#### Validation testing
 
 For each input:
 
@@ -243,7 +249,7 @@ For each input:
 - [ ] Type mismatches are handled
 - [ ] Validation happens server-side (not just client)
 
-### Injection testing
+#### Injection testing
 
 Active testing — run against a local, disposable or staging target, never production without separate authority.
 
@@ -255,13 +261,11 @@ Test for basic injection on text inputs:
 
 Document any that pass through without validation.
 
----
-
-## Phase 6 — Intentionality Assessment
+### Phase 6 — Intentionality Assessment
 
 Determine if each public endpoint is intentionally public.
 
-### Intentionality matrix
+#### Intentionality matrix
 
 | Endpoint    | Appears intentional? | Evidence             | Risk if wrong |
 | ----------- | -------------------- | -------------------- | ------------- |
@@ -270,7 +274,7 @@ Determine if each public endpoint is intentionally public.
 | /api/users  | No                   | Should be protected  | High          |
 | /debug      | No                   | Development artifact | Critical      |
 
-### Suspect endpoints
+#### Suspect endpoints
 
 Flag these as likely unintentional:
 
@@ -280,7 +284,7 @@ Flag these as likely unintentional:
 - Any endpoint returning detailed errors
 - Any endpoint exposing environment variables
 
-### Verification
+#### Verification
 
 For each suspect endpoint:
 
@@ -288,59 +292,53 @@ For each suspect endpoint:
 2. Check if it has any protection
 3. Ask: "Would we be okay if anyone used this?"
 
----
-
-## Phase 7 — Information Disclosure Assessment
+### Phase 7 — Information Disclosure Assessment
 
 Public endpoints should not leak internal information.
 
-### Error message review
+#### Error message review
 
 - [ ] Errors return generic messages, not stack traces
 - [ ] Errors don't reveal internal paths
 - [ ] Errors don't reveal database structure
 - [ ] 404s don't leak existence of private routes
 
-### Response header review
+#### Response header review
 
 - [ ] Server version headers are suppressed
 - [ ] Framework-identifying headers are suppressed
 - [ ] No unnecessary headers leaking tech stack
 
-### Content review
+#### Content review
 
 - [ ] Public pages don't include internal URLs
 - [ ] Public APIs don't include internal fields
 - [ ] No internal user IDs or system IDs exposed
 
----
+### Phase 8 — Severity Classification
 
-## Phase 8 — Severity Classification
-
-### Critical findings
+#### Critical findings
 
 - Admin or debug endpoints publicly accessible
 - Authenticated endpoints with missing middleware
 - Webhooks without signature verification
 - Endpoints leaking secrets or credentials
 
-### High-risk findings
+#### High-risk findings
 
 - No rate limiting on form/query endpoints
 - Missing input validation on public inputs
 - Predictable patterns exposing internal routes
 - Source maps in production
 
-### Medium-risk findings
+#### Medium-risk findings
 
 - Information disclosure via error messages
 - Missing rate limiting on health checks
 - Verbose headers revealing tech stack
 - Backup files accessible
 
----
-
-## Phase 9 — Output Format
+### Phase 9 — Output Format
 
 Produce a Markdown document with:
 
@@ -370,9 +368,7 @@ Produce a Markdown document with:
 
 11. **Remediation Roadmap** — Prioritised actions
 
----
-
-## Important rules for the auditor
+### Important rules for the auditor
 
 - Do NOT assume an endpoint is protected — verify it
 - Do NOT skip subdomains — they often have weaker protection
@@ -381,9 +377,11 @@ Produce a Markdown document with:
 - Treat every unprotected endpoint as a finding until confirmed intentional
 - Document what information each public endpoint exposes
 
----
+**END OF AGENT INSTRUCTION — Public Endpoint Exposure Audit.** Evidence the person attached may follow below this line.
 
-## How to consume the output
+## After the run: reading the report
+
+**Reading UNKNOWN.** UNKNOWN means the agent did not have the evidence to decide, not that the check passed. For each one, the report should say what evidence would settle it. Collect it — usually a dashboard export, a screenshot or a check in your own browser — and either decide the item yourself or give the evidence to a fresh session with the same instruction for that section.
 
 1. **Remove or protect any unintentionally public endpoints.** These are critical.
 2. **Add rate limiting** to all endpoints accepting input.

@@ -2,7 +2,7 @@
 id: review-feedback-and-plan-the-next-change
 title: Review Feedback and Plan the Next Change
 summary: Preserve what a person reported, identify the task behind it and choose one change or investigation with a clear success check.
-version: 0.1.2
+version: 0.2.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 9
 journey_rank: 30
@@ -50,11 +50,11 @@ Choose a response: fix a demonstrated fault, investigate a missing fact, test a 
 
 ## Worked example: “Please add folders”
 
-This is an **invented report and decision**, continuing the simulated month in [Operating a Small App](contextqb://guides/operating-a-small-app):
+This is an **invented report and decision**. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer, used only by her. Each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed, so she can find that evidence when deciding which problem her business should solve. After several weeks of real use she has many similarly titled entries, and she writes the request below in her own operating notes. The same event appears as week 4 of the optional simulated month in [Operating a Small App](contextqb://guides/operating-a-small-app); you do not need to read that first.
 
 ```text
-Original report: “Please add folders. I can't find last week's interview note.”
-Context: fictional notebook user; many similarly titled notes
+Original report: “Add folders? I can't find last week's interview note.”
+Context: Maya's own use, written in her operating notes; many similarly titled notes
 Known: the person reports difficulty finding an earlier note
 Unknown: whether the note exists, whether its title helps, and how they looked
 Decision: investigate the finding task before approving folders

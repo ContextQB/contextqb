@@ -2,7 +2,7 @@
 id: harden-your-authentication
 title: Harden Your Authentication
 summary: Walk through your login, signup, and session management and apply baseline security hardening — rate limiting, brute-force protection, session hygiene, and secure defaults.
-version: 0.3.2
+version: 0.4.0
 problem: |
   Authentication is the front door to your application. If it's weak, nothing else matters. Most applications ship with default settings that are functional but not secure.
 when_to_use: |
@@ -29,6 +29,7 @@ related:
   - detect-security-drift
   - map-your-attack-surface
   - pre-launch-security
+  - triage-your-secrets
 ---
 
 # Harden Your Authentication
@@ -64,20 +65,31 @@ This playbook covers hosted authentication providers, framework auth libraries a
 
 **Test on a copy.** Steps 2, 4 and 5 suggest testing failed logins and weak passwords. Do that on a staging or local copy with a test account, not on production, where lockouts and alerts affect real users.
 
+**Who does what.** Split each check by who can actually see the evidence:
+
+- **Your agent** checks what is in the repository: custom login, rate-limiting and session code, cookie and token settings written in code or configuration, and which OAuth scopes the code requests. Ask it to quote the file and line for each answer.
+- **You** check what lives outside the repository: your auth provider's dashboard settings (attack protection, session lifetime, multi-factor, password policy, social login connections) and the cookies a real browser receives, on your staging or local copy while signed in with a test account. If you have given the agent supported access to the provider or a browser tool, it can gather this evidence too; record which way each answer was checked.
+
+Changing a provider setting is a decision you make and record in Step 8, not something to hand to an agent without review.
+
+## The example in the table
+
+Step 1 shows a filled-in table for **QuoteKit**, an invented app also used in [Map Your Attack Surface](contextqb://playbooks/map-your-attack-surface) and [Triage Your Secrets](contextqb://playbooks/triage-your-secrets). Dana runs it: a small paid web app that helps freelance designers turn a client's brief into a priced quote. Customers sign in with an email and password, with Google, or with a sign-in link sent by email, through a hosted sign-in service (Clerk); a few partner tools fetch quotes with API keys QuoteKit issues. Those features are why the rows exist. They are an illustration, not a list of sign-in methods your app should offer; your table lists the ways people and machines actually sign in to yours.
+
 ## Steps
 
 ### Step 1 — Inventory your authentication surfaces
 
 List everywhere users authenticate:
 
-| Surface        | URL/Path         | Provider        | Notes                 |
-| -------------- | ---------------- | --------------- | --------------------- |
-| Web login      | /sign-in         | Hosted provider | Primary user auth     |
-| Web signup     | /sign-up         | Hosted provider | New user registration |
-| Password reset | /forgot-password | Hosted provider | Recovery flow         |
-| API key auth   | /api/\*          | Custom          | Machine access        |
-| OAuth          | /sso/google      | Hosted provider | Social login          |
-| Magic link     | Email            | Hosted provider | Passwordless option   |
+| Surface         | URL/Path         | Provider                | Notes                 |
+| --------------- | ---------------- | ----------------------- | --------------------- |
+| Web login       | /sign-in         | Hosted provider (Clerk) | Primary user auth     |
+| Web signup      | /sign-up         | Hosted provider (Clerk) | New user registration |
+| Password reset  | /forgot-password | Hosted provider (Clerk) | Recovery flow         |
+| Partner API key | /api/v1/quotes   | Custom                  | Machine access        |
+| OAuth           | /sso/google      | Hosted provider (Clerk) | Social login (Google) |
+| Magic link      | Email            | Hosted provider (Clerk) | Passwordless option   |
 
 Include any non-standard auth paths (admin login, API authentication, webhook auth).
 
@@ -90,7 +102,7 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Lockout notification is sent to the account owner
 - [ ] Rate limits apply per-IP and per-account
 
-**Where to check:** your provider's attack-protection, brute-force or rate-limit settings; for a custom implementation, your rate-limiting middleware.
+**Where to check:** your provider's attack-protection, brute-force or rate-limit settings (you, in the dashboard); for a custom implementation, your rate-limiting middleware, the shared code that runs before each login request (your agent, in the code).
 
 **Starting points, not rules.** Choose a lockout threshold, a lockout duration (increasing on repeat offenses is common) and a per-IP rate limit, and write them down. Compare them with the published standards and provider defaults in the [security defaults reference](contextqb://references/pricing#security-defaults) — for example, some providers lock after around ten failures by default, and standards bodies cap the number rather than prescribing one.
 
@@ -110,7 +122,7 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Session revocation is possible (logout everywhere)
 - [ ] Sessions are bound to IP or device (if applicable)
 
-**Where to check:** your provider's session settings (session lifetime, inactivity timeout, token expiry and rotation). Some providers' defaults keep sessions open until sign-out, and some session limits depend on the plan — see the [security defaults reference](contextqb://references/pricing#security-defaults).
+**Where to check:** your provider's session settings (session lifetime, inactivity timeout, token expiry and rotation), in the dashboard (you). If your app sets its own session or token lifetimes in code, your agent reports those. Some providers' defaults keep sessions open until sign-out, and some session limits depend on the plan — see the [security defaults reference](contextqb://references/pricing#security-defaults).
 
 **Illustrative starting points by tier** (ContextQB's suggestions, not a standard — adjust to your users and record what you choose):
 
@@ -130,6 +142,8 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 
 ### Step 4 — Enable multi-factor authentication
 
+Multi-factor authentication (MFA) asks for a second proof in addition to the password, such as a code from an app on the person's phone or a passkey, so a stolen or guessed password alone does not open the account. TOTP (time-based one-time password) is the common app-based kind: an authenticator app shows a short code that changes every 30 seconds or so.
+
 **What to verify:**
 
 - [ ] MFA is available to users
@@ -137,7 +151,7 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] MFA recovery process exists and is documented
 - [ ] MFA options include TOTP (authenticator app), not just SMS
 
-**Where to check:** your provider's multi-factor settings.
+**Where to check:** your provider's multi-factor settings (you, in the dashboard).
 
 **Recommended settings:**
 
@@ -163,7 +177,7 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Password complexity is not overly restrictive (length > complexity)
 - [ ] Password change requires current password
 
-**Where to check:** your provider's password policy settings.
+**Where to check:** your provider's password policy settings (you, in the dashboard).
 
 **Recommended settings:**
 
@@ -188,7 +202,7 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Account linking is secure (cannot hijack via OAuth)
 - [ ] OAuth secrets are rotated periodically
 
-**Where to check:** your provider's social login or SSO connection settings.
+**Where to check:** your provider's social login or SSO connection settings (you, in the dashboard); the scopes your code requests, if it requests any itself (your agent, in the code).
 
 **What to do:**
 
@@ -206,11 +220,13 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 - [ ] Cookies have SameSite attribute set appropriately
 - [ ] JWTs expire appropriately and can be revoked
 
+A JWT (JSON Web Token) is a signed token some apps use instead of, or alongside, a session cookie to say who the person is. Whoever holds a valid one is treated as that person until it expires, so expiry and a way to revoke it decide how long a stolen token stays useful.
+
 **Where to check:**
 
-- Browser DevTools → Application → Cookies
-- Your auth middleware configuration
-- Auth provider documentation for token format
+- Browser DevTools → Application → Cookies (you, in a browser signed in with a test account on your staging or local copy)
+- Your auth middleware configuration, and any cookie or token settings in code (your agent, in the code)
+- Auth provider documentation for token format (either of you)
 
 **Recommended settings:**
 
@@ -218,8 +234,10 @@ Include any non-standard auth paths (admin login, API authentication, webhook au
 | ---------------- | ------------- | ------------------------------------- |
 | HttpOnly         | true          | Prevents XSS from stealing cookies    |
 | Secure           | true          | Cookies only sent over HTTPS          |
-| SameSite         | Lax or Strict | Prevents CSRF attacks                 |
+| SameSite         | Lax or Strict | Reduces cross-site request risk       |
 | Domain           | Minimal scope | Limit which subdomains see the cookie |
+
+The two attacks named in the table decide these settings. In **XSS** (cross-site scripting), someone gets their script to run inside your pages, for example through an unescaped comment; HttpOnly stops that script from reading the sign-in cookie, though not from acting inside the page. In **CSRF** (cross-site request forgery), another website makes the visitor's browser send a request to your app, such as "change my email", with their sign-in cookie attached; SameSite tells the browser not to attach the cookie to most requests started by other sites. Each is one layer of protection, not a complete defence against either attack, and neither replaces the other protections in this playbook.
 
 **What to do:**
 

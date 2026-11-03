@@ -2,7 +2,7 @@
 id: backend-architecture
 title: Backend Architecture Audit
 summary: A structured prompt for evaluating a backend or API layer — its boundaries, data ownership, transport coupling, and operational soundness.
-version: 0.4.1
+version: 0.4.2
 audience:
   - founder
   - developer
@@ -76,4 +76,4 @@ For an outside service, use [Connecting Services Reliably](contextqb://guides/co
 
 **Before you run it.** Use a session that did not build the backend — a fresh session, a second agent, or a person — and give it the project instructions, the project map, and the code. A different model can add variety; it does not by itself make the audit independent.
 
-**After it runs.** The eight signals in section 8 come from the [anti-spaghetti principle](contextqb://principles/anti-spaghetti), which explains each one. Section 7 is deliberately shallow: the security-stage audits (for example, the authentication and authorization audit and the attack-surface map) go deeper. A worked example of the full report, for a fictional ingestion backend, is in the project's sample audits as `backend-ingestion-audit-example.md`.
+**After it runs.** The eight signals in section 8 come from the [anti-spaghetti principle](contextqb://principles/anti-spaghetti), which explains each one. Section 7 is deliberately shallow: the security-stage audits (for example, the authentication and authorization audit and the attack-surface map) go deeper. To see what a finished report looks like, read the [worked example: a backend audit of a fictional ingestion service](https://contextqb.com/examples/backend-ingestion-audit-example/). It follows the same ten sections and explains who asked for it, why, and which details belong only to that example.
