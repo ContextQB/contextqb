@@ -5,11 +5,11 @@ subhead: >-
   Confirm your email, receive a welcome, and get one announcement if and when the first
   ContextQB course opens. No drip campaign, no upsells, no spam.
 meta_title: "ContextQB Course Launch Updates"
-meta_description: "Get one announcement if a ContextQB course opens. Start learning now with free guides, playbooks and a practice exercise for building your own app with AI."
+meta_description: "Get one announcement if a ContextQB course opens. Start learning now with free guides, playbooks and checks for building your own app with AI."
 
 ---
 
-The free curriculum and MCP access are available now. [Try the practice exercise](/practice/) or [follow the guides](/guides/).
+The free curriculum and MCP access are available now. [Follow the guides](/guides/) or [connect your AI app](/install/).
 
 Sign up and check your inbox for a confirmation link. Once you confirm, we’ll welcome you with free resources to start building and add you to the kickoff list.
 

@@ -102,13 +102,13 @@ path_cards:
     href: /guides/
     cta: Explore the full guide sequence
     external: false
-  - eyebrow: If you want something concrete to try
-    title: Check a working notebook
+  - eyebrow: If you want to check what was built
+    title: Test the behavior that matters
     description: >-
-      Save a made-up note, reopen it, download a backup and restore it into an
-      empty notebook. Practice checking what an application actually does.
-    href: /practice/
-    cta: Open the practice exercise
+      Agree what your feature must do, match each check to the question it
+      answers, and inspect the evidence instead of trusting a success message.
+    href: /guides/testing-agent-built-software/
+    cta: Read the testing guide
     external: false
 
 reads_heading: Recommended reading order

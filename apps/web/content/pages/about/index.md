@@ -29,7 +29,6 @@ ContextQB teaches the missing layer.
 
 - **The free curriculum** — guides, principles, playbooks, audits and prompts you can read, share and use with your project. [Find your starting point](/start-here/).
 - **The ContextQB MCP** — the same library inside your AI app. [Connect the library](/install/).
-- **The practice notebook** — a working app for checking saving, backup and recovery. [Try the exercise](/practice/).
 - **contextqb check** — an optional command-line tool that checks whether your project's `context.qb.yaml` still matches its files and configuration. [Learn about the check](/check/).
 
 ## Who it's for

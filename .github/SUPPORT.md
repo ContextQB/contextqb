@@ -27,7 +27,6 @@ Please do not open a public issue. Email [info@contextqb.com](mailto:info@contex
 - [Start here](https://contextqb.com/start-here/) to choose a starting point.
 - [Follow the guides](https://contextqb.com/guides/) from an idea through building, launch and operations.
 - [Connect your AI app](https://contextqb.com/install/) to use the library while you work.
-- [Try the practice notebook](https://contextqb.com/practice/) to check saving, backup and recovery.
 
 ## Contribute
 

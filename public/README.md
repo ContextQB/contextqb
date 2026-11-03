@@ -45,9 +45,9 @@ All methodology content is licensed **CC BY-SA 4.0**. You can read, copy, share,
 
 The `context.qb` format specification is **CC BY 4.0**.
 
-## Curriculum and practice
+## Curriculum
 
-Follow the free [guides from your first idea through launch and operations](https://contextqb.com/guides/), or [try the working browser notebook exercise](https://contextqb.com/practice/). Use made-up notes; the notebook stores data in your current browser and supports downloaded backups.
+Follow the free [guides from your first idea through launch and operations](https://contextqb.com/guides/).
 
 ## License
 

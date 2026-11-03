@@ -12,4 +12,4 @@ meta_description: "ContextQB Coach is in development and not yet available. Star
 
 ---
 
-The [curriculum](/guides/) and [practice notebook](/practice/) are free to use today.
+The [curriculum](/guides/) is free to use today.
