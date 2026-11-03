@@ -6,6 +6,6 @@ subhead: >-
   playbooks. They give you a way to think about a problem before you start
   solving it. Start with the guide that matches the decision in front of you.
 meta_title: "AI Building Guides for Non-Developers"
-meta_description: "Learn the essentials of building software with AI: understand applications, choose your tools, organize project context, and guide your coding agent."
+meta_description: "Learn to build your first app with AI. Follow plain-language guides to plan features, direct your agent, check the result, launch and keep your app running."
 
 ---

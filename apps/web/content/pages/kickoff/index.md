@@ -5,7 +5,7 @@ subhead: >-
   Confirm your email, receive a welcome, and get one announcement if and when the first
   ContextQB course opens. No drip campaign, no upsells, no spam.
 meta_title: "ContextQB Course Launch Updates"
-meta_description: "Find out about upcoming ContextQB courses for learning to build with AI agents, and explore free guides and playbooks while you wait."
+meta_description: "Get one announcement if a ContextQB course opens. Start learning now with free guides, playbooks and a practice exercise for building your own app with AI."
 
 ---
 

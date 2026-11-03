@@ -250,7 +250,7 @@ closer_cta_mcp_label: Pair with the MCP →
 closer_cta_mcp_href: /mcp
 
 meta_title: "ContextQB Drift Detection for AI Project Context"
-meta_description: "Keep your AI agent’s project map accurate. ContextQB checks context.qb.yaml against your repository and flags drift in structure, stack and routes."
+meta_description: "Keep your AI agent’s project map accurate. ContextQB checks context.qb.yaml against your repository and flags drift in structure, routes and recorded decisions."
 
 
 ---
