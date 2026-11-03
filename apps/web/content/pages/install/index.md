@@ -2,18 +2,29 @@
 eyebrow: Install
 headline: Connect ContextQB to your AI app.
 subhead: >-
-  Pick the app you build with and follow a few short steps. Once it's connected,
-  the AI agent in that app can look up ContextQB's free guides, principles,
-  playbooks and checklists while it helps you.
+  ContextQB is a free library, not an AI app. It plugs into an AI coding app you
+  already use. Pick that app below and follow a few short steps. Once it's
+  connected, the AI agent in that app can look up ContextQB's free guides,
+  principles, playbooks and checklists while it helps you.
 meta_title: "Install ContextQB: Connect the Free MCP Library to Your AI App"
 meta_description: "Connect the free ContextQB MCP library to Cursor, VS Code, Claude Code, Codex, OpenCode, Antigravity, Zed or another AI app. No ContextQB account required."
 dialog_label: Install ContextQB
 dialog_close_label: Close
 picker_question: Which app do you use?
 picker_intro: >-
-  Connect the free ContextQB library to your AI development app. No ContextQB
-  account is required. Your app connects through MCP (Model Context Protocol), a
-  standard way for AI apps to use outside tools and information.
+  These steps connect the free ContextQB library to an AI coding app that is
+  already installed on your computer. ContextQB doesn't include or install that
+  app. No ContextQB account is required. Your app connects through MCP (Model
+  Context Protocol), a standard way for AI apps to use outside tools and
+  information.
+no_app_heading: I haven't chosen an AI app yet
+no_app_body: >-
+  Start there instead. You'll need an AI coding app before any of the choices
+  below will work. Our guide explains the two decisions involved, the app you
+  work in and the AI model that does the work, and what each costs. Come back
+  here once you have installed one.
+no_app_link_label: "Read the guide: Choosing Your IDE and LLM"
+no_app_link_href: /guides/choosing-your-ide-and-llm/
 view_instructions_label: View instructions
 follow_up_fallback: If your app did not open, use these instructions.
 retry_label: Try opening it again

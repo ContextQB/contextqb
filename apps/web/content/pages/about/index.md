@@ -21,9 +21,13 @@ You do not need to become a traditional software engineer before you start. You 
 
 ## The thesis
 
-Agentic IDEs reduce the cost of implementation. They do not remove the need for judgment. The most common failure mode in AI-assisted projects is not syntax. It is a system that slowly becomes hard to understand: unclear state ownership, hidden coupling, ad hoc orchestration, and features patched on instead of integrated.
+Agentic IDEs reduce the cost of implementation. They do not remove the need for judgment.
 
-ContextQB teaches the missing layer.
+Here is the kind of failure we mean. You ask the agent for a small addition, such as letting people correct an entry they saved. It works. A week later, something that used to work goes wrong. The list still shows the old version of an edited entry until you reload. Or pressing Save sometimes says "Saved" when nothing was kept. You ask the agent to fix it, and the fix breaks something else.
+
+The cause is rarely a typo. More often, nobody decided which part of the app is responsible for that information, or which part decides what happens, and in what order, when someone presses Save. Each new change guesses, and the guesses collide. The project slowly becomes hard to understand.
+
+Engineers have names for these problems: unclear state ownership, hidden coupling, ad hoc orchestration, and features patched on instead of integrated. You don't need the names to start. ContextQB teaches you to notice the symptoms early, ask your agent where each responsibility lives, and decide before the agent builds around a guess. That is the missing layer.
 
 ## What you can use
 

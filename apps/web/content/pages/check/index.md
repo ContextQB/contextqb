@@ -4,15 +4,23 @@ headline: |
   An agent with a stale map
   is worse than an agent with no map.
 subhead: >-
-  Your `context.qb.yaml` is the file your AI agent reads first. It is the
-  project's map, written for an assistant that has not seen this repo before.
-  **contextqb check** keeps that map honest. Run it locally, wire it into your
-  build, and your agent stops starting from stale instructions.
-hero_banner_label: Supported stacks
+  A `context.qb.yaml` is a short map of your project that your AI agent reads
+  at the start of a session: its parts, where it runs and the decisions you've
+  made, written for an assistant that has not seen the project before.
+  **contextqb check** compares that map with your project folder and points to
+  the places where they no longer match. Run it locally or in your build, so a
+  stale map gets caught before your agent works from it.
+hero_banner_label: "Before you choose: this is an optional tool."
 hero_banner_body: >-
-  Works with pnpm, npm, or yarn workspaces. Reads routes from Cloudflare
-  Workers, Vercel, Netlify, or Fly. Finds your ADRs wherever they live — the
-  default path or a custom one you specify.
+  You don't need it to [connect ContextQB to your AI app](/install/) or to use
+  the guides. It helps when your project already lives in a code folder on
+  your computer, has a `context.qb.yaml` (or you're ready to
+  [write one](/playbooks/write-a-context-qb)), and you're comfortable typing
+  commands in a terminal. No project folder yet? [Start with the guides](/guides/)
+  instead. It currently reads JavaScript projects that list their parts as pnpm,
+  npm or yarn workspaces; deploy settings for Cloudflare Workers, Vercel,
+  Netlify or Fly; and your decision records (ADRs) at the default path or one
+  you specify.
 hero_cta_install_label: Get started
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
@@ -22,10 +30,13 @@ problem_eyebrow: The problem it solves
 problem_heading: Maps don't update themselves.
 problem_paragraphs:
   - >-
-    You add a package. You move a route. You record an architectural decision.
-    Your project keeps changing — but the file your agent reads at the start
-    of every session is the one you wrote three weeks ago. The map drifts away
-    from the territory.
+    Here is what drift looks like. Your map's `tree:` section lists the
+    project's parts as `apps/web` and `packages/data`. Last week your agent
+    added a new folder, `packages/billing`, and registered it as another part
+    of the project (a _workspace_, in JavaScript package terms). Nobody updated
+    the map. The next session reads the map, doesn't know billing exists, and
+    starts putting billing code somewhere else. The project changed; the map
+    didn't. The same happens when a route moves or a decision is replaced.
   - >-
     A confused agent is a manageable problem. A confident agent reading the
     wrong map is the failure mode that wastes hours and lands bad code.
@@ -69,7 +80,9 @@ watches_cards:
   - token: "decisions:"
     title: Your architectural decisions
     body: >-
-      The `decisions:` section indexes your ADRs by id and status. The source
+      The `decisions:` section indexes your architectural decision records
+      (ADRs: short files that each record one decision and why it was made)
+      by id and status. The source
       of truth is the ADR files themselves — at `docs/architecture/decisions/`
       by default, or the path you set via `paths.decisions:` in your
       `context.qb.yaml`.
@@ -113,15 +126,17 @@ fits_cards:
   - title: In your agent
     body: >-
       When your agent reads `context.qb.yaml` at the start of a session, it is
-      reading a file that passed the check. Its mental model is true.
-      Sessions stop opening with a stale snapshot.
+      reading a file that passed the check. The parts the check covers (your
+      workspaces, routes and decisions) match the project. Anything else in
+      the map is still yours to keep current.
 
 install_eyebrow: Get started
 install_heading: Install the command-line tool in your project.
 install_lede: >-
   This is an optional extra for people who keep their project in a code folder
   and are comfortable typing commands in a terminal. You don't need it to
-  [connect ContextQB to your AI app](/install/). The tool is published on npm as
+  [connect ContextQB to your AI app](/install/), and if you don't have a project
+  folder yet, start with [the guides](/guides/) instead. The tool is published on npm as
   [@context-qb/cli](https://www.npmjs.com/package/@context-qb/cli), and these
   steps work in any JavaScript project; nothing from the ContextQB repository is
   required.

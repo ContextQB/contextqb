@@ -158,9 +158,21 @@ The output is a ready-to-paste config snippet with your membership token already
 
 ## Try it on a real review
 
-Once the MCP is installed, ask your agent to use it on the current project:
+This is an optional practice task. Connecting the library gives your agent ContextQB's guides and checklists; it does not give it a suitable project to review. Choose the task that matches what you have.
+
+**You have a project with screens in code**, such as a web app, desktop app or browser extension whose interface lives in files your agent can read. Open that project in your AI app, preferably in a fresh session that did not build the screens, and ask:
 
 > Use the ContextQB MCP. Call `get_architecture_principles`. Then perform a UI architecture audit on the current repository using the template returned by `get_audit_prompt` with id `ui-architecture`. Produce the full document.
+
+Expect a Markdown report with the audit's ten sections, from an executive summary to a now / next / later plan, naming real files in your project and quoting code. To check it, open two or three files the report quotes and confirm the lines are there and say what the report claims. Treat any finding that does not point at your own files as generic advice. The [worked UI audit example](/examples/ui-architecture-example/) shows the shape of a useful result for an invented project, and the [UI Architecture Audit](contextqb://audits/ui-architecture) says what to do with the findings. The audit reviews structure only; it does not show that a person can use the screens.
+
+**You only have an idea, or no code yet.** There is nothing to audit. Ask for a plan instead:
+
+> Use the ContextQB MCP. Get the playbook with id `feature-planning` and follow it to plan the first feature of the app I describe below. Do not write any code. [Who the app is for, and the one thing it must do first.]
+
+Expect a written plan in the playbook's seven sections, and no code. Even before there is any app code, your project folder may already hold files such as a README or `AGENTS.md`. Every file path the plan names should either already exist or be marked NEW, and you can ask the agent to confirm that it checked each one. Check that its goal describes what you meant in your own words. If you can't yet say who the app is for and what it must do first, start with [The Mental Model of Your App](contextqb://guides/the-mental-model-of-your-app).
+
+**Your app has no screens**, such as a command-line tool, a background service or an MCP server. The UI audit does not fit. Use the planning prompt above for your next feature, or ask the agent to call `list_audits` and choose an audit that matches, for example `backend-architecture` for a service or `mcp-project` for an MCP server.
 
 ## Local setup
 
