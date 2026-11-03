@@ -2,7 +2,7 @@
 id: set-security-guardrails-for-your-agent
 title: Set Security Guardrails for Your Agent
 summary: Set your agent tool's permission controls first, then write a security section in your AGENTS.md that explicitly bounds what your agent can do — which files it can edit, which commands it can run, which secrets it can read, which integrations it can call.
-version: 0.3.2
+version: 0.3.3
 problem: |
   Agents inherit whatever privileges the environment hands them. Without an explicit security section in AGENTS.md, you've consented to "anything the host shell allows."
 when_to_use: |
@@ -29,9 +29,10 @@ related:
   - choosing-your-ide-and-llm
   - map-your-attack-surface
   - new-project-foundation
+  - protecting-users-and-their-data
   - review-your-ai-integration
-  - untrusted-by-default
   - set-up-agents-md
+  - untrusted-by-default
 ---
 
 # Set Security Guardrails for Your Agent

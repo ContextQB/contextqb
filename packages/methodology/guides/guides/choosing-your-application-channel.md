@@ -2,7 +2,7 @@
 id: choosing-your-application-channel
 title: Choosing Your Application Channel
 summary: "The channel is where the user meets the application: terminal, desktop, browser, phone, or browser app with installed behavior. Choose it from the user's situation, not from trend pressure."
-version: 0.1.2
+version: 0.1.4
 audience:
   - novice-builder
   - founder
@@ -19,8 +19,10 @@ related:
   - building-for-yourself-vs-others
   - choosing-your-ide-and-llm
   - feature-planning
+  - how-the-parts-of-your-app-work-together
   - new-project-foundation
   - what-an-application-is
+  - where-your-app-runs
   - where-your-data-lives
 next_steps:
   - Write down the first user tier and the place where the user will do the work.

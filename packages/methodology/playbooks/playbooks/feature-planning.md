@@ -2,7 +2,7 @@
 id: feature-planning
 title: Plan a Feature Before Letting the Agent Code
 summary: A structured planning prompt that produces a feature brief, surface map, state plan, and risk list — before any code is written.
-version: 0.2.0
+version: 0.3.3
 problem: |
   Letting an agent jump straight to code on a non-trivial feature almost guarantees that pieces are added in the wrong places, state ownership is unclear, and edge cases are missed.
 when_to_use: |
@@ -18,15 +18,20 @@ audience:
   - founder
   - agent
 journey_stage: 3
-journey_rank: 0
+journey_rank: 10
 related:
   - building-for-yourself-vs-others
+  - changing-software-without-losing-control
+  - check-a-user-journey-with-a-person
   - choosing-your-application-channel
+  - directing-your-first-feature
   - feature-build-loop
-  - the-mental-model-of-your-app
-  - scope-vs-punchlist
-  - work-with-agents-through-documentation
+  - review-feedback-and-plan-the-next-change
   - run-an-agent-workstream
+  - scope-vs-punchlist
+  - the-mental-model-of-your-app
+  - turn-a-feature-brief-into-checks
+  - work-with-agents-through-documentation
 related_principles:
   - modularity
   - orchestration
@@ -54,6 +59,8 @@ Two earlier decisions feed this plan: who the feature is for ([Building for Your
 If your tool has a planning or read-only mode ([which tools call it what](contextqb://references/setup#planning-modes)), switch to it — and still ask for the seven sections below. The mode keeps the agent planning before it edits; the sections give the plan its content. A planning mode does not by itself stop every action in every tool, and your permission settings still apply, so the prompt says "do not write code" as well.
 
 ## The planning prompt
+
+First make the Goal observable. “Save a note and read the same values after reopening” tells you what to check; “add a save function” does not. Have the agent put concrete acceptance examples beside the Goal and relevant failure cases in Edge cases and risks. [Directing Your First Feature](contextqb://guides/directing-your-first-feature) explains the learner's decisions, and [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) maps those examples to evidence without adding another planning framework.
 
 Paste this into your agent **before** asking for any code:
 

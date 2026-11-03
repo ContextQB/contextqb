@@ -2,13 +2,13 @@
 id: anti-spaghetti-review
 title: Anti-Spaghetti Review Prompt
 summary: A targeted prompt that runs the ContextQB anti-spaghetti checklist over a feature or codebase and produces a structured diagnostic document.
-version: 0.2.0
+version: 0.2.1
 audience:
   - founder
   - developer
   - agent
 journey_stage: 6
-journey_rank: 0
+journey_rank: 10
 use_case: |
   When you want a focused diagnosis of structural decay — hidden coupling, ambiguous state ownership, ad hoc orchestration, brittle lifecycles — without a full architecture review.
 variables:
@@ -20,6 +20,7 @@ quality_standard: |
   Every signal must be evaluated explicitly (present / partly / absent) with quoted evidence or a stated absence. Generic best-practice advice is not acceptable — only project-specific findings.
 related:
   - anti-spaghetti
+  - changing-software-without-losing-control
   - modularity
   - orchestration
   - refactor-planning

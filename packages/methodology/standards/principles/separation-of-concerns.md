@@ -2,7 +2,7 @@
 id: separation-of-concerns
 title: Separation of Concerns
 summary: Divide systems by responsibility so each piece does one thing clearly and changes for one reason.
-version: 0.1.2
+version: 0.1.3
 category: structure
 audience:
   - novice-builder
@@ -34,6 +34,7 @@ related:
   - feature-build-loop
   - feature-planning
   - general-technical-audit
+  - how-the-parts-of-your-app-work-together
   - maintainability
   - mcp-project
   - modularity

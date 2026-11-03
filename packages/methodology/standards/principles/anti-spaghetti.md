@@ -2,14 +2,14 @@
 id: anti-spaghetti
 title: Anti-Spaghetti Development
 summary: Concrete checklist for identifying spaghetti code — the hidden coupling, ad hoc orchestration, and brittle lifecycle assumptions that AI assistants generate by default.
-version: 0.1.3
+version: 0.1.4
 category: diagnosis
 audience:
   - novice-builder
   - agent
   - developer
 journey_stage: 6
-journey_rank: 0
+journey_rank: 10
 tags:
   - diagnosis
   - debt

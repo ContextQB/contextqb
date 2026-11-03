@@ -2,7 +2,7 @@
 id: feature-build-loop
 title: Run a Feature Build Loop From an Approved Plan
 summary: A planner-executor loop that turns the seven-section feature brief from the feature-planning playbook into shipped code, with each section verified against the actual implementation before the next tranche begins.
-version: 0.2.0
+version: 0.3.1
 problem: |
   An approved feature plan does not ship itself. Letting an agent execute the plan top-to-bottom in one session reproduces every failure mode the plan was supposed to prevent — the agent picks the easiest place to put each line, edge cases get acknowledged but not handled, and "done" means "the agent said so."
 when_to_use: |
@@ -19,16 +19,19 @@ audience:
   - developer
   - agent
 journey_stage: 3
-journey_rank: 10
+journey_rank: 50
 related:
   - agent-instructions
   - architectural-hardening-loop
+  - directing-your-first-feature
   - feature-planning
   - launch-day-checklist
   - refactor-planning
   - review-an-agent-workstream
   - run-a-multi-agent-workflow
   - run-an-agent-workstream
+  - test-an-integration-failure
+  - turn-a-feature-brief-into-checks
   - work-with-agents-through-documentation
 related_principles:
   - anti-spaghetti
@@ -76,6 +79,8 @@ Use the loop when any of these is true:
 Otherwise, take the small-change path: plan → build → one independent review ([Review an Agent Workstream Result](contextqb://prompts/review-an-agent-workstream)) → your own use of the feature. That keeps the contract and the independent check without the tranche machinery.
 
 ## The shape of the loop
+
+Carry the acceptance examples from the approved brief into verification. For a save-and-reopen requirement, a screenshot of a saved note is insufficient: the check must exercise reopening and read the expected values. Use [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) to attach that mapping to this same feature record, including simulated dependencies, unrun checks and limits. It supplies the evidence design; this loop continues to own implementation and review.
 
 ```
    approved plan ──▶ tranche planning ──▶ execution ──▶ verification ──┐

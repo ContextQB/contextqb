@@ -2,7 +2,7 @@
 id: authentication-and-authorization
 title: Authentication & Authorization Audit
 summary: A focused security audit of identity and access — verify login hardening, session security, authorization checks, and access control enforcement.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -39,7 +39,9 @@ deliverables:
   - A prioritised remediation roadmap.
 related:
   - application-security-baseline
+  - authentication-vs-authorization
   - harden-your-authentication
+  - protecting-users-and-their-data
   - public-endpoint-exposure
   - public-endpoints-are-battlegrounds
   - trust-boundaries-are-architecture
@@ -58,6 +60,8 @@ This audit examines how users prove their identity (authentication) and how the 
 - **Give the agent what it cannot see.** Export or screenshot your auth provider's security, session, password and MFA settings; the agent cannot read the dashboard. Never paste secret keys or session tokens.
 - **Choose the test target.** The tests below send many requests, try passwords and change IDs in requests. Run them only against a local copy or a staging deployment with test accounts. Against production, the agent only reads code and configuration and makes ordinary single requests — never bursts, password guessing or ID tampering without separate authority from the system's owner.
 - **Use an independent reviewer.** A session that did not build the auth code, given the code and the settings. A different model can add variety; it does not by itself make the audit independent.
+
+For the concepts and a controlled two-account example, read [Authentication vs. Authorization](contextqb://briefings/authentication-vs-authorization). Apply this audit to the identity and access model the product actually has. A local no-account tool does not need a login service to complete a lesson; it still needs its file and device boundaries understood. Record non-applicable checks with reasons and unknown settings as unknown. [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data) helps you interpret the findings.
 
 ## Use this as an agent instruction
 

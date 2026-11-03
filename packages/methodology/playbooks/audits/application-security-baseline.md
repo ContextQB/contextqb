@@ -2,7 +2,7 @@
 id: application-security-baseline
 title: Application Security Baseline Audit
 summary: A full security audit tailored for a non-developer-built managed-services application. Discovers architecture, enumerates surfaces, audits each, and produces prioritised findings.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -46,7 +46,9 @@ related:
   - detect-security-drift
   - failure-modes
   - map-your-attack-surface
+  - plan-data-retention-and-deletion
   - pre-launch-security
+  - protecting-users-and-their-data
   - public-endpoint-exposure
   - review-a-new-feature-for-security-implications
   - secrets-and-credentials
@@ -65,6 +67,8 @@ tags:
 # Application Security Baseline Audit
 
 This is a comprehensive security audit for applications built with agentic systems and deployed to managed services — hosting, authentication, database, storage and other providers ([what common services do](contextqb://references/tools#managed-services)). It's designed to be run by an AI agent and produce a report a non-developer can understand and act on.
+
+If you are preparing your first security review, begin with [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data). Bring the data inventory and promises from [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion). Tailor this managed-services audit to the actual product: distinguish applicable checks, justified exclusions and unknowns. An audit report is evidence for a decision, not a guarantee of security or a determination of legal compliance.
 
 ## Before you run it: what to give the agent
 

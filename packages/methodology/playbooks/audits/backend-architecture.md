@@ -2,7 +2,7 @@
 id: backend-architecture
 title: Backend Architecture Audit
 summary: A structured prompt for evaluating a backend or API layer — its boundaries, data ownership, transport coupling, and operational soundness.
-version: 0.2.0
+version: 0.4.1
 audience:
   - founder
   - developer
@@ -32,10 +32,15 @@ evaluation_criteria:
 deliverables:
   - A single Markdown document with the required sections.
 related:
+  - anti-spaghetti
+  - change-stored-data-safely
+  - connecting-services-reliably
+  - designing-your-apps-data
+  - modularity
+  - rehearse-backup-and-recovery
   - separation-of-concerns
   - state-ownership
-  - modularity
-  - anti-spaghetti
+  - test-an-integration-failure
 tags:
   - backend
   - audit
@@ -45,6 +50,10 @@ tags:
 # Backend Architecture Audit
 
 Backends fail in a small number of ways: mixed layers, unclear data ownership, accidental coupling between transport and domain, and no story for failures. This audit surfaces those.
+
+If these terms are new, start with [Designing Your App's Data](contextqb://guides/designing-your-apps-data). Bring its record examples, ownership rules and permitted actions into the review. Distinguish a code-level finding from an executed recovery check: use [Change Stored Data Safely](contextqb://playbooks/change-stored-data-safely) and [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) when stored information is at risk. A structural report alone does not establish that records survive a change.
+
+For an outside service, use [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) to name the contract and failure decisions. [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) checks missing, repeated and late results on an isolated target. Keep the structural findings separate from evidence that the actual connector preserves state and avoids duplicate effects.
 
 ## Use this as an agent instruction
 

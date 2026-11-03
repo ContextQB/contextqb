@@ -38,4 +38,4 @@ When we say Coach will know about your work, we mean that is the goal. It doesn'
 
 ## Use ContextQB today
 
-You don't need Coach to use ContextQB. The library is free: [connect it to your AI app](/install/) so your agent can look up guides, principles, playbooks and checklists while you work, or [start the curriculum yourself](/start-here/). Coach is separate from ContextQB [Courses](/courses/) and from the optional [drift-detection command-line tool](/check/).
+You don't need Coach to use ContextQB. The library is free: [connect it to your AI app](/install/) so your agent can look up guides, principles, playbooks and checklists while you work, or [start the curriculum yourself](/start-here/). Courses may accompany a Coach subscription at no additional charge; that packaging is still being decided. See the [course direction](/courses/) or try the free [practice notebook exercise](/practice/). The optional [drift-detection command-line tool](/check/) remains a separate tool.

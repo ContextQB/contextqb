@@ -2,7 +2,7 @@
 id: machine-verifiable-substrate
 title: Machine-Verifiable Substrate
 summary: Agents are generators; verifiers are what keep them honest. Every architectural choice that gives you a mechanical verifier tightens the feedback loop and reduces silent drift.
-version: 0.2.2
+version: 0.3.0
 category: structure
 audience:
   - novice-builder
@@ -31,6 +31,7 @@ agent_instructions:
   - If the project has CI gates (typecheck, lint, test), treat a failing gate as a failing change.
 related:
   - agent-substrate
+  - checks-tests-and-review
   - choose-a-language-stack
   - extensibility
   - failure-modes
@@ -38,12 +39,14 @@ related:
   - naming-conventions
   - new-project-foundation
   - programming-language-selection
+  - refactor-with-duplicates
   - retrofit-drift-detection
   - review-an-agent-workstream
   - security-drift-is-the-real-threat
   - set-up-drift-detection
   - setting-up-git-and-github
-  - refactor-with-duplicates
+  - testing-agent-built-software
+  - turn-a-feature-brief-into-checks
   - untrusted-by-default
 
 ---
@@ -72,7 +75,7 @@ Level 1 is the cheapest and fastest. Level 5 is the most expensive and slowest. 
 
 Which tool fills each role depends on your language; the dated [verifiers reference](contextqb://references/tools#verifiers-by-language) lists the current options.
 
-**Tests are often written by the agent too.** That makes them cheap, and it also means a test can encode the agent's misunderstanding: code and test agree with each other and are both wrong. Two habits help. Read the test _names_ as a plain-language specification ("rejects an order with no items", "refunds only the paying user") and ask about anything that doesn't match what you meant. And when you find a bug, ask the agent for a test that reproduces it _before_ the fix, so you see it fail and then pass.
+**Tests are often written by the agent too.** That makes them cheap, and it also means a test can encode the agent's misunderstanding: code and test agree with each other and are both wrong. Read the test names as an initial plain-language specification, then ask the agent to show and explain the actual assertions — the comparisons that decide whether a check passes. A reassuring name can conceal a wrong expectation. When you find a bug, ask for a test that reproduces it before the fix, so you see it fail for the relevant reason and then pass. [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) gives a worked example; [Checks, Tests and Review](contextqb://briefings/checks-tests-and-review) helps you interpret the result.
 
 **Review, for you, is not reading every line.** Level 5 is two things: an independent review (a second agent session, or another person, checking the change against the plan) and your own check of the behaviour: use the feature the way a user would and see whether it does what you asked. The [review prompt](contextqb://prompts/review-an-agent-workstream) is a ready-made instruction for the independent half.
 

@@ -2,7 +2,7 @@
 id: where-your-data-lives
 title: Where Your Data Lives
 summary: "Data is not abstract. It lives somewhere: in a file, in a browser, in a local database, in cloud storage, or in a managed database someone else operates."
-version: 0.1.2
+version: 0.1.4
 audience:
   - novice-builder
   - founder
@@ -18,9 +18,13 @@ tags:
 related:
   - building-for-yourself-vs-others
   - choosing-your-application-channel
+  - designing-your-apps-data
+  - protecting-users-and-their-data
+  - rehearse-backup-and-recovery
   - state-ownership
   - trust-boundaries-are-architecture
   - what-an-application-is
+  - where-your-app-runs
 next_steps:
   - List the important information your app needs to remember.
   - Mark each item as just-me, trusted-group, or public.

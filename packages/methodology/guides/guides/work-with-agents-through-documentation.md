@@ -2,7 +2,7 @@
 id: work-with-agents-through-documentation
 title: Work With Agents Through Documentation
 summary: A plain-language introduction to using project records to direct agents, evaluate results, govern discoveries, and continue work across sessions.
-version: 0.3.1
+version: 0.3.4
 audience:
   - novice-builder
   - founder
@@ -20,11 +20,14 @@ tags:
 related:
   - architectural-hardening-loop
   - audit-a-workstream-record
+  - changing-software-without-losing-control
   - context-quarterback-the-onboarding-map
+  - directing-your-first-feature
   - documentation-as-architecture
   - documentation-for-agent-alignment
   - feature-build-loop
   - feature-planning
+  - operating-a-small-app
   - resume-an-agent-workstream
   - review-an-agent-workstream
   - run-a-multi-agent-workflow

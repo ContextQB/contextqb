@@ -2,7 +2,7 @@
 id: pre-launch-security
 title: Pre-Launch Security Audit
 summary: A condensed security checklist for launch day. Verify the essentials before going live — secrets secured, auth hardened, endpoints protected, and monitoring in place.
-version: 0.3.0
+version: 0.4.2
 audience:
   - novice-builder
   - founder
@@ -36,14 +36,16 @@ deliverables:
 related:
   - application-security-baseline
   - harden-your-authentication
+  - launch-day-checklist
+  - operations-baseline
+  - preparing-for-real-users
   - public-endpoints-are-battlegrounds
+  - release-readiness
   - respond-to-a-suspected-compromise
   - secrets-have-provenance
   - security-regression
   - triage-your-secrets
   - untrusted-by-default
-  - operations-baseline
-  - launch-day-checklist
 tags:
   - security
 
@@ -52,6 +54,8 @@ tags:
 # Pre-Launch Security Audit
 
 This is a condensed security checklist for launch day. It's designed to be fast — with an agent running the checks, about 30–60 minutes of your time (ContextQB's estimate) — and catch the critical issues that would be embarrassing or damaging if discovered after launch. It is NOT a replacement for a comprehensive security audit — do that first, then use this as a final gate.
+
+Start with [Preparing for Real Users](contextqb://guides/preparing-for-real-users). This is the security gate within the broader [Release Readiness Audit](contextqb://audits/release-readiness); it does not replace task, usability, recovery or operational evidence. Apply checks to the actual architecture. A no-account local tool can mark sign-in and public-endpoint checks not applicable with reasons, while retaining its file, device and data protections.
 
 ## Use this as an agent instruction
 
@@ -88,6 +92,8 @@ Run through each section. Mark each item:
 - **PASS** — Verified and acceptable
 - **WARNING** — Concern but not a blocker
 - **BLOCKER** — Must fix before launch
+- **UNKNOWN** — Evidence is missing or the check was not run; a critical unknown blocks launch. An unknown is critical when the check would be a BLOCKER if it failed.
+- **NOT APPLICABLE** — This product has no such surface; give the reason and what change would make it applicable
 
 ---
 
@@ -113,7 +119,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -138,7 +144,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -163,7 +169,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -186,7 +192,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -209,7 +215,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -232,7 +238,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -258,7 +264,7 @@ git ls-files | grep -i env
 
 ### Result
 
-- Status: PASS / WARNING / BLOCKER
+- Status: PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE
 - Blockers: (list any)
 - Warnings: (list any)
 
@@ -268,33 +274,33 @@ git ls-files | grep -i env
 
 ### Summary
 
-| Section           | Status                   |
-| ----------------- | ------------------------ |
-| Secrets           | PASS / WARNING / BLOCKER |
-| Authentication    | PASS / WARNING / BLOCKER |
-| Public Endpoints  | PASS / WARNING / BLOCKER |
-| Error Handling    | PASS / WARNING / BLOCKER |
-| Data Protection   | PASS / WARNING / BLOCKER |
-| Monitoring        | PASS / WARNING / BLOCKER |
-| Incident Response | PASS / WARNING / BLOCKER |
+| Section           | Status                                              |
+| ----------------- | --------------------------------------------------- |
+| Secrets           | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Authentication    | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Public Endpoints  | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Error Handling    | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Data Protection   | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Monitoring        | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
+| Incident Response | PASS / WARNING / BLOCKER / UNKNOWN / NOT APPLICABLE |
 
 ### Decision
 
-**NO-GO** if any blocker exists.
+**NO-GO** if any blocker or critical unknown exists.
 
 Blockers that must be fixed:
 
 1. [Blocker 1]
 2. [Blocker 2]
 
-**GO WITH CAUTION** if warnings but no blockers.
+**GO WITH CAUTION** if the owner accepts the stated warnings and there are no blockers or critical unknowns.
 
 Warnings to address post-launch:
 
 1. [Warning 1]
 2. [Warning 2]
 
-**GO** if all sections pass.
+**GO** if all applicable sections have sufficient passing evidence, exclusions are justified and no blocker or critical unknown remains. This is a recommendation for the owner, not deployment authority.
 
 ---
 
@@ -308,7 +314,7 @@ This is a launch gate, not a comprehensive audit. It does NOT:
 - Evaluate AI/agent security comprehensively
 - Replace [Application Security Baseline](contextqb://audits/application-security-baseline)
 
-Do a full security audit before or soon after launch.
+Complete the applicable full security review before the exposure it is meant to assess; do not treat a planned post-launch audit as that evidence.
 
 ---
 
@@ -316,7 +322,7 @@ Do a full security audit before or soon after launch.
 
 After successful launch:
 
-1. **Schedule a full security audit** if you haven't done one.
+1. **Schedule the next applicable security review**, building on the pre-launch evidence.
 2. **Set up ongoing monitoring** for security-relevant events.
 3. **Plan your first regression check** for 30 days out.
 4. **Document your baseline** so future checks have a reference.

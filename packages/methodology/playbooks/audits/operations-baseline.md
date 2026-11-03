@@ -1,8 +1,8 @@
 ---
 id: operations-baseline
 title: Operations Baseline Audit
-summary: A recurring audit of the boring machinery that keeps a live application alive — monitoring, logging, alerting, backups, dependency health, and cost. Run it after launch and on a cadence, before the incident forces the question.
-version: 0.1.2
+summary: A recurring audit of the boring machinery that keeps a live application alive — monitoring, logging, alerting, backups, dependency health, and cost. Check preparation before launch, then repeat on the running system and on an agreed cadence.
+version: 0.2.1
 audience:
   - novice-builder
   - founder
@@ -12,9 +12,9 @@ audience:
 journey_stage: 9
 journey_rank: 10
 objective: |
-  Verify that a live application has the minimum operational posture to detect trouble, survive data loss, and answer "what happened?" — before an incident tests it for you.
+  Verify that the candidate or live application has the appropriate operational posture to detect trouble, survive data loss, and answer "what happened?" — before an incident tests it for you.
 scope: |
-  The running system as operated: monitoring and alerting, logging, backups and restore paths, dependency and vendor health, cost and quota drift, and the runbook surface. Security posture is out of scope — that is the Application Security Baseline audit's job.
+  The candidate preparation or running system as operated: monitoring and alerting, logging, backups and restore paths, dependency and vendor health, cost and quota drift, and the runbook surface. Security posture is out of scope — that is the Application Security Baseline audit's job.
 required_sections:
   - Executive summary
   - Monitoring and alerting inventory
@@ -39,10 +39,15 @@ related:
   - documentation-as-architecture
   - failure-modes
   - launch-day-checklist
+  - operating-a-small-app
   - pre-launch-security
+  - rehearse-backup-and-recovery
+  - release-readiness
   - respond-to-a-suspected-compromise
+  - respond-to-an-outage
   - security-drift-is-the-real-threat
   - security-regression
+  - set-up-useful-monitoring
   - suspicious-behavior-investigation
 tags:
   - operations
@@ -55,30 +60,34 @@ tags:
 
 **Plain language:** Security audits get the attention, but most apps that die young die of neglect — nobody watched the logs, nobody tested the backup, nobody noticed the dependency that deprecated itself last month. This audit checks the boring machinery that keeps a live app alive.
 
+Use [Operating a Small App](contextqb://guides/operating-a-small-app) for the learner's routine and its worked cost/first-month record. This audit can inspect preparation before launch, then verify the actual running arrangement afterward. [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) owns signal implementation and testing; [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) owns recovery evidence. State the target and any untested delivery or recovery link.
+
 ## When to use this
 
-- Within a week of first launch, once the dust settles
+- Before launch, to inspect operational preparation; after launch, to confirm the actual arrangement
 - Monthly or quarterly thereafter, on a calendar — not when something smells wrong
 - After any incident, to catch the posture gap that let it happen
 - When a dependency announces a deprecation and you realise you don't have a list of your dependencies
 
 ## Use this as an agent instruction
 
-> You are performing an operations baseline audit of this application. The app is live. Your job is not features and not security — it is the machinery that detects trouble, survives data loss, and answers "what happened?" at 2am.
+> You are performing an operations baseline audit of this application. State whether the target is a pre-launch candidate or a live application. Distinguish prepared configuration from observed operation. Your job is not features and not security — it is the machinery that detects trouble, survives data loss, and answers "what happened?" at 2am.
 >
 > Read the project instructions, deployment configuration, CI workflows, environment setup, and any monitoring/logging configuration. You cannot see provider dashboards: use the settings exports and screenshots the operator gives you, and mark anything you could not see as UNKNOWN. Never copy a secret or personal data into the report. Then produce a Markdown document with these sections, in order:
 >
 > 1. **Executive summary.** 3–5 bullets: the overall operational posture and the single most important gap.
-> 2. **Monitoring and alerting inventory.** For each critical user flow (sign-in, the core action, checkout/payment if any): what signal fires if it breaks? Where does that signal go? Who reads it? Flag any critical flow with no signal.
+> 2. **Monitoring and alerting inventory.** For each critical user flow (the core action, sign-in if accounts exist, checkout/payment if offered): what signal fires if it breaks? Where does that signal go? Who reads it? Flag any critical flow with no signal.
 > 3. **Logging posture.** What is logged, where, with what retention? Could you reconstruct "what happened to user X at time T" from logs alone? Flag any logs containing secrets or PII.
 > 4. **Backup and restore verification.** What is backed up, where, how often? When was a restore last tested, by whom, onto what, and what evidence shows it worked (for example, the restored copy's record counts or a check you ran against it)? A backup that has never been restored is a hypothesis, not a backup: report "backup exists, restore untested" as UNKNOWN, never as a pass. Do not run a restore yourself; the operator performs or witnesses it, on a non-production copy.
 > 5. **Dependency and vendor watch.** Every third-party service the app depends on (auth, database, payments, email, AI provider, hosting), and every agent-run component: scheduled agents, agent-run jobs, and the MCP servers the app or its developers rely on. For each: who owns it, what breaks if it goes down or misbehaves, and how would we notice a deprecation announcement or a run that silently stopped?
-> 6. **Cost and quota drift.** Current monthly cost per service — including model and agent spend, both the app's own model calls and the coding agents and scheduled agents that run on its behalf — quota headroom (rate limits, storage, invocations), and what happens at 10× usage. Flag anything with no billing alert, and say for each whether a hard spending limit exists: an alert notifies, it does not stop spending ([provider consoles and spending limits](contextqb://references/setup#provider-console)).
+> 6. **Cost and quota drift.** Current monthly cost per service, with source, billed unit, included allowance, reporting delay and assumptions — including model and agent spend, both the app's own model calls and the coding agents and scheduled agents that run on its behalf — quota headroom (rate limits, storage, invocations), and what happens at 10× usage. Identify the agreed warning and enforcement controls, or the reason no metered control applies. Distinguish quotas from monthly spend caps and show whether a hard spending limit is actually configured: an alert notifies, it does not stop spending ([provider consoles and spending limits](contextqb://references/setup#provider-console)).
 > 7. **Runbook and ownership surface.** If the app breaks tonight, is there a document that says what to check first? Who is "on call" (even if that's just you)? Do `AGENTS.md` and `context.qb.yaml` reflect the system as it runs today?
 > 8. **Blocking findings.** Gaps that should be fixed this week — a critical flow with no alerting, an untested backup, an orphan dependency.
 > 9. **Non-blocking suggestions.** Improvements that can wait.
 >
 > Be specific. Reference real dashboards, config files, and cron jobs. Do not write code. Do not give generic "you should monitor" advice — every finding names the flow, the missing signal, and the concrete place to add it.
+
+The cost scenario in [Operating a Small App](contextqb://guides/operating-a-small-app) shows how repeated attempts can increase the bill without increasing useful work. Apply its questions to actual usage and provider terms; the scenario's invented prices are not a reference table. For ordinary failures, use [Respond to an Outage](contextqb://playbooks/respond-to-an-outage).
 
 ## How to read the output
 
@@ -100,7 +109,7 @@ tags:
 - [ ] Every critical flow has a signal and every signal has a reader.
 - [ ] A restore has been tested within the last quarter.
 - [ ] Every third-party dependency has an owner and a "what breaks" answer.
-- [ ] Billing alerts exist on every metered service — including model and agent spend — and you know which ones also have a hard limit.
+- [ ] Every metered service has an agreed warning or usage control — including model and agent spend — and you know what actually enforces a limit and what only notifies.
 - [ ] Every scheduled agent, agent-run job and MCP server has an owner and a "what breaks" answer.
 - [ ] A short runbook exists: what to check first, in what order, and who does it.
 - [ ] The next audit date is on the calendar.

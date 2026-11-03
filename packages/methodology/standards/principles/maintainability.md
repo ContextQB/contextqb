@@ -2,7 +2,7 @@
 id: maintainability
 title: Maintainability
 summary: Code is read more than it is written. Optimise for the version of you that comes back in six months.
-version: 0.1.2
+version: 0.1.3
 category: maintainability
 audience:
   - novice-builder
@@ -26,6 +26,7 @@ related:
   - agent-instructions
   - architectural-hardening-loop
   - build-mcp-for-project-context
+  - changing-software-without-losing-control
   - document-producing-agent
   - documentation-as-architecture
   - extensibility
@@ -36,9 +37,10 @@ related:
   - naming-conventions
   - programming-language-selection
   - refactor-planning
-  - separation-of-concerns
-  - write-an-adr
   - refactor-with-duplicates
+  - separation-of-concerns
+  - update-a-dependency-safely
+  - write-an-adr
 
 ---
 

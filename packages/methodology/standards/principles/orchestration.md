@@ -2,7 +2,7 @@
 id: orchestration
 title: Orchestration
 summary: Every system needs explicit control flow. Decide what coordinates what, and put the coordinator somewhere obvious.
-version: 0.1.2
+version: 0.1.3
 category: orchestration
 audience:
   - novice-builder
@@ -32,12 +32,13 @@ related:
   - failure-modes
   - feature-build-loop
   - feature-planning
+  - how-the-parts-of-your-app-work-together
   - least-privilege-for-agents
+  - run-a-multi-agent-workflow
   - separation-of-concerns
   - state-management
   - state-ownership
   - the-plan-is-the-contract
-  - run-a-multi-agent-workflow
 
 ---
 

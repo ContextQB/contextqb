@@ -2,7 +2,7 @@
 id: run-an-agent-workstream
 title: Run an Agent Workstream
 summary: Define, operate, review, and close a documented flow of work between an operator and agents.
-version: 0.5.3
+version: 0.5.4
 problem: |
   An agent can complete an assignment while the objective remains unclear, unverified, or unfinished. Without a durable workstream record, authority, evidence, discoveries, and next actions disappear into chat history or competing notes.
 when_to_use: |
@@ -38,18 +38,19 @@ related:
   - bug-as-investigation
   - feature-build-loop
   - feature-planning
+  - refactor-with-duplicates
   - resume-an-agent-workstream
   - review-an-agent-workstream
+  - review-feedback-and-plan-the-next-change
   - run-a-multi-agent-workflow
   - scope-vs-punchlist
+  - security-critical-code-review
   - set-up-a-documentation-system
   - start-an-agent-workstream
   - understanding-the-context-window
   - update-an-agent-workstream
   - work-with-agents-through-documentation
   - write-a-context-qb
-  - refactor-with-duplicates
-  - security-critical-code-review
 
 ---
 

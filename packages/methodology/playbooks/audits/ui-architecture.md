@@ -2,7 +2,7 @@
 id: ui-architecture
 title: UI Architecture Audit
 summary: A structured prompt for asking an agent to evaluate a user interface — its component structure, state ownership, orchestration, and extensibility — without biasing the review toward isolated bugs.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -35,7 +35,9 @@ deliverables:
   - A short summary suitable for a non-developer founder.
 related:
   - anti-spaghetti
+  - check-a-user-journey-with-a-person
   - extensibility
+  - making-your-app-usable
   - modularity
   - refactor-planning
   - separation-of-concerns
@@ -49,6 +51,8 @@ tags:
 # UI Architecture Audit
 
 This audit is for when you want a real assessment of the front-end's structure — not a list of small fixes.
+
+For an explanation before the audit, read [Making Your App Usable](contextqb://guides/making-your-app-usable), including its filled ordinary-web example. This audit reviews structure. Record usability and accessibility observations separately: a well-organized component tree does not show that a person can complete the task. Use [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) for that evidence.
 
 ## Use this as an agent instruction
 

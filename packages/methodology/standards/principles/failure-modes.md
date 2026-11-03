@@ -2,7 +2,7 @@
 id: failure-modes
 title: Failure Modes
 summary: Anticipate where and how systems fail. Design for graceful degradation, not just the happy path.
-version: 0.2.0
+version: 0.4.1
 category: diagnosis
 audience:
   - novice-builder
@@ -30,6 +30,8 @@ related:
   - ai-output-is-untrusted-code
   - application-security-baseline
   - architectural-hardening-loop
+  - change-stored-data-safely
+  - connecting-services-reliably
   - feature-build-loop
   - launch-day-checklist
   - machine-verifiable-substrate
@@ -40,13 +42,18 @@ related:
   - programming-language-selection
   - public-endpoints-are-battlegrounds
   - refactor-with-duplicates
+  - rehearse-backup-and-recovery
+  - respond-to-an-outage
+  - rollback-vs-restore
+  - run-a-multi-agent-workflow
   - security-drift-is-the-real-threat
+  - set-up-useful-monitoring
   - state-ownership
   - suspicious-behavior-investigation
+  - test-an-integration-failure
   - the-plan-is-the-contract
   - think-like-an-attacker
   - untrusted-by-default
-  - run-a-multi-agent-workflow
 
 ---
 
@@ -55,6 +62,8 @@ related:
 Systems fail. Networks drop. Servers timeout. Users close the tab mid-operation. Disks fill. Permissions change. The question is not whether your code will encounter failure — it will — but whether you designed for it.
 
 AI-generated code frequently ignores failure modes because the prompt describes what should happen, not what goes wrong. The agent optimistically generates a happy-path implementation, and the first real-world user discovers the edge case the hard way.
+
+For stored information, practice the recovery decision before a risky change. [Rollback vs. Restore](contextqb://briefings/rollback-vs-restore) separates returning code from recovering data; [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) demonstrates the recovery path on an isolated target; [Change Stored Data Safely](contextqb://playbooks/change-stored-data-safely) applies that evidence to a format change. A backup setting or an older code revision is a recovery assumption until the relevant combination has been checked.
 
 ## Where systems fail
 
@@ -101,3 +110,5 @@ Swallowing errors silently is worse than crashing. If something fails, the user 
 > Before implementing this feature, enumerate the failure modes for each external call and state mutation. For each, decide whether to retry, fallback, surface an error, or abort. Document your decisions in a table. Then implement with those failure paths explicit, and add a test for each decision that simulates the failure (a timeout, an error response, malformed data) and checks that the chosen path happens.
 
 Tests that simulate a failure are the safe default. An agent can also demonstrate a fallback by injecting a real failure — cutting a connection, stopping a service — but only with your explicit authorization, and only against an isolated target such as a local copy or a test environment, never a live service or real data.
+
+For a new outside-service connection, [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) turns these principles into a contract. [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) demonstrates why a timed-out request may already have succeeded, and checks that retrying does not repeat its effect. A timeout alone is not evidence that nothing happened; reconciliation and a bounded retry policy belong in the design.

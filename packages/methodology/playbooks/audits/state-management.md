@@ -2,7 +2,7 @@
 id: state-management
 title: State Management Audit
 summary: A targeted audit that maps every piece of state in a system, identifies owners, surfaces duplicates, and flags derived-but-stored values.
-version: 0.2.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -33,6 +33,7 @@ related:
   - orchestration
   - repo-cleanup
   - state-ownership
+  - stored-data-derived-data-and-interface-state
 tags:
   - state
   - audit
@@ -41,7 +42,9 @@ tags:
 
 # State Management Audit
 
-This audit is narrower than a full architecture review. It focuses on the single thing that fails most often in AI-generated codebases: state ownership.
+This audit is narrower than a full architecture review. It focuses on state ownership: which part is responsible for each value and how other parts use it.
+
+Read [Stored Data, Derived Data and Interface State](contextqb://briefings/stored-data-derived-data-and-interface-state) for a beginner explanation. Those descriptions can overlap: a derived value can also be cached durably. In the inventory below, name the owner and source separately from durability and derivation. A legitimate cache needs an explicit refresh or invalidation rule; do not recommend removing every duplicate without understanding its job.
 
 ## Use this as an agent instruction
 

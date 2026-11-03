@@ -2,7 +2,7 @@
 id: state-ownership
 title: State Ownership
 summary: For every piece of state, name a single owner. Derived state should be derived, not duplicated.
-version: 0.1.2
+version: 0.1.4
 category: state
 audience:
   - novice-builder
@@ -40,19 +40,21 @@ related:
   - feature-build-loop
   - feature-planning
   - general-technical-audit
+  - how-the-parts-of-your-app-work-together
   - least-privilege-for-agents
   - map-your-attack-surface
   - orchestration
   - refactor-planning
+  - run-a-multi-agent-workflow
   - secrets-have-provenance
   - separation-of-concerns
   - setting-up-git-and-github
   - state-management
+  - stored-data-derived-data-and-interface-state
+  - the-plan-is-the-contract
   - ui-architecture
   - untrusted-by-default
   - where-your-data-lives
-  - the-plan-is-the-contract
-  - run-a-multi-agent-workflow
 
 ---
 

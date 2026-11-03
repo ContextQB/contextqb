@@ -2,7 +2,7 @@
 id: new-project-foundation
 title: Prepare a New Repo for AI-Assisted Development
 summary: A practical sequence for setting up a fresh repository so agents have the structure, naming, and boundaries they need to produce coherent code.
-version: 0.3.2
+version: 0.4.0
 problem: |
   Agents generate code based on the structure they observe. An empty or poorly-structured repo produces sprawling, inconsistent output that compounds quickly.
 when_to_use: |
@@ -22,9 +22,13 @@ audience:
 journey_stage: 1
 journey_rank: 10
 related:
+  - architectural-hardening-loop
   - building-for-yourself-vs-others
   - choose-a-language-stack
   - choosing-your-application-channel
+  - directing-your-first-feature
+  - how-the-parts-of-your-app-work-together
+  - repo-cleanup
   - repo-readiness
   - set-security-guardrails-for-your-agent
   - set-up-a-documentation-system
@@ -34,8 +38,6 @@ related:
   - the-mental-model-of-your-app
   - write-a-context-qb
   - write-an-adr
-  - architectural-hardening-loop
-  - repo-cleanup
 related_principles:
   - machine-verifiable-substrate
   - modularity
@@ -82,6 +84,8 @@ Save it as `docs/product/overview.md`. Every future prompt to an agent can refer
 Once you have identified the surfaces, decide which language each will use. Run the [`choose-a-language-stack`](contextqb://playbooks/choose-a-language-stack) playbook to produce a stack decision document before writing any code — the language is the substrate on which the agent builds, and a substrate with strong verifiers produces better results.
 
 ## Step 2 — Choose your package boundaries
+
+If those responsibilities are hard to picture, use [How the Parts of Your App Work Together](contextqb://guides/how-the-parts-of-your-app-work-together) to trace one action first. You need enough structure to support that action; you do not need to read every architectural principle before beginning. Keep naming and coordination notes as short sections in `AGENTS.md` when a separate document would only repeat them.
 
 Even a small project benefits from explicit boundaries. Don't dump everything into `src/`. For a single app, these boundaries are folders, not separate packages; a multi-part project (a website plus a background service, say) may use packages.
 
@@ -147,7 +151,7 @@ Two small files make the structure you just created durable. The agent drafts bo
 
 ## Step 8 — Add a single first feature, end-to-end
 
-Pick the smallest meaningful feature and have the agent implement it across every boundary. This exercises your structure and produces the first example future generations will mimic. When it is done, have the agent run the project's verifiers (typecheck, lint, format check, tests — whichever exist) and the drift check, and use the feature yourself.
+Pick the smallest meaningful feature and use [Directing Your First Feature](contextqb://guides/directing-your-first-feature) to agree its promise and checks before implementation. Use the linked planning and build procedures to implement it across the relevant boundaries. This exercises your structure and produces the first example future generations will mimic. When it is done, have the agent run the project's verifiers (typecheck, lint, format check, tests — whichever exist) and the drift check, and use the feature yourself. Completing this foundation does not establish readiness for public release.
 
 ## Step 9 — Lock in with a review
 

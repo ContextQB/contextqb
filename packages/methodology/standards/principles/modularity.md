@@ -2,7 +2,7 @@
 id: modularity
 title: Modularity
 summary: Modules should have clear boundaries and limited responsibilities — small, well-named, and replaceable.
-version: 0.1.2
+version: 0.1.3
 category: modularity
 audience:
   - novice-builder
@@ -33,6 +33,7 @@ related:
   - extension-ui-audit
   - feature-planning
   - general-technical-audit
+  - how-the-parts-of-your-app-work-together
   - maintainability
   - mcp-project
   - naming-conventions

@@ -2,7 +2,7 @@
 id: harden-your-authentication
 title: Harden Your Authentication
 summary: Walk through your login, signup, and session management and apply baseline security hardening — rate limiting, brute-force protection, session hygiene, and secure defaults.
-version: 0.2.0
+version: 0.3.2
 problem: |
   Authentication is the front door to your application. If it's weak, nothing else matters. Most applications ship with default settings that are functional but not secure.
 when_to_use: |
@@ -25,14 +25,17 @@ tags:
   - security
 related:
   - authentication-and-authorization
-  - map-your-attack-surface
+  - authentication-vs-authorization
   - detect-security-drift
+  - map-your-attack-surface
   - pre-launch-security
 ---
 
 # Harden Your Authentication
 
 **Plain language:** Your login page is under constant attack. This playbook helps you check that you have the basics in place — rate limiting so attackers can't guess passwords forever, session timeouts so stolen cookies expire, and secure defaults so common attacks don't work.
+
+Use [Authentication vs. Authorization](contextqb://briefings/authentication-vs-authorization) first if the distinction is unfamiliar. This procedure applies when your product has accounts; it does not require adding accounts to a local single-user tool. Record-level permission checks protect private information separately from sign-in hardening. Use controlled test identities and the [Authentication & Authorization Audit](contextqb://audits/authentication-and-authorization) to verify that boundary; a working sign-in screen alone does not show isolation.
 
 ## When to use this
 

@@ -2,7 +2,7 @@
 id: bug-as-investigation
 title: Convert a Bug Into an Architectural Investigation
 summary: Most bugs are symptoms of a structural problem. This playbook turns a single bug report into a clean diagnosis of what is actually wrong.
-version: 0.2.0
+version: 0.3.1
 problem: |
   Patching the immediate bug fixes the symptom and leaves the structural cause in place. The next bug arrives soon, in a different shape.
 when_to_use: |
@@ -17,14 +17,17 @@ audience:
   - developer
   - agent
 journey_stage: 3
-journey_rank: 20
+journey_rank: 60
 related_principles:
   - anti-spaghetti
-  - state-ownership
   - orchestration
+  - state-ownership
   - the-plan-is-the-contract
 related:
+  - respond-to-an-outage
+  - review-feedback-and-plan-the-next-change
   - run-an-agent-workstream
+  - testing-agent-built-software
 tags:
   - debugging
   - investigation
@@ -38,6 +41,8 @@ A bug is data. The shape of the bug tells you something about the shape of the s
 If your reaction to a bug is "okay, I'll add an `if` to handle that," you have not finished investigating. The plain trigger for this playbook: **the agent's fix adds an `if` without explaining why the wrong value got there in the first place.** That is a symptom being hidden, not a cause being fixed. It happens in a first build as often as in an old codebase.
 
 ## The investigation prompt
+
+You can give the agent a useful starting report without diagnosing the code: “I entered a title and note, pressed Save, closed the app and reopened it. I expected the same values, but the note was missing.” Record the target and steps, using synthetic data where possible. Then ask it to investigate what actually happened. [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) explains how a failing check can preserve that expectation while the cause is investigated.
 
 > A bug has been reported: **\[describe the bug, including how to reproduce it].**
 >

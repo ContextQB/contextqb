@@ -2,7 +2,7 @@
 id: choosing-your-ide-and-llm
 title: Choosing Your IDE and LLM
 summary: Your IDE is the workshop. The LLM is the collaborator. This guide helps you pick both, wire them together, and understand what each costs — without getting locked into a choice you'll regret.
-version: 0.3.1
+version: 0.4.2
 audience:
   - novice-builder
   - founder
@@ -21,6 +21,7 @@ related:
   - choosing-your-application-channel
   - how-to-use-contextqb
   - least-privilege-for-agents
+  - operating-a-small-app
   - secrets-have-provenance
   - set-security-guardrails-for-your-agent
   - set-up-agents-md
@@ -108,7 +109,7 @@ You pay the tool's maker a flat monthly fee, or use a free tier. The plan includ
 
 You sign up directly with a model provider, create an API key, and add it to your tool's settings.
 
-- **Pros:** Pay per token used, full model picker, no tool-imposed limits. Switch providers without changing tools.
+- **Pros:** Pay for measured usage and choose among models your tool supports, subject to tool and provider limits. Check whether your tool supports the provider you want.
 - **Cons:** You manage the keys. Cost is harder to predict (a runaway agent loop can be expensive). You'll want billing alerts.
 - **Setup:**
   1. Create an account in the provider's developer console ([where the consoles, keys and spending limits are](contextqb://references/setup#provider-console)).
@@ -139,9 +140,11 @@ ContextQB does not recommend a particular product. A first setup that works with
 
 Prices change often, so this guide explains how the bills work and links to dated price tables: [agentic coding plan prices](contextqb://references/pricing#ide-plans) and [model API list prices](contextqb://references/pricing#model-api). Check the date on each table and the provider's own page before you decide.
 
-- **Bundled plans** charge a flat monthly fee, often with a free tier and higher tiers for heavy use or extra features. The cost is predictable; the limit shows up as usage caps or slower responses instead.
+- **Bundled plans** charge a flat monthly fee, often with a free tier and higher tiers for heavy use or extra features. Check the included usage, caps and any optional overage or separately billed calls; a subscription does not by itself prove that every charge is fixed.
 - **Pay-per-token** bills input (what you send) and output (what the model writes) separately, priced per million tokens. Output costs several times more than input, careful models cost much more than fast ones, and many providers charge less for input they have recently seen (prompt caching).
 - **Local models** have no API cost. You pay in setup time, hardware (a machine with plenty of memory or a capable graphics card helps), and lower quality.
+
+For a practice exercise with invented prices rather than vendor prices, use the worked cost decision in [Operating a Small App](contextqb://guides/operating-a-small-app). It separates a subscription, metered attempts, retries, warning thresholds and actual enforcement. You can use that short section now and return to the operating routine after launch.
 
 ### How agent sessions spend money
 

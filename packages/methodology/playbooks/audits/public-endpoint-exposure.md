@@ -2,7 +2,7 @@
 id: public-endpoint-exposure
 title: Public Endpoint Exposure Audit
 summary: A focused security audit of every URL reachable from the internet — routes, APIs, webhooks, and static assets. Verify each is intentionally public with appropriate protection.
-version: 0.3.0
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -39,11 +39,12 @@ deliverables:
 related:
   - application-security-baseline
   - authentication-and-authorization
+  - connecting-services-reliably
+  - launch-day-checklist
   - map-your-attack-surface
   - public-endpoints-are-battlegrounds
   - trust-boundaries-are-architecture
   - untrusted-by-default
-  - launch-day-checklist
 tags:
   - security
 

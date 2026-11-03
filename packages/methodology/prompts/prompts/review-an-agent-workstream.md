@@ -2,7 +2,7 @@
 id: review-an-agent-workstream
 title: Review an Agent Workstream Result
 summary: A reusable instruction for independently checking a delivered output against its approved scope and recording evidence and limits.
-version: 0.3.1
+version: 0.3.3
 audience:
   - founder
   - operator
@@ -26,12 +26,16 @@ related:
   - agent-instructions
   - architectural-hardening-loop
   - audit-a-workstream-record
+  - changing-software-without-losing-control
+  - directing-your-first-feature
   - feature-build-loop
   - machine-verifiable-substrate
+  - refactor-planning
   - run-an-agent-workstream
+  - test-an-integration-failure
+  - update-a-dependency-safely
   - update-an-agent-workstream
   - work-with-agents-through-documentation
-  - refactor-planning
 tags:
   - agents
   - review

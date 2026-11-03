@@ -2,7 +2,7 @@
 id: setting-up-git-and-github
 title: Setting Up Git and GitHub
 summary: Git is the time machine that makes agentic coding safe. Without it, every agent session is a roll of the dice. This guide walks first-time builders through installing git, choosing a remote, and using both day-to-day with an AI coding agent.
-version: 0.2.2
+version: 0.2.4
 audience:
   - novice-builder
   - founder
@@ -23,8 +23,10 @@ related:
   - new-project-foundation
   - refactor-with-duplicates
   - respond-to-a-suspected-compromise
+  - rollback-vs-restore
   - state-ownership
   - the-mental-model-of-your-app
+  - update-a-dependency-safely
   - work-with-agents-through-documentation
   - write-a-context-qb
   - write-an-adr

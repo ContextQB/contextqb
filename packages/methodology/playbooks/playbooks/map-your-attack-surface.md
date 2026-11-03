@@ -2,7 +2,7 @@
 id: map-your-attack-surface
 title: Map Your Attack Surface
 summary: Walk through your application and produce a structured inventory of every public surface, every secret, every agent capability, and every third-party trust.
-version: 0.2.0
+version: 0.3.2
 problem: |
   You can't defend what you can't see. Most security failures happen on surfaces the builder didn't know existed — a public endpoint they forgot, a secret they didn't track, a third-party integration that silently gained access.
 when_to_use: |
@@ -29,8 +29,11 @@ tags:
 related:
   - ai-integration-security
   - application-security-baseline
+  - connecting-services-reliably
   - detect-security-drift
   - harden-your-authentication
+  - plan-data-retention-and-deletion
+  - protecting-users-and-their-data
   - public-endpoint-exposure
   - review-your-ai-integration
   - security-regression
@@ -42,6 +45,8 @@ related:
 # Map Your Attack Surface
 
 **Plain language:** Before you can protect your application, you need to know what doors and windows it has. This playbook helps you walk through your project and write down every way someone (or something) could get in.
+
+For the underlying decisions, start with [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data). Include retained copies and outside data recipients from [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion). Mark absent surfaces as not applicable with a reason, and distinguish inspected locations from unknown provider settings; the inventory should describe this product rather than create unnecessary services.
 
 ## When to use this
 

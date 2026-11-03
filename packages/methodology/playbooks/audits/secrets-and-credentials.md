@@ -2,7 +2,7 @@
 id: secrets-and-credentials
 title: Secrets & Credentials Audit
 summary: A focused security audit of secrets management — inventory all credentials, assess blast radius, check rotation status, and identify exposure risks.
-version: 0.2.1
+version: 0.2.2
 audience:
   - novice-builder
   - founder
@@ -38,6 +38,7 @@ deliverables:
 related:
   - application-security-baseline
   - least-privilege-for-agents
+  - protecting-users-and-their-data
   - respond-to-a-suspected-compromise
   - secrets-have-provenance
   - triage-your-secrets

@@ -87,21 +87,28 @@ path_cards:
   - eyebrow: If you want to share back
     title: Join the data cooperative
     description: >-
-      The CLI silently provisions a membership token the first time you run
-      any contextqb command. In return, the MCP unlocks community-insight
-      tools and the website surfaces aggregate trends. K-anonymity guards
-      mean nothing about you is identifiable.
+      The optional command-line tool contributes project information to
+      aggregate community insights. Read what it collects and how membership
+      works before deciding whether to use it.
     href: /check
     cta: See how it works
     external: false
   - eyebrow: If you want the full curriculum
-    title: Learn by building a real app
+    title: Follow the path through operations
     description: >-
-      Self-paced courses that teach the methodology by building a real
-      application end to end with an AI coding agent. Join the kickoff list for
-      first access to the opening course.
-    href: /courses
-    cta: See the courses
+      The free guides now cover shaping an idea, directing a feature, testing,
+      protecting users, making safe changes, launching and running a small app.
+      Read them in journey order and use the linked playbooks as you build.
+    href: /guides/
+    cta: Explore the full guide sequence
+    external: false
+  - eyebrow: If you want something concrete to try
+    title: Check a working notebook
+    description: >-
+      Save a made-up note, reopen it, download a backup and restore it into an
+      empty notebook. Practice checking what an application actually does.
+    href: /practice/
+    cta: Open the practice exercise
     external: false
   - eyebrow: If you want to follow along
     title: Follow the field notes

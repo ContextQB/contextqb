@@ -2,7 +2,7 @@
 id: how-to-use-contextqb
 title: How to Use ContextQB
 summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it is, why we built it, how we pay for it, and how to start using it without feeling lost.
-version: 0.2.0
+version: 0.4.1
 intro: |
   A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
@@ -12,12 +12,25 @@ audience:
 journey_stage: 0
 journey_rank: 0
 related:
+  - changing-software-without-losing-control
   - choosing-your-ide-and-llm
+  - connecting-services-reliably
   - context-quarterback-the-onboarding-map
+  - designing-your-apps-data
+  - directing-your-first-feature
+  - how-the-parts-of-your-app-work-together
+  - launching-for-your-first-users
+  - making-your-app-usable
+  - operating-a-small-app
+  - preparing-for-real-users
+  - protecting-users-and-their-data
   - repo-readiness
+  - test-an-integration-failure
+  - testing-agent-built-software
   - understanding-llms
   - understanding-the-context-window
   - what-an-application-is
+  - where-your-app-runs
 tags:
   - orientation
   - getting-started
@@ -36,7 +49,7 @@ next_steps:
 
 ## What this guide is about
 
-ContextQB is for people who want to build software with AI agents. You may be a founder, marketer, operator, small business owner, designer, writer, hobbyist, or just someone with an idea you want to turn into a working thing. You do not need to be a traditional developer to begin — but you do need a way to work.
+ContextQB is for people who want to build software with AI agents. You may be starting your first software product for customers or building something your team needs. You might bring expertise in a field, experience as a creator or simply an idea you want to pursue yourself. You do not need to be a traditional developer to begin — but you do need a way to work.
 
 AI agents can write code, edit files, explain errors, generate interfaces, connect tools, and help you move much faster than you could on your own. The confusing part is that they can also lose the thread, make strange assumptions, break things that were already working, or turn a simple idea into a messy project you no longer understand. ContextQB exists to help with that.
 
@@ -114,7 +127,7 @@ We want more people to become capable builders — not by pretending everyone is
 
 ContextQB is being built as an open, practical learning system. The public methodology is free to read. The goal is to make the basic ideas available to anyone who wants to learn how to build with agents.
 
-Over time, ContextQB may be supported by paid courses, workshops, tools, templates, products, and consulting. The free material will remain the foundation. Paid offerings will provide deeper structure, guided paths, and more direct support for people who want help applying the method.
+We are developing **ContextQB Coach**, a subscription product intended to help you apply the curriculum inside your IDE while building your own application. Courses may be included with the subscription at no additional charge; that packaging is still being decided. Coach is in development and subscriptions are not available yet. The free methodology remains the foundation, and you can use this material with your existing agent today. See the [Coach overview](https://contextqb.com/coach/).
 
 The best way to support the project right now is simple: use it, build with it, tell us what is confusing, show us where the method helped, and tell us where it broke down. ContextQB should improve by being used in the field.
 
@@ -126,7 +139,7 @@ Pick the lane that matches where you are.
 
 Start by reading a few guides. Do not try to understand the entire system at once. Your goal is basic orientation: What is an agent? What is context? Why do agents lose track? How do you give better instructions? How do you check the work?
 
-Once those ideas start to make sense, pick a small project and try to build something. Small is good — a personal website, a simple calculator, a tiny directory, a basic dashboard, a landing page, a tool that solves one annoying problem. The goal of the first project is not perfection. The goal is to learn how the agent behaves.
+Once those ideas start to make sense, choose one useful part of the product you want to build. A small first feature might save a research note, record a team request or display one useful result. Your ambition can be substantial while the first step stays manageable. Learn how the agent behaves and how to check the promise that matters to you.
 
 ### If you already have an idea
 
@@ -146,6 +159,8 @@ Use ContextQB as a working method inside your tool. Before each task, brief the 
 
 ## A reasonable first day
 
+You do not need to read the entire library in sequence. If the tools are new, begin with [What an Application Is](contextqb://guides/what-an-application-is) and [Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm). If you have already experimented, start from your current idea and fill those gaps as needed. Once your project foundation is ready, use [How the Parts of Your App Work Together](contextqb://guides/how-the-parts-of-your-app-work-together), [Directing Your First Feature](contextqb://guides/directing-your-first-feature) and [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software) to connect the concepts to a result you can inspect. Other resources become relevant when your project calls for them.
+
 Here is a simple first path:
 
 1. Read the [Start Here](/start-here) page.
@@ -158,6 +173,17 @@ Here is a simple first path:
 8. Write down what you learned.
 
 That is enough for day one. You do not need to install every tool, read every playbook, or understand every acronym before you begin. Start with one small build, then come back for the next play.
+
+## Continue from a working feature
+
+Let the next product decision choose the next lesson. You can return to these routes as the application grows:
+
+- **Make the feature dependable.** Use [Designing Your App's Data](contextqb://guides/designing-your-apps-data), [Making Your App Usable](contextqb://guides/making-your-app-usable) and [Protecting Users and Their Data](contextqb://guides/protecting-users-and-their-data) to examine saved work, the actual task and access. Protection begins with the first data decision, before exposure.
+- **Connect another service when needed.** [Connecting Services Reliably](contextqb://guides/connecting-services-reliably) and [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) cover missing, repeated and late results. A local tool can continue without an outside service.
+- **Prepare and release.** [Where Your App Runs](contextqb://guides/where-your-app-runs) starts with a disposable delivery rehearsal. Before anyone relies on the result, work through [Preparing for Real Users](contextqb://guides/preparing-for-real-users) and then [Launching for Your First Users](contextqb://guides/launching-for-your-first-users), using the linked procedures and evidence for your project.
+- **Keep improving it.** [Changing Software Without Losing Control](contextqb://guides/changing-software-without-losing-control) helps you choose a maintenance change or a justified deferral. [Operating a Small App](contextqb://guides/operating-a-small-app) supplies the continuing health, cost and feedback routine.
+
+Reading a stage does not establish readiness for the next one. Use the lesson's output to explain your decision and show what you checked. Apply conditional work before your particular project depends on it; stage numbers organize the library, not permission to postpone an important protection.
 
 ## The main habit
 

@@ -2,7 +2,7 @@
 id: the-mental-model-of-your-app
 title: The Mental Model of Your App
 summary: Before you write a line of code or prompt a single agent, you have to know — in plain words — what your app is actually for. This guide helps you turn an idea into a working mental model.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -18,9 +18,11 @@ related:
   - building-for-yourself-vs-others
   - choosing-your-ide-and-llm
   - context-quarterback-the-onboarding-map
+  - directing-your-first-feature
   - documentation-as-architecture
   - documenting-for-your-agent
   - feature-planning
+  - how-the-parts-of-your-app-work-together
   - new-project-foundation
   - product-engineering-alignment
   - set-up-agents-md
@@ -62,6 +64,14 @@ Apps capture information from somewhere (a person typing, a device sensing, anot
 Everything else — the buttons, the colours, the animations, the auth screens, the dark mode — is _how_ the app does that. The mental model lives one level above the _how_. It lives at the _what_: what information, from where, to where, for whom, and why.
 
 The reason this framing matters: once you can describe your idea in those terms, the agent has something concrete to build from. "Make me a Bible app" is too vague. "An app where I capture verses I want to remember, tag them with what I was going through, and search them later by mood" is a buildable concept.
+
+## Separate the need from your assumptions
+
+Write down one situation in which someone needs your product. If you have observed it, record what happened: “Our team spent ten minutes finding the note behind a decision.” If you are guessing, say so: “I think other teams lose these notes too.” An agent can help organize either statement, but cannot turn the second into evidence just by restating it confidently.
+
+Choose a small useful result and one way to check it. For example: save a source title with a note, then reopen the app and find the same values. Leave team sharing out of that first feature if you are testing locally by yourself; keep it visible as later work if the eventual product is for a team. Note whether the future workflow involves private or sensitive information, and use synthetic examples while learning.
+
+This gives the mental model a practical test. [Directing Your First Feature](contextqb://guides/directing-your-first-feature) carries that small promise into an agent's plan, while [How the Parts of Your App Work Together](contextqb://guides/how-the-parts-of-your-app-work-together) explains the path the information takes.
 
 ## The parameters of your mental model
 

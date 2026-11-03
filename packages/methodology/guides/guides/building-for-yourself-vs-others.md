@@ -2,7 +2,7 @@
 id: building-for-yourself-vs-others
 title: Building for Yourself vs. Building for Others
 summary: "The first user decision is not technical. It is social: is this just for you, for a trusted group, or for the public?"
-version: 0.2.2
+version: 0.3.1
 audience:
   - novice-builder
   - founder
@@ -18,15 +18,16 @@ tags:
 related:
   - choosing-your-application-channel
   - feature-planning
+  - launch-day-checklist
+  - least-privilege-for-agents
   - new-project-foundation
+  - protecting-users-and-their-data
   - set-security-guardrails-for-your-agent
   - state-ownership
   - the-mental-model-of-your-app
   - trust-boundaries-are-architecture
   - what-an-application-is
   - where-your-data-lives
-  - least-privilege-for-agents
-  - launch-day-checklist
 next_steps:
   - "Name the first audience tier for your app: just-me, trusted-group, or public."
   - Write down what that tier lets you skip for now.
@@ -147,6 +148,10 @@ This table is not meant to scare you. It is meant to stop you from carrying the 
 A just-me app can become a trusted-group app. A trusted-group app can become public. But each move changes the responsibilities.
 
 ## Do not build for a tier you are not ready to support
+
+If you are founding a product, separate its eventual audience from the target of today's exercise. A local experiment with invented notes can help you learn, but it does not make a future team product safe to share. Name the first real users and one behavior they need; record what you have observed about that need and what you are assuming. Include any private information their workflow would introduce.
+
+For example, “a teammate can reopen the request they submitted” gives you something to check. “Everyone needs a better dashboard” is still an assumption. Keep the useful result narrow while preserving the responsibilities of the people who will actually use it.
 
 The safest first version is usually the smallest tier that proves the work is real.
 

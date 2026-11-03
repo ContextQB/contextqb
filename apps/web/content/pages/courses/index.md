@@ -1,88 +1,71 @@
 ---
-eyebrow: Courses
-headline: Learn by building, not by watching.
+eyebrow: Courses — planned
+headline: Learn by building something useful.
 subhead: >-
-  The ContextQB course platform teaches the methodology by walking you through
-  real applications, end to end, with an AI coding agent at your side.
-  Self-paced. Module-based. Built for founders, operators, and first-time
-  software builders who want to ship — not just watch tutorials.
-
-status_label: "Status:"
-status_body: First seats open through the kickoff list.
-status_link_label: Join the kickoff list →
-status_link_href: /kickoff
-
-pitch_heading: Tutorials show you moves. Courses build your judgment.
+  ContextQB is for people building their first serious application with AI.
+  The free curriculum is available now, from shaping an idea through launch
+  and operations. Guided courses are still being planned.
+status_label: "Available now:"
+status_body: Free guides, playbooks, checks and a working practice notebook.
+status_link_label: Try the practice exercise →
+status_link_href: /practice/
+pitch_heading: Make the decisions behind the build.
 pitch_paragraphs:
   - >-
-    Most "AI coding" content shows isolated moves: prompt the agent, wire an
-    API, make a button work. New builders get stuck on the judgment calls: where
-    state should live, when to commit, how to stop the agent from rewriting good
-    work, and what to do when the plan needs to change.
+    Your agent can write code. You need to decide what the application should
+    do, who it serves, what information it keeps and how you will know it works.
+    The curriculum explains those decisions in plain language and gives you
+    procedures to use with your own project.
   - >-
-    ContextQB courses are structured around those moments. Each module ships a
-    real piece of a real application and teaches the principle behind the move.
-    You finish with something you built and a practice you can use on the next
-    project.
-
-course_eyebrow: The first course
-course_title: Build a personal Bible app with AI
+    Start with a small useful result. Give the agent a bounded plan, inspect
+    what changed, and check the behavior yourself. As your product grows, add
+    the practices needed to protect users, release changes and recover from problems.
+course_eyebrow: Our product direction
+course_title: ContextQB Coach
 course_body: >-
-  The first full ContextQB course walks you through a complete, deployable Bible
-  study application: schema, data model, AGENTS.md, deployment, and review
-  habits. The core curriculum is free; advanced modules go deeper for paid
-  students.
+  Coach is the planned subscription product for applying the curriculum inside
+  your development environment. Courses may be included for subscribers at no
+  additional charge. Coach is not available yet; course selection, inclusion,
+  pricing and launch timing are not settled.
 course_stats:
-  - label: Format
-    body: Self-paced lessons that build one working application step by step.
-  - label: Pricing
-    body: Free core curriculum with paid advanced modules when you want more depth.
-  - label: Outcome
-    body: A deployed app and a repeatable way to guide your next agent build.
-course_postscript_before: "Start with the"
-course_postscript_link_label: mental-model guide
-course_postscript_link_href: /guides/the-mental-model-of-your-app
-course_postscript_after: >-
-  and the rest of the methodology before you enroll — the course builds on those
-  basics.
-
-wait_heading: Get ready before the first cohort
+  - label: Free today
+    body: The methodology library, agent access through MCP and the browser practice exercise.
+  - label: Planned subscription
+    body: Coach guidance alongside the project you are building in your IDE.
+  - label: Courses
+    body: Guided learning may accompany Coach. Enrollment is not open.
+course_postscript_before: "Read the"
+course_postscript_link_label: Coach overview
+course_postscript_link_href: /coach/
+course_postscript_after: for the intended experience and the questions still being worked out.
+wait_heading: Start learning today
 wait_cards:
-  - eyebrow: Read the methodology
-    title: Start with the guides
-    body: >-
-      The foundation guides cover the mental model and git safety net the first
-      course expects you to have.
+  - eyebrow: Find your starting point
+    title: Follow the guides
+    body: The core route runs from understanding an application to building, launching and operating it.
     cta_label: Browse guides →
-    cta_href: /guides
+    cta_href: /guides/
     external: false
-  - eyebrow: Set up your agent
-    title: Install the MCP
-    body: >-
-      Add the methodology to Cursor, Claude Desktop, or any MCP-aware tool so
-      your agent can pull in the right instructions during the build.
-    cta_label: MCP setup →
-    cta_href: /mcp
+  - eyebrow: Work with your agent
+    title: Connect the library
+    body: Give your AI tool access to the guides, principles, playbooks and checks through MCP.
+    cta_label: Connect your AI tool →
+    cta_href: /install/
     external: false
-  - eyebrow: Stay in the loop
-    title: Subscribe to updates
-    body: >-
-      The course members area publishes new lessons, methodology updates, and
-      field notes from real builds.
-    cta_label: Visit members.contextqb.com →
-    cta_href: https://members.contextqb.com
-    external: true
-
-kickoff_eyebrow: Kickoff
-kickoff_heading: Join the list for the first seats.
+  - eyebrow: Try a concrete exercise
+    title: Check a working app
+    body: Save a practice note, reopen it, download a backup and restore it without replacing current work.
+    cta_label: Open the practice exercise →
+    cta_href: /practice/
+    external: false
+kickoff_eyebrow: Course launch updates
+kickoff_heading: Hear when a course is ready.
 kickoff_body: >-
-  Sign up to hear when enrollment opens. No drip campaign, no upsells. Just one
-  signal when the first seats are ready.
-kickoff_cta_label: Join the kickoff list →
-kickoff_cta_href: /kickoff
-
-meta_title: "Upcoming AI Building Courses for Non-Developers"
-meta_description: "Explore upcoming ContextQB courses for building applications with AI agents. Start learning today with the free guides, playbooks and worked examples."
-
+  The existing kickoff list is for a course-opening announcement. Joining it
+  does not reserve a seat, start a Coach subscription or authorize a purchase.
+kickoff_cta_label: About the kickoff list →
+kickoff_cta_href: /kickoff/
+meta_title: "Planned Courses and ContextQB Coach"
+meta_description: "Use the free ContextQB curriculum and practice notebook today. Coach is a planned IDE subscription; courses may be included, with packaging still undecided."
 
 ---
