@@ -45,9 +45,11 @@ All methodology content is licensed **CC BY-SA 4.0**. You can read, copy, share,
 
 The `context.qb` format specification is **CC BY 4.0**.
 
-## Courses
+## Curriculum, practice and Coach
 
-Structured learning at **[courses.contextqb.com](https://courses.contextqb.com)**.
+Follow the free [guides from your first idea through launch and operations](https://contextqb.com/guides/), or [try the working browser notebook exercise](https://contextqb.com/practice/). Use made-up notes; the notebook stores data in your current browser and supports downloaded backups.
+
+[ContextQB Coach](https://contextqb.com/coach/) is a planned subscription for applying this curriculum inside your development environment. It is not available yet. Courses may be included for subscribers; packaging, pricing and timing remain undecided. See the [current course direction](https://contextqb.com/courses/).
 
 ## License
 
