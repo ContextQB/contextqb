@@ -1,8 +1,8 @@
 ---
 id: how-to-use-contextqb
 title: How to Use ContextQB
-summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it is, why we built it, how we pay for it, and how to start using it without feeling lost.
-version: 0.4.1
+summary: A first-time orientation to ContextQB for people who have not built much with AI agents yet — what it offers, how to use it with your project, and where to start.
+version: 0.4.2
 intro: |
   A plain-English orientation for people who want to start building with AI agents, but do not yet know how all the pieces fit together.
 audience:
@@ -123,13 +123,9 @@ We want more people to become capable builders — not by pretending everyone is
 
 > AI agents make building more accessible. ContextQB teaches the discipline that makes that access useful.
 
-## How we make money
+## Use it with your own project
 
-ContextQB is being built as an open, practical learning system. The public methodology is free to read. The goal is to make the basic ideas available to anyone who wants to learn how to build with agents.
-
-We are developing **ContextQB Coach**, a subscription product intended to help you apply the curriculum inside your IDE while building your own application. Courses may be included with the subscription at no additional charge; that packaging is still being decided. Coach is in development and subscriptions are not available yet. The free methodology remains the foundation, and you can use this material with your existing agent today. See the [Coach overview](https://contextqb.com/coach/).
-
-The best way to support the project right now is simple: use it, build with it, tell us what is confusing, show us where the method helped, and tell us where it broke down. ContextQB should improve by being used in the field.
+The methodology is free to read and use with your existing agent. Try a guide on a small part of your application, check the result, and keep what helps. If something is confusing, [tell us](https://github.com/ContextQB/contextqb/issues/new?template=external-adopter-feedback.yml) so we can improve it.
 
 ## How to start
 

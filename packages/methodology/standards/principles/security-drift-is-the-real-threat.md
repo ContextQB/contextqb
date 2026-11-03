@@ -2,7 +2,7 @@
 id: security-drift-is-the-real-threat
 title: Security Drift Is the Real Threat
 summary: Most breaches come from changes that bypassed earlier protections, not from never having protections. A passing audit on Tuesday is not a passing audit on Friday. Continuous drift detection beats one-time hardening.
-version: 0.1.3
+version: 0.1.4
 category: security
 audience:
   - novice-builder
@@ -118,5 +118,4 @@ You can claim this principle if all of the following hold:
 - [Playbook: Detect Security Drift](contextqb://playbooks/detect-security-drift) — operational workflow for catching drift
 - [Audit: Application Security Baseline](contextqb://audits/application-security-baseline) — the static audit that the declared shape lets you re-run cheaply
 - [Audit: Security Regression](contextqb://audits/security-regression) — change-focused audit comparing current state to baseline
-- [The `context.qb` format roadmap](https://github.com/ContextQB/contextqb/blob/main/format/ROADMAP.md) — the planned `security:` section that operationalises this principle
 - [Principle: Machine-Verifiable Substrate](contextqb://principles/machine-verifiable-substrate)

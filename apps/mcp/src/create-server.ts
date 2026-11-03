@@ -20,7 +20,6 @@ import {
 import { maybeAppendUpgradeAdvisory } from "./upgrade-advisory";
 import { utcDate } from "./reference-freshness.js";
 import {
-  renderEditorialStatusLine,
   renderReferenceGroupMarkdown,
   renderReferenceListMarkdown,
   type RenderableGroup,
@@ -55,14 +54,9 @@ export interface BundledDocument {
   summary: string;
   body: string;
   tags?: string[];
-  // Editorial state from the atom's `review` frontmatter (raw), so MCP users
-  // can see when an atom is still a draft.
-  review?: { status: string; last_reviewed?: string };
 }
 
-export interface BundledReferenceGroup extends RenderableGroup {
-  review?: { status: string; last_reviewed?: string; reviewer?: string; reviewer_notes?: string };
-}
+export type BundledReferenceGroup = RenderableGroup;
 
 export interface ContentBundle {
   version: string;
@@ -74,11 +68,6 @@ export interface ContentBundle {
   guides: BundledDocument[];
   briefings: BundledDocument[];
   references: BundledReferenceGroup[];
-}
-
-function withEditorialStatus(doc: BundledDocument): string {
-  const line = renderEditorialStatusLine(doc.review);
-  return line ? `${line}\n\n` : "";
 }
 
 function getDocuments(bundle: ContentBundle, kind: ContentKind): BundledDocument[] {
@@ -111,7 +100,7 @@ function renderFullDocument(bundle: ContentBundle, kind: ContentKind, id: string
   if (!doc) {
     return `# Not found\n\nNo ${kind.slice(0, -1)} with id \`${id}\` exists.\n\nList available ids by calling the corresponding \`list_*\` tool.\n`;
   }
-  return `# ${doc.title}\n\n> ${doc.summary}\n\n_URI:_ \`${makeUri(kind, id)}\`\n\n${withEditorialStatus(doc)}---\n\n${doc.body}\n`;
+  return `# ${doc.title}\n\n> ${doc.summary}\n\n_URI:_ \`${makeUri(kind, id)}\`\n\n---\n\n${doc.body}\n`;
 }
 
 function buildArchitecturePrinciplesBriefing(bundle: ContentBundle): string {
@@ -649,7 +638,7 @@ export function createServer(ctx: ServerContext): McpServer {
   // until ADR-0030 (server-side auth strategy) is Accepted.
   server.tool(
     "submit_feedback",
-    "Share field feedback from setting up or using any ContextQB surface (CLI, MCP, methodology, spec, docs). Open to humans and to AI agents acting on behalf of operators. Returns three submission paths (prefilled GitHub issue URL, `gh issue create` command, structured payload for copy-paste) — the agent picks whichever the user can act on. See ADR-0029 for the receiving lifecycle. Use this proactively after a meaningful adoption moment (first successful check, a friction point, a confusing error, or something that worked unusually well).",
+    "Prepare feedback about setting up or using ContextQB. Returns a prefilled GitHub issue link, a GitHub CLI command and text to paste; nothing is sent. Ask the user before preparing feedback. GitHub issues are public: leave out secrets and private project details.",
     submitFeedbackInputShape,
     async (rawInput) => {
       const input = rawInput as SubmitFeedbackInput;
@@ -675,7 +664,7 @@ export function createServer(ctx: ServerContext): McpServer {
           {
             uri,
             mimeType: "text/markdown",
-            text: `# ${doc.title}\n\n> ${doc.summary}\n\n${withEditorialStatus(doc)}${doc.body}\n`,
+            text: `# ${doc.title}\n\n> ${doc.summary}\n\n${doc.body}\n`,
           },
         ],
       }));
@@ -720,7 +709,6 @@ function renderReference(ctx: ServerContext, id: string, entryId?: string): stri
   return renderReferenceGroupMarkdown(group, {
     evaluationDate: ctx.evaluationDate,
     entryId,
-    provenanceNote: `Content bundled ${ctx.bundle.generatedAt}.`,
   });
 }
 

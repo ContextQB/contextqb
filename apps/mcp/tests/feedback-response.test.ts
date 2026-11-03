@@ -30,8 +30,10 @@ describe("submit_feedback response", () => {
 
   it("explains what happens next with the published support page", () => {
     expect(body).toContain(
-      "[how adopter feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md)",
+      "[how feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md)",
     );
-    expect(body).toContain("private feedback records");
+    expect(body).toContain("GitHub issues are public");
+    expect(body).toContain("does not send it");
+    expect(body).not.toMatch(/pending ADR|keeps the report internal|private feedback records/u);
   });
 });

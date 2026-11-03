@@ -10,7 +10,7 @@ meta_description: "Try ContextQB's free browser notebook exercise. Check saving,
 
 ## Open the practice notebook
 
-[Open the research notebook](/practice/research-notebook/). No account or installation is needed. Use made-up notes: this is a small teaching application, with no accounts, cloud storage or cross-device sync. It is available for first learner testing; it is not ContextQB Coach.
+[Open the research notebook](/practice/research-notebook/). No account or installation is needed. Use made-up notes: this is a small teaching application, with no accounts, cloud storage or cross-device sync.
 
 Your notes stay in this browser profile on this website. Clearing browser data can remove them. Use **contextqb.com** throughout this exercise. Another browser, device or website address will have a different notebook: even **www.contextqb.com** is a separate address for browser storage. Anyone using this profile can open the notes. The notebook itself sends no note contents to a server and runs no tracking script; the host still receives ordinary page requests.
 
@@ -33,7 +33,3 @@ Restore refuses to replace notes already in its destination. It also rejects a f
 - [Operate a small app](/guides/operating-a-small-app/): decide who notices problems and what they do next.
 
 This browser exercise demonstrates a narrow set of behaviors. Your own product may need accounts, a server, stronger data protection and other checks. Use the [guides in journey order](/guides/) to follow the core path from an idea through launch and operations. Advanced topics are extensions when your project needs them.
-
-## Where Coach fits
-
-[ContextQB Coach](/coach/) is the planned subscription for applying this curriculum inside your development environment, alongside your own project. It is not available yet. The curriculum and this practice exercise are free to use now.

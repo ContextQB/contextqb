@@ -2,7 +2,7 @@
 id: setup
 title: Setup, compatibility and controls
 summary: Neutral, dated facts about exact commands, file locations, configuration shapes and safety controls — which instruction files each agent reads, how permissions and planning work, MCP client configuration, CI and git setup, platform secrets and provider policies. No recommendation.
-version: 0.1.3
+version: 0.1.4
 audience:
   - novice-builder
   - founder
@@ -391,13 +391,13 @@ entries:
         applies_to: "@context-qb/cli 2.5.0 README, adapter matrix"
         evidence: [qb-cli-registry]
       - subject: context.qb format — published specification and schema
-        value: The specification (SPEC.md), JSON Schema (schema.json) and roadmap (ROADMAP.md) are published in the public repository's format directory; the CLI changelog is published at cli/CHANGELOG.md.
+        value: The specification (SPEC.md), JSON Schema (schema.json) and examples are published in the public repository's format directory; the CLI changelog is published at cli/CHANGELOG.md.
         applies_to: ContextQB public repository, main branch
         evidence: [qb-spec, qb-changelog]
     evidence:
       - id: qb-changelog
         url: "https://github.com/ContextQB/contextqb/blob/main/cli/CHANGELOG.md"
-        checked_on: "2026-10-07"
+        checked_on: "2026-11-03"
         source_kind: first-party-source
         locator: "Changelog > [2.5.0] — 2026-06-07"
       - id: qb-cli-registry
@@ -407,9 +407,9 @@ entries:
         locator: "Registry document: dist-tags.latest, time, bin; readme sections Installation, All Subcommands, contextqb membership, Adapter matrix"
       - id: qb-spec
         url: "https://github.com/ContextQB/contextqb/tree/main/format"
-        checked_on: "2026-10-07"
+        checked_on: "2026-11-03"
         source_kind: specification
-        locator: "format directory listing: SPEC.md, schema.json, ROADMAP.md, examples"
+        locator: "format directory listing: SPEC.md, schema.json, examples"
   - id: deploy-commands
     title: Platform deploy commands
     role: The command each named hosting platform documents for deploying from the command line.

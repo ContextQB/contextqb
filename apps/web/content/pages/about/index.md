@@ -25,14 +25,15 @@ Agentic IDEs reduce the cost of implementation. They do not remove the need for 
 
 ContextQB teaches the missing layer.
 
-## The ecosystem
+## What you can use
 
-- **contextqb.com** — this site. Principles, playbooks, audits, and prompts you can read, share, and copy.
-- **The ContextQB MCP** — the same resources, served over the Model Context Protocol so any agent can pull them in. See [MCP](/mcp).
-- **The standards library** — the source-of-truth Markdown for the site, the MCP, and the course material.
+- **The free curriculum** — guides, principles, playbooks, audits and prompts you can read, share and use with your project. [Find your starting point](/start-here/).
+- **The ContextQB MCP** — the same library inside your AI app. [Connect the library](/install/).
+- **The practice notebook** — a working app for checking saving, backup and recovery. [Try the exercise](/practice/).
+- **contextqb check** — an optional command-line tool that checks whether your project's `context.qb.yaml` still matches its files and configuration. [Learn about the check](/check/).
 
-## The north star
+## Who it's for
 
-ContextQB should become the practical training layer for the agentic coding era: helping people who are not traditional developers learn how to direct AI systems responsibly and build applications that can survive beyond the first exciting prototype.
+People building their first serious application with AI, including those returning after early experiments, who want to stay in charge of what gets built.
 
 _You bring the vision. Learn to call the plays._

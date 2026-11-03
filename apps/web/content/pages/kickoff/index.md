@@ -9,7 +9,7 @@ meta_description: "Find out about upcoming ContextQB courses for learning to bui
 
 ---
 
-The free curriculum and MCP access are available now. [Try the practice exercise](/practice/) or [follow the guides](/guides/). Coach is the planned subscription product, and courses may accompany it; the timing and packaging are still being decided. This existing list remains for a course-opening announcement.
+The free curriculum and MCP access are available now. [Try the practice exercise](/practice/) or [follow the guides](/guides/).
 
 Sign up and check your inbox for a confirmation link. Once you confirm, we’ll welcome you with free resources to start building and add you to the kickoff list.
 

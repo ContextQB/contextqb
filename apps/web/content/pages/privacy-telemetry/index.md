@@ -101,7 +101,7 @@ When your installed CLI version is older than the most recent `cli_version_lates
 
 The notice fires from `contextqb check`, `contextqb membership`, `contextqb mcp`, and `contextqb insights`. It is not rate-limited and continues to print on every run until you upgrade or until the cached `cli_version_latest` matches your installed version. The `contextqb upgrade` subcommand is **instructional only** — it detects how the CLI was installed (npx, pnpm dlx, npm-global, pnpm-global, homebrew, local dev dependency) and prints the corresponding install command. It does not run any installer itself.
 
-This behavior is governed by an internal architecture decision record (ADR-0034, not published) and the architectural invariant INV-CLI-UPD-1. The CLI never silently degrades; older versions continue to send telemetry and continue to work, but their data is not counted in cooperative aggregates until the operator upgrades to a version that includes `project_id` (CLI 2.3.0 or newer).
+Older CLI versions keep working and keep sending telemetry. Only events from CLI 2.3.0 or newer that include a `project_id` count toward community insights.
 
 #### Opt-in npm-registry poll
 
@@ -147,7 +147,7 @@ MCP telemetry requires a token. If you don't configure one, or if you revoke you
 
 ### Upgrade advisory on community-tool responses
 
-When you call community-insight tools (`community_stack_trends`, `community_structure_patterns`, `community_common_mistakes`, `community_deploy_distribution`) through an MCP-connected agent, the response may include a one-line advisory if your CLI is older than the latest published version. The advisory is computed from the same `cli_version` field already disclosed under "What the CLI records" above; no new data is collected. The advisory fires at most once per 24-hour window per member (per INV-CLI-UPD-2). If you have opted out of telemetry, the server has no `cli_version` data to compare, so no advisory fires.
+When you call community-insight tools (`community_stack_trends`, `community_structure_patterns`, `community_common_mistakes`, `community_deploy_distribution`) through an MCP-connected agent, the response may include a one-line advisory if your CLI is older than the latest published version. The advisory is computed from the same `cli_version` field already disclosed under "What the CLI records" above; no new data is collected. The advisory fires at most once per 24-hour window per member. If you have opted out of telemetry, the server has no `cli_version` data to compare, so no advisory fires.
 
 ## Community insights stay aggregate
 
@@ -163,8 +163,8 @@ These guards mean that even if your project is in an unusual combination (for ex
 
 ## Data retention
 
-- **Cloudflare Analytics (Phase 1):** 90 days, then deleted
-- **CLI and MCP events (Phase 2/3):** Retained until you revoke, then immediately deleted
+- **Cloudflare Analytics:** 90 days, then deleted
+- **CLI and MCP events:** Retained until you revoke, then immediately deleted
 - **Aggregated insights:** Retained indefinitely, but they contain no individual-level data
 - **Signup contacts and website visits:** No automatic deletion schedule is currently configured; request changes or deletion through `info@contextqb.com`. Protected backup copies expire under their separate retention.
 
@@ -179,10 +179,6 @@ Aggregate usage data helps us:
 
 The CLI/MCP cooperative data is not used to identify individuals or build marketing profiles. Website tracking can record interests for permitted email targeting, as described above. We do not sell either kind of data.
 
-## Technical details
-
-For the technical specification, see the privacy section of our public methodology and tooling at [contextqb.com](https://contextqb.com).
-
 ## Questions?
 
-If you have questions about our privacy practices, open an issue on [GitHub](https://github.com/ContextQB/contextqb/issues) or reach out through the channels listed on the [About](/about) page.
+If you have questions about our privacy practices, open an issue on [GitHub](https://github.com/ContextQB/contextqb/issues) or email [info@contextqb.com](mailto:info@contextqb.com).

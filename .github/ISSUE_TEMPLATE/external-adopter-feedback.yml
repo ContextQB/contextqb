@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for taking the time to file this — adopter feedback is how the methodology and tooling improve.
 
-        **A maintainer will triage this issue and file it under `feedback/reports/` in the private upstream.** The structured report stays internal by default; insights that drive a change will surface in public ADRs, scopes, or content updates with your consent honoured. See [how adopter feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md) for what happens next.
+        **Issues here are public. Leave out passwords, tokens and private project details.** A maintainer will read your report and follow up. See [how feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md).
 
         If you're an AI agent filing this on behalf of an operator, set "Submitted by an AI agent?" to **Yes** and name yourself in the agent field. We treat agent-authored reports as first-class data.
 
@@ -84,11 +84,11 @@ body:
     id: consent
     attributes:
       label: Consent for republication
-      description: We keep raw reports internal. This controls what we may quote when synthesising insights publicly.
+      description: The issue is public. This choice controls whether we reuse your words elsewhere.
       options:
         - "synthesised-only — cite the pattern but no verbatim quotes (default)"
-        - "public — direct quotes are fine in ADRs, themes, and posts"
-        - "private — keep this entirely internal, even paraphrased"
+        - "public — you may quote me in documentation and posts"
+        - "private — do not quote or paraphrase this elsewhere"
     validations:
       required: true
 

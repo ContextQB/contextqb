@@ -13,7 +13,7 @@ hero_banner_body: >-
   Works with pnpm, npm, or yarn workspaces. Reads routes from Cloudflare
   Workers, Vercel, Netlify, or Fly. Finds your ADRs wherever they live — the
   default path or a custom one you specify.
-hero_cta_install_label: Install in 30 seconds
+hero_cta_install_label: Get started
 hero_cta_install_href: "#install"
 hero_cta_watches_label: See what it watches
 hero_cta_watches_href: "#what-it-watches"
@@ -95,9 +95,7 @@ scope_right_paragraphs:
   - >-
     See the
     [@context-qb/cli on npm](https://www.npmjs.com/package/@context-qb/cli)
-    for the full adapter matrix and the
-    [ROADMAP](https://github.com/ContextQB/contextqb/blob/main/format/ROADMAP.md)
-    for what's coming next.
+    for the full adapter matrix.
 
 fits_eyebrow: Where it lives
 fits_heading: Where the check belongs.
@@ -207,7 +205,7 @@ firstrun_paragraphs:
   - >-
     The token unlocks two things: community insights at [/insights](/insights)
     and the token-gated MCP tools that summarise aggregate trends. Telemetry
-    is on by default and three opt-out paths are documented in
+    is on by default. The opt-outs are documented in
     [Privacy & Telemetry](/privacy/telemetry).
 firstrun_verify_label: Confirm the token landed
 firstrun_verify_command: contextqb membership status

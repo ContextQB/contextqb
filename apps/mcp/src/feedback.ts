@@ -82,9 +82,7 @@ export const submitFeedbackInputShape = {
     .string()
     .min(1)
     .max(80)
-    .describe(
-      "How the adopter would like to be credited. A pseudonym is fine. Required even when anonymised.",
-    ),
+    .describe("Name to show in the public issue. A pseudonym is fine."),
   agent_identity: z
     .string()
     .optional()
@@ -109,7 +107,7 @@ export const submitFeedbackInputShape = {
     .enum(["public", "synthesised-only", "private"])
     .default("synthesised-only")
     .describe(
-      "What the adopter has agreed we may republish. 'public' allows direct quotes in ADRs/themes; 'synthesised-only' (default) allows pattern citation but no verbatim; 'private' keeps the report internal only.",
+      "GitHub issues are public. This controls reuse elsewhere: 'public' allows direct quotes; 'synthesised-only' (default) allows describing patterns without quotes; 'private' prohibits quoting or paraphrasing elsewhere. Leave out secrets and private project details.",
     ),
 } as const;
 
@@ -205,8 +203,6 @@ function buildStructuredPayload(input: SubmitFeedbackInput): string {
 function buildGhCommand(input: SubmitFeedbackInput): string {
   const titleRaw = `[feedback] ${input.one_line_summary}`;
   const title = titleRaw.replace(/"/g, '\\"');
-  const labels = ["feedback", "triage", "via:mcp"];
-  if (input.agent_identity) labels.push("filed-by-agent");
   const body = [
     `Surface: ${input.surface}`,
     `Adoption stage: ${input.adoption_stage}`,
@@ -234,7 +230,7 @@ function buildGhCommand(input: SubmitFeedbackInput): string {
   body.push("");
   body.push("_Filed via the ContextQB MCP `submit_feedback` tool._");
   const bodyHeredoc = `cat <<'BODY' > /tmp/contextqb-feedback-body.md\n${body.join("\n")}\nBODY`;
-  const ghCmd = `gh issue create --repo ${FEEDBACK_REPO} --title "${title}" --body-file /tmp/contextqb-feedback-body.md --label ${labels.join(",")}`;
+  const ghCmd = `gh issue create --repo ${FEEDBACK_REPO} --title "${title}" --body-file /tmp/contextqb-feedback-body.md`;
   return [bodyHeredoc, ghCmd].join("\n");
 }
 
@@ -256,7 +252,7 @@ export function buildSubmitFeedbackResponse(input: SubmitFeedbackInput): string 
   return [
     "# Feedback ready to submit",
     "",
-    "Thanks for sharing — this MCP tool prepared three submission paths. Pick whichever the user can act on most easily. **The tool did not itself file the issue** (server-side filing is pending ADR-0030); the agent or the user completes the submission via one of the paths below.",
+    "This tool prepares your feedback; it does not send it. Choose an option below to submit it. **GitHub issues are public: leave out secrets and private project details.**",
     "",
     "## Path 1 — Open the prefilled issue template in a browser",
     "",
@@ -264,7 +260,7 @@ export function buildSubmitFeedbackResponse(input: SubmitFeedbackInput): string 
     "",
     `Or copy the URL: \`${issueUrl}\``,
     "",
-    "The URL prefills the title and a short teaser only. Paste the structured payload from Path 3 into the template form fields once the page loads — the full markdown body cannot safely travel via URL query params (see Claude Code issue #35246 for prior art on why).",
+    "The link fills in the title and a short summary. Paste the full text from Path 3 into the form; long text cannot travel safely inside a link.",
     "",
     "## Path 2 — File directly via the GitHub CLI (`gh`)",
     "",
@@ -274,7 +270,7 @@ export function buildSubmitFeedbackResponse(input: SubmitFeedbackInput): string 
     ghCommand,
     "```",
     "",
-    "This files the issue without leaving the terminal, preserves the full body verbatim, and applies the right labels.",
+    "This files the issue from your terminal with your GitHub account and keeps the full text.",
     "",
     "## Path 3 — Structured payload (for copy-paste into the form)",
     "",
@@ -282,6 +278,6 @@ export function buildSubmitFeedbackResponse(input: SubmitFeedbackInput): string 
     "",
     "---",
     "",
-    "_Maintainers file submitted feedback verbatim in the project's private feedback records and triage it there; see [how adopter feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md) for what happens next._",
+    "_Your consent choice controls reuse of your words elsewhere; the issue itself is public. See [how feedback is handled](https://github.com/ContextQB/contextqb/blob/main/.github/SUPPORT.md)._",
   ].join("\n");
 }

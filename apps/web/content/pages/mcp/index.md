@@ -57,7 +57,7 @@ They require a membership token (see [Pair with the data cooperative](#pair-with
 - `community_common_mistakes` — drift-detection pass/fail distribution
 - `community_deploy_distribution` — deployment platform mix
 
-Until the cooperative reaches 30 distinct projects for a given topic (per ADR-0033), these tools return an "Insufficient data" Markdown table — see [Privacy & Telemetry](/privacy/telemetry) for the k-anonymity rationale.
+Until at least 30 different projects have contributed to a topic, these tools return “Insufficient data.” That threshold protects individual projects; see [Privacy & Telemetry](/privacy/telemetry).
 
 ## Fastest setup
 
@@ -78,7 +78,7 @@ Add to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
 }
 ```
 
-This is the shape `contextqb mcp setup --client cursor` prints. Cursor's own documentation shows remote servers with `url` (and optional `headers`) and documents `type` only for local command servers; the reference entry records that documented shape. The [Cursor install page](/install/cursor/) offers Cursor's install link, which uses the documented shape without `type`.
+This is the shape `contextqb mcp setup --client cursor` prints. Cursor's documentation shows remote servers without `type`; the [Cursor install page](/install/cursor/) uses that form.
 
 ### Claude Desktop
 

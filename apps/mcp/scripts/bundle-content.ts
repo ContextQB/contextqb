@@ -11,8 +11,7 @@
  * private content package.
  *
  * Bundle 2.0.0 (ADR-0039) adds:
- *   - `review` (raw editorial state) on every atom that has one, so MCP
- *     users can see drafts;
+ * Editorial review records stay in the private source and are not bundled.
  *   - `references`: reference groups with their raw entry fields. No
  *     freshness text or rendered tables are bundled — the Worker derives
  *     freshness per request. Full schema validation happens in the private
@@ -52,7 +51,6 @@ interface BundledDocument {
   summary: string;
   body: string;
   tags?: string[];
-  review?: { status: string; last_reviewed?: string };
 }
 
 interface BundledReferenceGroup {
@@ -61,7 +59,6 @@ interface BundledReferenceGroup {
   summary: string;
   version: string;
   maintainer: string;
-  review?: Record<string, unknown>;
   body: string;
   entries: unknown[];
 }
@@ -208,12 +205,6 @@ function loadDocuments(dir: string): BundledDocument[] {
       body: content.trim(),
       tags: Array.isArray(data.tags) ? data.tags : undefined,
     };
-    if (data.review && typeof data.review.status === "string") {
-      doc.review = { status: data.review.status };
-      if (typeof data.review.last_reviewed === "string" && data.review.last_reviewed.length > 0) {
-        doc.review.last_reviewed = data.review.last_reviewed;
-      }
-    }
     docs.push(doc);
   }
 
@@ -255,7 +246,6 @@ function loadReferenceGroups(dir: string): BundledReferenceGroup[] {
       body: content.trim(),
       entries: data.entries,
     };
-    if (data.review) group.review = data.review;
     groups.push(group);
   }
   return groups.sort((a, b) => GROUP_ORDER.indexOf(a.id) - GROUP_ORDER.indexOf(b.id));

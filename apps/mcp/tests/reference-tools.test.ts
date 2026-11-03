@@ -116,8 +116,9 @@ describe("buildMcpServerForRequest — one clock reading per request", () => {
     expect(clockCalls).toBe(1);
     for (const text of [first, second, (resource.contents[0] as { text: string }).text]) {
       expect(text).toContain("_Evaluated on 2026-11-09 (UTC)._");
-      expect(text).toContain("Content bundled 2026-10-15T00:00:00.000Z.");
-      expect(text).toContain("Review overdue (was due by 2026-11-08)");
+      expect(text).not.toContain("Content bundled");
+      expect(text).not.toMatch(/_Owner:|_maintainer_|review by|review when/u);
+      expect(text).toContain("May be out of date");
     }
   });
 
@@ -132,8 +133,8 @@ describe("buildMcpServerForRequest — one clock reading per request", () => {
     });
     const earlyText = await callText(await connect(early.server), "get_reference", { id: "tools" });
     const lateText = await callText(await connect(late.server), "get_reference", { id: "tools" });
-    expect(earlyText).not.toContain("Review overdue");
-    expect(lateText).toContain("Review overdue (was due by 2026-11-08)");
+    expect(earlyText).not.toContain("May be out of date");
+    expect(lateText).toContain("May be out of date");
   });
 });
 
@@ -195,15 +196,15 @@ describe("rendering rules on the Worker surface", () => {
     );
   });
 
-  it("shows an atom's editorial status in tool and resource responses", async () => {
+  it("omits editorial status from tool and resource responses", async () => {
     const client = await connect(freshServer());
-    expect(await callText(client, "get_playbook", { id: "synthetic-draft-playbook" })).toContain(
-      "_Editorial status:_ draft (last reviewed 2026-10-01)",
-    );
+    expect(
+      await callText(client, "get_playbook", { id: "synthetic-draft-playbook" }),
+    ).not.toContain("_Editorial status:");
     const read = await client.readResource({
       uri: "contextqb://playbooks/synthetic-draft-playbook",
     });
-    expect((read.contents[0] as { text: string }).text).toContain("_Editorial status:_ draft");
+    expect((read.contents[0] as { text: string }).text).not.toContain("_Editorial status:");
   });
 
   it("builds an empty reference list from the canonical (empty) directory", () => {
@@ -241,7 +242,7 @@ describe("pricing notice on every Worker pricing route", () => {
     const read = await client.readResource({ uri: "contextqb://references/pricing" });
     for (const text of [group, entry, (read.contents[0] as { text: string }).text]) {
       expectCaveatBeforeValue(text);
-      expect(text).not.toContain("Review overdue");
+      expect(text).not.toContain("May be out of date");
       expect(text).toContain("**Verified on:** 2026-10-05");
       expect(text).toContain("| FIXTURE-PRICE 1.00 | standard tier (fixture) |");
     }
@@ -254,7 +255,7 @@ describe("pricing notice on every Worker pricing route", () => {
       entry: "synthetic-api-prices",
     });
     expectCaveatBeforeValue(text);
-    expect(text).toContain("Review overdue (was due by 2026-10-31)");
+    expect(text).toContain("May be out of date");
   });
 
   it("is not added to other groups", async () => {

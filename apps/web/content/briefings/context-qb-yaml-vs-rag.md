@@ -2,7 +2,7 @@
 id: context-qb-yaml-vs-rag
 title: context.qb.yaml vs. RAG
 summary: Both put information into the agent's context window, but they put very different kinds of information there. A manifest is a hand-curated map of the project's shape. RAG is automatic search over the project's content, sometimes through an index the tool builds. They complement each other; they don't compete.
-version: 0.2.1
+version: 0.2.2
 audience:
   - novice-builder
   - founder
@@ -91,7 +91,7 @@ The agent is asked: _"Add rate limiting to the kickoff signup endpoint."_
 
 **With `context.qb.yaml`, with RAG:**
 
-- Agent boots reading the manifest. Sees that `apps/web` handles `/kickoff` and `apps/courses` handles `/api/enroll-free`. Sees that ADR-0013 governs kickoff signups. Sees the deploy target.
+- Agent boots reading the manifest. Sees that `apps/web` handles `/signup` and `apps/api` handles `/api/orders`. Sees that ADR-0004 governs signups in this example project. Sees the deploy target.
 - Reads that ADR file from the repository.
 - Searches for the specific endpoint with the right scope.
 - Makes a change that respects the architecture.

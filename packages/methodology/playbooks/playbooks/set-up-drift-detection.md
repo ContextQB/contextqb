@@ -2,7 +2,7 @@
 id: set-up-drift-detection
 title: Set Up Drift Detection on Day One
 summary: Wire the contextqb drift detector into your repo from the moment you author your first context.qb.yaml, so the map can never drift away from the territory unnoticed.
-version: 0.3.1
+version: 0.3.2
 problem: |
   A context.qb.yaml is only useful if it stays honest as the repo changes. Without a drift detector wired into your loop, every map becomes a stale map within a month, and your agent silently reads the wrong file. Setting it up on day one costs five minutes; setting it up later means triaging accumulated drift first.
 when_to_use: |
@@ -242,16 +242,8 @@ It prints the right upgrade command for how the CLI was installed. Run that comm
 
 ## How did this go? Share your experience
 
-The drift detector improves on the back of adopter feedback — and the first run is the most likely moment to surface friction worth sharing. **If anything misled you, took longer than expected, or worked unusually well, tell us.** We treat field reports as first-class evidence (see ADR-0029 in the public repository).
+The drift detector improves on the back of adopter feedback — and the first run is the most likely moment to surface friction worth sharing. **If anything misled you, took longer than expected, or worked unusually well, tell us.** Use the [feedback form](https://github.com/ContextQB/contextqb/issues/new?template=external-adopter-feedback.yml), or ask your agent to use the ContextQB `submit_feedback` tool. GitHub issues are public; leave out secrets and private project details.
 
 The single most valuable thing you can do: **share what your first `pnpm check:qb` (or `npx contextqb`) output looked like before you fixed anything**, plus how you interpreted each finding. Drift-detector error messages are one of the surfaces we most actively iterate on; your raw reading is the data we need.
 
-Three submission paths, in order of friction:
-
-1. **Call the MCP tool.** If you set up MCP above, your agent can call `submit_feedback` directly. The tool prepares a submission and surfaces it to you to confirm.
-2. **Open the GitHub issue template.** [github.com/ContextQB/contextqb/issues/new/choose](https://github.com/ContextQB/contextqb/issues/new/choose) → **"External adopter feedback."** 3–5 minutes.
-3. **File via `gh`.** `gh issue create --repo ContextQB/contextqb --title "[feedback] <summary>" --body-file ./report.md --label feedback,triage`.
-
 What we want most: the verbatim friction. Paste the exact command, the exact output, the exact step you were on when something stopped making sense. Agent-authored reports are first-class — if your AI agent ran into something a human wouldn't have, that's especially useful.
-
-What we'll do with it: a maintainer files your submission verbatim into the project's `feedback/captures/` directory and triages it into structured reports over the following days.

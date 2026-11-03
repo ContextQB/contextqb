@@ -100,7 +100,7 @@ mcp_cta_label: Connect your agent →
 mcp_cta_href: /mcp
 mcp_cta_secondary_label: See community insights →
 mcp_cta_secondary_href: /insights
-coach_link_label: Coach — in development
+coach_link_label: Coach
 coach_link_href: /coach/
 
 meta_title: "Learn to Build with AI Agents"

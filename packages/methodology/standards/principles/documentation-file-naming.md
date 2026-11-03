@@ -2,7 +2,7 @@
 id: documentation-file-naming
 title: Documentation File Naming
 summary: A documentation filename describes a responsibility. If you can only imagine one instance of the file ever existing, you have named a category, not a file. The same rule that governs code filenames governs doc filenames — with one small list of conventional exceptions.
-version: 0.2.0
+version: 0.2.1
 category: naming
 audience:
   - novice-builder
@@ -52,7 +52,7 @@ The cheapest time to give a document a real name is the moment it is created.
 
 A `PUNCHLIST.md` is a category. `qb-cli-v1-scope.md` (or, in a scopes directory, `0014-qb-cli-v1.md` numbered to its ADR) is a name. The first will collide as soon as a second scope exists. The second tells the reader what the document is without needing the parent folder.
 
-Note: `PUNCHLIST.md` is doubly wrong. It fails the singleton test (generic naming), _and_ it misuses the word "punchlist." In construction, a punchlist is a remediation list at the end of a build. A pre-build contract is called a _scope_. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) and ADR-0025 for the canonical vocabulary.
+Note: `PUNCHLIST.md` is doubly wrong. It fails the singleton test (generic naming), _and_ it misuses the word "punchlist." In construction, a punchlist is a remediation list at the end of a build. A pre-build contract is called a _scope_. See [`append-dont-overwrite`](contextqb://principles/append-dont-overwrite) for how to preserve the history when you rename or retire a document.
 
 ## Why this is harder for docs than for code
 
@@ -105,7 +105,7 @@ Three quick checks. If any of them flag the filename, it is probably a category 
 
 ## What to do when you find an offender
 
-In a tier-1 / greenfield context, you almost never will — because you authored the name with this principle in front of you. The remediation lane (renaming generically-named files in an existing repository) is tier-2 work under ADR-0019; a future audit template and remediation playbook will cover it.
+In a tier-1 / greenfield context, you almost never will — because you authored the name with this principle in front of you. In an existing repository, check links and references before renaming a file, and keep a record of what moved.
 
 If you already have one or two — a `NOTES.md` from your first week, say — rename each with git (`git mv NOTES.md docs/<what-it-actually-holds>.md`), then ask the agent to find and fix every link to the old name in the same change.
 

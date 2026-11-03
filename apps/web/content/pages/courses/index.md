@@ -1,10 +1,10 @@
 ---
-eyebrow: Courses — planned
+eyebrow: Curriculum
 headline: Learn by building something useful.
 subhead: >-
   ContextQB is for people building their first serious application with AI.
   The free curriculum is available now, from shaping an idea through launch
-  and operations. Guided courses are still being planned.
+  and operations.
 status_label: "Available now:"
 status_body: Free guides, playbooks, checks and a working practice notebook.
 status_link_label: Try the practice exercise →
@@ -20,24 +20,23 @@ pitch_paragraphs:
     Start with a small useful result. Give the agent a bounded plan, inspect
     what changed, and check the behavior yourself. As your product grows, add
     the practices needed to protect users, release changes and recover from problems.
-course_eyebrow: Our product direction
-course_title: ContextQB Coach
+course_eyebrow: Put it into practice
+course_title: A small app. Four useful checks.
 course_body: >-
-  Coach is the planned subscription product for applying the curriculum inside
-  your development environment. Courses may be included for subscribers at no
-  additional charge. Coach is not available yet; course selection, inclusion,
-  pricing and launch timing are not settled.
+  Use the research notebook to see what reliable behavior looks like. Save a
+  note, reopen it, make a backup and check that you can recover it. Then apply
+  the same questions to your own product.
 course_stats:
-  - label: Free today
-    body: The methodology library, agent access through MCP and the browser practice exercise.
-  - label: Planned subscription
-    body: Coach guidance alongside the project you are building in your IDE.
-  - label: Courses
-    body: Guided learning may accompany Coach. Enrollment is not open.
-course_postscript_before: "Read the"
-course_postscript_link_label: Coach overview
-course_postscript_link_href: /coach/
-course_postscript_after: for the intended experience and the questions still being worked out.
+  - label: Save
+    body: Check that the information you entered is the information you get back.
+  - label: Return
+    body: Reopen the notebook and confirm that your work is still there.
+  - label: Recover
+    body: Restore a backup into an empty notebook without replacing current work.
+course_postscript_before: "Follow the"
+course_postscript_link_label: practice instructions
+course_postscript_link_href: /practice/
+course_postscript_after: to try each check for yourself.
 wait_heading: Start learning today
 wait_cards:
   - eyebrow: Find your starting point
@@ -58,14 +57,14 @@ wait_cards:
     cta_label: Open the practice exercise →
     cta_href: /practice/
     external: false
-kickoff_eyebrow: Course launch updates
-kickoff_heading: Hear when a course is ready.
+kickoff_eyebrow: Course updates
+kickoff_heading: Hear if a course opens.
 kickoff_body: >-
-  The existing kickoff list is for a course-opening announcement. Joining it
-  does not reserve a seat, start a Coach subscription or authorize a purchase.
+  Receive free resources and one email if a course opens. Joining does not
+  reserve a seat or sign you up for a paid service.
 kickoff_cta_label: About the kickoff list →
 kickoff_cta_href: /kickoff/
-meta_title: "Planned Courses and ContextQB Coach"
-meta_description: "Use the free ContextQB curriculum and practice notebook today. Coach is a planned IDE subscription; courses may be included, with packaging still undecided."
+meta_title: "The ContextQB Curriculum: Build, Launch and Operate Your App"
+meta_description: "Build your first serious application with AI. Follow free ContextQB guides from shaping an idea through launch and operations, and try the practice notebook."
 
 ---

@@ -2,7 +2,7 @@
 id: write-a-context-qb
 title: Write a context.qb for Your Repository
 summary: Step-by-step for authoring a context.qb.yaml — the agent's boot manifest — that gets a coding agent up to speed in under 2,000 tokens.
-version: 0.3.0
+version: 0.3.1
 problem: |
   AI coding agents waste tokens (and time) at the start of every session re-scanning your repo to figure out what it is and where everything lives. Without a single small, structured map, you pay that scan-cost on every prompt.
 when_to_use: |
@@ -268,14 +268,6 @@ For a compressed technical checklist (less methodology context, more step-by-ste
 
 ## How did this go? Share your experience
 
-ContextQB improves on the back of adopter feedback. If anything about this playbook — or the `context.qb` format itself — surprised you, frustrated you, worked unusually well, or could have been clearer, **tell us**. We treat field reports as first-class evidence (see ADR-0029 in the public repository).
-
-Three ways to submit, in order of friction:
-
-1. **Call the MCP tool.** If you have `mcp.contextqb.com` loaded in your AI client, the agent can call `submit_feedback` directly without leaving the conversation. The tool prepares a submission and the agent surfaces it to you to confirm.
-2. **Open the GitHub issue template.** Visit [github.com/ContextQB/contextqb/issues/new/choose](https://github.com/ContextQB/contextqb/issues/new/choose) and pick **"External adopter feedback."** The structured form takes 3–5 minutes.
-3. **File via `gh`.** If you've already drafted a markdown report, `gh issue create --repo ContextQB/contextqb --title "[feedback] <summary>" --body-file ./report.md --label feedback,triage`.
+ContextQB improves on the back of adopter feedback. If anything about this playbook — or the `context.qb` format itself — surprised you, frustrated you, worked unusually well, or could have been clearer, **tell us**. Use the [feedback form](https://github.com/ContextQB/contextqb/issues/new?template=external-adopter-feedback.yml), or ask your agent to use the ContextQB `submit_feedback` tool. GitHub issues are public; leave out secrets and private project details.
 
 What we want most: the verbatim friction. If a step took longer than expected, say so. If an error message misled you, paste it. If your agent ran into something a human wouldn't have, that's especially useful — we treat agent-authored reports as first-class data, not noise.
-
-What we'll do with it: a maintainer files your submission verbatim into the project's `feedback/captures/` directory and triages it into structured reports over the following days. Synthesised insights drive ADRs and content changes; your words are republished only with your explicit consent (`consent: public` in the form).

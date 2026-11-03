@@ -39,7 +39,7 @@ If a task seems to require any of the above, ask first and explain why.
 
 ## Notes
 
-- Keep public endpoints and outside services in the `AGENTS.md` list, not in `context.qb.yaml`. A structured [`security:`](https://github.com/ContextQB/contextqb/blob/main/format/ROADMAP.md) section for the manifest is planned but has not shipped; the published schema does not allow it, so do not add one yet. The manifest's `routes` field maps hostnames to the code that serves them; it is not a list of endpoints or their security state.
+- Keep public endpoints and outside services in the `AGENTS.md` list, not in `context.qb.yaml`. The published schema does not allow a `security:` section, so keep that information in `AGENTS.md`. The manifest's `routes` field maps hostnames to the code that serves them; it is not a list of endpoints or their security state.
 - Adapt the secret patterns to your stack: e.g., `apps/web/.env*`, `config/credentials.yml.enc`, `~/.aws/credentials`, etc.
 - Adapt the deployment language to your platform (for example `npx wrangler deploy`, `vercel --prod` or `fly deploy` — check your platform's current documentation; command names change). The point is to name what "deploy" means in your project so the agent can recognise it.
 - The block is intentionally short. Long policy documents are not read by agents; short and citable rules are.

@@ -6,7 +6,7 @@
 // or their outputs differ. Edit both together.
 //
 // Rendering rules by stored state:
-//   current     facts, evidence, derived "Verified on", review date/trigger, live label
+//   current     facts, evidence, derived "Verified on", live freshness label
 //   legacy      facts, evidence, derived "Verified on", "describes an older version"
 //   unverified  "Not verified" notice and candidate subjects only — never values
 //   withdrawn   tombstone: date, reason, replacement or "No replacement"
@@ -77,8 +77,6 @@ export interface ReferenceRenderOptions {
   evaluationDate: string;
   // Render only this entry when set.
   entryId?: string;
-  // Extra provenance line (the Worker passes its bundle timestamp).
-  provenanceNote?: string;
 }
 
 export const REFERENCE_SCOPE_NOTE =
@@ -93,7 +91,7 @@ export const PRICING_RESPONSE_NOTICE =
   "Pricing is a dated reference, not a live quote. Current prices, plans and billing conditions may differ. Check the provider's official pricing page before making a purchase or budget decision. When presenting these figures to a user, include this caveat and the recorded verification date; do not describe them as current unless you have checked the official source during this interaction.";
 
 export const PRICING_DATE_NOTE =
-  'Each verified entry\'s recorded verification date is its "Verified on" line. The evaluation date and review dates in this response are not verification dates.';
+  'Each verified entry\'s recorded verification date is its "Verified on" line. The evaluation date in this response is not a verification date.';
 
 export function isPricingReferenceGroup(groupId: string): boolean {
   return PRICING_REFERENCE_GROUP_IDS.includes(groupId);
@@ -162,10 +160,10 @@ export function renderReferenceEntryMarkdown(
   switch (entry.status) {
     case "current": {
       const label = formatFreshnessLabel(freshness);
-      const review = entry.review_by
-        ? `review by ${entry.review_by}`
-        : `review when: ${entry.review_trigger ?? "unspecified"}`;
-      lines.push(`**Status:** current — ${review}${label ? ` — **${label}**` : ""}`, "");
+      lines.push(
+        `**Status:** current${label ? " — **May be out of date; check the source.**" : ""}`,
+        "",
+      );
       const verifiedOn = deriveVerifiedOn(entry);
       if (verifiedOn) lines.push(`**Verified on:** ${verifiedOn}`);
       lines.push("");
@@ -205,7 +203,6 @@ export function renderReferenceEntryMarkdown(
       break;
     }
   }
-  lines.push(`_Owner:_ ${entry.owner}`, "");
   return lines.join("\n");
 }
 
@@ -224,7 +221,7 @@ export function renderReferenceGroupMarkdown(
     "",
     `> ${group.summary}`,
     "",
-    `_URI:_ \`contextqb://references/${group.id}\` · _version_ ${group.version} · _maintainer_ ${group.maintainer}`,
+    `_URI:_ \`contextqb://references/${group.id}\` · _version_ ${group.version}`,
     "",
     `_${REFERENCE_SCOPE_NOTE}_`,
     "",
@@ -237,10 +234,7 @@ export function renderReferenceGroupMarkdown(
       "",
     );
   }
-  lines.push(
-    `_Evaluated on ${options.evaluationDate} (UTC)._${options.provenanceNote ? ` ${options.provenanceNote}` : ""}`,
-    "",
-  );
+  lines.push(`_Evaluated on ${options.evaluationDate} (UTC)._`, "");
   if (!options.entryId && group.body.trim().length > 0) lines.push(group.body.trim(), "");
   lines.push("---", "");
   for (const entry of entries)
@@ -257,17 +251,4 @@ export function renderReferenceListMarkdown(groups: readonly RenderableGroup[]):
       `- **${group.title}** (\`contextqb://references/${group.id}\`) — ${group.summary} (${group.entries.length} entries)`,
   );
   return `# References\n\n_${REFERENCE_SCOPE_NOTE}_\n\n${lines.join("\n")}\n`;
-}
-
-// Editorial status line for atom responses (both MCP servers), so a draft
-// atom is visibly a draft. Lives here so the Worker copy stays identical.
-export function renderEditorialStatusLine(
-  review: { status: string; last_reviewed?: string } | undefined,
-): string | null {
-  if (!review) return null;
-  const reviewed =
-    review.last_reviewed && review.last_reviewed.length > 0
-      ? ` (last reviewed ${review.last_reviewed})`
-      : "";
-  return `_Editorial status:_ ${review.status}${reviewed}`;
 }

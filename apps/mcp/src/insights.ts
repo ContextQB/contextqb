@@ -162,7 +162,7 @@ export async function callInsightsApi(
       insufficient_data: true,
       threshold: 30,
       explanation:
-        "This topic needs at least 30 unique projects before aggregate insights are shown. This k-anonymity threshold (per ADR-0033) protects individual privacy.",
+        "This topic needs at least 30 unique projects before aggregate insights are shown. This threshold protects individual projects’ privacy.",
       privacy_policy_url: "https://contextqb.com/privacy/telemetry",
     };
   }

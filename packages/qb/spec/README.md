@@ -24,7 +24,6 @@ Properties:
 
 - **[SPEC.md](./SPEC.md)** — the format spec, v1.0.
 - **[schema.json](./schema.json)** — JSON Schema for validation.
-- **[ROADMAP.md](./ROADMAP.md)** — the tooling roadmap.
 - **[`../../context.qb.yaml`](../../context.qb.yaml)** — the canonical exemplar (this repo's own `context.qb.yaml`).
 - **[`../examples/`](../examples/)** — worked examples for different project shapes (CLI tool, Next.js web app, Python data pipeline, MCP server project, SaaS monorepo).
 

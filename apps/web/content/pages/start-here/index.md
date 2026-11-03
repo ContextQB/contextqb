@@ -110,15 +110,6 @@ path_cards:
     href: /practice/
     cta: Open the practice exercise
     external: false
-  - eyebrow: If you want to follow along
-    title: Follow the field notes
-    description: >-
-      The members area publishes new lessons, methodology updates, and field
-      notes from real builds. Subscribe at members.contextqb.com to get each
-      update as it lands.
-    href: https://members.contextqb.com
-    cta: Visit the members area
-    external: true
 
 reads_heading: Recommended reading order
 reads_lede: >-
