@@ -2,7 +2,7 @@
 id: release-readiness
 title: Release Readiness Audit
 summary: Assess whether the evidence supports a specific application version, audience and release scope, without turning the audit into deployment authority.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 7
 journey_rank: 50
@@ -62,16 +62,22 @@ The [Pre-Launch Security Audit](contextqb://audits/pre-launch-security) owns the
 
 ## Worked assessment: a convincing package, incomplete evidence
 
-This is a **fictional no-go assessment**. Maya is an invented first-time founder deciding which problem her business should solve for small independent bakeries. She wants a personal research notebook program on her own computer: each entry keeps one source, such as a conversation with a bakery owner, with her note about what it showed, all in one local data file used only by her. An agent has built a candidate package, and she asks whether she can start relying on it for her real notes, which she could not recreate if lost.
+This is a **fictional no-go assessment**. A community hall has a candidate app for room requests. Visitors submit a preferred room and time; a coordinator must receive and review each request before confirming a booking. The hall's committee asks whether the public request form can be opened to real visitors. If a request never reaches the coordinator, a group may wait for a reply that never comes, or assume the room is theirs.
 
-Before the review, some things are known: the package exists, the record says a build and unit checks passed, and a practice backup-and-recovery exercise on a two-record file has been done. Others are unknown: whether the installed package itself saves and reopens entries, how its data file is protected, and whether a failed save reaches her. The assessment sorts those facts into the seven sections. Identifiers and results are invented for teaching; they are not a receipt for an implemented app. The linked lessons give procedural detail if you want it; you do not need them to follow the assessment.
+The supplied release record says three things: the app builds, the field-validation tests pass, and someone checked the form's appearance in a screenshot. Nobody has yet verified that a submitted request appears in the coordinator's actual queue. The assessment sorts those facts into the seven sections. The record and its results are invented for teaching; they are not a receipt for an implemented app, and no evidence identifiers are made up to look like one.
 
-1. **Candidate and intended audience:** package `notebook-candidate-1` (an illustrative label for this candidate), described as built from source `example-rev-1`; one owner using local files. The rehearsal folder is named, but no installed-version evidence is supplied. Team sharing and accounts are excluded.
-2. **Evidence for critical tasks:** the fictional record says build and unit checks passed. Saving and reopening through the installed candidate is marked not run. Unit checks cannot close that gap.
-3. **Usability, accessibility and performance:** code review of labels is supplied; keyboard use, a real task attempt and representative-file timing are not run. Needed evidence must match the owner's intended device and task.
-4. **Protection and data handling:** the intended local-only scope is recorded. Storage permissions and whether diagnostic output contains note text remain unknown. No-account is a reason to exclude sign-in tests, not the file-access check.
-5. **Delivery and recovery:** the file exercise in [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) shows what an older backup omits. The candidate has not reopened that recovered file. The owner has not decided whether that loss is acceptable; [Rollback vs. Restore](contextqb://briefings/rollback-vs-restore) identifies the separate recovery choices.
-6. **Monitoring, support and cost:** the owner is named, but the failed-save signal and report location have not been exercised. No hosted service is required for this local case. The next test should follow [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) using local error reporting.
-7. **Findings and recommendation:** no-go for reliance on real notes. Keep the candidate as a disposable rehearsal. Verify its identity and save/reopen path, resolve the protection and recovery gaps, and demonstrate the failure signal before requesting another assessment.
+1. **Candidate and intended audience:** the record names the tested build and the proposed audience, members of the public using the request form, with the coordinator as the only person reading requests. Online payment and instant booking are excluded. The working queue connection has not been verified, so the tested build has not yet been shown to work in the setup visitors would use.
+2. **Evidence for critical tasks:** the critical task is submit-to-coordinator. The field-validation tests are useful, but they check only the form's inputs; the path from a submitted request to the coordinator's queue is not run. Validation tests cannot close that gap.
+3. **Usability, accessibility and performance:** an attractive screenshot does not show that a person understands “request” versus “confirmed booking,” or can operate the form using the keyboard. No observed task attempt, keyboard check or realistic-volume timing is supplied.
+4. **Protection and data handling:** the queue holds visitors' names and contact details, so access to it needs evidence. A private-looking queue address does not establish a permission boundary. How long requests are kept has not been decided.
+5. **Delivery and recovery:** the record mentions a database backup, but restoring it and reading the restored requests through the app have not been demonstrated. Rolling back the code would not recover lost requests; [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) is the method for checking that, and [Rollback vs. Restore](contextqb://briefings/rollback-vs-restore) separates the two choices. Nothing here shows this candidate has been restored.
+6. **Monitoring, support and cost:** a coordinator is named, but no check has shown that a failed submission or a queue of unanswered requests reaches that person. Hosting costs and any service limits are not recorded.
+7. **Findings and recommendation:** no-go for real room requests. Each blocker below leaves a group without a reliable answer to its request; the committee owns arranging each missing result:
+   - submit-to-coordinator path: missing an end-to-end check on the working setup;
+   - queue access: missing a check that only the coordinator can read requests;
+   - recovery: missing a restore whose requests are read back through the app;
+   - failure reporting: missing a demonstrated signal reaching the coordinator.
 
-The useful result is a small set of missing facts, not a demand for every possible test. In your own assessment, identify which missing fact could change the decision and what specific evidence would resolve it.
+   Reassess once those results exist. This recommendation does not authorize any deployment.
+
+This is not a demand for an arbitrary number of tests. Each missing fact concerns something visitors or the coordinator will rely on. In your own assessment, identify which unanswered question could change the decision and what specific evidence would resolve it.

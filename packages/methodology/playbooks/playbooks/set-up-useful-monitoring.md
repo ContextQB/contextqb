@@ -2,7 +2,7 @@
 id: set-up-useful-monitoring
 title: Set Up Useful Monitoring
 summary: Connect one important failure to a trustworthy signal, a person who sees it and a useful response, then exercise that path safely.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 7
 journey_rank: 30
@@ -38,23 +38,23 @@ Read [Monitoring vs. Product Analytics](contextqb://briefings/monitoring-vs-prod
 
 ## Step 1 — Start with the failed task
 
-This page uses one invented example. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Its critical job is saving an entry so that the evidence is there when she decides what business to build. She cannot repeat a conversation, so a save that fails without her noticing loses evidence. Nothing is built, and you do not need to build it.
+This page uses one invented example. A small shop's website imports stock quantities from its supplier every night. In this example the import is scheduled for 02:00, and staff check the displayed quantities at 08:00 to decide what they can offer that day. If the import fails or never runs, staff may promise items that are not in stock, or turn customers away for items that are. Nothing is built, and you do not need to build it.
 
-For the notebook, then, “a person cannot save a note” is a useful starting condition. A server being reachable does not show that writing succeeds. Specify the result you need to notice, how quickly you need to notice it and what a responsible person can do.
+The website stays online whether or not the import runs, so “the site responds” does not answer the question that matters. The useful starting condition is: “a complete stock update has not arrived before the 08:00 check.” Specify the result you need to notice, by when you need to notice it and what a responsible person can do. The 02:00 and 08:00 times belong to this shop; your own schedule and deadline come from your task, not from a universal interval.
 
 Match the signal to the product. A local tool may show a clear error while preserving the draft and keep a reviewable operation log. A command-line tool can return a failure exit status, the signal other programs inspect to tell whether it succeeded. An unattended job needs evidence that it ran at all, as well as a record of failures when it runs.
 
 ## Step 2 — Select the smallest useful evidence
 
-Ask the agent where the result becomes known and how to observe it. A failed-save event might include time, release identifier, operation, failure category and a request identifier for following the event through the system. Keep credentials, note text and unnecessary personal information out.
+Ask the agent where the result becomes known and how to observe it. For the shop, record the time of the last **successful** import and the supplier file's own timestamp or version. An import that starts but fails, or stops halfway through the file, must not advance that success record; otherwise a half-finished update would look complete. A failed run can record its own event with time, release identifier, failure category and an identifier for following it through the system. Keep supplier credentials, customer information and unnecessary detail out.
 
 Decide what the signal covers and misses. A check of one test record does not inspect every user's permissions or data. A successful periodic probe does not prove that no failures happened between its runs. Google SRE's [monitoring guidance](https://sre.google/workbook/monitoring/) emphasizes useful, timely observations; the right frequency and detail depend on your task.
 
-Record the expected update interval and a way to recognize missing or stale observations. If the process that reports failures stops, its absence should not quietly look like success. Apply [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion) to the resulting logs and events.
+Record the expected update interval and a way to recognize missing or stale observations. A job that never starts cannot report its own failure, so the shop needs a **separate** check that runs independently of the import: if the last successful update is older than expected by, say, 07:00, the import is overdue. If the process that reports failures stops, its absence should not quietly look like success. Apply [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion) to the resulting logs and events.
 
 ## Step 3 — Name the recipient and response
 
-For each actionable condition, name where it appears, who reads it and the first action. Include enough context to distinguish the affected environment and task. “Error occurred” is less useful than “Test notebook save failed on notebook-candidate-1; inspect the write-permission result.” Here `notebook-candidate-1` is an illustrative label for the version under test, so the reader knows which build failed and in which setup.
+For each actionable condition, name where it appears, who reads it and the first action. Include enough context to distinguish the affected environment and task. “Error occurred” is less useful than “Test stock import overdue; last successful update was yesterday at 02:04. Check the import before relying on displayed quantities.” That message names the setup (test), the affected task, the evidence and the consequence for the reader. It does not need supplier credentials or customer information.
 
 Choose when repeated events should be grouped and when escalation is necessary. **Escalation** means involving someone with the access or expertise needed to act. Avoid sending a notification for every harmless event, but do not suppress a repeated failure merely to quiet the channel. Record how a recovered condition will be recognized.
 
@@ -64,15 +64,19 @@ An attended local tool may need no separate notification service: its user sees 
 
 Have the agent propose a controlled failure in a disposable test target, its expected signal and how to restore the test setup. Agree the exact scope before running it. Use test recipients or an explicitly agreed test notification; do not alert real users or damage their information for an exercise.
 
-For a notebook test, the proposed sequence is:
+For the shop's test setup, the proposed sequence is:
 
-1. Save a made-up note normally and verify it can be read back.
-2. Make the test storage write return a controlled failure. State whether it is a substitute or a real isolated storage restriction.
-3. Try another save. Observe the retained draft, honest error and recorded failure. For an unattended target, confirm the intended recipient actually receives the notification.
-4. Restore the test setup, retry and verify the stored value and recovery signal.
-5. Separately test missing observations: stop only the disposable reporting component and show how an overdue check becomes visible, if the product relies on unattended reporting.
+1. Run one import normally from a made-up supplier file and verify that the displayed quantities and the success record both update.
+2. Make the next import fail in a controlled way, for example with a deliberately malformed supplier file. State whether that is a substitute or a real isolated failure.
+3. Confirm that the success record did **not** advance, that the failure was detected, and that the agreed test recipient actually received the warning.
+4. Restore the setup, run a fresh successful import and verify that the success record advances and the condition clears.
+5. Separately, prevent one scheduled run from starting at all. Confirm that the independent overdue check notices it by its deadline and that the test recipient receives that warning too. Then restore the schedule and verify that the next successful run clears the overdue condition.
 
-Keep command output or manual observations tied to the revision and target. A simulated storage error checks reaction to that simulation; a real storage connection needs its own check. A test event sent directly to the notifier checks delivery but bypasses detection. Record those differences.
+Steps 2–3 and step 5 test different failures: a job that runs and fails, and a job that never runs. Passing one does not show the other works.
+
+Keep command output or manual observations tied to the revision and target. A simulated storage error checks reaction to that simulation; a real storage connection needs its own check. Sending a sample message straight to the recipient checks delivery but skips detection; for the shop, it would say nothing about whether a failed or missing import is noticed. Record those differences.
+
+For your own app, choose a task that can fail while everything looks superficially healthy. Name the evidence, who sees it and what they can do next.
 
 ## Step 5 — Keep a usable operating entry
 

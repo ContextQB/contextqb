@@ -2,7 +2,7 @@
 id: rollback-vs-restore
 title: Rollback vs. Restore
 summary: Returning to older code and recovering saved information solve different problems, and neither reverses every consequence of a change.
-version: 0.1.2
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -45,12 +45,14 @@ The data map in [Designing Your App's Data](contextqb://guides/designing-your-ap
 
 ## Try the decision on three cases
 
-These are illustrative notebook scenarios:
+Imagine an app that keeps a cook's recipes. After an update, something is wrong. Before saying “put it back,” distinguish the situation, because each needs different evidence and may need a different response. The three below are **alternative incidents**, each starting from the same working app; they are not stages of one update.
 
-1. **A new layout hides saved notes.** The notes still exist and their format is unchanged. A code rollback may restore the old display. Verify the old version against a test copy of the current data before relying on that option.
-2. **A change deletes the note text.** Returning to the old code cannot recreate the missing text. Investigate a recovery source, its age and the newer records at risk. Restore to an isolated copy first so you can inspect what is recoverable.
-3. **The app replaces `note` with `body`.** Old code still expects a field called `note`. Rolling back only the code now leaves it unable to read the new format. Use a rehearsed compatibility plan or forward repair; [Change Stored Data Safely](contextqb://playbooks/change-stored-data-safely) develops this case.
+1. **The new screen shows no recipes, but the saved recipes are intact and unchanged.** The problem is in the display, not the data. Returning to the previous code may bring the recipes back on screen. First check that older code against a copy of today's data. This is a possible code rollback, not a reason to replace the recipes with an older backup, which could lose recipes saved since.
+2. **The update erased the ingredient text from saved recipes.** The data itself is damaged, and old code cannot recreate text that is no longer stored. Investigate a recovery source, how old it is and which newer recipes it omits. Restore into a separate location first so you can inspect what would come back and what might be lost.
+3. **The update converted each recipe's ingredient text into a list of separate ingredient records.** The data is intact but in a new format. The old code expects the former format, so returning only the code may leave it unable to read the recipes at all. A compatible version, a rehearsed data conversion or a forward repair needs investigation; “the previous version worked yesterday” is not enough. [Change Stored Data Safely](contextqb://playbooks/change-stored-data-safely) explains how to plan and check that kind of compatibility.
 
-An email already delivered or a payment already made is another kind of consequence. Reverting code or restoring a database does not recall it. Any corrective action must follow that service's actual behavior and your authority to act.
+In each case the visible symptom started the same way: something looks wrong after an update. The symptom alone does not select the recovery action; what changed does.
 
-Before accepting “we can roll back,” explain what will return, what will remain changed and what evidence shows the restored combination will work. If the agent cannot answer, recovery is still an untested assumption.
+An email already sent or a payment already made is another kind of consequence. Reverting code or restoring a database does not recall it. Any corrective action must follow that service's actual behavior and your authority to act.
+
+Before accepting “we can roll back,” ask the agent what its proposed recovery replaces, what will remain changed and what evidence shows the resulting code and data work together. If the agent cannot answer, recovery is still an untested assumption.

@@ -2,7 +2,7 @@
 id: append-dont-overwrite
 title: Append, Don't Overwrite
 summary: Documentation is append-only at three scales — archive whole files, strike through revised lines, and supersede rather than edit ADRs. Agents reading a doc see both the current state and the reasoning trail that produced it.
-version: 0.3.0
+version: 0.4.0
 category: documentation
 audience:
   - novice-builder
@@ -57,15 +57,17 @@ This page is about the working records you and your agent steer by. ContextQB ca
 
 An **ADR** (architecture decision record) is a short file recording one structural decision and why it was made. A **load-bearing line** is a line the work is steered by: a goal, a boundary, a risk, a storage decision, a version target.
 
-The examples below follow one small invented change. Maya, a fictional founder, is building a personal research notebook that saves each source she reads together with her own note about it. Her plan said saved entries would be kept in the browser's own storage. At the first check, entries she had saved were gone after she closed and reopened the browser. Her browser clears site data whenever it closes, a privacy setting she wants to keep. So she approved a new plan: keep entries in one file, `notebook.json`, in a folder she chooses. The old decision, the new evidence, the new decision and the reason are all worth keeping where the next session will see them.
+The examples below follow one small invented change. A club is building a room-booking system. Its approved scope says members can cancel a booking until 24 hours before it starts. The committee then explains that the person who arranges keys needs two days' notice, and approves a 48-hour cutoff. The requirement has changed for a reason the next agent session needs to see.
+
+If the scope's editor simply replaces “24” with “48,” the latest rule is present, but the reason and the superseded decision disappear from the active document. An agent that later finds an old test or design note saying 24 hours may “correct” the scope back to 24, as if the 48 were the mistake. The old decision, the new requirement and the reason are all worth keeping where the next session will see them.
 
 ## The three scales
 
-| Scale        | Rule                            | Example                                                                                                                                |
-| ------------ | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **File**     | Archive, don't delete           | A reviewed, accepted, closed scope moves to `docs/archive/scopes/`, not to `/dev/null`.                                                |
-| **Line**     | Strike through, don't overwrite | `~~Entries are kept in browser storage.~~ Entries are kept in notebook.json — the browser clears site data on close.`                  |
-| **Decision** | Supersede, don't edit           | ADR-0003 "Keep entries in browser storage" is superseded by ADR-0004 "Keep entries in a local file"; ADR-0003 stays exactly as it was. |
+| Scale        | Rule                            | Example                                                                                                                                  |
+| ------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **File**     | Archive, don't delete           | A reviewed, accepted, closed scope moves to `docs/archive/scopes/`, not to `/dev/null`.                                                  |
+| **Line**     | Strike through, don't overwrite | `~~Cancellation cutoff: 24 hours.~~ Cancellation cutoff: 48 hours — the key holder needs two days' notice.`                              |
+| **Decision** | Supersede, don't edit           | ADR-0003 "Send booking reminders by email" is superseded by ADR-0004 "Send booking reminders by text message"; ADR-0003 stays as it was. |
 
 All three preserve the trail. An agent (or a future human) can see what the document said at an earlier point and what changed it.
 
@@ -100,7 +102,7 @@ The body of the file stays verbatim. Archive is a move, not an edit.
 
 ### Why not delete?
 
-- **Agents can still reference it.** A code comment or another document that cites the scope, such as `see docs/scopes/notebook-storage.md`, can still be followed after the scope is archived: the archive header records the original path, so a search for that filename finds the archived copy.
+- **Agents can still reference it.** A code comment or another document that cites the scope, such as `see docs/scopes/booking-cancellation.md`, can still be followed after the scope is archived: the archive header records the original path, so a search for that filename finds the archived copy.
 - **Post-mortems need the trail.** When something breaks, the archived governance docs show what was planned and what actually shipped.
 - **Onboarding uses finished examples.** A new contributor reading a finished scope learns how governance docs are structured.
 
@@ -121,22 +123,25 @@ Git already keeps every old version of a file. The reason to keep the old wordin
 So when you revise a load-bearing line in an active governance doc that the agent will keep re-reading — a scope, a plan, a punchlist — preserve the original using strikethrough:
 
 ```markdown
-~~Storage: saved entries are kept in the browser's own storage.~~
-Storage: saved entries are kept in `notebook.json`, in a folder Maya chooses.
-(Changed 2026-03-10: the browser clears site data on close. Approved by Maya.)
+~~Cancellation cutoff: 24 hours before the booking.~~
+Cancellation cutoff: 48 hours before the booking.
+(Revised [date] after the committee confirmed the key-arrangement requirement.
+Approved by [the responsible operator].)
 ```
 
-An agent reading Maya's plan now sees both lines. It knows browser storage was tried and rejected, and why, so it won't quietly move the entries back.
+The bracketed parts are placeholders: in a real project, record the actual date and the person who actually approved the change. An agent reading the club's scope now sees both lines. It knows 24 hours was the earlier rule, why it changed and who decided, so it won't quietly restore it. Tests and user-facing explanations then follow the approved current rule.
+
+This is about keeping the reasoning where future work is directed. It does not mean showing members two contradictory cutoffs, or preserving every typo forever. For your own project's important change, leave enough history for a new session to know which decision governs now and why the older one should not return.
 
 The canonical markdown form is `~~old text~~ new text`. Strikethrough is part of GitHub-flavoured Markdown rather than core Markdown, so it renders on GitHub and in most documentation tools that follow that flavour; where it doesn't render, the `~~` markers still show. Agents recognise `~~` as strikethrough; the original wording stays in context.
 
 For anything else — a line that isn't load-bearing, or a document the agent won't re-read — a one-line entry in the document's **revision history table** is cheaper and keeps the body clean. That table is a short log near the top of the document, with one Date / Event row per change:
 
 ```markdown
-| Date       | Event                                                                     |
-| ---------- | ------------------------------------------------------------------------- |
-| 2026-03-10 | Storage line revised (browser storage → notebook.json). Approved by Maya. |
-| 2026-03-12 | Tranche 1 moved from SHIPPED to VERIFIED after a fresh review.            |
+| Date   | Event                                                                               |
+| ------ | ----------------------------------------------------------------------------------- |
+| [date] | Cancellation cutoff revised (24 h → 48 h) for key arrangements. Approved by [name]. |
+| [date] | Tranche 1 moved from SHIPPED to VERIFIED after a fresh review.                      |
 ```
 
 A **tranche** is one bounded batch of a plan's work. `SHIPPED` means the agent that did the batch says it is done; `VERIFIED` means a separate check agreed.

@@ -2,7 +2,7 @@
 id: connecting-services-reliably
 title: Connecting Services Reliably
 summary: Define what an outside service promises, what your app must remember and how it handles missing, repeated or late results without hiding unfinished work.
-version: 0.1.1
+version: 0.2.0
 audience: [novice-builder, founder, operator]
 journey_stage: 4
 journey_rank: 70
@@ -28,7 +28,7 @@ tags: [reliability, architecture]
 
 ## Start when the product needs a connection
 
-An **integration** connects your application to another system, such as a document service, calendar or email provider. The first local notebook does not need one. Read this guide when a useful product behavior depends on an outside system, after [How the Parts of Your App Work Together](contextqb://guides/how-the-parts-of-your-app-work-together) and [Designing Your App's Data](contextqb://guides/designing-your-apps-data).
+An **integration** connects your application to another system, such as a document service, calendar or email provider. Many first versions need none. Read this guide when a useful product behavior depends on an outside system, after [How the Parts of Your App Work Together](contextqb://guides/how-the-parts-of-your-app-work-together) and [Designing Your App's Data](contextqb://guides/designing-your-apps-data).
 
 Explain the need before choosing a service. What must cross the boundary, which system owns the result, and what can the person still do if the service is unavailable? [Failure Modes](contextqb://principles/failure-modes) helps you turn those questions into decisions.
 
@@ -36,13 +36,13 @@ Explain the need before choosing a service. What must cross the boundary, which 
 
 An **API**, or application programming interface, is a defined way for software to ask another system for information or action. A **request** asks for something; a **response** answers it. The **contract** describes the accepted inputs, returned values, errors and guarantees. A response saying “accepted for processing” may mean the work has only been queued, not finished.
 
-A **webhook** reverses the direction: the outside system sends a message to an address your app provides when an event happens. An **event** describes something that occurred, such as an export becoming available. The receiving address is an **endpoint**. A webhook needs a reachable receiver; a local-only notebook may instead use a manual status check, or **polling**, repeated requests for the current result.
+A **webhook** reverses the direction: the outside system sends a message to an address your app provides when an event happens. An **event** describes something that occurred, such as a calendar event being created or changed. The receiving address is an **endpoint**. A webhook needs a reachable receiver; an app with no public address may instead use a manual status check, or **polling**, repeated requests for the current result.
 
 Your agent can build the **connector**, the part of your app that communicates with the service. You decide which information may leave the app, what users are promised and how much delay or interruption is acceptable. Read the provider's current documentation with the agent and keep a short record of the specific contract you rely on.
 
 ## Make retries safe before making them automatic
 
-A **timeout** means the caller stopped waiting. It does not prove that the other system stopped working. If the service created an archive copy and the response was lost, repeating “create a copy” might create a second one. AWS's [guidance on timeouts and retries](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) explains this uncertainty and why retries can amplify load.
+A **timeout** means the caller stopped waiting. It does not prove that the other system stopped working. If a calendar service created an event and the response was lost, repeating “create an event” might create a second one. AWS's [guidance on timeouts and retries](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) explains this uncertainty and why retries can amplify load.
 
 **Idempotency** means repeating the same logical operation has the same intended effect as performing it once. Some APIs accept an **idempotency key**, an identifier your app reuses for retries of that operation. Keep that identifier with the operation before sending, along with the unchanged request. A new key usually represents a new operation, so generating one after every timeout defeats the protection.
 
@@ -52,39 +52,64 @@ Set a timeout, a maximum number of attempts and a total waiting budget. **Backof
 
 ## Receive events without repeating or undoing work
 
-Assume only the delivery guarantees the provider documents. Stripe's [webhook guidance](https://docs.stripe.com/webhooks) explicitly covers duplicate delivery and events arriving out of order. A provider event ID can help recognize a repeated message, but two different events can describe the same business action. Name the actual effect you must avoid repeating, such as creating a second archive record.
+Assume only the delivery guarantees the provider documents. Stripe's [webhook guidance](https://docs.stripe.com/webhooks) explicitly covers duplicate delivery and events arriving out of order. A provider event ID can help recognize a repeated message, but two different events can describe the same business action. Name the actual effect you must avoid repeating, such as creating a second calendar event or a second local link to the same one.
 
 Save the duplicate-detection decision and local state change together when your storage supports it. Otherwise a crash between them can either repeat the effect or lose it. This is not solved by an in-memory list of event IDs that disappears on restart. A database transaction covers its supported local writes; it cannot by itself make an outside email or API call occur exactly once.
 
 For late events, use the provider's supported revision or current-state lookup. Do not assume that arrival order or a timestamp always establishes the order of changes. If you acknowledge receipt before finishing work, first save the accepted work so it survives a restart and has a visible failure/retry path. A receipt alone is not evidence that the user's task finished.
 
-## Worked contract: an optional notebook archive
+## Worked contract: publishing a workshop to a calendar
 
-Imagine a later notebook feature that sends a selected note to an outside archive. This is a **fictional design exercise**, not an implemented service. The local saved note remains authoritative; failure to archive must not delete it. Sending text outside the device is a new data-sharing decision, so explain it to the user and obtain the permission appropriate to the product before implementing it.
+Here is one invented situation to make these ideas concrete. A community group manages its workshops in its own app, but publishes the dates through an outside calendar service that members subscribe to. An organiser presses “Add to calendar” for Saturday's pottery session. The calendar service creates the event, but its reply never reaches the app. The app reports that it timed out. Should it send the same request again?
 
-Write a contract such as this before asking for code:
+A timeout means the app stopped waiting; it does not tell you whether the event was created. Sending “create an event” a second time might put the pottery session on members' calendars twice. So the first design question is how this service lets you identify one intended calendar addition, and how you find out what happened to it.
+
+If the service supports a request identifier that makes retries refer to the same action, the app must save that identifier before sending and reuse it with unchanged event details. If it does not, the agent needs another supported way to look up the outcome, or must leave the uncertainty for the organiser to resolve. It must not assume every calendar service provides the same guarantees.
+
+Meanwhile the workshop itself stays saved in the group's app. While the calendar result is uncertain, show “Calendar update not confirmed” rather than deleting the workshop or claiming it was published. Only the workshop's public details should cross the boundary; the app has no reason to send the names of people who booked.
+
+The calendar service here is fictional, and nothing needs to be built. To make the reasoning checkable, this guide and [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) share one exercise contract for a local stand-in calendar. Its rules are **assumed for the exercise**. A real provider's behavior must come from its current documentation.
 
 ```text
-Task: archive one saved note chosen by the user.
-Input: operation ID, note ID, title and note text from that chosen revision.
-Local owner: the notebook keeps the original and the operation record.
-Outside effect: one archive copy for this operation ID and unchanged input.
-Assumed provider behavior: repeat ID/input returns the same archive ID;
-  repeat ID with different input is rejected. Retention must be confirmed.
-Success evidence: a valid archive ID and confirmed completion, not just receipt.
-Timeout: keep outcome unknown; reconcile or retry the same operation safely.
-Local display: Pending, Archived, Needs attention or Outcome unknown.
-Limit: at most three attempts in this exercise; never invent a fresh ID to retry.
-New action: use a new ID only after resolving the earlier outcome and choosing
-  a separate action; a reported error alone does not prove no copy was created.
-Recovery: preserve the note; inspect the operation before trying a new action.
+Exercise contract: publish one workshop to the calendar stand-in.
+Assumed for this exercise only; not any real calendar provider's guarantee.
+
+Task: create one calendar event for one saved workshop.
+Input: operationId, workshopId, title, start (with time zone offset),
+  durationMinutes.
+Local owner: the workshop app keeps the workshop and the operation record.
+  The workshop stays saved whatever the calendar does.
+Outside effect: one calendar event per operationId with unchanged input.
+Same operationId, identical input: returns the same eventId; no second
+  event. Simultaneous repeats are treated as repeats.
+Same operationId, different input: rejected; the first event is unchanged.
+Outcome lookup by operationId: returns the eventId, or "not found".
+Retention: an operationId is remembered for 24 hours. After that, a repeat
+  is treated as new and lookup cannot answer.
+Errors: rejected credentials must not be retried unchanged. A rate limit
+  gives a wait time, which counts against the attempt limit below.
+Notifications: notificationId, eventId, revision (an integer; higher means
+  later) and status (tentative or confirmed). Signatures are checked
+  separately; a revision proves nothing about the sender.
+Success evidence: an eventId saved beside the workshop, not just a reply.
+Timeout: outcome unknown. Look it up, or retry with the same operationId
+  and identical input.
+Limit: at most 3 attempts within 2 minutes; then Needs attention.
+Local display: Publishing, On calendar, Calendar update not confirmed,
+  Needs attention.
+New action: a new operationId only after the earlier outcome is resolved
+  and a separate event is deliberately wanted.
 ```
 
-If the user edits the note after the first attempt, do not silently send new text under the old operation ID. Resolve the first operation, then decide whether the new revision deserves a separate archive action. Some APIs replay a saved failure for the same key; stop that retry loop and follow their documented resolution path. A new ID is appropriate when you have established that no outside copy exists and choose to try again, or deliberately authorize an additional copy after reconciling the existing one. A returned error alone is insufficient evidence of absence.
+Read the contract against the timeout. The app saved `operationId` before sending, so after the timeout it can ask the stand-in what happened to that operation, or repeat the request with the same identifier and details and receive the same `eventId`. Inventing a new `operationId` for the retry would look like a new request and create a second event.
 
-Once the archive has succeeded, failure to record its ID locally is a **partial success**: the outside copy exists, but the app's record is unfinished. Recover the relationship rather than creating another copy by default.
+If the organiser changes the start time after the first attempt, do not silently send the new time under the old `operationId`; the stand-in would reject it, and a real service might behave differently. Resolve the first operation, then decide whether the change needs a separate action, such as updating the existing event. Some APIs replay a saved failure for the same identifier; stop that retry loop and follow their documented resolution path. A new identifier is appropriate when you have established that no event exists and choose to try again, or deliberately want an additional event. A returned error alone is not evidence that nothing was created.
 
-For an optional webhook, this fictional provider also supplies a monotonically increasing revision number for each archive: a larger number means a later version. That assumption makes a late-event exercise possible. A real provider without such a guarantee needs a different ordering strategy, usually a documented current-state lookup. A revision number alone does not verify who sent the message.
+Once the calendar has created the event, failing to save its `eventId` beside the workshop is a **partial success**: the outside event exists, but the app's record is unfinished. Recover the relationship from the saved operation, for example through the lookup, rather than creating another event by default.
+
+The calendar's notifications are this guide's webhook example: the service tells the app when an event changes. The stand-in numbers each event's revisions so that a late, older notification can be recognized and ignored. That numbering is part of the exercise contract. A real provider without such a guarantee needs a different ordering strategy, usually a documented current-state lookup. And a revision number alone does not verify who sent the message.
+
+For your own integration, name three things before your agent adds automatic retries: the intended outside effect, what identifies one attempt at it, and how you will resolve a missing answer.
 
 ## Protect the boundary and inspect the evidence
 
@@ -94,4 +119,4 @@ Before exposing a receiving endpoint, use the [Public Endpoint Exposure Audit](c
 
 Finish with an integration contract, a failure decision for each important case and an owner who can act on unfinished work. [Test an Integration Failure](contextqb://playbooks/test-an-integration-failure) supplies the next exercise. The [Backend Architecture Audit](contextqb://audits/backend-architecture) can inspect the structure; it does not replace observed duplicate, timeout and recovery behavior.
 
-Name how an operation left in “Outcome unknown” will be noticed later and who will investigate it. Before real use, [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) helps you check that reporting path; for a local tool, it may be a visible list of unfinished work that you review.
+Name how an operation left as “Calendar update not confirmed” or “Needs attention” will be noticed later, and who will investigate it. Before real use, [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) helps you check that reporting path; for a local tool, it may be a visible list of unfinished work that you review.

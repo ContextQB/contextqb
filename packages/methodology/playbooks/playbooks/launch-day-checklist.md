@@ -2,7 +2,7 @@
 id: launch-day-checklist
 title: Run a Launch Day Checklist
 summary: The going-live procedure — pre-flight verification, the deploy itself, live smoke checks, monitoring watch, and a recovery path you have actually tested. Launch is a stage, not a vibe.
-version: 0.2.3
+version: 0.2.4
 problem: |
   First launches fail in predictable ways: something passed locally but was never checked in production, an environment variable is missing, nobody is watching when the first real user hits an error, and when it goes wrong there is no practised way back. The fix is not courage — it is a checklist run in order.
 when_to_use: |
@@ -98,7 +98,7 @@ In the live environment, with your own hands (then with an agent re-checking), w
 
 - [ ] The intended version loads at its actual URL or installed location.
 - [ ] Sign-up and sign-in work end to end if accounts are part of this release; otherwise record the actual access boundary and why the account check is not applicable.
-- [ ] The one thing your app exists to do — the core flow — works with controlled records appropriate to that target. For a single-owner local tool, the owner can use a real record they intend to keep. For example, if a founder's personal research notebook on her own computer is the approved release, she saves a real note about a conversation she has had. In a product with other records, use an equivalent genuine action the owner wants anyway, such as a real booking for themselves. Made-up records left in live data need a supported removal method. If writing is checked only against a copy, label that limit and leave the actual target's write check pending. Any real messages, charges or other consequential effects require their own authority.
+- [ ] The one thing your app exists to do — the core flow — works with controlled records appropriate to that target. For a single-owner local tool, the owner can use a real record they intend to keep. For example, the owner of a personal pantry app adds a tin of beans that is actually on their shelf and that they intend to keep in the list, then reopens the delivered app and checks that the item is there. That is a genuine use of the intended setup. Testing a disposable copy instead is a narrower result: it does not establish that the working copy can save. Invented items left in the real pantry list would make it less trustworthy. In a product with other records, use an equivalent genuine action the owner wants anyway, such as a real booking for themselves. Made-up records left in live data need a supported removal method. If writing is checked only against a copy, label that limit and leave the actual target's write check pending. Any real messages, charges or other consequential effects require their own authority.
 - [ ] Every applicable new public endpoint responds as intended (see [`public-endpoint-exposure`](contextqb://audits/public-endpoint-exposure) if you have not run it).
 - [ ] Errors render as your designed error state, not a stack trace.
 

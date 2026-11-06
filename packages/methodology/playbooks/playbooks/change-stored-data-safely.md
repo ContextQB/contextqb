@@ -2,7 +2,7 @@
 id: change-stored-data-safely
 title: Change Stored Data Safely
 summary: Rehearse a change to saved information, check old and new application versions and choose a recovery path before touching valuable records.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -44,11 +44,11 @@ Start with [Designing Your App's Data](contextqb://guides/designing-your-apps-da
 
 Write down the old format, proposed format and reason. Identify existing records that need a decision: missing values, unusually long text, duplicate identifiers and related files. Use representative made-up examples first. Any use of real records needs an appropriate handling plan and authorization.
 
-This playbook's example uses one invented tool. Maya, a fictional first-time founder deciding which problem to solve for small independent bakeries, keeps a personal research notebook on her own computer. Each saved entry pairs one source, such as a conversation with a bakery owner, with her note about what she learned; the text of that note is stored in a field called `note`. After a month, those entries are evidence she cannot recreate, so any change must keep her words intact. Nothing is built, and you do not need to build it.
+This playbook's example uses one invented situation. A team's task list records only whether each task is done: `true` or `false`. The team now needs to tell work that has not started apart from work in progress, so it proposes a `status` field with three values: `not_started`, `in_progress` and `done`. That is a useful new capability, but the old saved records cannot tell you everything the new design wants to know. Nothing is built, and you do not need to build it.
 
-Suppose Maya plans a later version in which a note becomes its own record attached to a source, because one conversation often produced several observations. Before that larger change, she wants the text field to have a name that still makes sense when it no longer sits beside the source title, so she renames `note` to `body`: the note's own text. That is one possible product reason; a rename made only for tidiness rarely justifies a migration. The names change; her words must remain exactly the same. The worked change below rehearses only this rename, not the later design.
+An old `true` can safely become `done`. An old `false` tells you only “not finished”; it does not reveal whether anyone has started. Someone has to decide how to handle that gap, and it is the owner's decision, not the migration's. In this example the owner agrees to mark those imported tasks `not_started`, to tell the team that this is a default, and to have them correct any task that is already in progress. The migration must not present that default as knowledge of anyone's actual progress. If it matters later which statuses were defaulted, record that as well.
 
-Adding a required date is a different problem: an older note may have no known creation date. Ask the owner what “unknown” means instead of inventing a date that looks factual.
+Adding a required date is a different problem: an older task may have no known creation date. Ask the owner what “unknown” means instead of inventing a date that looks factual.
 
 Turn those promises into expected results with [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks).
 
@@ -56,7 +56,7 @@ Turn those promises into expected results with [Turn a Feature Brief Into Checks
 
 Ask the agent to test or explain four combinations: old code with old data, new code with old data, new code with new data, and old code with new data. Mark untested combinations as unknown. Identify the order of the application and data changes, including what happens if one succeeds and the other fails.
 
-For a local notebook, stopping the app during a change may be acceptable. A hosted product with several running copies needs a plan for readers and writers that may still use the old format. Adding a field first, updating readers and writers, and removing the old field later can reduce risk, but only if the agent demonstrates compatibility at each step.
+For a small app used by one team, stopping writes during the change may be acceptable. A hosted product with several running copies needs a plan for readers and writers that may still use the old format. Adding a field first, updating readers and writers, and removing the old field later can reduce risk, but only if the agent demonstrates compatibility at each step.
 
 Record how writes will be paused or handled, what happens on interruption or a repeated run, and which version identifies an already migrated dataset. A transaction can make a supported group of database changes succeed or fail together; the actual storage system and operation determine that guarantee. It does not make outside effects reversible.
 
@@ -66,27 +66,51 @@ Keep the migration instructions with the project's versioned files. Record the e
 
 Name the stop conditions: unexpected format, missing source values, record mismatch, failed checks or an untested recovery option. Decide who may authorize the real change. A successful rehearsal gives that person evidence; it is not permission to change another target automatically.
 
-## Worked change: preserve the note before removing its old field
+## Worked change: add a status before removing the old field
 
-This exercise uses the one canonical practice file for Maya's notebook: the two-record version-1 JSON shown under “Worked rehearsal: a stopped local file” in [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery). For this practice exercise you do not need to run that rehearsal first; a change to real records still needs the recovery evidence from Step 3. Copy the file's entire contents, unchanged, into a new disposable directory as your version-1 input: `schemaVersion: 1`, both records and their exact text. The checks below compare the migrated values with that original, so a retyped or shortened copy could hide a lost or altered note. Never point the exercise at real data.
+This optional exercise uses its own tiny version-1 file of made-up tasks. Copy it, unchanged, into a new disposable directory; the checks compare the migrated values with this original, so a retyped or shortened copy could hide a lost or altered task. A change to real records still needs the recovery evidence from Step 3. Never point the exercise at real data.
 
-These are the illustrative rules for two application versions:
+`schemaVersion` labels the format of the whole file. Each task has an `id` that never changes, a `description` of the work and the original `done` flag:
 
-- **Old reader:** reads text only from `note`.
-- **Transition reader:** reads `body` when present, otherwise reads `note`.
-- **Version-2 format:** keeps `note` and adds `body` with the same value.
-- **Version-3 format:** removes `note`, leaving `body` as the text field.
+```json
+{
+  "schemaVersion": 1,
+  "tasks": [
+    {
+      "id": "task-1",
+      "description": "Order replacement chairs",
+      "done": true
+    },
+    {
+      "id": "task-2",
+      "description": "Book the hall for March",
+      "done": false
+    }
+  ]
+}
+```
+
+The change happens in three stages, each with its own format:
+
+- **Version 1 (original):** each task has only `done`.
+- **Version 2 (transition):** each task keeps `done` and gains `status`. An old `true` becomes `done`; an old `false` becomes `not_started`, the owner's agreed default. For this small exercise, all writes are stopped during the transition.
+- **Version 3 (new):** `done` is removed, leaving `status` as the only progress field. This stage comes only after every old reader and writer has been retired.
+
+And these are the illustrative rules for two application versions:
+
+- **Old reader:** reads only `done`, showing `true` as finished and `false` as not finished.
+- **Transition reader:** reads `status` when present; otherwise it applies the same rule as the migration (`true` → `done`, `false` → `not_started`, the owner's default).
 
 Ask the agent to implement only a local fixture exercise, with these checks:
 
-1. Create version 2 from version 1 without changing the input file, and set `schemaVersion` to 2. For both records, preserve the identifier and title, copy the exact note text to `body`, and retain `note`.
-2. Demonstrate that the old and transition readers both return the expected text from version 2, and that the transition reader also reads version 1.
-3. Reject an unsupported format or a missing source text with an explanation. A repeated version-1-to-2 migration should either be a verified no-op on valid version 2 or refuse it clearly; it must not silently discard information.
-4. In another disposable copy, make version 3. Show that the old reader now fails its expected-text check while the transition reader succeeds.
+1. Create version 2 from version 1 without changing the input file, and set `schemaVersion` to 2. For both tasks, preserve the identifier and description exactly, keep `done`, and add `status`: `task-1` becomes `done` and `task-2` becomes `not_started`.
+2. Demonstrate that the old and transition readers both give the expected answer from version 2, and that the transition reader also reads version 1.
+3. Reject an unsupported format, or a task whose `done` is missing or not `true`/`false`, with an explanation. A repeated version-1-to-2 run on a valid version-2 file should be a verified no-op or refuse clearly. In particular, it must not reset a status someone has since corrected to `in_progress` back to the default.
+4. In another disposable copy, make version 3. Show that the old reader now fails its expected-answer check because `done` no longer exists, while the transition reader succeeds.
 
 The decision after check 4 is **no-go for rolling back to the old reader against version 3**. A compatible reader or a separately rehearsed data recovery is needed. The real application's write behavior also needs testing; these tiny reader checks cover only the supplied fixture.
 
-Retaining both fields temporarily creates another obligation. If users can edit during the transition, define which value is authoritative and how both remain compatible. For this exercise, writes stay stopped. Removing the old field belongs in a later change after old readers and writers have been retired and recovery reconsidered.
+Do not let people rely on `in_progress` while old writers still exist. An old screen that knows only `done` could mark a task finished by setting `done` to `true` while `status` still says `in_progress`, or untick it and leave `status` at `done`. Before the team uses the new distinction, retire old writers, or define which field is authoritative and test how the two stay consistent. Removing `done` belongs in a later change, after old readers and writers have been retired and recovery reconsidered.
 
 ## Step 4 — Inspect the rehearsal and decide
 

@@ -2,7 +2,7 @@
 id: check-a-user-journey-with-a-person
 title: Check a User Journey With a Person
 summary: Watch someone attempt a meaningful task, separate what happened from your explanation and choose one improvement supported by the observation.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -38,17 +38,17 @@ Use [Making Your App Usable](contextqb://guides/making-your-app-usable) to prepa
 
 ## Step 1 — Choose one meaningful task
 
-State the person's goal in their terms. The examples on this page use one invented tool: a personal research notebook for Maya, a fictional founder who is talking to bakery owners to decide which problem her business should solve. Each entry keeps one source, such as a conversation, with her note about what it showed, so she can find that evidence when deciding. Imagine a test version of its first feature exists: save an entry and find it again after reopening. Nothing is built, and you do not need to build it.
+State the person's goal in their terms. The examples on this page use one invented situation. A community hall has an online form for requesting a room. Submitting the form does not reserve the room: a coordinator reviews each request and replies before a group can rely on having it. If someone believes a request is a booking, they may tell their group the room is theirs when it is not. Imagine a test version of the form exists. You want to find out whether someone arranging a rehearsal understands that a request still needs approval. Nothing is built, and you do not need to build it.
 
-For that notebook, the task could be: “You want to keep this source and your thought about it so you can find them later.” Supply a made-up source and note. A suitable participant would be someone who also gathers evidence from conversations, such as another founder doing customer interviews. Avoid “click Save, then reopen the page”: that teaches the route you need to observe.
+For that form, the task could be: “You want the small room next Tuesday evening for your group's rehearsal. Use this test site to ask for it, then tell me what you think happens next.” Supply a made-up date and contact details. A suitable participant would be someone who actually arranges rooms for a group, such as a choir or club organiser. Avoid “fill in the form, press Request, then read the message”: that teaches the route you need to observe, and explaining the confirmation message in advance would hide the very misunderstanding you are looking for.
 
-Decide what would count as completion and which uncertainty matters. Can the person find where to start? Recognize a successful save? Recover from a blank note? Choose a task the test version can actually support and record its revision.
+Decide what would count as completion and which uncertainty matters. Here, submitting the form is not enough. The question is whether the person ends with a correct understanding of what happens next. In your own app, other questions may matter: can the person find where to start, or recover from a mistake? Choose a task where the person's interpretation of success matters, make sure the test version can actually support it, and record its revision.
 
 ## Step 2 — Arrange an appropriate attempt
 
 Ask someone who plausibly has this need, including relevant experience, devices and access needs. Make participation voluntary, explain what you will observe and agree whether you will take notes or record. Recording is a separate choice; brief written observations are often enough. Keep identifiers and recordings only under a deliberate [retention plan](contextqb://playbooks/plan-data-retention-and-deletion).
 
-Use a test copy and made-up records. Check that the task cannot trigger real messages, charges or changes to someone else's information. If assistive technology is relevant, arrange a suitable setup with the participant instead of assuming a keyboard-only attempt represents every access need.
+Use a test copy and made-up records. Check that the task cannot trigger real messages, charges or changes to someone else's information. In the room example, the test form must not send a request to the hall's real coordinator or hold a real room. If assistive technology is relevant, arrange a suitable setup with the participant instead of assuming a keyboard-only attempt represents every access need.
 
 For a tool used only by you, a real self-use attempt is a useful first record. Disclose that you know the design and intended route. Another person's attempt gives different evidence about understandability; one person's success still does not represent everyone.
 
@@ -65,19 +65,25 @@ Record accessibility checks as separate observations. Automated checks and a sin
 Use a short record like this. The filled entries below are **invented for teaching**, not findings from a participant:
 
 ```text
-Target/task: test notebook; retain a source and a thought for later
-Participant context: fictional first-time user of this interface
-Observation: entered a title; left Note empty; pressed Save;
-             read “Add a title and note”; asked what a note should contain
-Assistance: explained that Note is their own thought about the source
-Outcome: saved after assistance
-Interpretation: “Note” may not explain the expected content
-Other possibilities: task wording was unclear; participant expected optional notes
-Proposed change: add “What do you want to remember about this source?”
-Next check: repeat an equivalent task without that explanation
+Target/task: test room-request form, revision recorded; request the small
+             room next Tuesday evening, then say what happens next
+Participant context: fictional rehearsal organiser, first time using this form
+Observation: chose the small room and Tuesday evening; entered the made-up
+             contact details; pressed Request; saw “Pending”; said,
+             “Great, I'll tell the group we've got the room.”
+Assistance: none
+Outcome: request submitted; participant believed the room was reserved
+Interpretation: the page did not make the coordinator's approval step clear
+Other possibilities: task wording suggested booking; previous booking sites
+                     confirmed instantly
+Proposed change: “Request received. The room is not reserved yet;
+                 the coordinator will reply.”
+Next check: repeat an equivalent task with the new wording; record whether
+            the participant describes the next step correctly and whether
+            assistance was needed
 ```
 
-“They did not understand the app” is too broad. Keep the specific event separate from your explanation, so another reviewer can question the explanation. Preserve a participant's words accurately if you quote them; label summaries as summaries.
+The observable event is what the participant did and said. “They do not understand computers,” or “They did not understand the app,” is too broad and unsupported. The narrower interpretation points at one part of the page, and the other possibilities stay recorded because the task wording or the person's experience elsewhere could also have contributed. Keep the specific event separate from your explanation, so another reviewer can question the explanation. The value of the record is the connection from an observed misunderstanding to a specific change and another check. Preserve a participant's words accurately if you quote them; label summaries as summaries.
 
 ## Step 5 — Change one thing and check again
 

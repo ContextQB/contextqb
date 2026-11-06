@@ -2,7 +2,7 @@
 id: testing-agent-built-software
 title: Testing Agent-Built Software
 summary: Choose checks from the behavior you need, recognize weak tests and judge what a passing result actually demonstrates.
-version: 0.1.4
+version: 0.2.0
 audience:
   - novice-builder
   - founder
@@ -35,9 +35,11 @@ tags:
 
 ## Start with the promise, before the code
 
-Use this guide after choosing a bounded feature in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). You can design the checks before the feature exists. For the research notebook, the promise includes reopening saved notes, rejecting blank input and keeping a draft when saving fails.
+Use this guide after choosing a bounded feature in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). You can design the checks before the feature exists.
 
-Write an **acceptance criterion**: a condition the feature must meet for you to accept it. “The note is still available after I close and reopen the app” is a criterion. “The agent added a save function” describes an implementation action; it does not establish that the useful behavior works.
+This guide uses one invented example. An organiser runs a family workshop and accepts reservations online. One reservation may be for one to four places. A reservation for zero places would serve nobody, half a place is not meaningful, and more than four would let one booking take too much of a small session. Those facts determine the rule before the agent writes any code or test. The organiser's promise also includes that a reservation is still there after the app is reopened, and that the form never says “confirmed” when saving failed. You do not need to build this to follow the guide.
+
+Write an **acceptance criterion**: a condition the feature must meet for you to accept it. “A reservation for two places is still listed after I close and reopen the app” is a criterion. “The agent added a save function” describes an implementation action; it does not establish that the useful behavior works.
 
 Then choose a specific example. Use synthetic values that are safe to create, change and remove. State the expected result before reading the agent's result, so an attractive output does not quietly change your standard.
 
@@ -45,9 +47,9 @@ Then choose a specific example. Use synthetic values that are safe to create, ch
 
 Different checks see different parts of the application:
 
-- **Unit test** — checks a small piece on its own. For the notebook, does the input rule reject a note containing only spaces?
-- **Integration test** — checks parts working together. Does saving through the application logic write values that the storage layer reads back correctly?
-- **End-to-end test** — exercises a user path through the running application. Can an automated run, acting like the person, enter, save and reopen the note through the intended interface?
+- **Unit test** — checks a small piece on its own. For the workshop, does the rule accept two places and refuse zero?
+- **Integration test** — checks parts working together. Does saving through the application logic write a reservation that the storage layer reads back correctly?
+- **End-to-end test** — exercises a user path through the running application. Can an automated run, acting like the person, enter two places, submit, reopen the app and find the reservation through the intended interface?
 
 An automated test performs an action and compares the result with an expectation. A manual check is a person deliberately trying a case and recording what happened. Human observation also answers questions about whether an interface is understandable that automated behavior checks do not settle. MDN's [testing curriculum](https://developer.mozilla.org/en-US/curriculum/extensions/testing/) distinguishes functional checks from usability, compatibility and other testing concerns.
 
@@ -59,34 +61,44 @@ A **fixture** is prepared example data. A **test double**, often loosely called 
 
 If a test replaces storage with an in-memory list, it can help check how the interface responds to a save result. It cannot demonstrate survival after closing the application. Ask which parts are real, which are substituted and what additional check covers the real connection.
 
-For this local notebook, test the chosen storage in a disposable location and reopen using that same location, including the same browser profile and site address when storage is in the browser. Do not silently switch to a different test directory and interpret the missing note as a storage failure. Have the agent explain its setup and cleanup so you can understand what was actually exercised.
+For a local practice version of the reservation form, test the chosen storage in a disposable location and reopen using that same location, including the same browser profile and site address when storage is in the browser. Do not silently switch to a different test directory and interpret the missing reservation as a storage failure. Have the agent explain its setup and cleanup so you can understand what was actually exercised.
 
 ## Worked exercise: a passing test with the wrong expectation
 
-This deliberately flawed JavaScript example checks only whether a note is acceptable. You can understand it in plain language: `text.length` measures the length of text, including spaces, and `> 0` asks whether there is at least one. The notebook's [agreed input rule](contextqb://guides/directing-your-first-feature) requires something besides spaces.
-
-The faulty implementation is:
+This deliberately flawed JavaScript example checks only whether a requested number of places is acceptable. Suppose the agent writes a function that accepts any number up to four:
 
 ```js
-function canSaveNote(text) {
-  return text.length > 0;
+function canReservePlaces(count) {
+  return count <= 4;
 }
 ```
 
-Now imagine a test whose name says “rejects blank notes,” but whose actual check is `canSaveNote("   ") === true`. `===` means “is exactly equal to,” and `"   "` is a note of three spaces. In plain language, this check says a note of only spaces should be accepted. The test passes. The name sounds reassuring; the expectation says the wrong result is acceptable.
+In plain language: `count` is the number of places requested, and `<=` means “is less than or equal to.” So the function answers “yes” whenever the request is four or fewer. It accepts two, which is right. It also accepts zero, which the organiser's rule forbids.
 
-Here is an illustrative completion report, not a real test receipt:
+Now imagine the accompanying test is named “rejects zero places,” but its actual check is `canReservePlaces(0) === true`. `===` means “is exactly equal to,” and `true` means “accepted.” Read it aloud: “I expect a request for zero places to be accepted.” That contradicts the requirement. The test passes because the code and the test make the same mistake. The name sounds reassuring; the expectation says the wrong result is acceptable.
+
+Here is an invented completion report, not a real test receipt:
 
 ```text
-Added note validation. “Rejects blank notes” passes. All checks are green.
-The feature is ready for customers.
+Added reservation validation. “Rejects zero places” passes. All checks are green.
+The booking form is ready for families.
 ```
 
-Before reading further, decide what you would challenge. Which part contradicts the brief? What evidence about saving and reopening is absent? What justifies the claim about customers?
+Before reading further, decide what you would challenge. Which part contradicts the brief? What evidence about saving and reopening is absent? What justifies the claim that families can rely on it?
 
-The assertion should be `canSaveNote("   ") === false`: a note of three spaces must be rejected. A check that expects `false` fails against this implementation. The agent could correct this rule with `text.trim().length > 0`: `trim()` removes whitespace, including spaces, tabs and line breaks, at the ends before the length check, as [MDN documents](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim). It should also show that an ordinary note is accepted and an empty string is rejected. This fixes the illustrated rule. To verify the full feature, also check that the interface uses it and that accepted notes survive saving and reopening.
+The assertion should be `canReservePlaces(0) === false`: a request for zero places must be refused. Changed to that expectation, the test now fails against the faulty function, which is what you want a test to do when the code is wrong. The agent could correct the rule:
 
-The lesson is not to memorize JavaScript. Ask the agent to show the **assertion**, the actual comparison in a test, and translate it into plain language. A test name is a label; the assertion determines what the check accepts.
+```js
+function canReservePlaces(count) {
+  return Number.isInteger(count) && count >= 1 && count <= 4;
+}
+```
+
+`Number.isInteger(count)` asks whether the value is a whole number, as [MDN documents](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger). `>=` means “is greater than or equal to,” and `&&` means “and”: all three conditions must hold. After the correction, check that one, two and four are accepted, and that zero, five and 1.5 are refused. The edges matter: one and four are the smallest and largest allowed values, so a mistake in the comparison shows up there first.
+
+This specimen receives numbers. A real form receives text typed by a person, so turning “2” into the number 2, and deciding what happens to an entry such as “two” or an empty box, needs its own check. The corrected rule test also says nothing about whether the form uses that rule or saves the reservation. To verify the full feature, check the user path separately: submit a valid request, reopen the app and find the reservation.
+
+The lesson is not to memorize JavaScript. Ask the agent to show the **assertion**, the actual comparison in a test, and translate it into plain language. A test name is a label; the assertion determines what the check accepts. Then ask which separate check covers the real user path.
 
 ## Make a failure informative
 

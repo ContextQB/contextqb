@@ -2,7 +2,7 @@
 id: scope-vs-punchlist
 title: Scope vs. Punchlist
 summary: A scope is the contract you write before the build; a punchlist is the remediation list you write at the end of one. Most working records that steer a build are scopes; true punchlists are rare. Naming yours correctly is what keeps the archive navigable.
-version: 0.3.0
+version: 0.3.1
 audience:
   - operator
   - developer
@@ -51,7 +51,7 @@ A pre-build remediation list is a contradiction. A post-build plan is a scope fo
 | **Lifetime**     | Lives and is updated through the build          | Burns down to zero, then is archived           |
 | **Failure mode** | Missing → the agent invents the boundaries      | Missing → "done" means "nobody looked closely" |
 
-A small software example. The scope for a notebook feature, written first, says: save a source and a note about it; both are still there after the app is reopened; a blank note is rejected with an explanation; no search yet. Near the end, when the feature mostly works, its punchlist holds two items: the blank-note message says "Invalid input" instead of what to fix, and the Save button can't be reached with the keyboard. Each item is small, and you can check that it is fixed.
+A small software example. A recipe app already displays saved recipes. Before adding favourites, the owner agrees a scope: a person can mark a recipe as a favourite, see only their favourites, and find those choices still remembered after reopening the app; meal planning and shopping lists are outside this change. That document tells the agent what to build before work begins. Near the end, the feature mostly works, but review finds two specific problems: the favourite button has no understandable label for someone using a screen reader, and the empty favourites view is a blank page with no explanation. Those are punchlist items against the agreed feature. Each can be corrected and checked without inventing another product direction. “Add meal planning,” by contrast, would be new scope, not a last-minute punchlist item just because somebody wrote it down at the end. For your own work, separate the promise agreed before building from the specific gaps found while checking it; a punchlist this small can simply live in the scope's log rather than a separate file.
 
 ## Why the naming matters
 

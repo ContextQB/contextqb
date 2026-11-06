@@ -2,7 +2,7 @@
 id: respond-to-an-outage
 title: Respond to an Outage
 summary: Establish what is failing, limit the impact under the right authority and verify the useful task has recovered before closing the incident.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 9
 journey_rank: 20
@@ -36,7 +36,7 @@ Prepare with [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-moni
 
 ## Step 1 — Record what is affected
 
-Open a short incident note. Record the time and time zone, affected task and target, known affected users, current release and observed symptoms. Distinguish facts from hypotheses. “Notes are not displayed” is an observation; “the database was deleted” needs evidence.
+Open a short incident note. Record the time and time zone, affected task and target, known affected users, current release and observed symptoms. Distinguish facts from hypotheses. “Events are not displayed” is an observation; “the database was deleted” needs evidence.
 
 Name one coordinator, even if that is you. Pause unrelated work and automatic changes within your authority. Give investigating agents bounded read-only tasks first, and make sure their findings land in the same record. Keep credentials and private record contents out.
 
@@ -62,25 +62,24 @@ After mitigation, repeat the affected task against the actual target using appro
 
 Record restored behavior, remaining restrictions and the watch needed before closing the incident. A restart or successful command is an action result, not proof that the user's task recovered.
 
-## Worked tabletop: missing display, intact notes
+## Worked tabletop: “No events,” intact records
 
-This is a **fictional exercise**. A **tabletop** means talking through supplied facts and decisions on paper; no system is touched. Nothing here authorizes changing a real system.
+This is a **fictional exercise**. A **tabletop** means talking through supplied facts and decisions on paper; no system is touched. Reading it does not instruct or authorize a rollback of any real system.
 
-The example is an invented local-file notebook. Maya, a fictional first-time founder, keeps her research notes from conversations with bakery owners in one data file on her own computer. A notebook program she installs herself reads and writes that file. These facts set the starting state for the discussion:
+A community hall's website has an events page that visitors use to find out what is on. After a release, the page suddenly shows “No events.” The hall has several events planned, including one a staff member added this morning. Visitors who check the page will think nothing is happening. Read each supplied fact before choosing an action:
 
-- The data file holds three entries: two older ones and one newer one saved this week.
-- The most recent backup was taken before the newer entry was saved, so it contains only the two older entries.
-- The previously installed program version is still available, and returning to it has been rehearsed. Whether it can read the current data is established in fact 2; compatible code here means a version that reads the current data correctly.
+1. At 09:10 local time (record the zone), the hall's coordinator, who owns the website, sees “No events” on the newly released version. They pause further releases and record the release identifier.
+2. Read-only inspection finds all the event records intact, including this morning's addition. Their stored format has not changed.
+3. In an isolated copy, the previous application version displays those records correctly, including this morning's event. Returning to that version has already been rehearsed. Compatible code here means a version that reads the current records correctly, and this fact establishes it.
+4. The latest data backup was taken yesterday. It does not contain this morning's new event.
 
-They are supplied for this exercise; you do not need to have run any earlier exercise or built the notebook. Read each fact below before choosing an action:
+These facts point to the released code as the failure, not the data. Restoring yesterday's backup over today's records would lose this morning's event and would not address the demonstrated display problem, so the coordinator rejects that action and preserves the records and evidence. Under the exercise's assumed authority, the coordinator chooses the rehearsed return to the previous version. In a real incident, that action still needs its own authorization and execution record.
 
-1. At 09:10 local time (record the zone), the owner, Maya, opens a newly delivered notebook version and sees no entries. They pause further updates and record the candidate identifier.
-2. Read-only inspection finds the two original records and a newer third record intact. The stored format is unchanged. A test copy shows that the previous application version reads all three; its recovery procedure has been rehearsed.
-3. The available backup contains only the original two records. Restoring it over the working data would discard the newer third record, and does not address the demonstrated display problem. The owner rejects that action.
-4. Under the exercise's assumed authorization, the owner chooses the rehearsed compatible code rollback, preserving the data. In a real incident, the actual action still needs its own execution record.
-5. The expected recovery check is to read all three records through the returned version, save a fourth note the owner intends to keep, reopen and verify it. Alternatively, verify writing against a copy first and explicitly carry the real write-path check as pending. Do not leave made-up records in the working notebook without an agreed, supported removal method. Monitoring must show fresh results. Until those observations exist, the incident is not verified recovered.
+The recovery check must inspect the actual returned version: can a visitor see the expected events, including this morning's addition? Do the relevant monitoring signals show fresh results? A check that new events can still be saved is separate from that read check. It must not leave misleading fake events on the public calendar: use an event the hall genuinely intends to publish, or verify writing against a copy first and carry the real write check as pending. Until those observations exist, the incident is not verified recovered.
 
-If fact 2 instead revealed a changed format that the old reader cannot understand, the rollback decision would change. Explain why before asking the agent for a response plan.
+If fact 2 had instead shown that the release converted the records into a format the previous version cannot read, the rollback decision would change. Explain why before asking the agent for a response plan.
+
+For your own incident, first establish whether the information is missing or the app is failing to show it. Stop unrelated changes, separate facts from guesses and choose a recovery action supported by the evidence. The word “outage” does not tell you which layer to replace.
 
 ## Step 5 — Leave one useful improvement
 

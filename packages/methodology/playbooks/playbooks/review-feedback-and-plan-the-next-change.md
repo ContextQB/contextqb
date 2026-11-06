@@ -2,7 +2,7 @@
 id: review-feedback-and-plan-the-next-change
 title: Review Feedback and Plan the Next Change
 summary: Preserve what a person reported, identify the task behind it and choose one change or investigation with a clear success check.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 9
 journey_rank: 30
@@ -40,7 +40,7 @@ Record whether this was an observed attempt, a message, your own use or a simula
 
 Ask what the person was trying to accomplish and where the result differed from their expectation. A **defect** means promised behavior is broken; a **usability issue** means the interaction obstructs the task; a **request** proposes new or changed behavior. A report can involve more than one.
 
-Use [Convert a Bug Into an Architectural Investigation](contextqb://playbooks/bug-as-investigation) when a defect needs reproduction. Use [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) when the obstacle or expectation is unclear. Avoid diagnosing from the label alone: “add folders” may describe a difficulty finding old work rather than a need for a particular storage structure.
+Use [Convert a Bug Into an Architectural Investigation](contextqb://playbooks/bug-as-investigation) when a defect needs reproduction. Use [Check a User Journey With a Person](contextqb://playbooks/check-a-user-journey-with-a-person) when the obstacle or expectation is unclear. Avoid diagnosing from the label alone: “add a spreadsheet export” may describe a difficulty seeing something in the current screen rather than a need for a file.
 
 ## Step 3 — Choose a response and explain why
 
@@ -48,23 +48,33 @@ Consider impact on the intended task, who is affected, independent evidence, cos
 
 Choose a response: fix a demonstrated fault, investigate a missing fact, test a bounded idea, defer with a reason and revisit trigger, or decline because it falls outside the product's purpose. State what evidence could change the decision.
 
-## Worked example: “Please add folders”
+## Worked example: “Can you add a spreadsheet export?”
 
-This is an **invented report and decision**. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer, used only by her. Each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed, so she can find that evidence when deciding which problem her business should solve. After several weeks of real use she has many similarly titled entries, and she writes the request below in her own operating notes. The same event appears as week 4 of the optional simulated month in [Operating a Small App](contextqb://guides/operating-a-small-app); you do not need to read that first.
+This is an **invented report and decision**; no actual customer conversation is claimed. A coordinator using a volunteer rota app asks, “Can you add a spreadsheet export?” The agent could build an export immediately, but first find out what the coordinator is trying to accomplish with it.
+
+Asked about it, the coordinator explains that every Friday they need to find next week's uncovered shifts. The current screen lists each volunteer's assignments, so a shift that nobody has taken never appears anywhere, and empty shifts are hard to spot. An export is their proposed way to inspect the schedule; finding uncovered shifts is the need behind it. Both statements belong in the record:
 
 ```text
-Original report: “Add folders? I can't find last week's interview note.”
-Context: Maya's own use, written in her operating notes; many similarly titled notes
-Known: the person reports difficulty finding an earlier note
-Unknown: whether the note exists, whether its title helps, and how they looked
-Decision: investigate the finding task before approving folders
-Next evidence: observe an equivalent search using made-up records
-Possible change: clearer titles or a search/filter, if the observation supports it
-Success check: intended person finds the specified earlier note without coaching
+Original report: “Can you add a spreadsheet export?”
+Context: the coordinator's request; Friday planning for next week's rota
+Stated need: find next week's uncovered shifts; the current screen lists
+             assignments by volunteer, so empty shifts are hard to see
+Known: the coordinator cannot easily see unfilled shifts on screen
+Unknown: whether an export is also needed for printing, sharing or another
+         workflow; how the coordinator currently finds uncovered shifts
+Decision: investigate before building; keep the export request open
+Next evidence: watch the coordinator do a Friday check with safe test data,
+               and ask what else they would do with an export
+Possible change: an uncovered-shifts view, and/or the export, depending on
+                 what the observation shows
+Success check: the coordinator identifies every unfilled shift for a chosen
+               week without comparing separate lists
 Owner and next review: record the actual responsible person and agreed time
 ```
 
-The report does not prove that folders are unnecessary. It shows why the next action is to learn which obstacle the proposed feature would solve. If the note was never saved, adding folders would leave the underlying defect unresolved.
+Do not dismiss the requested solution before understanding those constraints. An uncovered-shifts view might solve the Friday problem directly, but an export could still matter for printing a copy for the noticeboard or sending it to someone without access. If the evidence supports trying the view first, define the result before building, as in the success check above, and check it with the coordinator. Delivering a filter is not the same as resolving the original difficulty, and if the export turns out to be needed as well, the original request is still in the record.
+
+For your own feedback, separate the person's words, the task they need to complete, your interpretation and the next evidence. That makes it possible to change your proposed solution without losing the problem you were meant to solve. [Operating a Small App](contextqb://guides/operating-a-small-app) describes the routine in which reviews like this happen.
 
 ## Step 4 — Turn the decision into bounded work
 

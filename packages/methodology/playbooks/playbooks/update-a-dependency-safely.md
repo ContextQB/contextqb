@@ -2,7 +2,7 @@
 id: update-a-dependency-safely
 title: Update a Dependency Safely
 summary: Investigate one software dependency update, check the behavior and compatibility it affects and record a justified adoption or deferral.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator, agent]
 journey_stage: 6
 journey_rank: 40
@@ -62,27 +62,39 @@ Have the agent use the project's existing package manager in a separate working 
 
 Run the applicable checks and build, then exercise the behavior that uses the dependency. Include a representative failure and any data-compatibility case identified in the plan. An installation success or a zero-warning scan alone does not establish product behavior. Keep results tied to the exact candidate and test environment.
 
-## Worked decision: a successful install with a broken import
+## Worked decision: a green build with a broken export
 
-This is an **invented update exercise**. Maya, a fictional first-time founder, keeps a personal research notebook on her own computer: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Imagine a later version of that notebook that can import entries from a file, for example ones she exported earlier, and that relies on a package for reading those files. Nothing is built, and you do not need to build it. `notebook-importer` is a fictional package name, not a package to find or install. All versions and the advisory below are teaching assumptions.
+This is an **invented update exercise**; the library is unnamed and every observation below is made up for teaching. A volunteer coordinator's app exports the weekly rota as a CSV file so helpers can open it in a spreadsheet and see where they are assigned. **CSV** (comma-separated values) is a plain-text table format: each line is a row, and a comma normally starts the next column. The app uses a library to write that file. The library's release notes say a new version fixes an export problem the coordinator has run into, so the agent tries the update in an isolated copy of the project. Nothing needs to be built or installed to follow the example.
 
-The controlled input is one made-up entry. Its note deliberately contains two spaces between “Keep” and “two”: an import must keep the text exactly, so a version that trims or collapses spacing fails the comparison even when it does not lose the whole note.
+Before reading the results, notice what a comma inside a value means. A two-column rota has a `helper` column and a `location` column. If a location's name itself contains a comma, such as “Hall, East”, CSV marks that value as one field by putting it in double quotation marks. Spreadsheets then read `"Hall, East"` as one location, not two columns.
+
+The installation and the build both succeed. The coordinator then checks a made-up export containing one ordinary row and one location with a comma. Here is the output from the current library:
 
 ```text
-Current: notebook-importer 1.2.0; imports title and note fields.
-Candidate: 1.2.1; imaginary advisory says it fixes a crafted-file crash.
-Release promise: existing import format remains supported.
-Controlled input: [{"id":"note-1","title":"A source","note":"Keep  two spaces"}]
-Expected: one entry, same ID/title/note; no silent loss or duplicate on rejection.
-Candidate observation (fictional): install/build pass; imported note is empty.
-Decision: do not adopt this candidate; the checked task promise failed.
-Immediate mitigation: disable importing untrusted files pending a checked fix.
-Owner: product owner; investigate the cause before the next exposed import.
+helper,location
+Test Volunteer,"Hall, East"
+Test Helper B,Kitchen
 ```
 
-The advisory and mitigation would need real applicability checks in an actual product. In this exercise, the defect is observed in the record: a successful build does not compensate for losing the note. Ask the agent to explain whether the package, your own import code or the test setup caused it, then check a corrected candidate. Do not simply keep using an exposed vulnerable version indefinitely.
+And here is the output from the candidate version (fictional observation):
 
-To practice locally, have the agent create two tiny stand-ins: one preserves the fixture's note and one produces an empty note. Check each against the expected values and confirm that the faulty one fails. Use no registry installation or network call. This demonstrates the acceptance check; it does not test any real dependency. Rehearse returning to the earlier stand-in with unchanged fixture data, and explain why this says nothing about reversing a real migration.
+```text
+helper,location
+Test Volunteer,Hall, East
+Test Helper B,Kitchen
+```
+
+The candidate fails to quote the location. A spreadsheet reads the second line as three columns: “Test Volunteer”, “Hall” and “ East”. The helper's location now appears as just “Hall”, with a stray value in a column that has no heading. A volunteer could go to the wrong hall.
+
+The update has broken the useful promise even though the build is green. Keep the candidate out of the working export path, and ask the agent to find out whether the cause is the library, the way the app calls it (for example, a changed default setting), or the test setup. Then check a corrected candidate against the same expectations:
+
+- an ordinary row is exported unchanged;
+- a value containing a comma stays one quoted field and reads back as exactly “Hall, East”;
+- an empty rota produces just the heading line, `helper,location`, with no blank rows.
+
+Compare what the file means when a spreadsheet reads it, not just whether a file was produced. For your own update, identify the task that actually uses the dependency and choose one input that could expose a meaningful difference. A version change is successful when the required behavior survives, not merely when the package manager finishes.
+
+If an update is driven by a security advisory, the earlier steps still apply: check whether your version and usage are actually affected, and consider a bounded mitigation while a broken candidate is investigated. Do not simply keep an exposed vulnerable version indefinitely.
 
 ## Step 5 — Review, decide and leave the next action
 

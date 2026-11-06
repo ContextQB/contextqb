@@ -2,7 +2,7 @@
 id: where-your-app-runs
 title: Where Your App Runs
 summary: Identify the version, settings, data and access in each place your app runs, then rehearse delivery to a controlled target.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator]
 journey_stage: 3
 journey_rank: 70
@@ -55,41 +55,57 @@ For a hosted web app, also identify its **domain**, the readable name in its add
 
 ## What delivering one small app involves
 
-Take one invented example. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She wants a small personal research notebook on her own computer. In it she saves which conversation she learned from and her note about it, so she can find that evidence when she decides. Its first feature is described in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). Nothing here is built, and you don't need to build it; the example shows what delivery means in practice.
+Take one invented example. A volunteer group runs a rota app: volunteers see which shifts they have and can swap them. The coordinator has asked the agent for a new screen for changing a shift. Before replacing the version volunteers use every week, the coordinator wants to try the new screen with made-up shifts. The test site must not edit the real rota, and it must not message real volunteers. Calling a site “preview” does not make that separation happen. Nothing here is built, and you don't need to build it; the example shows what delivery means in practice.
 
-Suppose the agent builds the notebook as a small program that runs on Maya's computer and keeps her entries in one file. It has no accounts, cloud database or outgoing services. Delivering it then involves three concrete things:
+Describe three things separately for each place the app runs:
 
-- **The program.** The agent edits the project's source files. A build turns them into a self-contained package that runs without the development setup: for example, a folder or archive named `notebook-0.1.0`. That package is the build artifact. Its **artifact identifier** is whatever lets you tell exactly which package you have. Here, that could be the version `0.1.0` the program reports when asked, plus the source revision it was built from. Where you can, add a fingerprint of the archive file, a short code your computer calculates from the file's contents that changes if any byte changes.
-- **The data.** The file of saved entries is kept outside the package, so replacing the program does not replace or erase the entries.
-- **Who runs what, where.** In a rehearsal, the agent (or Maya, following its steps) copies the candidate package into a separate rehearsal folder and runs it against a disposable data file of made-up entries. Only the tester uses it. When Maya accepts that package, the same package is copied to the folder she actually uses and pointed at her own, separate data file. Running the program and asking for its version in each place shows whether both are the same build.
+- **The application version.** The agent edits source files, and a build turns them into the code that actually runs. That built code is the artifact, identified here by the illustrative release name `rota-0.4`. Its **artifact identifier** is whatever lets you tell exactly which build you have: the release name, the source revision it was built from and, where the platform provides one, its deployment record or a fingerprint of the built files, a short code calculated from their contents that changes if any byte changes.
+- **The settings.** These tell that code which storage and services to use. The same `rota-0.4` can read a disposable store or the real rota, depending only on its settings.
+- **The saved records.** These are the actual shifts. The preview uses a disposable store containing made-up shifts such as “Test shift A”; the working site uses the real rota store. If the app sends shift reminders, the preview's notification service must use an agreed test arrangement, such as a test inbox, rather than messaging volunteers.
 
-## Worked delivery map for the notebook
+## Worked delivery map for the rota
 
 The map below records that arrangement. The names are illustrative, not existing application paths:
 
 ```text
-Development: project source files; disposable practice-data/notebook.json
-Rehearsal: candidate package notebook-0.1.0 copied to rehearsal/app;
-           separate rehearsal/data/notebook.json of made-up entries; tester only
-Intended use: the accepted package (same notebook-0.1.0) copied to installed/app;
-              Maya's separate data/notebook.json; Maya only
-Identity: source revision + package version and fingerprint + settings description
-Recovery for disposable rehearsal: return to the earlier compatible package.
-Later, before Maya relies on it for real notes: separately rehearsed data recovery.
+Development:
+  artifact: unbuilt source files on the coordinator's computer
+  settings: local storage; notifications switched off
+  records:  practice shifts in a local disposable store
+  audience: the coordinator and agent only
+Preview:
+  artifact: rota-0.4, built from source revision <recorded>
+  settings: preview storage; test notification arrangement
+  records:  disposable preview store ("Test shift A", "Test shift B")
+  audience: the coordinator only; access restricted
+Working:
+  artifact: the same rota-0.4 once accepted (currently rota-0.3)
+  settings: working storage; real notifications
+  records:  the real rota store
+  audience: the volunteers
+Identity: release name + source revision + deployment record or fingerprint
+          + description of settings (names only, never secret values)
+Recovery: preview: redeploy the previous artifact; discard test shifts.
+          Working: previous artifact for the code; shift records need
+          their own rehearsed recovery.
 ```
 
-Each line answers a question you can check. Which program? The package, identified by its version and fingerprint. Which data? A separate file for each place. Who uses it? The tester in rehearsal, then Maya. Keeping data outside the application package makes its separate ownership visible; verify that an installer or update actually preserves it. Use any made-up entries for this first rehearsal.
+Each entry answers a question you can check. Which code? `rota-0.4`, identified by its release name, revision and deployment record. Which settings and records? A separate store for each place, named so you can tell them apart. Who uses it? The coordinator in preview, then the volunteers. Ask the agent to show which version each place is running and which store each setup actually reads, without printing credentials.
 
-The last line is a later, conditional step. Once the notebook holds entries Maya would be harmed to lose, she needs to know she can recover them, not only roll back the program. [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) covers that, with a ready two-record practice file. You do not need it before this disposable rehearsal.
+In preview, change a test shift and confirm the change survives reopening. Then check that the real rota was not the target, for example by confirming its shifts are unchanged. When the coordinator accepts the release, deploy the identified artifact with the working settings and verify its identity there. The publication described here is an illustration, not an instruction to deploy anything.
 
-The same notebook could instead be a web page that keeps entries in the browser's own storage. Delivering that version means publishing the page's files to a web address. The entries don't travel with those files: they live in each person's browser, tied to the site address and browser profile. Record both, because changing either changes which storage is read. Replacing the page files neither replaces nor recovers the entries.
+The last recovery line is a later, conditional step. Rolling back the code does not bring back shift records. Once people rely on the records, you need to know you can recover them; [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) covers that.
+
+The same three-part description applies even without a public web address. A personal desktop tool has a program version, its settings and the saved work it reads, and replacing the program does not necessarily replace or recover that saved work. A web page that keeps records in the browser's own storage is different again: the records don't travel with the page's files. They live in each person's browser, tied to the site address and browser profile, so record both, because changing either changes which storage is read.
+
+This is why “it works on my computer” is incomplete evidence. You need to know which code, settings and records produced the result.
 
 ## Rehearse the delivery, then inspect the result
 
-If you have no app yet, keep this as a checklist for later; nothing in this guide requires building the notebook. When you do have one, have the agent propose a bounded procedure for your actual app. It should name the source revision, any uncommitted changes, build command, artifact identifier, destination, settings, test data and cleanup. Confirm the destination before authorizing execution. For a hosted preview, include how access is restricted and how outgoing services stay in test mode.
+If you have no app yet, keep this as a checklist for later; nothing in this guide requires building the rota app. When you do have one, have the agent propose a bounded procedure for your actual app. It should name the source revision, any uncommitted changes, build command, artifact identifier, destination, settings, test data and cleanup. Confirm the destination before authorizing execution. For a hosted preview, include how access is restricted and how outgoing services stay in test mode.
 
 After delivery, check which artifact is actually running or installed. A repository commit identifies source; the platform's deployment record or the installed package's identity ties that source to the target. If the target cannot identify its version, record that gap and agree a practical way to check it.
 
-Try your product's main promised task there with made-up data, then check that its result persists. For Maya's notebook, that means saving an entry, closing and reopening in the same storage context, and inspecting the values. For a booking tool, it would mean making a test booking and checking it is still listed after reopening. Record the command or manual steps, target and observed result. A successful build alone has not performed that task. Mark it “not run” until someone does.
+Try your product's main promised task there with made-up data, then check that its result persists. For the rota preview, that means changing a test shift, reopening the app against the same preview store and inspecting the result. For a booking tool, it would mean making a test booking and checking it is still listed after reopening. Record the command or manual steps, target and observed result. A successful build alone has not performed that task. Mark it “not run” until someone does.
 
-The output is one short delivery record, reusable by [Release Readiness Audit](contextqb://audits/release-readiness). Explain which target you changed, how you know its version and why the exercise could not touch any real data you already keep. Then use [Deploying vs. Launching](contextqb://briefings/deploying-vs-launching) to decide whether anyone should depend on it yet.
+The output is one short delivery record, reusable by [Release Readiness Audit](contextqb://audits/release-readiness). Explain which target you changed, how you know its version and why the exercise could not touch any real data you already keep. For your own app, name the code, settings and records for the test setup and for the setup people rely on. Then use [Deploying vs. Launching](contextqb://briefings/deploying-vs-launching) to decide whether anyone should depend on it yet.

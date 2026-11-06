@@ -2,7 +2,7 @@
 id: state-ownership
 title: State Ownership
 summary: For every piece of state, name a single owner. Derived state should be derived, not duplicated.
-version: 0.2.1
+version: 0.3.0
 category: state
 audience:
   - novice-builder
@@ -68,19 +68,21 @@ State is where AI-generated applications fail most often. The visible symptom is
 
 If you cannot, the state has no owner. That is the bug, even if the immediate symptom is something else.
 
-**State** here means any information the app holds while it runs: the entries on screen, the text being typed, whether a panel is open. Its **owner** is the one part of the app responsible for the current value. Its **source** is where that value comes from: a saved file, a server, or the person's typing.
+**State** here means any information the app holds while it runs: the items in a basket, the text being typed, whether a panel is open. Its **owner** is the one part of the app responsible for the current value. Its **source** is where that value comes from: a saved file, a server, or the person's typing.
 
 ## What it looks like from the outside
 
-You don't need to read code to spot a state-ownership problem. Here is an invented example. Maya, a fictional founder, keeps a small research notebook app: each entry is a source she has read plus her note about it. A later version lets her correct an entry's title. She opens an entry, changes "Bakery call, March 4" to "Bakery owner call, March 4", and presses Save. The edit screen shows the new title. The list of entries beside it still shows the old one until she closes and reopens the app.
+You don't need to read code to spot a state-ownership problem. Here is an invented example you have probably met in some form. In an online shop, you put a mug and a tea towel in your basket. You open the basket drawer at the side of the page and remove the mug. The drawer now shows only the tea towel. But the checkout summary on the same page still lists both items, with the higher total. Which basket will the shop try to submit when you press Pay?
 
-- **Visible symptom:** two parts of the same screen disagree about one value.
-- **What went wrong:** the list and the edit screen each kept their own copy of the entries. Saving updated the edit screen's copy and the saved file, but nothing told the list. Each part acted as if it owned the entries, so in practice nobody did.
-- **The fix:** give the entries one owner, a single part of the app that loads them, saves them and hands the current values to every screen that shows them. After a save, the list and the edit screen both read the new title from that owner. If a screen holds a copy for speed, it is borrowed from the owner and refreshed when the owner changes; no screen updates its own copy independently.
+- **Visible symptom:** two parts of the same page disagree about one thing, the current basket.
+- **What went wrong:** in this example, inspecting the code shows that the drawer and the checkout summary each kept their own editable copy of the basket. Removing the mug updated the drawer's copy but not the checkout's. Each part acted as if it owned the basket, so in practice nobody did. The disagreement is the symptom; competing ownership is the cause, and it was established by that inspection. In a real app, the symptom alone would not prove this diagnosis; a slow server reply or a display bug could look similar.
+- **The fix:** give the current basket one owner that both views read. A remove action goes through that owner. The drawer's item list and the checkout's total then both reflect the same accepted basket, and the total is calculated from the items rather than kept as a separate number. If the server owns the basket, the page may hold a temporary copy, but that copy is borrowed: it follows the server's accepted result, and if a removal fails, the page says so instead of showing a basket the server never accepted.
 
-**A question you can ask your agent:** "Where does an entry's title live while the app is running, and which screens read it from there? If I change it on one screen, what makes every other screen show the new value?"
+A shared owner keeps the two views in agreement. It does not, by itself, show that prices, stock levels or payment processing are correct; those need their own checks.
 
-A responsive answer names **one** owner: a file or module in the app's code that is responsible for the current entries (not the saved data file itself). It says where that owner gets the value from (its source, such as the saved file), lists the screens that read from it, and explains the mechanism that brings a change to every screen. Answers like "they're kept in sync," "it refreshes on reload," or a list of several places holding copies haven't established that yet. Copies can be fine when one owner hands them out and refreshes them, as the categories below show. So treat these answers as incomplete, not as proof of a bug, and ask a follow-up: "Which one piece of code owns the current entries, what is its source, and what exactly updates the other copies after a save?" If the agent can't name one owner, ask it to propose one.
+**A question you can ask your agent:** "Which part owns the current basket, where does its accepted value come from, and how do both views receive a change?" Replace “basket” with the shared information in your own app: a list of jobs, a booking, a document's title.
+
+A responsive answer names **one** owner: a file or module in the app's code, or the server, responsible for the current value (not just “the database”). It says where that owner gets the value from (its source), lists the views that read from it, and explains the mechanism that brings a change to every view. Answers like "they're kept in sync," "it refreshes on reload," or a list of several places holding copies haven't established that yet. Copies can be fine when one owner hands them out and refreshes them, as the categories below show. So treat these answers as incomplete, not as proof of a bug, and ask a follow-up: "Which one piece of code owns the current value, what is its source, and what exactly updates the other copies after a change?" If the agent can't name one owner, ask it to propose one.
 
 ## Categories of state
 

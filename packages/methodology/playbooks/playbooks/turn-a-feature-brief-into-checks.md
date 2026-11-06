@@ -2,7 +2,7 @@
 id: turn-a-feature-brief-into-checks
 title: Turn a Feature Brief Into Checks
 summary: Translate an agreed user outcome into specific checks, then connect the results to the decision to accept the feature.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -43,15 +43,21 @@ Start with a bounded brief from [Plan a Feature Before Letting the Agent Code](c
 
 For each important acceptance criterion, describe the starting situation, action and expected result. Use a real intended task with synthetic data. Resolve ambiguity with the person responsible for the product before asking the code to decide it.
 
-If you do not have a brief of your own yet, practise with an invented one. Maya, a fictional first-time founder, is talking to owners of small independent bakeries to decide which of their problems to solve. She wants a personal research notebook in which each entry keeps one source, such as a conversation, with her note about what she learned, so the evidence is there when she decides. Its first feature: save a title and note, reopen the app and find them; refuse blank input; never show success when saving fails. Read the complete brief, with its sample values and exclusions, in the “The worked project” section of [Directing Your First Feature](contextqb://guides/directing-your-first-feature). Nothing is built, and you do not need to build it to write these examples.
+If you do not have a brief of your own yet, practise with this invented one. Imagine an organiser who runs a family workshop, such as a Saturday pottery morning, and wants a simple form for reserving places. One person may reserve between one and four places: enough for a family, without letting one booking take most of the session. Before the agent builds the form, the organiser writes that limit into the brief. The brief also says a reservation must still be there after the app is reopened, and the form must never say a reservation is confirmed when it was not saved. How many places the whole workshop has is a separate rule that this brief does not set. You do not need to build a booking system to write these examples.
 
-For that brief, one example is: start with a disposable empty notebook, save a specified title and note, close and reopen the app using the same storage location, and read back the accepted values. Another is: enter a note containing only spaces; saving is refused and the draft remains available for correction.
+“The form works” would not tell a reviewer what to check. A starting situation, an action and an expected result will:
+
+- **Normal case:** start with no reservations in a disposable test copy. Enter two places and submit. Expected: one saved reservation for two places, still listed after the app is closed and reopened using the same storage location.
+- **Invalid input:** enter zero, five, or one and a half places. Each is refused, because a reservation needs a whole number from one through four. Nothing is saved, and the person can correct the number.
+- **Failed save:** with a valid request of two places, make storage fail in the isolated test. Expected: the form does not say the reservation is confirmed, keeps what was entered and explains that it was not saved.
 
 Include a normal case and a meaningful failure or invalid-input case where relevant. Do not add a ceremonial number of cases. If a criterion still says “works properly,” replace it with something a person or test could observe.
 
 ## Step 2 — Choose a check that can see the failure
 
-Ask the agent what each check will actually exercise. A unit test can check the blank-note rule; it cannot establish reopening behavior. A storage test can check a write and read; a user-path check verifies that the interface reaches the intended storage operation.
+Ask the agent what each check will actually exercise. In the workshop brief, a small rule test can check which numbers are allowed. It cannot show that a reservation was saved. A storage check can show that a record was written and read back, but it would still miss a form that never calls the saving code. A user-path check follows the form into storage and reads the reservation back after reopening.
+
+For each promise in your brief, write down what would expose it being broken, which check sees that failure, and what that check leaves untested. You can find gaps this way without reading code. If the only evidence for “still there after reopening” is a screenshot taken before the app was closed, that promise has not been checked.
 
 For a simulated failed save, name how failure will be introduced in the isolated test and what the interface should do. A substituted storage failure demonstrates the app's reaction to that simulation, not every failure the real storage system might produce. Record the limit.
 
@@ -62,16 +68,18 @@ Distinguish automation from human checks. Someone still needs to try the intende
 Use one short entry per criterion in the existing plan. These illustrative fields are enough to start:
 
 ```text
-Criterion: saved title and note survive reopening in the same browser
-           profile or app installation on this device
-Example: the title and note from our agreed brief
-Check: save, close, reopen and read through the intended interface
-Target: disposable local app and explicitly named storage location
+Criterion: a valid reservation survives reopening the app
+Example: start with no reservations; reserve 2 places
+Check: submit through the form, close, reopen and read the
+       reservation through the intended interface
+Target: disposable test copy and explicitly named storage location
 Revision/configuration: record the actual version tested
 Evidence: command/output or manual steps and observed values
 Result: not run / passed / failed / blocked
 Limits and next action: what this check cannot establish
 ```
+
+A second entry for the same brief might record the criterion “zero, five and 1.5 places are refused” with a rule test as its check. Its limits would say that the rule test does not show the form uses the rule. Keep one entry per criterion so each limit stays next to the promise it affects.
 
 A **revision** identifies the version of the files being checked, commonly a Git commit: a saved snapshot made with the Git version-control tool. If there are additional uncommitted changes, record that too; the commit identifier alone would not describe the tested files. The feature record owns this information, so the next session can find it.
 
@@ -85,7 +93,7 @@ Run the project's existing mechanical checks as well. [Machine-Verifiable Substr
 
 ## Step 5 — Demonstrate that a check can catch a mistake
 
-For this learning exercise, require one controlled demonstration. You can use the worked exercise in [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software): a deliberately flawed rule that accepts a note of only spaces, with a test whose wrong expectation lets it pass. It is a teaching specimen, not a rule to adopt. Alternatively, use a reproduced defect or an explicitly approved temporary change in a disposable test copy.
+For this learning exercise, require one controlled demonstration. You can use the worked exercise in [Testing Agent-Built Software](contextqb://guides/testing-agent-built-software): it uses the same one-to-four-places rule. A deliberately flawed version accepts a reservation for zero places, and a test with the wrong expectation lets it pass. It is a teaching specimen, not a rule to adopt. Alternatively, use a reproduced defect or an explicitly approved temporary change in a disposable test copy.
 
 Show that the correct expectation fails against the faulty implementation for the intended reason, then passes after the correction. If a temporary defect is introduced, restore the intended code, inspect the final difference and rerun the affected checks before continuing. Never perform this exercise against production or real user data.
 
@@ -95,7 +103,7 @@ This demonstration is a teaching aid for evaluating a test, not a demand to inje
 
 Use the fresh-session or human-review route in [Directing Your First Feature](contextqb://guides/directing-your-first-feature). Give that reviewer the brief, actual changes and evidence mapping. Ask them to inspect whether the checks support the important claims, including whether test substitutes hide a connection that remains untested. Use the feature yourself and compare the result with your original need.
 
-Record the decision as accepted within a named scope, correction required, or blocked by a stated missing result. Preserve remaining limits. A successful local notebook exercise is not authorization to release a multi-user product.
+Record the decision as accepted within a named scope, correction required, or blocked by a stated missing result. Preserve remaining limits. A successful local practice exercise is not authorization to release a product other people rely on. A checked one-to-four rule, for example, still says nothing about total workshop capacity or two people reserving the last places at once.
 
 ## A prompt to start the mapping
 

@@ -2,7 +2,7 @@
 id: review-an-agent-workstream
 title: Review an Agent Workstream Result
 summary: A reusable instruction for independently checking a delivered output against its approved scope and recording evidence and limits.
-version: 0.4.0
+version: 0.4.1
 audience:
   - founder
   - operator
@@ -55,11 +55,11 @@ A subagent, a second agent, or a review agent built into your tool can be the re
 
 **Fill in:**
 
-- `{{WORKSTREAM_RECORD}}`: the record's path, for example `docs/workstreams/notebook-search.md`.
+- `{{WORKSTREAM_RECORD}}`: the record's path, which tells the reviewer what was agreed. For a photo-organisation preview it might be `docs/workstreams/photo-organisation.md`; substitute your actual path.
 - `{{APPROVED_SCOPE}}`: the scope (the agreement for this piece of work, with its acceptance checks) and its revision, for example "S1 revision 2", or the record section where it lives.
 - `{{DELIVERED_OUTPUT}}`: what to check and where it is, for example "the changed files listed in the 2026-03-04 pass entry, and the output folder".
 - `{{RELATED_WORK}}`: anything this result affects, or "none".
-- `{{REVIEW_DESTINATION}}`: the review entry or file to write, for example `docs/reviews/notebook-search-V1.md` or a dated entry under the record's pass history. Choose it before starting, so findings don't overwrite the record's summary.
+- `{{REVIEW_DESTINATION}}`: the review entry or file to write, for example the illustrative `docs/reviews/photo-organisation-V1.md` or a dated entry under the record's pass history. Choose it before starting, so findings don't overwrite the record's summary.
 
 ```text
 You are the independent reviewer for this workstream. You did not produce the output.

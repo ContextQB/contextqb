@@ -2,7 +2,7 @@
 id: update-an-agent-workstream
 title: Update an Agent Workstream After a Pass
 summary: A reusable instruction for recording what an agent delivered, what was checked, what was discovered, and what should happen next.
-version: 0.4.1
+version: 0.4.2
 audience:
   - founder
   - operator
@@ -46,7 +46,7 @@ tags:
 
 **Fill in:**
 
-- `{{WORKSTREAM_RECORD}}`: the record's path, for example `docs/workstreams/notebook-search.md`. No record yet? Run [Start an Agent Workstream](contextqb://prompts/start-an-agent-workstream) first.
+- `{{WORKSTREAM_RECORD}}`: the path of the record that already tracks this objective. For example, a project preparing a photo-organisation preview might use `docs/workstreams/photo-organisation.md`. Substitute your actual path; the filename is not a task to perform. No record yet? Run [Start an Agent Workstream](contextqb://prompts/start-an-agent-workstream) first.
 - `{{APPROVED_SCOPE}}`: the scope this pass worked under and its revision, which says which version of the agreement applies. For example "S1 revision 2", or "the Current authority section of the record" if the scope lives there.
 - `{{DELIVERED_OUTPUT}}`: what was produced and where.
 - `{{EVIDENCE}}`: the checks run and their results — the exact commands (type check, lint, tests, build) with their exit status, the result of the optional project-map check (`contextqb check`) if your project uses it, and outputs you can open yourself (a file, a page, a report). Anything not run is labelled UNVERIFIED.

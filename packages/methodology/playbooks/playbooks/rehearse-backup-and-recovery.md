@@ -2,7 +2,7 @@
 id: rehearse-backup-and-recovery
 title: Rehearse Backup and Recovery
 summary: Restore a controlled copy, inspect the recovered records and prove the intended application can use them before you depend on a backup.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -44,13 +44,27 @@ tags:
 
 A useful backup lets you recover something you need. Practice the recovery while mistakes are cheap: use made-up records and a separate destination, then inspect what came back through the application that must use it.
 
-## The work this rehearsal protects
+## What a backup does and does not give back
 
-The steps below apply to any product that stores information someone would be harmed to lose. To make them concrete, this playbook follows one invented person.
+Consider an invented example before any mechanics. An event organiser keeps a list of registrations for a day of workshops. Three things happen one morning:
 
-Maya is a fictional first-time founder deciding which problem to solve for small independent bakeries. After each conversation with a bakery owner, she saves an entry in a small personal research notebook: which conversation it was, and her own note about what she learned. After a month, those entries are the evidence she will use to choose what to build. She cannot repeat the conversations word for word. If the entries were lost, much of that evidence would be lost too. That is what a backup must let her recover. The notebook and its first feature are described in [Directing Your First Feature](contextqb://guides/directing-your-first-feature); you do not need to read that page or build the notebook to follow this one.
+- **09:00** — the list is backed up. It holds two registrations.
+- **09:20** — a third person registers.
+- **09:30** — an accidental change empties the session choice on the first registration.
 
-For your product, the equivalent might be bookings, orders, customer messages or uploaded files. If your app does not exist yet, or does not yet store anything that matters, you can still run the file rehearsal below as practice. The steps that need a real app remain "not run" until you have one.
+The organiser wants the first person's session choice back without losing the 09:20 signup. Here is what each copy holds:
+
+| Registration    | 09:00 backup           | Working list at 09:30 | Backup restored to a test copy |
+| --------------- | ---------------------- | --------------------- | ------------------------------ |
+| Test attendee A | Morning workshop       | _(session empty)_     | Morning workshop               |
+| Test attendee B | Afternoon workshop     | Afternoon workshop    | Afternoon workshop             |
+| Test attendee C | _(not yet registered)_ | Afternoon workshop    | _(absent)_                     |
+
+Restoring the 09:00 backup into a separate test destination recovers the first two registrations with their original choices. It does not contain the third registration, because that signup happened after the backup. Counting two recovered rows is not enough: check the labels and the session choices too. A row with an empty session choice is not a complete recovery.
+
+The backup has helped, but overwriting the working list with it would discard the newer signup. Preserve both copies and investigate how to recover the damaged information while retaining newer work; the right method depends on the actual storage system. And the business decision comes first: how much recent work could the organiser accept losing, and how long could registration be unavailable?
+
+For your product, the equivalent might be bookings, orders, customer messages or uploaded files. Keep the recovery source separate, restore into an isolated destination and try the important task through the compatible application. Opening a data file successfully does not show the app can use it. If your app does not exist yet, or does not yet store anything that matters, the optional file rehearsal below demonstrates the older-backup/newer-record distinction; it cannot qualify a real recovery arrangement, and the steps that need a real app remain "not run" until you have one.
 
 Read [Rollback vs. Restore](contextqb://briefings/rollback-vs-restore) first. Use [Where Your Data Lives](contextqb://guides/where-your-data-lives) and your [data map](contextqb://guides/designing-your-apps-data) to locate the information. This procedure applies to a local file as well as a hosted database; the exact commands depend on the storage system.
 
@@ -58,7 +72,7 @@ Read [Rollback vs. Restore](contextqb://briefings/rollback-vs-restore) first. Us
 
 Name the records and files needed for the critical user task, the application version that reads them, and the settings needed to connect it. Keep actual passwords and keys out of the recovery notes. Verify that the responsible person can obtain the necessary access through its protected channel.
 
-Decide how much recent work you could accept losing and how long the task could be unavailable. These are business decisions. Maya might accept losing yesterday's entry if she can rewrite it from memory, but not a month of conversations. A team relying on today's work may accept far less.
+Decide how much recent work you could accept losing and how long the task could be unavailable. These are business decisions. The organiser might accept losing a few minutes of signups if people can be asked to register again, but not a morning's worth. A team relying on today's work may accept far less.
 
 List dependencies such as uploaded files or encryption keys. A database backup without the files it references can leave an incomplete product. Include applicable deletion rules from [Plan Data Retention and Deletion](contextqb://playbooks/plan-data-retention-and-deletion).
 
@@ -68,7 +82,7 @@ Ask the agent to read the current documentation for the actual storage system an
 
 An **isolated destination** is separate storage that this rehearsal can change without replacing the working application or contacting real users. Confirm its path or service identity before execution. Disable outgoing emails, payments and other consequential integrations in the recovered test copy; verify that its settings point to test resources.
 
-Where you get a recovery source depends on where the app keeps its data. The same small notebook could be built in any of the following ways. They are alternatives, not stages of one build: use the one that matches your app.
+Where you get a recovery source depends on where the app keeps its data. A registration list like the organiser's could be kept in any of the following ways. They are alternatives, not stages of one build: use the one that matches your app.
 
 - **Data kept only in the browser.** Some web apps store records in the browser's own storage on one device. Clearing that browser's data or losing the device loses the records, so the recovery source must exist outside the browser, usually an export file the app produces. If the app has no export, that is a missing capability: ask the agent to plan export and import before relying on real records. Rehearse importing the export into an isolated browser profile or test target and compare the actual recovered values; a downloaded file alone does not show the app can recover from it.
 - **Data kept in a single file.** Stop the app, or otherwise stop anything writing to the file, before making the copy, so the copy is not caught halfway through a save. The worked rehearsal below uses this case because a file is easy to inspect without running any app.
@@ -82,27 +96,27 @@ Approve this bounded plan before running it. If the destination or recovery acce
 
 Record when the backup represents the data, when recovery starts and when verification finishes. Restore into the agreed destination. Inspect the important values and relationships, then use the compatible app against the restored copy to complete the intended task.
 
-Count records, but also check their content. Two records with empty notes are not equivalent to two intact notes. Verify that the application reads the recovery destination rather than silently reading the untouched original. Record failures and missing dependencies as well as successful steps.
+Count records, but also check their content. Two records with empty session choices are not equivalent to two intact registrations. Verify that the application reads the recovery destination rather than silently reading the untouched original. Record failures and missing dependencies as well as successful steps.
 
 ## Worked rehearsal: a stopped local file
 
-This optional exercise uses the single-file version of Maya's notebook. The records are made up: it is not a backup of your application, and it does not need a working app. It shows what a successful file recovery proves, and what it does not.
+This optional exercise reproduces the organiser's morning with a small file of made-up registrations. It is not a backup of your application, and it does not need a working app. It shows what a successful file recovery proves, and what it does not.
 
-Each item in `notes` is one record: one source plus Maya's note about it. `title` identifies the source (which conversation or article) and `note` holds what she learned from it. `id` labels each record so the check can tell them apart. `schemaVersion` labels the format of the whole file, so a later version of the app knows how to read it. The starting file holds two earlier entries:
+`schemaVersion` labels the format of the whole file, so a later version of an app knows how to read it. Each item in `registrations` is one person's registration. `id` labels the record so the check can tell records apart; `attendeeLabel` is a made-up name standing in for the person; `session` is the workshop they chose. The starting file holds the two registrations that existed at 09:00:
 
 ```json
 {
   "schemaVersion": 1,
-  "notes": [
+  "registrations": [
     {
-      "id": "note-1",
-      "title": "Bakery owner call, March 4",
-      "note": "Re-types weekend orders into her stock spreadsheet every Sunday night."
+      "id": "reg-1",
+      "attendeeLabel": "Test attendee A",
+      "session": "Morning workshop"
     },
     {
-      "id": "note-2",
-      "title": "Bakery owners' forum thread on leftovers",
-      "note": "Several owners guess tomorrow's quantities and throw away the surplus."
+      "id": "reg-2",
+      "attendeeLabel": "Test attendee B",
+      "session": "Afternoon workshop"
     }
   ]
 }
@@ -110,19 +124,19 @@ Each item in `notes` is one record: one source plus Maya's note about it. `title
 
 Have the agent propose a script that performs these steps in a new disposable directory. Review the exact paths before authorizing it:
 
-1. Write this fixture to `working/notebook.json`, then copy it to `backup/notebook-v1.json` while nothing writes to it.
-2. Add a third made-up record only to the working copy. It stands for a conversation Maya saved after the backup was taken.
-3. Simulate damage only in the working copy by removing `note-1`'s text.
-4. Copy the backup into a separate `recovered/notebook.json`. Keep both the backup and damaged working copy available for comparison.
-5. Parse the recovered file and assert that its version, two identifiers, titles and note values exactly match the original fixture. Show that the third record is absent and that the working file is still damaged.
+1. Write this fixture to `working/registrations.json`, then copy it to `backup/registrations-0900.json` while nothing writes to it.
+2. Add a third registration only to the working copy: `reg-3`, `Test attendee C`, `Afternoon workshop`. It stands for the 09:20 signup.
+3. Simulate the 09:30 damage only in the working copy by setting `reg-1`'s `session` to an empty string.
+4. Copy the backup into a separate `recovered/registrations.json`. Keep the backup and the damaged working copy available for comparison.
+5. Parse the recovered file and assert that `schemaVersion` is 1 and that it holds exactly `reg-1` (Test attendee A, Morning workshop) and `reg-2` (Test attendee B, Afternoon workshop), with those exact values. Show that `reg-3` is absent from it. Then show that the backup still matches the original fixture exactly, and that the working file still holds the empty session on `reg-1` and the `reg-3` signup.
 
-The expected result is **two intact earlier records, with the later record missing**. That loss is the point of the exercise, not a fault in the script: a backup can only return what existed when it was taken. For Maya, the missing third record is a real conversation whose evidence she would now have to rebuild from memory. Compare that gap with the loss you accepted in Step 1. If losing everything since the last backup is not acceptable, back up more often or protect newer changes another way.
+The expected result is **two intact earlier registrations, with the later one missing**. That loss is the point of the exercise, not a fault in the script: a backup can only return what existed when it was taken. For the organiser, the missing `reg-3` is a real person who believes they are registered. Compare that gap with the loss you accepted in Step 1. If losing everything since the last backup is not acceptable, back up more often or protect newer changes another way.
 
-A passing file check establishes only file recovery. With an actual app, also open the recovered data through its real interface and confirm the entries appear and can be used. Mark that step "not run" until it happens. In this exercise there is no app, so it stays "not run".
+A passing file check establishes only file recovery. With an actual app, also open the recovered data through its real interface and confirm the registrations appear and can be used. Mark that step "not run" until it happens. In this exercise there is no app, so it stays "not run".
 
-To adapt the rehearsal to your own product, replace the two entries with two made-up records of your own kind, such as two bookings. Keep the three separate copies, add one record after the backup, damage only the working copy, and check that the recovered copy contains the earlier records and lacks the later one. Then point your app at the recovered copy in an isolated destination and complete its main task.
+To adapt the rehearsal to your own product, replace the two registrations with two made-up records of your own kind, such as two bookings. Keep the three separate copies, add one record after the backup, damage only the working copy, and check that the recovered copy contains the earlier records exactly and lacks the later one. Then point your app at the recovered copy in an isolated destination and complete its main task.
 
-An illustrative no-go decision is: “We need every saved entry, but this backup omits the third one. Do not overwrite the working data with it. Preserve both copies and investigate a supported way to recover the missing or newer information.”
+An illustrative no-go decision is: “We need every registration, but this backup omits the 09:20 signup. Do not overwrite the working list with it. Preserve both copies and investigate a supported way to restore Test attendee A's session while keeping the newer registration.”
 
 ## Step 4 — Keep the evidence and improve the plan
 

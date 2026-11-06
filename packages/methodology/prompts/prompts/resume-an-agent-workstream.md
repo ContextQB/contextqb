@@ -2,7 +2,7 @@
 id: resume-an-agent-workstream
 title: Resume an Agent Workstream From a Handoff
 summary: A reusable instruction for beginning a fresh session from the current workstream record, approved scope, review, and reconciled handoff.
-version: 0.4.0
+version: 0.4.1
 audience:
   - founder
   - operator
@@ -52,10 +52,10 @@ For a long workstream, you can run the [Workstream Record Audit](contextqb://aud
 
 **Fill in:**
 
-- `{{WORKSTREAM_RECORD}}`: the record's path, for example `docs/workstreams/notebook-search.md`, or "find it from the boot map".
+- `{{WORKSTREAM_RECORD}}`: the record's path, for example the illustrative `docs/workstreams/photo-organisation.md`, or "find it from the boot map". The record holds the current objective and decisions.
 - `{{APPROVED_SCOPE}}`: the active scope (the agreement for the current piece of work) and its revision, or the record section where it lives.
 - `{{LATEST_REVIEW}}`: the latest review entry or file, or "none".
-- `{{HANDOFF}}`: the handoff file, for example `docs/handoffs/2026-03-03-notebook-search.md`, or "none — use the record's checkpoint section".
+- `{{HANDOFF}}`: the handoff file, for example the illustrative `docs/handoffs/2026-03-03-photo-organisation.md`, or "none — use the record's checkpoint section". The handoff describes where the previous session stopped; supply files that actually exist for your task.
 
 ```text
 Read the project instructions and boot map first, then:

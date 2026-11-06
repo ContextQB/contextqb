@@ -2,7 +2,7 @@
 id: plan-data-retention-and-deletion
 title: Plan Data Retention and Deletion
 summary: Decide why information is kept, where its copies go and how to test the promises you make about deletion and export.
-version: 0.2.0
+version: 0.3.0
 audience:
   - novice-builder
   - founder
@@ -41,9 +41,7 @@ Start with [Designing Your App's Data](contextqb://guides/designing-your-apps-da
 
 ## The example on this page
 
-The steps use one invented tool. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She keeps a personal research notebook on her own computer, used only by her: each entry holds one source, such as a conversation with a bakery owner, with her note about what it showed. Her notes name real people and businesses, so where copies of them end up matters. The notebook's first version only saves entries and shows them again. It has no delete button, attachments, accounts or remote copies; its data sits in local storage, plus any backup or export copies she makes. Nothing is built, and you do not need to build it.
-
-Deletion and attachments appear below as proposed later capabilities, to show the decisions they would require before anyone promises them.
+The steps use one invented situation. A home-repair business accepts requests for estimates through its website. A customer submits a description of a damaged cupboard and a photograph of it. The photo helps the business judge the work, but it may also show the inside of the customer's home. Before anyone promises what Delete will do, the business needs to know where that information goes. Nothing is built, and you do not need to build it.
 
 ## Step 1 — Follow the information and its copies
 
@@ -51,7 +49,15 @@ List what you collect, its purpose and where it goes. Include the main storage, 
 
 Ask the agent to distinguish locations found in code or service settings from locations it merely expects. Mark unknowns for investigation. Credentials belong in their protected store, not in this inventory's example values.
 
-For Maya's single-user notebook, the first inventory might contain the local storage location, either a file or browser storage, and any export the owner downloads. Browser storage is not itself a backup; plan an export or another supported recovery copy before relying on the records, and include its retention in the inventory. Accounts, analytics and remote copies are conditional additions, not prerequisites for a serious application.
+For the repair business, tracing one request finds these copies:
+
+- **Request store:** the description and contact details, in the app's main database.
+- **File storage:** the photograph, kept separately from the request.
+- **Office spreadsheet:** a downloaded export of recent requests on the office computer.
+- **Backups:** older copies of the database and file storage, kept by the hosting arrangement.
+- **Logs:** suppose the app has been logging each entire submission, so every description also sits in the application logs. That copy does not help anyone produce an estimate. Record it in the inventory anyway, because it exists. Then propose two separate decisions: stop logging submission contents from now on, and decide how long the existing log copies are kept and how they will be deleted or allowed to expire.
+
+Removing the request from the office screen does not by itself remove any of the other copies. For a product without such services, the inventory may be as short as a local file and any exports its owner makes. Browser storage is not itself a backup. Accounts, analytics and remote copies are conditional additions, not prerequisites for a serious application.
 
 ## Step 2 — Make one decision for each kind of information
 
@@ -70,13 +76,13 @@ How the promised behavior will be checked:
 
 **Retention** means how long information is kept. Choose a period or event you can justify and enforce. “Forever, just in case” is an unanswered decision. So is an arbitrary number of days copied from another product.
 
-For Maya's first version, which has no delete action, the honest description is that entries stay in local storage, and in any backups and exports, until she removes them herself. If she adds deletion later, an illustrative decision is to keep an entry until she deletes it. She must still decide whether deletion is immediate, has an undo period or moves the entry into a visible trash area. State which behavior is implemented before describing it to users.
+For the repair business, the owner needs a policy tied to the actual work: when a request and its photo are no longer needed (for example, once an estimate is declined, or once a completed job no longer needs them), what may still need to be kept and why, who can see any retained copy, and how backup expiry or restoration will respect the deletion decision. Contractual or legal questions must be resolved for this business; the app should not invent a universal retention period. The owner must also decide whether deletion is immediate, has an undo period or moves the request into a visible trash area. State which behavior is implemented before describing it to customers.
 
 ## Step 3 — Specify the complete promise
 
 Describe what disappears from normal use, what remains elsewhere, who can access retained copies and when those copies expire. Hiding a record in the interface is different from removing it from storage. Overwriting a file also does not, by itself, prove every historical or device-level copy is erased.
 
-Include linked records. If a future notebook has attachments, decide whether deleting a note deletes its attachments, leaves them available elsewhere or requires another choice. If you offer export, define which records and files it contains, a usable format and how access is checked. Test that another user's information is excluded when accounts exist.
+Include linked records. For the repair business, decide whether deleting a request also deletes its photograph from file storage, and what happens to the row about it in the office spreadsheet that was downloaded earlier. If you offer export, define which records and files it contains, a usable format and how access is checked. Test that another user's information is excluded when accounts exist.
 
 Backups need an explicit rule. If old backups retain deleted records temporarily, document the access restriction and expiry. Plan how recovery will avoid quietly reintroducing information that should remain deleted. [Rehearse Backup and Recovery](contextqb://playbooks/rehearse-backup-and-recovery) must include that rule when it applies.
 
@@ -88,10 +94,10 @@ Keep unresolved promises out of release claims. You can continue building a disp
 
 ## Step 5 — Check the behavior with made-up records
 
-Use [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) to agree expected results before execution. In an isolated test target, create clearly marked records, export if applicable, delete and inspect the relevant stores. Test a failed deletion too: the interface should report what remains rather than announce completion.
+Use [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) to agree expected results before execution. In an isolated test target, create clearly marked records, export if applicable, delete and inspect the relevant stores. Test a failed deletion too: the interface should report what remains rather than announce completion. For the repair business, use a made-up request and a harmless test photo, such as a picture of a blank wall. Delete it, then trace each applicable store: the request store, file storage and the logs. Check exports twice: a fresh export should no longer include the request, but a spreadsheet downloaded before the deletion still contains it. The app cannot reach into a file already saved on the office computer, so deleting that copy is a step for whoever holds it; record whether it was done. Record what remains, including backups that have not yet expired. If deleting the photo fails, the interface must not claim everything was removed.
 
-Where accounts exist, use two controlled test accounts to check permission boundaries. For the no-account notebook, inspect the named local storage and exports instead. Do not manufacture an account system just to perform the exercise.
+Where accounts exist, use two controlled test accounts to check permission boundaries. For a product without accounts, inspect the named storage locations and exports instead. Do not manufacture an account system just to perform the exercise.
 
 Record the tested revision, locations inspected, results and limits. “Deleted from the main database” supports that specific claim; a separate provider or backup needs its own evidence. Mark unimplemented retention jobs and untested copies as pending, with an owner and next action.
 
-You are ready to proceed when you can explain where a record goes, why each copy exists and how you would verify the deletion promise you intend to make.
+You are ready to proceed when you can draw the route of one collected record, explain why each copy exists and say what “deleted” would truthfully mean at every destination.

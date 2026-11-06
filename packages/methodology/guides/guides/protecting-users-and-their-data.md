@@ -2,7 +2,7 @@
 id: protecting-users-and-their-data
 title: Protecting Users and Their Data
 summary: Identify what needs protection, who should have access and which evidence you need before trusting the implementation.
-version: 0.2.0
+version: 0.3.0
 audience: [novice-builder, founder, operator]
 journey_stage: 2
 journey_rank: 40
@@ -33,20 +33,25 @@ tags: [security, getting-started]
 
 Use [Building for Yourself vs. Building for Others](contextqb://guides/building-for-yourself-vs-others) to name the intended users, then [Where Your Data Lives](contextqb://guides/where-your-data-lives) to locate the information.
 
-Take one invented example. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. After each conversation with a bakery owner, she saves an entry in a small personal research notebook on her own computer: which conversation it was and her note about what she learned. Nothing is built; the example shows how protection decisions change with the design. A source title such as “Bakery owner call, March 4” reveals little. Her note may record what a named owner said about their business's troubles, which the owner may have shared in confidence. Do not assume that every field in the same record has the same sensitivity.
+Take one invented example. A photographer wants a website with two parts: a public portfolio and private client galleries. Visitors should see the photographs the photographer has selected for the portfolio. Each client should see their own private gallery from a shoot, but not another client's photographs. Nothing is built, and you don't need to build it. The files may all be images, yet their intended audiences are different. Do not assume that every item of the same kind has the same sensitivity.
 
 An **asset** is something worth protecting: records, access credentials, availability or a person's work. An **actor** is a person or system interacting with it. A **trust boundary** is a point where information or an action crosses between different levels of trust. A browser request reaching a server is one example; an agent receiving access to local files is another.
 
-Write three sentences for your feature: what someone could lose, who should be able to do what, and what must not happen. The answers depend on the design, so compare two versions of Maya's notebook.
+Write three sentences for your feature: what someone could lose, who should be able to do what, and what must not happen. Start by naming what could go wrong, because the consequences tell you what needs protection.
 
-- **Her first version: one person, one device.** She could lose a month of evidence she can't recreate. Only Maya should read or change entries. Her notes about named businesses must not leave her computer unless she chooses to share them. There are no other users, so the boundaries are her device, its files and any exports or backups. Accounts would add nothing here.
-- **An illustrative future shared version.** Imagine Maya and a cofounder use a hosted version that other founding teams use too. This version is only a comparison, not something she needs to build. Entries now travel to a server and sit in storage that several teams' records share. Several people sign in, so the application itself must keep one team's notes from another. A useful rule becomes: “A member can read their team's notes but cannot retrieve another team's private notes.” That is specific enough to guide a check.
+- **Exposure.** Publishing a private photograph exposes work the client did not expect to be public. That makes the private galleries an asset whose readers must be controlled.
+- **Loss.** Losing the only full-resolution copy of a shoot destroys something the photographer needs and cannot recreate. That makes availability, and a usable backup, part of protection too.
+- **Unwanted change.** Allowing one client to replace or delete another client's files breaks a different promise again. Reading and changing are separate permissions.
 
-The second version needs protections the first does not, because more people and a shared server now sit between Maya and her notes. Decide which version you are building before deciding what to protect.
+From those consequences, the rule for who may do what becomes specific: “Anyone may view the selected portfolio. A client may view their own gallery but cannot retrieve another client's private photographs. Only the photographer may upload, replace or delete files.” That is specific enough to guide a check.
+
+Then ask the agent where the original files, the smaller web-sized copies and any backups actually live, and which part of the application decides who may retrieve each one. Hiding a gallery link from other clients is not enough if anyone can request the underlying private file directly. The selected public portfolio, on the other hand, is meant to be readable without signing in; protecting it from being read would defeat its purpose.
+
+How a client proves which gallery is theirs is a design choice this guide does not settle. It could be an account, or another method with its own trade-offs: a hard-to-guess link, for example, still works for anyone it is forwarded to. Whatever the agent proposes, ask it to explain how the rule above is enforced and how that will be checked. This example is not legal advice about image rights or client agreements.
 
 ## Collect only information that serves the task
 
-Maya's notebook needs a source title and a note. It has no reason to collect owners' phone numbers or upload her contact list. Ask why every field and outside service is needed. Fewer unnecessary copies mean fewer places to secure, explain and eventually remove information.
+The photographer's site may need a client's email address to arrange access to their gallery. Uploading the client's address book is not justified merely because the website can ask for it. Ask why every field and outside service is needed. Fewer unnecessary copies mean fewer places to secure, explain and eventually remove information.
 
 Security concerns protection from unauthorized access, unwanted changes and disruption. Privacy also concerns why information is collected and how it is used or shared. An encrypted database can still contain information the product had no reason to collect. MDN's [security and privacy curriculum](https://developer.mozilla.org/en-US/curriculum/extensions/security-and-privacy/) treats both as part of responsible application design.
 
@@ -66,9 +71,9 @@ Apply [Set Security Guardrails for Your Agent](contextqb://playbooks/set-securit
 
 ## Read a finding as a claim that needs evidence
 
-Imagine a report about the shared version says, “Another member can read a private note.” Ask which target was inspected, which identities and records were used, what was observed, and what remains unknown. A code pattern can justify concern; a controlled test may establish a specific path. Neither justifies unapproved probing of a live service.
+Imagine a report about the photographer's site says, “One client can open another client's private photograph by changing the file address.” Ask which target was inspected, which identities and records were used, what was observed, and what remains unknown. A code pattern can justify concern; a controlled test may establish a specific path. Neither justifies unapproved probing of a live service.
 
-Keep the record identifier and expected permission in the report, using synthetic examples. Do not copy the sensitive note itself to prove exposure. Ask for a correction and a check demonstrating the intended boundary on the authorized test target.
+Keep the record identifier and expected permission in the report, using synthetic test galleries and placeholder images. Do not copy a private photograph into the report to prove exposure. Ask for a correction and a check demonstrating the intended boundary on the authorized test target.
 
 ## Leave with a protection plan you can explain
 
@@ -76,4 +81,4 @@ Have the agent draft a short addition to the existing feature brief: assets and 
 
 If a failure could cause serious financial, health, legal or safety harm, or you cannot explain the proposed access boundary, identify the expertise needed before exposing that use. Getting qualified help is a product decision, not a failure to learn.
 
-Before moving on, explain one protection your feature needs and one way a convincing screen could conceal its absence. Then identify the evidence that would resolve the uncertainty. “The agent says it is secure” is a starting claim, not the result.
+Before moving on, name one thing in your product that may be public, one thing that must stay private and one loss that recovery must address. Those distinctions give the agent protection requirements rather than a vague instruction to “make it secure.” Then explain one protection your feature needs and one way a convincing screen could conceal its absence. Then identify the evidence that would resolve the uncertainty. “The agent says it is secure” is a starting claim, not the result.

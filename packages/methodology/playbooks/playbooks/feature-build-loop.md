@@ -2,7 +2,7 @@
 id: feature-build-loop
 title: Run a Feature Build Loop From an Approved Plan
 summary: A planner-executor loop that turns the seven-section feature brief from the feature-planning playbook into shipped code, with each section verified against the actual implementation before the next tranche begins.
-version: 0.4.1
+version: 0.5.0
 problem: |
   An approved feature plan does not ship itself. Letting an agent execute the plan top-to-bottom in one session reproduces every failure mode the plan was supposed to prevent — the agent picks the easiest place to put each line, edge cases get acknowledged but not handled, and "done" means "the agent said so."
 when_to_use: |
@@ -80,7 +80,7 @@ Otherwise, take the small-change path: plan → build → one independent review
 
 ## The shape of the loop
 
-Carry the acceptance examples from the approved brief into verification. For a save-and-reopen requirement, a screenshot of a saved note is insufficient: the check must exercise reopening and read the expected values. Use [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) to attach that mapping to this same feature record, including simulated dependencies, unrun checks and limits. It supplies the evidence design; this loop continues to own implementation and review.
+Carry the acceptance examples from the approved brief into verification. For a save-and-reopen requirement, a screenshot of a saved record is insufficient: the check must exercise reopening and read the expected values. Use [Turn a Feature Brief Into Checks](contextqb://playbooks/turn-a-feature-brief-into-checks) to attach that mapping to this same feature record, including simulated dependencies, unrun checks and limits. It supplies the evidence design; this loop continues to own implementation and review.
 
 ```
    approved plan ──▶ tranche planning ──▶ execution ──▶ verification ──┐
@@ -199,32 +199,43 @@ When this happens:
 
 ### A small revision record
 
-This invented example shows what the record looks like. Maya, a fictional founder, is building a personal research notebook: she saves each source she reads together with her own note about it. The brief's goal is that a saved entry is still there after she closes and reopens the app. Its state plan kept entries in the browser's own storage.
+This invented example shows what the record looks like. A library wants staff to find any item in its catalogue by name. The brief's goal says exactly that. Its state plan loaded and displayed the entire catalogue before the screen became usable. The approved scope records a response-time target for the search screen.
 
-During tranche 1's goal walk, saved entries disappeared after the browser was closed and reopened. The executor had reported the cause as a plan-reality contradiction: Maya's browser clears site data whenever it closes, a privacy setting she wants to keep. Browser storage could not meet the goal on her machine. The planner stopped, revised the state plan on the record and asked Maya to re-approve:
+During tranche 1's goal walk, a check with a representative test catalogue of 10,000 items found the screen far too slow for the agreed task. The tempting fix would be to load only the first 50 items, which would quietly make most of the catalogue unsearchable. Instead the executor reported a plan-reality contradiction, and the planner stopped and proposed a revision to the affected sections:
 
 ```markdown
-## 4. State plan — IN PROGRESS (revised 2026-03-10; re-approved)
+## 1. Goal — UNCHANGED
 
-~~Saved entries are stored in the browser's own storage on Maya's laptop.~~
-Saved entries are stored in one file, `notebook.json`, in a folder Maya chooses.
-That file is the source of truth for saved entries.
-Owner: one storage module in the app's code reads the file when the app opens
-and writes it on each save; no other code reads or writes the file directly.
+Staff can find an item anywhere in the catalogue by name.
+
+## 4. State plan — PROPOSED REVISION (awaiting approval)
+
+~~The screen loads the whole catalogue and searches it on screen.~~
+The catalogue store remains the source of truth for every item. A search asks
+the store for matching items and returns them in bounded pages.
+Owner of the current search text and the displayed page of results: the search
+screen. It never holds a copy of the whole catalogue.
 
 ## Tranche history log
 
-### Tranche 1 — verification, 2026-03-10
+### Tranche 1 — verification ([date])
 
-- Goal walk: FAIL. Two entries saved; browser closed and reopened; list empty.
-- Cause: the browser clears site data on close (Maya's privacy setting; she keeps it).
-- Plan revision: state plan's storage changed from browser storage to `notebook.json`,
-  because the goal is entries that survive reopening and the old plan cannot meet it.
-- Approval: Maya, 2026-03-10, planning chat: "Implement revised plan as written."
-- Rolled forward: move storage to the file; repeat the goal walk.
+- Goal walk: FAIL. With the 10,000-item test catalogue, the screen misses the
+  response-time target recorded in the approved scope.
+- Rejected shortcut: load only the first 50 items and search those; items
+  beyond them would become unfindable.
+- Proposed revision: search the complete catalogue; display bounded pages.
+- Unchanged requirements: every matching item remains reachable; loading and
+  failed-search states are explained honestly.
+- Authority: [record the operator's actual approval here before this runs]
+- Next checks: find an item beyond the first page; follow later pages of
+  results; test no matches and a failed search; repeat the agreed timing check.
+- Review state: proposed; no implementation or verification claimed here.
 ```
 
-Someone who has never read code can tell from this record what was planned, what was found, what was decided and who approved it. The state plan keeps two things apart: where saved entries are stored (the source of truth) and which code is responsible for reading and writing them (the owner), as [State Ownership](contextqb://principles/state-ownership) distinguishes. The old line stays visible, so a later session won't restore browser storage from an outdated note.
+The values in this record are illustrative. The bracketed lines are placeholders: a real record carries the actual date and the operator's actual approval, and nothing here claims that approval was given. Once it is, the executor makes that bounded change, and a fresh review examines the result against the preserved goal. The record then states what actually ran and what remains open.
+
+Someone who has never read code can tell from this record what was planned, what was found, what is proposed and what is still waiting for a decision. The state plan keeps two things apart: where catalogue data lives (the source of truth) and which part is responsible for the search text and the page currently shown (the owner), as [State Ownership](contextqb://principles/state-ownership) distinguishes. The old line stays visible, so a later session won't restore load-everything from an outdated note. In your own build loop, make a proposed adjustment distinguishable from an approved one, and delivery distinguishable from verified behavior.
 
 Without this step, the loop devolves into rationalization: every divergence becomes a discovery, every shortcut becomes a feature. Plan revision is what keeps the brief honest as the source of truth.
 

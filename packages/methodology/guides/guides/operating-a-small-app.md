@@ -2,7 +2,7 @@
 id: operating-a-small-app
 title: Operating a Small App
 summary: Establish a manageable routine for health, recovery, costs and feedback so people can keep relying on the product after launch.
-version: 0.3.0
+version: 0.4.0
 audience: [novice-builder, founder, operator]
 journey_stage: 9
 journey_rank: 0
@@ -31,9 +31,9 @@ tags: [operations, monitoring]
 
 ## The example on this page
 
-The routine is illustrated with one invented case. Maya is a fictional first-time founder deciding which problem her business should solve for small independent bakeries. She keeps a small personal research notebook program on her own computer: each entry holds one source, usually a conversation with a bakery owner, with her note about what it showed, and all entries live in one local data file. Suppose the notebook has been built and launched in the simplest sense: Maya now keeps her real research notes in it, and she is both its only user and its operator. Her evidence would be hard to recreate, so its file, backups and program version are what she has to look after.
+The routine is illustrated with one invented case. A community centre runs a hosted class-signup app. Residents submit registrations for classes, staff use the saved list to plan each session, and an outside email service sends confirmation emails. The centre's coordinator is responsible for noticing failures and deciding what to do. If registrations go missing, residents turn up to a class that has no place for them; if the bill quietly grows, the centre pays for work that helps nobody.
 
-Nothing here is built, and you do not need to build it. The main scenario is that local-file version. One section later considers a different, made-up hosted version, only to show how usage bills work; the local notebook never becomes that version.
+Nothing here is built, and you do not need to build it. The same hosted app runs through every section below, including the cost example and the first-month record.
 
 ## Begin with the release handoff
 
@@ -59,38 +59,42 @@ Record the billed unit, included allowance, measured usage, reporting delay, war
 
 ### Worked cost decision
 
-This is an **invented, redacted-style scenario**, using made-up dollar amounts rather than vendor prices. It is an optional alternative used only for cost reasoning: imagine the same notebook had instead been built as a hosted web app, with a hosting plan and a storage service billed per request. Maya's local-file notebook has no hosting or storage bill; only the coding-tool subscription would apply to her. Account identifiers and credentials have no place in the record:
+This is an **invented scenario** for the class-signup app, using made-up dollar amounts rather than any vendor's prices. Account identifiers and credentials have no place in the record:
 
 ```text
-Coding-tool subscription: $20 per month, no overage in this scenario
-Hosting base charge: $10 per month
-Storage requests: $0.001 per billed attempt, including retries
-Expected useful operations: 20,000 per month
-Usual attempts per operation: 1
-Hosting-account warning: hosting + storage charges reach $40; notification only
+Coding-tool subscription: $20 per month, billed separately; no overage here
+Hosting base charge: $12 per month
+Confirmation emails: $0.01 per billed sending attempt, including retries
+Expected registrations: 100 per month, one confirmation each
+Usual attempts per confirmation: 1
+Hosting-and-email warning: charges on that account reach $14; notification only
 Enforced monthly spending cap: none demonstrated
 ```
 
-Each provider's alert covers its own configured billing scope; it does not automatically include another vendor's bill. Track the coding-tool subscription separately. Here, you add the two bills yourself.
+This scenario assumes the email service bills every sending attempt, retries included. Not every email service bills that way; check the actual billed unit for yours. A billed attempt is also not proof that the email reached anyone: it records that the service was asked to send. And neither attempts nor deliveries are registrations; the registrations are the records the centre saved.
 
-Under those assumptions, the expected monthly total is $20 + $10 + $20 = **$50**. If every operation needs its initial attempt plus two retries, 60,000 billed attempts cost $60, making the total **$90**. The useful work stayed at 20,000 operations. Repeated attempts changed the cost.
+Each provider's alert covers its own configured billing scope; it does not automatically include another vendor's bill. Here the $14 warning sees only the hosting-and-email account, so you add the separate coding-tool subscription yourself.
 
-At ten times the useful work, the same linear assumptions produce $230 with one attempt each, or $630 with three. These are scenario calculations, not a forecast: real service tiers, units, allowances and reporting delays may change the result. Ask the agent to show its assumptions and compare them with the actual bill before deciding.
+With one attempt per confirmation, 100 billed attempts cost $1, so the hosting-and-email bill is $12 + $1 = **$13**, and the total with the coding tool is **$33**. If every confirmation needs its initial attempt plus two retries, 300 billed attempts cost $3: **$15** on the hosting-and-email account and **$35** overall. The useful work stayed at 100 registrations. Repeated attempts changed the cost, and pushed that account past its $14 warning.
 
-If the hosting-account alert arrives at $40, what stops further activity? In this example, nothing has been shown to do so. A useful next action is to inspect the retry cause and agree a bounded retry policy and an available usage control. Define the user-visible behavior if work is stopped. Do not disable an essential service merely because an agent guessed that doing so is safe.
+At ten times the registrations, the same linear assumptions give $22 on the hosting-and-email account ($42 overall) with one attempt each, or $42 ($62 overall) with three. The $14 warning would then fire every month even without retries, so a threshold has to be chosen for the volume you actually expect. These are scenario calculations, not a forecast: real service tiers, units, allowances and reporting delays may change the result. Ask the agent to show its assumptions and compare them with the actual bill before deciding.
+
+If the warning arrives at $14, what stops further activity? In this example, nothing has been shown to do so; it is a notification, not a cap, and it does not include the coding-tool bill. A useful next action is to inspect why confirmations are being retried and agree a bounded retry policy and an available usage control. Define what residents and staff see if sending is paused. Do not disable an essential service merely because an agent guessed that doing so is safe.
 
 Before your first long coding session, [Choosing Your IDE and LLM](contextqb://guides/choosing-your-ide-and-llm) introduces the same billing distinction. The operating record carries it forward as actual usage accumulates.
 
 ## Worked first-month record
 
-Every event below is **simulated**, not an observation of a launched notebook. Weeks 1, 2 and 4 follow Maya's local-file notebook; week 3 belongs to the optional hosted alternative above. Use this record to practice decisions, then replace it with evidence from your own product:
+Every event below is **invented** for the class-signup app. Use this record to practice decisions, then replace it with evidence from your own product. The weeks illustrate kinds of work, not a universal weekly schedule:
 
-- **Week 1 — ordinary use.** Maya records five save-and-reopen attempts with expected values. That supports those attempts, not all future behavior. She schedules a check of backup freshness and the failed-save reporting path.
-- **Week 2 — a broken task.** A new version of the program displays an empty list while the saved entries remain present in her data file. Maya freezes unrelated changes and follows [Respond to an Outage](contextqb://playbooks/respond-to-an-outage). That playbook works through this same situation as a tabletop exercise: a discussion of supplied facts and choices on paper, not a real incident. She preserves the data rather than restoring an older backup reflexively.
-- **Week 3 — a cost surprise.** In the hosted alternative, the hosting bill projects $70 instead of $30 because three attempts are being billed per operation. Adding the separate $20 coding-tool subscription gives $90 instead of $50 in total. The owner checks the retry evidence and chooses a bounded correction rather than treating the $40 hosting alert as a cap.
-- **Week 4 — feedback and maintenance.** Struggling to find an earlier entry among many similar titles, Maya writes in her operating notes that she wants “folders”. She investigates the task through [Review Feedback and Plan the Next Change](contextqb://playbooks/review-feedback-and-plan-the-next-change). A cosmetic code reorganization is deferred because it does not address the observed obstacle. In the hosted alternative, the retry correction gets a defined success check.
+- **Week 1 — essential jobs.** The coordinator reviews the successful registrations and tests that a failed submission reaches the responsible person. They also check that the backup job has a recent successful result. The useful question is not whether a dashboard is green, but whether someone can find evidence that these essential jobs happened.
+- **Week 2 — an unfinished task.** For some saved registrations, the email service refuses the confirmation or returns no answer. The coordinator separates the two outcomes: the registrations exist and are safe, but their confirmations are unfinished, and for those with no answer it is unknown whether the email was accepted. They preserve the registration list and follow up on the sending problem, using [Set Up Useful Monitoring](contextqb://playbooks/set-up-useful-monitoring) for the reporting path, rather than asking everyone to register again.
+- **Week 3 — a cost surprise.** Usage records show three billed sending attempts for each intended confirmation. As the worked cost decision shows, that turns a $13 hosting-and-email bill into $15, and $33 overall into $35, crossing the $14 warning. The coordinator investigates the retries and the actual available controls before changing the running service, and does not treat the warning as a cap.
+- **Week 4 — feedback.** Residents ask for a waiting list. The coordinator records the request and investigates how people currently find out that a class is full, before approving another feature. [Review Feedback and Plan the Next Change](contextqb://playbooks/review-feedback-and-plan-the-next-change) covers that investigation.
 
-Each entry should distinguish observation, interpretation, decision, owner and next check. A missing job result is unknown until investigated; it is not a zero-error result. Keep the record beside the existing project notes rather than inventing a new administration system.
+Operations includes understanding use and choosing the next worthwhile change, as well as fixing failures. Each entry should distinguish observation, interpretation, decision, owner and next check. A missing job result is unknown until investigated; it is not a zero-error result. Keep the record beside the existing project notes rather than inventing a new administration system.
+
+For your app, keep a short record of what was observed, what it means, who owns the response and when the next check is needed. The routine should follow the promises people depend on.
 
 ## Maintain the product or retire it deliberately
 

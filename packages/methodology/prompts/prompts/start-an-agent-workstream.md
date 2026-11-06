@@ -2,7 +2,7 @@
 id: start-an-agent-workstream
 title: Start an Agent Workstream
 summary: A reusable instruction for turning an operator’s objective into a documented workstream and a proposed bounded assignment.
-version: 0.4.0
+version: 0.4.1
 audience:
   - founder
   - operator
@@ -47,9 +47,9 @@ tags:
 
 **Fill in:**
 
-- `{{OBJECTIVE}}`: what you want, in your own words. For example: "Add search to my research notebook so I can find a source by a word in its note."
+- `{{OBJECTIVE}}`: what you want, in your own words. For example, suppose your photos are scattered across folders and you want to see how they could be grouped by month: "Produce a preview of proposed month folders and photo moves so I can check the arrangement before any original file changes." That says what you need and makes the first deliverable inspectable. It does not authorize moving the photos.
 - `{{PROJECT_INSTRUCTIONS}}`: the boot-map files, such as `AGENTS.md` and `context.qb.yaml`, or your project's equivalent. If your tool already loads them at the start of a session ([which tools load which files](contextqb://references/setup#agents-md-support)), write "already loaded"; the agent should still read anything they point to.
-- `{{EXISTING_RECORDS}}`: any related scope, plan, or workstream record, such as `docs/scopes/notebook-search.md`, or "none". If you are not sure whether one exists, write "none that I know of"; the prompt tells the agent to look for one before creating a new record.
+- `{{EXISTING_RECORDS}}`: any related scope, plan, or workstream record, such as the illustrative `docs/scopes/photo-organisation.md`, or "none". Supply the real path if one exists. If you are not sure whether one exists, write "none that I know of"; the prompt tells the agent to look for one before creating a new record.
 
 ```text
 Objective: {{OBJECTIVE}}
